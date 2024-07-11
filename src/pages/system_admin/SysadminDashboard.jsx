@@ -29,8 +29,8 @@ export default function SysadminDashboard() {
                     </div>
                 </div>
 
-                <div className="flex">
-                    <div className="grid grid-cols-2 gap-6 p-9">
+                <div className="flex ">
+                    <div className="grid grid-cols-2 gap-5 p-11">
                         {/* Total Number of Requests */}
                         <div className="bg-white border border-gray-300 rounded p-4 w-80">
                             <p className="text-xs font-inter text-left">Total Number of Requests</p>
@@ -80,25 +80,22 @@ export default function SysadminDashboard() {
                         </div>
                        
                         
-                    </div> <div xlassName = "flex"><Calendar/></div>
-
-                    {/* Right Section */}
-                   
-                        
-                        
-                              
-                               
-                                    
-                            
-                                {/* Optionally, add an image or other content */}
-                        
-                       
-                 
-
-
-
-
+                    </div>
+                     <div className = ""><Calendar/></div>
                 </div>
+
+                <div className="bg-white border border-gray-300 rounded p-4 ml-9 mt-4 py-4 w-3/4">
+                            <p className="text-xs font-inter text-left">Maintenance Departments</p>
+                            <div className="flex items-center mt-4">
+                                <div>
+                                    <p className="text-blue-400 font-bold text-xl font-inter">3</p>
+                                    <p className="text-xs font-inter text-left">May 24 - June 01</p>
+                                </div>
+                                <img src={maintenancedept} alt="Maintenance Departments Icon" className="w-14 h-12 ml-20 mb-5" />
+                            </div>
+                        </div>
+
+
             </main>
         </div>
     );

@@ -12,7 +12,7 @@ export default function Calendar() {
 
     return (
         <div className="flex justify-center items-center">
-            <div className="w-96 h-96 bg-white border border-gray-300 rounded p-4">
+            <div className="w-100 h-110 bg-white border border-gray-300 rounded p-4">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="select-none font-semibold">
                         {months[today.month()]}, {today.year()}
