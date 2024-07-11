@@ -2,12 +2,18 @@ import React from 'react';
 import 'remixicon/fonts/remixicon.css';
 import WelcomSysAdIcon from '/src/assets/images/SysAdIcons/welcomesysad.png';
 import numberOdRequests from '/src/assets/images/SysAdIcons/numofreq.png';
+import numberOdUsers from '/src/assets/images/SysAdIcons/numofusers.png';
+import numberOdEmployees from '/src/assets/images/SysAdIcons/numofemployees.png';
+import maintenancedept from '/src/assets/images/SysAdIcons/maintenancedept.png';
+import Calendar from './components/samplecal'
+
 import SysAdminSidebar from './components/SysAdminSidebar';
 
 export default function SysadminDashboard() {
     return (
         <div className="text-gray-800 font-inter">
             <SysAdminSidebar />
+            
             <main className="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-50 min-h-screen transition-all main">
                 <div className="py-2 px-6 bg-yellow-400 flex items-center min-h-10 shadow-md shadow-black/5 sticky top-0 left-0 z-30">
                     <button type="button" className="text-lg text-gray-600 sidebar-toggle">
@@ -42,10 +48,10 @@ export default function SysadminDashboard() {
                             <p className="text-xs font-inter text-left">Total Number of Users</p>
                             <div className="flex items-center mt-4">
                                 <div>
-                                    <p className="text-yellow-400 font-bold text-xl font-inter">15,400</p>
+                                    <p className="text-yellow-400 font-bold text-xl font-inter">1,400</p>
                                     <p className="text-xs font-inter text-left">May 24 - June 01</p>
                                 </div>
-                                <img src={numberOdRequests} alt="Number of Users Icon" className="w-14 h-12 ml-20 mb-5" />
+                                <img src={numberOdUsers} alt="Number of Users Icon" className="w-14 h-12 ml-20 mb-5" />
                             </div>
                         </div>
 
@@ -54,10 +60,10 @@ export default function SysadminDashboard() {
                             <p className="text-xs font-inter text-left">Total Number of Employees</p>
                             <div className="flex items-center mt-4">
                                 <div>
-                                    <p className="text-green-400 font-bold text-xl font-inter">15,400</p>
+                                    <p className="text-green-400 font-bold text-xl font-inter">1,400</p>
                                     <p className="text-xs font-inter text-left">May 24 - June 01</p>
                                 </div>
-                                <img src={numberOdRequests} alt="Number of Employees Icon" className="w-14 h-12 ml-20 mb-5" />
+                                <img src={numberOdEmployees} alt="Number of Employees Icon" className="w-14 h-12 ml-20 mb-5" />
                             </div>
                         </div>
 
@@ -66,27 +72,32 @@ export default function SysadminDashboard() {
                             <p className="text-xs font-inter text-left">Maintenance Departments</p>
                             <div className="flex items-center mt-4">
                                 <div>
-                                    <p className="text-blue-400 font-bold text-xl font-inter">15,400</p>
+                                    <p className="text-blue-400 font-bold text-xl font-inter">3</p>
                                     <p className="text-xs font-inter text-left">May 24 - June 01</p>
                                 </div>
-                                <img src={numberOdRequests} alt="Maintenance Departments Icon" className="w-14 h-12 ml-20 mb-5" />
+                                <img src={maintenancedept} alt="Maintenance Departments Icon" className="w-14 h-12 ml-20 mb-5" />
                             </div>
                         </div>
-                    </div>
+                       
+                        
+                    </div> <div xlassName = "flex"><Calendar/></div>
 
                     {/* Right Section */}
-                    <div className="flex-1 bg-gray-200 p-6">
-                        <div className="bg-white border border-gray-300 rounded w-80 h-100">
-                            <p className="text-xs font-inter text-left">CALENDAR</p>
-                            <div className="flex items-center mt-4">
-                                <div>
-                                    <p className="text-blue-400 font-bold text-xl font-inter">Calendar Content</p>
+                   
+                        
+                        
+                              
+                               
                                     
-                                </div>
+                            
                                 {/* Optionally, add an image or other content */}
-                            </div>
-                        </div>
-                    </div>
+                        
+                       
+                 
+
+
+
+
                 </div>
             </main>
         </div>
