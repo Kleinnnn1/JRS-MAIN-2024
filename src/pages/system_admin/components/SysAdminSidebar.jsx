@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import LogoJRS from '/src/assets/images/logo_JRS.png';
 import HomeSidebarIcon from '/src/assets/images/SysAdIcons/home.png';
 import SettingsSidebarIcon from '/src/assets/images/SysAdIcons/settings.png';
@@ -15,48 +16,48 @@ export default function Sidebar() {
             </a>
             <ul className="mt-2 space-y-2">
                 <li className="group active">
-                    <a href="#" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
+                    <Link to="#" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
                         <img src={HomeSidebarIcon} alt="Home Icon" className="w-8 h-6 mr-3" />
                         <span className="text-sm">Dashboard</span>
-                    </a>
+                    </Link>
                 </li>
                 <li className="group active">
-                    <a href="#" className="flex items-center px-4 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
+                    <Link to="#" className="flex items-center px-4 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
                         <img src={SubcategoryIcon} alt="Home Icon" className="w-7 h-8 ml-6" />
                         <span className="text-sm">Analytics</span>
-                    </a>
-                    <a href="#" className="flex items-center px-4 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
+                    </Link>
+                    <Link to="/sysadmin_Users" className="flex items-center px-4 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
                         <img src={SubcategoryIcon} alt="Home Icon" className="w-7 h-8 ml-6" />
                         <span className="text-sm">Users</span>
-                    </a>
-                    <a href="#" className="flex items-center px-4 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
+                    </Link>
+                    <Link to="#" className="flex items-center px-4 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
                         <img src={SubcategoryIcon} alt="Home Icon" className="w-7 h-8 ml-6" />
                         <span className="text-sm">Job Requests</span>
-                    </a>
+                    </Link>
                 </li>
                 <li className="group active">
-                    <a href="#" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
+                    <Link to="#" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
                         <img src={DepartmentSidebarIcon} alt="Home Icon" className="w-10 h-8 mr-2" />
                         <span className="text-sm">Department</span>
-                    </a>
+                    </Link>
                 </li>
                 <li className="group active">
-                    <a href="#" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
+                    <Link to="#" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
                         <img src={HistorySidebarIcon} alt="History Icon" className="w-10 h-8 mr-2" />
                         <span className="text-sm">History</span>
-                    </a>
+                    </Link>
                 </li>
                 <li className="group active">
-                    <a href="#" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
+                    <Link to="#" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
                         <img src={SettingsSidebarIcon} alt="Settings Icon" className="w-10 h-8 mr-2" />
                         <span className="text-sm">Settings</span>
-                    </a>
+                    </Link>
                 </li>
                 <li className="group active">
-                    <a href="#" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
+                    <Link to="#" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
                         <img src={LogoutSidebarIcon} alt="Logout Icon" className="w-9 h-8 mr-2" />
                         <span className="text-sm">Logout</span>
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </div>
