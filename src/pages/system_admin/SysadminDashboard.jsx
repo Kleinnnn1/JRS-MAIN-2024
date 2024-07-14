@@ -4,7 +4,7 @@ import WelcomSysAdIcon from '/src/assets/images/SysAdIcons/welcomesysad.png';
 import numberOdRequests from '/src/assets/images/SysAdIcons/numofreq.png';
 import numberOdUsers from '/src/assets/images/SysAdIcons/numofusers.png';
 import numberOdEmployees from '/src/assets/images/SysAdIcons/numofemployees.png';
-import maintenancedept from '/src/assets/images/SysAdIcons/maintenancedept.png';
+import maintenancedept from '/src/assets/images/SysAdIcons/Maintenancedept.png';
 import Calendar from './components/samplecal'
 import SysAdminHeader from './components/sysadminHeader';
 import SysAdminSidebar from './components/SysAdminSidebar';

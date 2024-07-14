@@ -36,7 +36,7 @@ export default function Sidebar() {
                     </Link>
                 </li>
                 <li className="group active">
-                    <Link to="#" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
+                    <Link to="/Departments" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
                         <img src={DepartmentSidebarIcon} alt="Home Icon" className="w-10 h-8 mr-2" />
                         <span className="text-sm">Department</span>
                     </Link>
