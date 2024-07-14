@@ -16,13 +16,13 @@ export default function Sidebar() {
             </a>
             <ul className="mt-2 space-y-2">
                 <li className="group active">
-                    <Link to="#" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
+                    <Link to="/sysadmin_Dashboard" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
                         <img src={HomeSidebarIcon} alt="Home Icon" className="w-8 h-6 mr-3" />
                         <span className="text-sm">Dashboard</span>
                     </Link>
                 </li>
                 <li className="group active">
-                    <Link to="#" className="flex items-center px-4 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
+                    <Link to="/sysadmin_Dashboard" className="flex items-center px-4 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
                         <img src={SubcategoryIcon} alt="Home Icon" className="w-7 h-8 ml-6" />
                         <span className="text-sm">Analytics</span>
                     </Link>
@@ -30,7 +30,7 @@ export default function Sidebar() {
                         <img src={SubcategoryIcon} alt="Home Icon" className="w-7 h-8 ml-6" />
                         <span className="text-sm">Users</span>
                     </Link>
-                    <Link to="#" className="flex items-center px-4 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
+                    <Link to="/Job_Requests" className="flex items-center px-4 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">
                         <img src={SubcategoryIcon} alt="Home Icon" className="w-7 h-8 ml-6" />
                         <span className="text-sm">Job Requests</span>
                     </Link>

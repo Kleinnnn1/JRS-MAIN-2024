@@ -13,9 +13,9 @@ export default function SysadminDashboard() {
     return (
         <div className="text-gray-800 font-inter">
             <SysAdminSidebar />
-            
+           
             <main className="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-50 min-h-screen transition-all main">
-            <SysAdminHeader />
+            <SysAdminHeader headerText="DASHBOARD > ANALYTICS" />
                 <div className="flex items-center mt-0 space-y-2 px-7 py-4">
                     <img src={WelcomSysAdIcon} alt="Home Icon" className="w-11 h-10 mr-3" />
                     <div className="flex flex-col">
