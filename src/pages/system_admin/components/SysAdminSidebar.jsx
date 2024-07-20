@@ -7,13 +7,16 @@ import DepartmentSidebarIcon from '/src/assets/images/SysAdIcons/department.png'
 import HistorySidebarIcon from '/src/assets/images/SysAdIcons/history.png';
 import LogoutSidebarIcon from '/src/assets/images/SysAdIcons/logout.png';
 import SubcategoryIcon from '/src/assets/images/SysAdIcons/subcategory.png';
+import SideBarProfile from './profile'; 
+import SideBarMenu from './Logo';
 
 export default function Sidebar() {
     return (
         <div className="fixed left-0 top-0 w-64 h-full bg-custom-blue p-4 z-50 sidebar-menu transition-transform">
-            <a href="#" className="flex items-center mb-4">
-                <img src={LogoJRS} alt="Logo" className="w-40 h-40 rounded object-cover" />
-            </a>
+            
+                <SideBarMenu/>
+                <SideBarProfile/>
+            
             <ul className="mt-2 space-y-2">
                 <li className="group active">
                     <Link to="/sysadmin_Dashboard" className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white">

@@ -11,7 +11,7 @@ import SysAdminSidebar from './components/SysAdminSidebar';
 
 export default function SysadminDashboard() {
     return (
-        <div className="text-gray-800 font-inter">
+        <div className="text-gray-800  font-inter">
             <SysAdminSidebar />
            
             <main className="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-50 min-h-screen transition-all main">

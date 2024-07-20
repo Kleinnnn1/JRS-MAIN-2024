@@ -5,7 +5,7 @@ import SysAdminHeader from './components/sysadminHeader';
 import SysAdminSidebar from './components/SysAdminSidebar';
 import userIcon from '/src/assets/images/SysAdIcons/userIcon.png';
 
-export default function UsersPage() {
+export default function DepartmentCategory() {
     return (
         <div className="text-gray-800 font-inter">
             <SysAdminSidebar />
@@ -13,16 +13,16 @@ export default function UsersPage() {
                 <SysAdminHeader headerText="DASHBOARD > USERS"/>
                 <div className="flex py-10 px-3 items-center mt-0 space-y-2 ">
                 <img src={userIcon} alt="UserIcon" className="w-12 h-10 ml-6" />
-                    <p className=' ml-3 text-yellow-500 text-xl font-bold'>MANAGE USERS</p>
+                    <p className=' ml-3 text-yellow-500 text-xl font-bold'>SELECT DEPARTMENT</p>
                 </div>
                 <div className='p-5 mt-10 mb-8 bg-custom-blue1 text-center'>
-                    <Link to="/Dept_Category" className=' text-yellow-500 font-bold text-white '>DEPARTMENT HEADS</Link>
+                    <Link to="" className=' text-yellow-500 font-bold text-white '>BGMS</Link>
                 </div>
                 <div className='p-5 mb-8 bg-custom-blue1 text-center'>
-                    <Link className='text-center text-yellow-500 font-bold text-white'>DEPARTMENT STAFFS</Link>
+                    <Link className='text-center text-yellow-500 font-bold text-white'>CSWS</Link>
                 </div>
                 <div className='p-5 mb-8 bg-custom-blue1 text-center'>
-                    <Link className='text-center text-yellow-500 font-bold text-white '>CLIENTS</Link>
+                    <Link className='text-center text-yellow-500 font-bold text-white '>MEWS    </Link>
                 </div>
             </main>
         </div>
