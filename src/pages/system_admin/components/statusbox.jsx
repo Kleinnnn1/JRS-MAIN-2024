@@ -1,21 +1,13 @@
 import React from 'react';
 import 'remixicon/fonts/remixicon.css';
 import deptIcon from '/src/assets/images/SysAdIcons/deptIcon.png'
+import DepartmentSearchBar from './DeptSearchBar';
 
 const StatusBox = ({ deptHed }) => {
     return (
         <div>
-        <div className='flex items-center justify-between'>
-            <div className='bg-blue-500 h-10 flex items-center text-white font-bold px-4 mt-6 ml-10 rounded'>
-                ADD NEW DEPARTMENT
-            </div>
-            <div className='flex '>
-                <div className='flex items-center bg-gray-300 h-10 flex items-center text-white font-bold  mt-6 rounded' >Type Here .................</div>
-                <div className='bg-blue-500 h-10 flex items-center text-white font-bold px-4 mr-10 mt-6 ml-2 rounded'>
-                Search
-                </div>
-            </div>
-        </div>
+       
+        <DepartmentSearchBar title="All Departments" showInput={true} />
 
         <div className='bg-blue-100 mt-5 m-2 ml-8 mr-10 p-4 text-white font-bold'>
        

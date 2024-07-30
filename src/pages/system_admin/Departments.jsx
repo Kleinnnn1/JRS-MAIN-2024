@@ -10,7 +10,7 @@ export default function Departments() {
             <SysAdminSidebar />
             <main className="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-50 min-h-screen transition-all main">
                 <SysAdminHeader headerText="DEPARTMENTS"/>
-              <div className='bg-custom-blue m-2 p-4 text-white font-bold'>ALL DEPARTMENTS</div>
+              <div className='bg-custom-blue rounded m-2 p-4 text-white font-bold'>ALL DEPARTMENTS</div>
             <StatusBox/>
              
 
