@@ -6,6 +6,8 @@ import Job_requests from './pages/system_admin/jobRequests'
 import LogIn from './pages/LogIn'
 import Departments from './pages/system_admin/Departments'
 import DepartmentCategory from './pages/system_admin/departmentCategory'
+import ContentJobRequest from './pages/ContentJobRequests'
+import JobRequests from './pages/system_admin/components/JobRequestTable'
 
 
 function App() {
@@ -23,6 +25,13 @@ function App() {
         <Route path='/Departments' element={<Departments/>} />
         <Route path='/Dept_Category' element={<DepartmentCategory/>}></Route>
       </Routes>
+    
+      <Route path="job_request" element={< ContentJobRequest/>}>
+            <Route path="view" element={< JobRequests/>} />
+           
+          </Route>
+
+
     </Router>
     </>
   )

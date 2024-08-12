@@ -3,6 +3,7 @@ import 'remixicon/fonts/remixicon.css';
 import SysAdminHeader from './components/sysadminHeader';
 import SysAdminSidebar from './components/SysAdminSidebar';
 import StatusBox from './components/statusbox';
+import ReusableSearchBar from './components/ReusableSearchBar';
 
 export default function Departments() {
     return (
@@ -11,7 +12,10 @@ export default function Departments() {
             <main className="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-50 min-h-screen transition-all main">
                 <SysAdminHeader headerText="DEPARTMENTS"/>
               <div className='bg-custom-blue rounded m-2 p-4 text-white font-bold'>ALL DEPARTMENTS</div>
-            <StatusBox/>
+            <StatusBox
+             
+            
+            />
              
 
 

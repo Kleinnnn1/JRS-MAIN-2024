@@ -1,13 +1,13 @@
 import React from 'react';
 import 'remixicon/fonts/remixicon.css';
 import deptIcon from '/src/assets/images/SysAdIcons/deptIcon.png'
-import DepartmentSearchBar from './DeptSearchBar';
+import ReusableSearchBar from './ReusableSearchBar';
 
 const StatusBox = ({ deptHed }) => {
     return (
         <div>
        
-        <DepartmentSearchBar title="All Departments" showInput={true} />
+        <ReusableSearchBar ButtonTitle='ADD NEW DEPARTMENT'/>
 
         <div className='bg-blue-100 mt-5 m-2 ml-8 mr-10 p-4 text-white font-bold'>
        
