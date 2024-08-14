@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
 import PageReport from "./pages/department_head/SendReport/PageReport.jsx";
-import Login from "./pages/LogIn";
 import PageJobRequest from "./pages/department_head/JobRequest/PageJobRequest.jsx";
 import JobOngoing from "./pages/department_head/JobRequest/PageJobOngoing.jsx";
 import JobCompleted from "./pages/department_head/JobRequest/PageJobCompleted.jsx";
@@ -28,13 +27,14 @@ import ChangeAvatar from "./pages/department_head/Profile/ChangeAvatar";
 import ChangePassword from "./pages/department_head/Profile/ChangePassword";
 import DashboardContent from "./pages/department_head/Dashboard/ContentDashboard.jsx";
 import UserInformation from "./pages/department_head/Profile/UserInformation.jsx";
+import LogIn from "./pages/requestor/LogIn.jsx";
 
 export default function App() {
   return (
     <Router>
       <Routes>
         {/* Routes for Login*/}
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LogIn />} />
 
         {/* Routes for Department Head */}
         <Route
