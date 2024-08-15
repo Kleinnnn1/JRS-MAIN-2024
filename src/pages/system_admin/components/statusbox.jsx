@@ -1,9 +1,10 @@
-import React from 'react';
+
 import 'remixicon/fonts/remixicon.css';
 import deptIcon from '/src/assets/images/SysAdIcons/deptIcon.png'
 import ReusableSearchBar from './ReusableSearchBar';
 
-const StatusBox = ({ deptHed }) => {
+
+export default function StatusBox (){
     return (
         <div>
        
@@ -46,4 +47,3 @@ const StatusBox = ({ deptHed }) => {
     )
 }
 
-export default StatusBox

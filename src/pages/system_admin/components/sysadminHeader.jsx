@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import profilePicture from '/src/assets/images/SysAdIcons/Saturo_Gojo.png'; // Import your profile picture
 
 const SysAdminHeader = ({ headerText }) => {
@@ -21,5 +21,9 @@ const SysAdminHeader = ({ headerText }) => {
         </div>
     );
 }
+
+SysAdminHeader.propTypes = {
+    headerText: PropTypes.string.isRequired, 
+};
 
 export default SysAdminHeader;

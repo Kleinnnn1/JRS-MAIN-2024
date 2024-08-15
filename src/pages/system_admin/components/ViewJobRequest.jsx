@@ -1,8 +1,5 @@
-
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import SysAdminHeader from './components/sysadminHeader';
-import SysAdminSidebar from './components/SysAdminSidebar';
+import SysAdminHeader from '../components/sysadminHeader';
+import SysAdminSidebar from '../components/SysAdminSidebar';
 
 export default function ViewJobRequest() {
  
@@ -10,7 +7,7 @@ export default function ViewJobRequest() {
   return (
     <>
 
-    <SysAdminHeader/>
+    <SysAdminHeader headerText="Dashboard"/>
     <SysAdminSidebar/>
 
     <div className='bg-custom-blue rounded m-2 p-4 text-white font-bold'>ALL DEPARTMENTS</div>

@@ -1,9 +1,9 @@
-import React from 'react';
+
 import 'remixicon/fonts/remixicon.css';
 import SysAdminHeader from './components/sysadminHeader';
 import SysAdminSidebar from './components/SysAdminSidebar';
 import StatusBox from './components/statusbox';
-import ReusableSearchBar from './components/ReusableSearchBar';
+
 
 export default function Departments() {
     return (
