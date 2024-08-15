@@ -18,7 +18,7 @@ const StatusCard = ({ title, count, statusColor, statusText }) => (
 export default StatusCard;
 StatusCard.propTypes = {
 title: PropTypes.string.isRequired, 
-count: PropTypes.number.isRequired, 
+count: PropTypes.string.isRequired, 
 statusColor: PropTypes.string,
 statusText: PropTypes.string,
 };
