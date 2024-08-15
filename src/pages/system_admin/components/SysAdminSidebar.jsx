@@ -26,7 +26,7 @@ export default function Sidebar() {
                         className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
                     >
                         <img src={HomeSidebarIcon} alt="Home Icon" className="w-8 h-6 mr-3" />
-                        <span className="text-sm">Dashboard  temporary</span>
+                        <span className="text-sm">Dashboard</span>
                     </div>
                 </li>
                <li className="group active">
