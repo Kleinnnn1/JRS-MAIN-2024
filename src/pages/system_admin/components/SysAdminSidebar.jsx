@@ -8,6 +8,9 @@ import SubcategoryIcon from '/src/assets/images/SysAdIcons/subcategory.png';
 import SideBarProfile from './profile';
 import SideBarMenu from './Logo';
 import PersonIcon from '@mui/icons-material/Person';
+import { FileOpen } from '@mui/icons-material';
+import { Home } from '@mui/icons-material';
+
 
 export default function Sidebar() {
     const navigate = useNavigate();
@@ -23,27 +26,27 @@ export default function Sidebar() {
                 <li className="group active">
                     <div
                         onClick={() => navigate('/system_admin')}
-                        className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
+                        className="flex items-center px-5 py-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
                     >
-                        <img src={HomeSidebarIcon} alt="Home Icon" className="w-8 h-6 mr-3" />
+                        <Home className="mr-5" />
                         <span className="text-sm">Dashboard</span>
                     </div>
                 </li>
                <li className="group active">
                     <div
                         onClick={() => navigate('/system_admin/Users')}
-                        className="flex items-center px-4 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
+                        className="flex items-center px-5 py-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
                     >
-                        <PersonIcon className="w-7 h-8 ml-6 text-gray-300" />
+                        <PersonIcon className="mr-5 text-gray-300" />
                         <span className="text-sm">Users</span>
                     </div>
                     </li>
                 <li className="group active">
                     <div
                         onClick={() => navigate('/system_admin/Job_Requests')}
-                        className="flex items-center px-4 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
+                        className="flex items-center px-5 py-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
                     >
-                        <img src={SubcategoryIcon} alt="Home Icon" className="w-7 h-8 ml-6" />
+                        <FileOpen className="mr-5 text-gray-300" />
                         <span className="text-sm">Job Requests</span>
                     </div>
                 </li>
@@ -52,16 +55,16 @@ export default function Sidebar() {
                         onClick={() => navigate('/system_admin/Departments')}
                         className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
                     >
-                        <img src={DepartmentSidebarIcon} alt="Department Icon" className="w-10 h-8 mr-2" />
+                        <img src={DepartmentSidebarIcon} alt="Department Icon" className="w-12 h-11 mr-2 " />
                         <span className="text-sm">Department</span>
                     </div>
                 </li>
                 <li className="group active">
                     <div
                         onClick={() => navigate('#')}
-                        className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
+                        className="flex items-center px-2 py-1 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
                     >
-                        <img src={HistorySidebarIcon} alt="History Icon" className="w-10 h-8 mr-2" />
+                        <img src={HistorySidebarIcon} alt="History Icon" className="w-10 h-8 mr-4" />
                         <span className="text-sm">History</span>
                     </div>
                 </li>
@@ -70,16 +73,16 @@ export default function Sidebar() {
                         onClick={() => navigate('#')}
                         className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
                     >
-                        <img src={SettingsSidebarIcon} alt="Settings Icon" className="w-10 h-8 mr-2" />
+                        <img src={SettingsSidebarIcon} alt="Settings Icon" className="w-10 h-8 mr-4" />
                         <span className="text-sm">Settings</span>
                     </div>
                 </li>
                 <li className="group active">
                     <div
                         onClick={() => navigate('#')}
-                        className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
+                        className="flex items-center px-2 py-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
                     >
-                        <img src={LogoutSidebarIcon} alt="Logout Icon" className="w-9 h-8 mr-2" />
+                        <img src={LogoutSidebarIcon} alt="Logout Icon" className="w-9 h-8 mr-5" />
                         <span className="text-sm">Logout</span>
                     </div>
                 </li>
