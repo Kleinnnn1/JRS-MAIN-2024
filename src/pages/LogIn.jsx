@@ -60,7 +60,7 @@ export default function LogIn() {
 
                 {/* TERMS OF CONDITIONS AND PRIVACY POLICY OF JRS */}
                 <a href="" className="text-xs text-center  w-52">
-                    By logging in, I agree to the Terms of Conditions and Privacy Policy
+                    By loggingg in, I agree to the Terms of Conditions and Privacy Policy
                     of JRS.
                 </a>
 
