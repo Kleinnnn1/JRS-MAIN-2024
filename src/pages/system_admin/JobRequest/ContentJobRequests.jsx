@@ -1,8 +1,8 @@
 
-import Table from "./system_admin/components/table";
+import Table from "../components/table";
 import { useNavigate } from "react-router-dom";
-import DropdownButton from "./system_admin/components/ReusableDropdown";
-import ReusableViewButton from "./system_admin/components/ReusableViewButon";
+import DropdownButton from "../components/ReusableDropdown";
+import ReusableViewButton from "../components/ReusableViewButon";
 
 const options = [
   { value: "1", label: "CSWS" },

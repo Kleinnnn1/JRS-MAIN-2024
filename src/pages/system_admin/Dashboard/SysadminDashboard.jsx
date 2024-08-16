@@ -3,13 +3,17 @@ import numberOfRequests from '/src/assets/images/SysAdIcons/numofreq.png';
 import numberOfUsers from '/src/assets/images/SysAdIcons/numofusers.png';
 import numberOfEmployees from '/src/assets/images/SysAdIcons/numofemployees.png';
 import maintenanceDept from '/src/assets/images/SysAdIcons/Maintenancedept.png';
-import Calendar from './components/samplecal';
-import StatsCard from './components/StatsCard';
-import StatusCard from './components/StatusCard';
+
+import Calendar from "../components/samplecal"
+import StatsCard from "../components/StatsCard";
+import StatusCard from "../components/StatusCard";
 
 export default function SysadminDashboard() {
     return (
         <div>
+            
+            <div className="bg-white m-2 p-4 text-black font-bold ">ANALYTICS</div>
+
             <div className="flex">
                 <div className="grid grid-cols-2 gap-5 p-11 flex justify-center">
                     <StatsCard 

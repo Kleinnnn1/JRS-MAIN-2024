@@ -1,8 +1,8 @@
 
 import 'remixicon/fonts/remixicon.css';
 import { Link } from 'react-router-dom';
-import SysAdminHeader from './components/sysadminHeader';
-import SysAdminSidebar from './components/SysAdminSidebar';
+import SysAdminHeader from "../system_admin/components/sysadminHeader";
+import SysAdminSidebar from "../system_admin/components/SysAdminSidebar";
 import userIcon from '/src/assets/images/SysAdIcons/userIcon.png';
 
 export default function DepartmentCategory() {

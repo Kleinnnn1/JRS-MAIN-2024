@@ -20,8 +20,3 @@ export default function SysAdminHeader ()  {
     );
 }
 
-SysAdminHeader.propTypes = {
-    headerText: PropTypes.string.isRequired, 
-};
-
-
