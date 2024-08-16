@@ -48,7 +48,7 @@ export default function StaffContent() {
   ];
   return (
     <>
-     <ReusableSearchBar ButtonTitle="Add User"/>
+     <ReusableSearchBar ButtonTitle="Add Staff"/>
       <Table
         columns={4}
         rows={tableContent.length}

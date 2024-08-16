@@ -13,7 +13,7 @@ const tableHeaders = [
   "Action",
 ];
 
-export default function adminContent() {
+export default function AdminContent() {
   const navigate = useNavigate();
   const tableContent = [
     [
@@ -48,7 +48,7 @@ export default function adminContent() {
   ];
   return (
     <>
-     <ReusableSearchBar ButtonTitle="Add User"/>
+     <ReusableSearchBar ButtonTitle="Add Admin"/>
       <Table
         columns={4}
         rows={tableContent.length}
