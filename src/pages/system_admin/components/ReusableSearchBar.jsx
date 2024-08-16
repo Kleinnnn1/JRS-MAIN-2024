@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 export default function ReusableSearchBar({ ButtonTitle, showInput, inputProps = {} }) {
   return (
     <div className="flex items-center justify-between min-h-20 sticky top-0 left-0 bg-white shadow">
-      <div className="bg-blue-500 h-10 flex items-center text-white font-bold px-4 ml-10 rounded">
+      <div className="bg-blue-500 h-9 flex items-center text-white font-bold px-4 ml-10 rounded">
         {ButtonTitle}
       </div>
       <div className="flex items-center">

@@ -9,6 +9,7 @@ import ReusableViewButton from './ReusableViewButon';
 
 const tableHeaders = [
   "Department/Section",
+  "Head",
   "Status",
   "Location",
   "Action",
@@ -18,22 +19,41 @@ export default function DeptTable() {
   const navigate = useNavigate();
   const tableContent = [
     [
-      "Building And Ground Maintenance Section",
+      "1. Building And Grounds Maintenance Section",
+      "Thomas Xxxxx",
       "Active",
       "Bldg 2",
      
       <>
-
-
         <ReusableViewButton 
           onClick={() => navigate("/")}
         />
-       
-        
       </>,
      ],
-    ["2."],
-    ["3."],
+     [
+        "2. Civil and Sanitary Works Section",
+        "Engr. Balabis Xxxxx",
+        "Active",
+        "Bldg 5, Room 110",
+       
+        <>
+          <ReusableViewButton 
+            onClick={() => navigate("/")}
+          />
+        </>,
+       ],
+       [
+        "3. Mechanical And Electrical Works Section",
+        "Thomas Xxxxx",
+        "Active",
+        "DRER Right side",
+       
+        <>
+          <ReusableViewButton 
+            onClick={() => navigate("/")}
+          />
+        </>,
+       ],
     ["4."],
     ["5."],
     ["6."],
@@ -51,7 +71,7 @@ export default function DeptTable() {
     <>
      
       <Table
-        columns={4}
+        columns={5}
         rows={tableContent.length}
         content={tableContent}
         headers={tableHeaders}

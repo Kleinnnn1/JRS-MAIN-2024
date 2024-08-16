@@ -12,7 +12,7 @@ export default function SysadminDashboard() {
     return (
         <div>
             
-            <div className="bg-white m-2 p-4 text-black font-bold ">ANALYTICS</div>
+            <div className= "m-2 p-4 text-black font-bold ">ANALYTICS</div>
 
             <div className="flex">
                 <div className="grid grid-cols-2 gap-5 p-11 flex justify-center">

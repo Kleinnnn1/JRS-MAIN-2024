@@ -13,7 +13,7 @@ const tableHeaders = [
   "Action",
 ];
 
-export default function UserContent() {
+export default function StaffContent() {
   const navigate = useNavigate();
   const tableContent = [
     [
