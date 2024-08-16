@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 
-export default function ReusableSearchBar({ ButtonTitle, showInput, inputProps = {} }) {
+export default function ReusableSearchBar({ OnClick,ButtonTitle, showInput, inputProps = {} }) {
   return (
     <div className="flex items-center justify-between min-h-20 sticky top-0 left-0 bg-white shadow">
-      <div className="bg-blue-500 h-9 flex items-center text-white font-bold px-4 ml-10 rounded">
+      <button className="bg-blue-500 h-9 flex items-center text-white font-bold px-4 ml-10 rounded">
+      onClick={onClick}
         {ButtonTitle}
-      </div>
+      </button>
       <div className="flex items-center">
         {showInput && (
           <input

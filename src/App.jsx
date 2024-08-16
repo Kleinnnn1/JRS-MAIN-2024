@@ -6,6 +6,7 @@ import SystemAdDashboard from './pages/system_admin/Dashboard/PageDashboard';
 import UsersPage from './pages/system_admin/Users/sysadminUsers';
 import Job_requests from './pages/system_admin/JobRequest/jobRequests';
 import Departments from './pages/system_admin/Department/Departments';
+import AddDepartment from './pages/system_admin/Department/addDepartment';
 
 
 
@@ -21,7 +22,9 @@ function App() {
           <Route path='staff' element={<StaffContent />}/>
        </Route>
        <Route path='Job_Requests' element={<Job_requests />} />
-       <Route path='Departments' element={<Departments/>} />
+       <Route path='Departments' element={<Departments/>} >
+          <Route path='add' element={<AddDepartment />}/>
+       </Route>
        </Route>
 
       </Routes>
