@@ -6,9 +6,9 @@ import ReusableViewButton from "../components/ReusableViewButon";
 
 
 const tableHeaders = [
-  "Department/Section",
-  "Status",
-  "Location",
+  "Employee ID",
+  "Name",
+  "JobTY",
   "Action",
 ];
 
