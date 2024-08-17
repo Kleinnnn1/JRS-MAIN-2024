@@ -1,9 +1,10 @@
 
 import 'remixicon/fonts/remixicon.css';
-
 import Table from './table';
 import { useNavigate } from "react-router-dom";
 import ReusableViewButton from './ReusableViewButon';
+import ButtonAddDepartment from '../Department/buttonAddDep';
+import DepartmentHeader from '../Department/DeptHeader';
 
 
 
@@ -69,7 +70,11 @@ export default function DeptTable() {
   ];
   return (
     <>
-     
+    <DepartmentHeader/>
+     <ButtonAddDepartment
+            onClick={() => navigate("/system_admin/Departments/add")}
+         
+          />
       <Table
         columns={5}
         rows={tableContent.length}
