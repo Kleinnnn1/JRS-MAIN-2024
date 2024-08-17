@@ -87,7 +87,7 @@ export default function AddDepartment() {
          <div className='flex'>
         <div className="m-5">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="departmentName">
-            Office Name
+            Department Head
           </label>
           <input
             type="text"
@@ -101,7 +101,7 @@ export default function AddDepartment() {
         </div>
         <div className="m-5">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="departmentLocation">
-            Location
+            Assistant/ Co-Head
           </label>
           <input
             type="text"
@@ -115,7 +115,7 @@ export default function AddDepartment() {
         </div>
         <div className="m-5">
           <label className="block text-gray-700 font-bold mb-2" htmlFor="departmentEmail">
-            Email
+            Photo (OPTIONAL)
           </label>
           <input
             type="email"
@@ -127,24 +127,11 @@ export default function AddDepartment() {
             required
           />
         </div>
-        <div className="m-5">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="departmentContactNo">
-            Contact No.
-          </label>
-          <input
-            type="tel"
-            id="departmentContactNo"
-            name="departmentContactNo"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
-            value={departmentContactNo}
-            onChange={(e) => setDepartmentContactNo(e.target.value)}
-            required
-          />
-        </div>
+       
          </div>
          <button
           type="submit"
-          className="bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600"
+          className="bg-yellow-500 m-8 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600"
         >
           Add Department
         </button>
