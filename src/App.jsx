@@ -8,25 +8,21 @@ import Job_requests from './pages/system_admin/JobRequest/jobRequests';
 import Departments from './pages/system_admin/Department/Departments';
 import AddDepartment from './pages/system_admin/Department/addDepartment';
 
-
-
 function App() {
   return (
     <Router>
       <Routes>
-        
-       <Route path='/system_admin' element={< SystemAdDashboard/>} >
-       <Route path='Users' element={<UsersPage />}>
-          <Route path='reg_users' element={<UserContent />}/>
-          <Route path='admin' element={<AdminContent/>}/>
-          <Route path='staff' element={<StaffContent />}/>
-       </Route>
-       <Route path='Job_Requests' element={<Job_requests />} />
-       <Route path='Departments' element={<Departments/>} >
-          <Route path='add' element={<AddDepartment />}/>
-       </Route>
-       </Route>
-
+        <Route path='/system_admin' element={<SystemAdDashboard />}>
+          <Route path='Users' element={<UsersPage />}>
+            <Route path='reg_users' element={<UserContent />} />
+            <Route path='admin' element={<AdminContent />} />
+            <Route path='staff' element={<StaffContent />} />
+          </Route>
+          <Route path='Job_Requests' element={<Job_requests />} />
+          <Route path='Departments' element={<Departments />}>
+            <Route path='add' element={<AddDepartment />} />
+          </Route>
+        </Route>
       </Routes>
     </Router>
   );

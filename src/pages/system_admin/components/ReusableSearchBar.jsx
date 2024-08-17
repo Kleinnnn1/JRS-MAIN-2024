@@ -1,10 +1,23 @@
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
-export default function ReusableSearchBar({ OnClick,ButtonTitle, showInput, inputProps = {} }) {
+export default function ReusableSearchBar({ route, ButtonTitle, showInput, inputProps = {}, onClick }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick(); // Call custom onClick handler if provided
+    } else {
+      navigate(route); // Navigate if no custom onClick handler is provided
+    }
+  };
+
   return (
     <div className="flex items-center justify-between min-h-20 sticky top-0 left-0 bg-white shadow">
-      <button className="bg-blue-500 h-9 flex items-center text-white font-bold px-4 ml-10 rounded">
-      onClick={onClick}
+      <button
+        className="bg-blue-500 h-9 flex items-center text-white font-bold px-4 ml-10 rounded"
+        onClick={handleClick}
+      >
         {ButtonTitle}
       </button>
       <div className="flex items-center">
@@ -25,12 +38,16 @@ export default function ReusableSearchBar({ OnClick,ButtonTitle, showInput, inpu
 }
 
 ReusableSearchBar.propTypes = {
+  route: PropTypes.string,
   ButtonTitle: PropTypes.string.isRequired,
   showInput: PropTypes.bool,
   inputProps: PropTypes.object,
+  onClick: PropTypes.func, // Add prop type for onClick
 };
 
 ReusableSearchBar.defaultProps = {
+  route: '', // Default route as empty string if not provided
   showInput: true,
   inputProps: {},
+  onClick: null, // Default to null if no onClick handler is provided
 };

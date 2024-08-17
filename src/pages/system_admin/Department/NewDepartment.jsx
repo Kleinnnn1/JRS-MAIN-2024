@@ -2,12 +2,11 @@ import 'remixicon/fonts/remixicon.css';
 import StatusBox from '../components/DepartmentTable';
 import ReusableSearchBar from '../components/ReusableSearchBar';
 import userIcon from '/src/assets/images/SysAdIcons/userIcon.png';
-import { useState } from 'react';
+import { Outlet, useOutlet } from "react-router-dom";
 import AddDepartment from './addDepartment';
 
 export default function Departments() {
-    const [isAdding, setIsAdding] = useState(false); // State to manage form visibility
-
+    const otherContent = useOutlet(); // Get the current outlet
     return (
         <div>
             <main>
@@ -17,19 +16,14 @@ export default function Departments() {
                         ALL DEPARTMENTS
                     </p>
                 </div>
-
-                {isAdding ? (
-                    <AddDepartment /> // Show form if isAdding is true
-                ) : (
-                    <>
-                       
-                       <ReusableSearchBar
-                            ButtonTitle='Add New Department'
-                            onClick={() => setIsAdding(true)} // Pass custom onClick handler
-                        />
-                        <StatusBox />
-                    </>
-                )}
+              
+              
+                {otherContent ? (
+                <Outlet /> // Render nested routes if present
+            ) : (
+                
+                
+            )}  <StatusBox />
             </main>
         </div>
     );
