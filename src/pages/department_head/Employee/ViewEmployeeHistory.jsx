@@ -8,7 +8,7 @@ export default function ViewEmployeeHistory() {
       <SearchBar title="Employee Job Request Information" name="view" />
       <ReusableContent>
         <p>
-          <b>Requestor Name:</b> Ricardo Dalisay
+          <b>Requestor Name:</b> Karne Cadalo
         </p>
         <p>
           <b>Job Description & Job Type: </b> Broken Door Knob : Carpenter
