@@ -27,6 +27,7 @@ import ChangeAvatar from "./pages/department_head/Profile/ChangeAvatar";
 import ChangePassword from "./pages/department_head/Profile/ChangePassword";
 import DashboardContent from "./pages/department_head/Dashboard/ContentDashboard.jsx";
 import UserInformation from "./pages/department_head/Profile/UserInformation.jsx";
+import PageRequestorDashboard from "./pages/requestor/Dashboard/PageRequestorDashboard.jsx";
 
 export default function App() {
   return (
@@ -34,6 +35,8 @@ export default function App() {
       <Routes>
         {/* Routes for Login*/}
         {/* <Route path="/login" element={<Login />} /> */}
+
+        <Route path="/requestor" element={<PageRequestorDashboard/>}></Route>
 
         {/* Routes for Department Head */}
         <Route
