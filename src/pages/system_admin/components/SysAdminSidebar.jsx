@@ -1,5 +1,4 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import HomeSidebarIcon from '/src/assets/images/SysAdIcons/home.png';
 import SettingsSidebarIcon from '/src/assets/images/SysAdIcons/settings.png';
 import DepartmentSidebarIcon from '/src/assets/images/SysAdIcons/department.png';
 import HistorySidebarIcon from '/src/assets/images/SysAdIcons/history.png';
@@ -19,7 +18,10 @@ export default function Sidebar() {
         navigate(path, { replace: true });
     };
 
-    const isActive = (path) => currentPath === path || currentPath.startsWith(path) && !currentPath.includes('/', path.length);
+    const isActive = (path) => {
+        // Highlight if current path is exactly the path or is a nested route under it
+        return currentPath === path || (path !== '/system_admin' && currentPath.startsWith(path));
+    };
 
     return (
         <div className="fixed left-0 top-0 w-64 h-full bg-custom-blue p-4 z-50 sidebar-menu transition-transform">

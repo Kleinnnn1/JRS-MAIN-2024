@@ -12,7 +12,7 @@ export default function UserType() { // Capitalized the component name
             <div className='flex justify-around p-10'>
                 <button
                     onClick={() => navigate("/system_admin/Users/reg_users")}
-                    className='text-center bg-custom-blue text-white border border-zinc-700 rounded font-bold p-20 m-5'
+                    className={'text-center bg-custom-blue text-white border border-zinc-700 rounded font-bold p-20 m-5 '}
                 >
                     <p className='text-xs m-2 text-white'>Click to view</p>
                     <p className='text-yellow-500 m-3'>USER / REQUESTOR</p>
