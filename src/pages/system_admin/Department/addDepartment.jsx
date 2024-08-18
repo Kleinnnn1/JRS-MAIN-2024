@@ -5,6 +5,7 @@ export default function AddDepartment() {
   const [departmentLocation, setDepartmentLocation] = useState('');
   const [departmentEmail, setDepartmentEmail] = useState('');
   const [departmentContactNo, setDepartmentContactNo] = useState('');
+  const [DeptDescription, setDeptDescription] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -13,17 +14,20 @@ export default function AddDepartment() {
     console.log('Department Location:', departmentLocation);
     console.log('Department Email:', departmentEmail);
     console.log('Department Contact No:', departmentContactNo);
+    console.log('Description:', DeptDescription);
+    
     // Clear the form after submission
     setDepartmentName('');
     setDepartmentLocation('');
     setDepartmentEmail('');
     setDepartmentContactNo('');
+    setDeptDescription('');
   };
 
   return (
     <div className=" m-5 bg-white shadow-md rounded-lg">
       <div className="bg-yellow-500 p-5 rounded-t-lg">
-        <p className="text-xl font-bold text-black">New Department Information</p>
+        <p className="text-xl font-bold text-gray-600">New Department Information</p>
       </div>
       <form onSubmit={handleSubmit} className="items items-center">
         <div className='flex'>
@@ -127,14 +131,35 @@ export default function AddDepartment() {
             required
           />
         </div>
-       
          </div>
+         <div className="m-5">
+          <label className="block text-gray-700 font-bold mb-2" htmlFor="DeptDescription">
+          DeptDescription
+          </label>
+          <input
+            type="DeptDescription"
+            id="DeptDescription"
+            name="DeptDescription"
+            className="w-full h-20 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            value={DeptDescription}
+            onChange={(e) => setDeptDescription(e.target.value)}
+            required
+          />
+        </div>
+        <div className='flex justify-end'>
          <button
           type="submit"
-          className="bg-yellow-500 m-8 text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-600"
+          className="bg-blue-500 m-8 text-white  py-2 px-4 rounded-lg hover:bg-yellow-600"
         >
-          Add Department
+          Submit
         </button>
+        <button
+          type="submit"
+          className="bg-red-500 m-8 text-white  py-2 px-4 rounded-lg hover:bg-yellow-600"
+        >
+          Cancel
+        </button>
+        </div>
       </form>
     </div>
   );

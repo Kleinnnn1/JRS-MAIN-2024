@@ -11,8 +11,8 @@ export default function Calendar() {
     const [selectDate, setSelectDate] = useState(currentDate);
 
     return (
-        <div className="flex justify-center items-center">
-            <div className="w-100 h-110 bg-white border border-gray-300 rounded p-4">
+        <div className="flex justify-center items-center mt-11">
+            <div className=" bg-white border border-gray-300 rounded p-5">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="select-none font-semibold">
                         {months[today.month()]}, {today.year()}
@@ -44,7 +44,7 @@ export default function Calendar() {
                     {days.map((day, index) => (
                         <h1
                             key={index}
-                            className="text-sm text-center h-14 w-14 grid place-content-center text-gray-500 select-none"
+                            className="text-center grid place-content-center text-gray-500 select-none"
                         >
                             {day}
                         </h1>
@@ -55,7 +55,7 @@ export default function Calendar() {
                         ({ date, currentMonth, today }, index) => (
                             <div
                                 key={index}
-                                className="p-2 text-center h-14 grid place-content-center text-sm border-t"
+                                className="p-2 text-center h-11 grid place-content-center text-sm border-t"
                             >
                                 <h1
                                     className={cn(

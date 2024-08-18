@@ -13,14 +13,18 @@ function App() {
     <Router>
       <Routes>
         <Route path='/system_admin' element={<SystemAdDashboard />}>
+
           <Route path='Users' element={<UsersPage />}>
-            <Route path='reg_users' element={<UserContent />} />
-            <Route path='admin' element={<AdminContent />} />
-            <Route path='staff' element={<StaffContent />} />
+                <Route path='reg_users' element={<UserContent />}>
+                
+                </Route>
+                <Route path='admin' element={<AdminContent />} />
+                <Route path='staff' element={<StaffContent />} />
           </Route>
+
           <Route path='Job_Requests' element={<Job_requests />} />
           <Route path='Departments' element={<DepartmentPage/>}>
-            <Route path='add' element={<AddDepartment />} />
+                <Route path='add' element={<AddDepartment />} />
           </Route>
         </Route>
       </Routes>
