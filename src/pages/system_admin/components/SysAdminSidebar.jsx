@@ -61,7 +61,7 @@ export default function Sidebar() {
                 </li>
                 <li className="group active">
                     <div
-                        onClick={() => navigate('#')}
+                        onClick={() => navigate('/system_admin/History')}
                         className="flex items-center px-2 py-1 text-gray-300 hover:bg-blue-980 hover:bg-yellow-600 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
                     >
                         <img src={HistorySidebarIcon} alt="History Icon" className="w-10 h-8 mr-4" />
@@ -70,8 +70,8 @@ export default function Sidebar() {
                 </li>
                 <li className="group active">
                     <div
-                        onClick={() => navigate('#')}
-                        className="flex items-center px-2 text-gray-300 hover:bg-blue-980 hover:bg-yellow-600 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
+                        onClick={() => navigate('/system_admin/Settings')}
+                         className="flex items-center px-2 py-1 text-gray-300 hover:bg-blue-980 hover:bg-yellow-600 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
                     >
                         <img src={SettingsSidebarIcon} alt="Settings Icon" className="w-10 h-8 mr-4" />
                         <span className="text-sm">Settings</span>
@@ -80,7 +80,7 @@ export default function Sidebar() {
                 <li className="group active">
                     <div
                         onClick={() => navigate('#')}
-                        className="flex items-center px-2 py-2 text-gray-300 hover:bg-blue-980 hover:bg-yellow-600 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
+                        className="flex items-center px-2 py-1 text-gray-300 hover:bg-blue-980 hover:bg-yellow-600 rounded-md group-[.active]:bg-white-950 group-[.active]:text-white cursor-pointer"
                     >
                         <img src={LogoutSidebarIcon} alt="Logout Icon" className="w-9 h-8 mr-5" />
                         <span className="text-sm">Logout</span>

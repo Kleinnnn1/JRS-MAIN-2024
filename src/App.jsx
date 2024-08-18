@@ -10,6 +10,9 @@ import AddDepartment from './pages/system_admin/Department/addDepartment';
 import AddNewUser from './pages/system_admin/Users/addUser';
 import AddNewAdmin from './pages/system_admin/Users/addAdmin';
 import AddNewStaff from './pages/system_admin/Users/addAdmin';
+import ViewingDepartment from './pages/system_admin/Department/ViewDepartment';
+import PageHistory from './pages/system_admin/History/HistoryPage';
+import PageSettings from './pages/system_admin/Settings/SettingsPage';
 
 function App() {
   return (
@@ -29,7 +32,12 @@ function App() {
           <Route path='Job_Requests' element={<Job_requests />} />
           <Route path='Departments' element={<DepartmentPage/>}>
                 <Route path='add' element={<AddDepartment />} />
+                <Route path='view' element={<ViewingDepartment />} />
           </Route>
+
+          <Route path='History' element={<PageHistory/>}/>
+          <Route path='Settings' element={<PageSettings/>}/>
+
         </Route>
       </Routes>
     </Router>

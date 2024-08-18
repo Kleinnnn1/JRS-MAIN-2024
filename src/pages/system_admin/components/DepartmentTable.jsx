@@ -51,7 +51,7 @@ export default function DeptTable() {
        
         <>
           <ReusableViewButton 
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/system_admin/Departments/view")}
           />
         </>,
        ],

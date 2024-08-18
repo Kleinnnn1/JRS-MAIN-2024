@@ -132,18 +132,18 @@ export default function AddNewUser() {
             />
           </div>
         </div>
-        <div className='flex justify-end'>
+        <div className='flex justify-end mr-10'>
           <button
             type="submit"
             onClick={handleSubmit}
-            className="bg-blue-500 m-8 text-white py-2 px-4 rounded-lg hover:bg-yellow-600"
+            className="bg-blue-500 m-2 text-white py-2 px-2 rounded-lg hover:bg-yellow-600"
           >
             Submit
           </button>
           <button
             type="button"
             onClick={handleCancel}
-            className="bg-red-500 m-8 text-white py-2 px-4 rounded-lg hover:bg-yellow-600"
+            className="bg-red-500 m-2 text-white py-2 px-2 rounded-lg hover:bg-yellow-600"
           >
             Cancel
           </button>
