@@ -40,7 +40,7 @@ function App() {
           </Route>
 
           <Route path='History' element={<PageHistory/>}/>
-          <Route path='Settings' element={<PageReport/>}/>
+          <Route path='Reports' element={<PageReport/>}/>
 
         </Route>
       </Routes>
