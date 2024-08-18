@@ -8,6 +8,8 @@ import Job_requests from './pages/system_admin/JobRequest/jobRequests';
 import DepartmentPage from './pages/system_admin/Department/PageDepartment';
 import AddDepartment from './pages/system_admin/Department/addDepartment';
 import AddNewUser from './pages/system_admin/Users/addUser';
+import AddNewAdmin from './pages/system_admin/Users/addAdmin';
+import AddNewStaff from './pages/system_admin/Users/addAdmin';
 
 function App() {
   return (
@@ -16,12 +18,14 @@ function App() {
         <Route path='/system_admin' element={<SystemAdDashboard />}>
 
           <Route path='Users' element={<UsersPage />}>
-                <Route path='reg_users' element={<UserContent />}/>
-                <Route path='add' element={<AddNewUser />}/>
+              <Route path='reg_users' element={<UserContent />}/>
+              <Route path='add_user' element={<AddNewUser />}/>
+              <Route path='admin' element={<AdminContent />}/>
+              <Route path='add_admin' element={<AddNewAdmin />}/>
+              <Route path='staff' element={<StaffContent />}/>
+              <Route path='add_staff' element={<AddNewStaff />}/>
           </Route>
-          <Route path='admin' element={<AdminContent />} />
-          <Route path='staff' element={<StaffContent />} />
-
+   
           <Route path='Job_Requests' element={<Job_requests />} />
           <Route path='Departments' element={<DepartmentPage/>}>
                 <Route path='add' element={<AddDepartment />} />

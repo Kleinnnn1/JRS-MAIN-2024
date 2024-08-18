@@ -49,7 +49,7 @@ export default function UserContent() {
   return (
     <>
      <ReusableSearchBar 
-     onClick={() => navigate("/system_admin/Users/add")}
+     onClick={() => navigate("/system_admin/Users/add_user")}
      ButtonTitle="Add User"/>
       <Table
         columns={4}

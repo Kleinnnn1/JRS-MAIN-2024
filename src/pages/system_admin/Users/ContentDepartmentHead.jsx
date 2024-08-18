@@ -1,8 +1,8 @@
 
 import Table from "../components/table";
-import { useNavigate } from "react-router-dom";
 import ReusableViewButton from "../components/ReusableViewButon";
 import ReusableSearchBar from "../components/ReusableSearchBar";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -48,14 +48,17 @@ export default function AdminContent() {
   ];
   return (
     <>
-     <ReusableSearchBar ButtonTitle="Add Admin"/>
+     <ReusableSearchBar 
+     onClick={() => navigate("/system_admin/Users/add_admin")}
+     ButtonTitle="Add Admin"/>
       <Table
         columns={4}
         rows={tableContent.length}
         content={tableContent}
         headers={tableHeaders}
       />
-     
+    
      </>
+     
   );
 }

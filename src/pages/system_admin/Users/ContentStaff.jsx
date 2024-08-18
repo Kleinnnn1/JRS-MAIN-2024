@@ -48,7 +48,8 @@ export default function StaffContent() {
   ];
   return (
     <>
-     <ReusableSearchBar ButtonTitle="Add Staff"/>
+     <ReusableSearchBar  onClick={() => navigate("/system_admin/Users/add_staff")}
+     ButtonTitle="Add Staff"/>
       <Table
         columns={4}
         rows={tableContent.length}

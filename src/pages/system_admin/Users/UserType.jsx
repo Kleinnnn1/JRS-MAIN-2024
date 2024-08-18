@@ -1,5 +1,5 @@
 import 'remixicon/fonts/remixicon.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Outlet } from 'react-router-dom';
 
 
 
@@ -38,6 +38,7 @@ export default function UserType() { // Capitalized the component name
                     <p className='text-center'>1000</p>
                 </button>
             </div>
+            <Outlet/>
         </div>
     );
 }

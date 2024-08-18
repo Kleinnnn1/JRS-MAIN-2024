@@ -15,7 +15,7 @@ export default function ReusableSearchBar({ route, ButtonTitle, showInput, input
   return (
     <div className="flex items-center justify-between min-h-20 sticky top-0 left-0 bg-white shadow">
       <button
-        className="bg-blue-500 h-9 flex items-center text-white font-bold px-4 ml-10 rounded"
+        className="bg-blue-500 h-9 flex items-center text-white  px-4 ml-10 rounded"
         onClick={handleClick}
       >
         {ButtonTitle}
@@ -29,7 +29,7 @@ export default function ReusableSearchBar({ route, ButtonTitle, showInput, input
             {...inputProps}
           />
         )}
-        <div className="bg-blue-500 h-10 flex items-center border text-white font-bold px-4 mr-10 ml-2 rounded">
+        <div className="bg-blue-500 h-10 flex items-center border text-white  px-4 mr-10 ml-2 rounded">
           Search
         </div>
       </div>

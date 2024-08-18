@@ -7,13 +7,15 @@ import maintenanceDept from '/src/assets/images/SysAdIcons/Maintenancedept.png';
 import Calendar from "../components/samplecal"
 import StatsCard from "../components/StatsCard";
 import StatusCard from "../components/StatusCard";
+import { Analytics } from '@mui/icons-material';
 
 export default function SysadminDashboard() {
     return (
         <div>
-            
-            <div className= "m-2 p-4 text-black font-bold ">ANALYTICS</div>
-
+            <div className='flex items-center m-5 text-center' >
+            <Analytics color="primary" fontSize="large"/>
+            <div className='text-yellow-500'>DASHBOARD</div>
+            </div>
             <div className="flex">
                 <div className="grid grid-cols-2 gap-5 p-11 flex justify-center">
                     <StatsCard 
