@@ -25,7 +25,7 @@ export default function UserContent() {
 
 
         <ReusableViewButton 
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/system_admin/Users/add")}
         />
        
         
@@ -48,7 +48,9 @@ export default function UserContent() {
   ];
   return (
     <>
-     <ReusableSearchBar ButtonTitle="Add User"/>
+     <ReusableSearchBar 
+     onClick={() => navigate("/system_admin/Users/add")}
+     ButtonTitle="Add User"/>
       <Table
         columns={4}
         rows={tableContent.length}
