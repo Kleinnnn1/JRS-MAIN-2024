@@ -1,4 +1,7 @@
 import React from 'react';
+import userIcon from "/src/assets/images/SysAdIcons/userIcon.png";
+import PageSubTitle from '../components/PageTitle';
+
 
 // Sample data for transaction history
 const transactions = [
@@ -34,8 +37,10 @@ const transactions = [
 
 export default function PageHistory() {
   return (
+    <div>
+    <PageSubTitle title="HISTORY" iconSrc={userIcon} />
     <div className="m-10 p-5 border border-gray-300 shadow-md rounded-lg">
-      <h1 className="text-2xl font-bold mb-4 ">History</h1>
+      
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
@@ -78,6 +83,7 @@ export default function PageHistory() {
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 }

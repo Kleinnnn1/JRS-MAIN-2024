@@ -25,7 +25,7 @@ export default function UserContent() {
 
 
         <ReusableViewButton 
-          onClick={() => navigate("/system_admin/Users/add")}
+          onClick={() => navigate("/system_admin/Users/view_user")}
         />
        
         

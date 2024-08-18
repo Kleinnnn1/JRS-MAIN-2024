@@ -25,7 +25,7 @@ export default function StaffContent() {
 
 
         <ReusableViewButton 
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/system_admin/Users/view_staff")}
         />
        
         

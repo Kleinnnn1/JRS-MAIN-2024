@@ -14,6 +14,9 @@ import ViewingDepartment from './pages/system_admin/Department/ViewDepartment';
 import PageHistory from './pages/system_admin/History/HistoryPage';
 import PageReport from './pages/system_admin/Reports/ReportsPage';
 import NewRequest from './pages/system_admin/JobRequest/NewJobRequst';
+import ViewUser from './pages/system_admin/Users/UserViewing';
+import ViewAdmin from './pages/system_admin/Users/AdminViewing';
+import ViewStaff from './pages/system_admin/Users/StaffViewing';
 
 function App() {
   return (
@@ -28,6 +31,9 @@ function App() {
               <Route path='add_admin' element={<AddNewAdmin />}/>
               <Route path='staff' element={<StaffContent />}/>
               <Route path='add_staff' element={<AddNewStaff />}/>
+              <Route path='view_user' element={<ViewUser />}/>
+              <Route path='view_admin' element={<ViewAdmin />}/>
+              <Route path='view_staff' element={<ViewStaff />}/>
           </Route>
    
           <Route path='Job_Requests' element={<Job_requests />}>

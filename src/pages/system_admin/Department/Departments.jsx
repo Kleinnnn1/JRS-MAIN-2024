@@ -4,6 +4,7 @@ import ReusableSearchBar from '../components/ReusableSearchBar';
 import userIcon from '/src/assets/images/SysAdIcons/userIcon.png';
 import { useState } from 'react';
 import AddDepartment from './addDepartment';
+import PageSubTitle from '../components/PageTitle';
 
 export default function Departments() {
     const [isAdding, setIsAdding] = useState(false); // State to manage form visibility
@@ -11,12 +12,7 @@ export default function Departments() {
     return (
         <div>
             <main>
-                <div className="flex items-center rounded bg-custom-blue m-2 p-2">
-                    <img src={userIcon} alt="User Icon" className="w-9 h-9 ml-4" />
-                    <p className='text-yellow-500 text-lg font-bold ml-3 flex items-center'>
-                        ALL DEPARTMENTS
-                    </p>
-                </div>
+            <PageSubTitle title="ALL DEPARTMENT" iconSrc={userIcon} />
 
                 {isAdding ? (
                     <AddDepartment /> // Show form if isAdding is true

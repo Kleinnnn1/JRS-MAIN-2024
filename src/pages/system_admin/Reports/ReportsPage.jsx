@@ -1,6 +1,8 @@
 import React from 'react';
 import { Chart, registerables } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import PageSubTitle from '../components/PageTitle';
+import userIcon from '/src/assets/images/SysAdIcons/userIcon.png';
 
 Chart.register(...registerables);
 
@@ -39,37 +41,40 @@ const pageStyle = {
   tableHeader: 'bg-gray-50 text-gray-500 text-xs uppercase font-medium',
   tableBody: 'bg-white text-gray-900',
   tableRow: 'hover:bg-gray-100',
+  tableCell: 'px-6 py-4 text-center', // Center text in table cells
   chart: 'mt-8',
 };
 
 export default function PageReport() {
   return (
+    <div>
+   <PageSubTitle title="REPORT AND ANALYTICS" iconSrc={userIcon} />
     <div className={pageStyle.container}>
-      <h1 className="text-2xl font-bold mb-6">Department Reports and Analytics</h1>
+     
       
       {/* Department Table */}
       <div>
-        <h2 className="text-xl font-semibold mb-4">Department Details</h2>
+        <h2 className="text-xl font-semibold mb-4 text-center">Department Details</h2>
         <table className={pageStyle.table}>
           <thead className={pageStyle.tableHeader}>
             <tr>
-              <th>Department</th>
-              <th>No of Employees</th>
-              <th>Pending Requests</th>
-              <th>Ongoing Requests</th>
-              <th>Completed Requests</th>
-              <th>Total No Of Requests</th>
+              <th className={pageStyle.tableCell}>Department</th>
+              <th className={pageStyle.tableCell}>No of Employees</th>
+              <th className={pageStyle.tableCell}>Pending Requests</th>
+              <th className={pageStyle.tableCell}>Ongoing Requests</th>
+              <th className={pageStyle.tableCell}>Completed Requests</th>
+              <th className={pageStyle.tableCell}>Total No Of Requests</th>
             </tr>
           </thead>
           <tbody className={pageStyle.tableBody}>
             {departmentData.map((dept, index) => (
               <tr key={index} className={pageStyle.tableRow}>
-                <td>{dept.name}</td>
-                <td>{dept.employees}</td>
-                <td>{dept.pending}</td>
-                <td>{dept.ongoing}</td>
-                <td>{dept.completed}</td>
-                <td>{dept.pending + dept.ongoing + dept.completed}</td>
+                <td className={pageStyle.tableCell}>{dept.name}</td>
+                <td className={pageStyle.tableCell}>{dept.employees}</td>
+                <td className={pageStyle.tableCell}>{dept.pending}</td>
+                <td className={pageStyle.tableCell}>{dept.ongoing}</td>
+                <td className={pageStyle.tableCell}>{dept.completed}</td>
+                <td className={pageStyle.tableCell}>{dept.pending + dept.ongoing + dept.completed}</td>
               </tr>
             ))}
           </tbody>
@@ -78,26 +83,26 @@ export default function PageReport() {
 
       {/* Total Table */}
       <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4">Overall Summary</h2>
+        <h2 className="text-xl font-semibold mb-4 text-center">Overall Summary</h2>
         <table className={pageStyle.table}>
           <thead className={pageStyle.tableHeader}>
             <tr>
-              <th>Total Departments</th>
-              <th>Total No of Employees</th>
-              <th>Total Pending Requests</th>
-              <th>Total Ongoing Requests</th>
-              <th>Total Completed Requests</th>
-              <th>Total No Of Requests</th>
+              <th className={pageStyle.tableCell}>Total Departments</th>
+              <th className={pageStyle.tableCell}>Total No of Employees</th>
+              <th className={pageStyle.tableCell}>Total Pending Requests</th>
+              <th className={pageStyle.tableCell}>Total Ongoing Requests</th>
+              <th className={pageStyle.tableCell}>Total Completed Requests</th>
+              <th className={pageStyle.tableCell}>Total No Of Requests</th>
             </tr>
           </thead>
           <tbody className={pageStyle.tableBody}>
             <tr>
-              <td>{totalData.departments}</td>
-              <td>{totalData.employees}</td>
-              <td>{totalData.pending}</td>
-              <td>{totalData.ongoing}</td>
-              <td>{totalData.completed}</td>
-              <td>{totalData.totalRequests}</td>
+              <td className={pageStyle.tableCell}>{totalData.departments}</td>
+              <td className={pageStyle.tableCell}>{totalData.employees}</td>
+              <td className={pageStyle.tableCell}>{totalData.pending}</td>
+              <td className={pageStyle.tableCell}>{totalData.ongoing}</td>
+              <td className={pageStyle.tableCell}>{totalData.completed}</td>
+              <td className={pageStyle.tableCell}>{totalData.totalRequests}</td>
             </tr>
           </tbody>
         </table>
@@ -105,9 +110,10 @@ export default function PageReport() {
 
       {/* Chart */}
       <div className={pageStyle.chart}>
-        <h2 className="text-xl font-semibold mb-4">Requests by Department</h2>
+        <h2 className="text-xl font-semibold mb-4 text-center">Requests by Department</h2>
         <Bar data={departmentChartData} />
       </div>
+    </div>
     </div>
   );
 }
