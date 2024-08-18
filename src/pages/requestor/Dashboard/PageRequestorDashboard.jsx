@@ -1,8 +1,11 @@
-import { useOutlet } from "react-router-dom";
+import { Outlet, useOutlet } from "react-router-dom";
 import SideBar from "../../../components/SideBar";
 import Logo from "../../../components/Logo";
-import ProfileRequestor from "../Dashboard/ProfileRequestor";
-import ContentRequestorSideBar from "../Dashboard/ContentRequestorSideBar ";
+import ProfileRequestor from "../RequestorGlobalComponents/ProfileRequestor";
+import ContentRequestorSideBar from "../RequestorGlobalComponents/ContentRequestorSideBar ";
+import HorizontalNavBar from "../RequestorGlobalComponents/HorizontalNavbarRequestor";
+import MainBody from "../../department_head/Dashboard/MainBody";
+import ContentDashboard from "../Dashboard/ContentRequestorDashboard";
 
 export default function RequestorDashboard() {
     const otherContent = useOutlet();
@@ -15,6 +18,11 @@ export default function RequestorDashboard() {
                 <ContentRequestorSideBar />
                 
             </SideBar>
+
+            <MainBody>
+                <HorizontalNavBar />
+                {otherContent ? <Outlet /> : <ContentDashboard />}
+            </MainBody>
         </div>
     );
 }
