@@ -13,6 +13,7 @@ import AddNewStaff from './pages/system_admin/Users/addAdmin';
 import ViewingDepartment from './pages/system_admin/Department/ViewDepartment';
 import PageHistory from './pages/system_admin/History/HistoryPage';
 import PageSettings from './pages/system_admin/Settings/SettingsPage';
+import NewRequest from './pages/system_admin/JobRequest/NewJobRequst';
 
 function App() {
   return (
@@ -29,7 +30,10 @@ function App() {
               <Route path='add_staff' element={<AddNewStaff />}/>
           </Route>
    
-          <Route path='Job_Requests' element={<Job_requests />} />
+          <Route path='Job_Requests' element={<Job_requests />}>
+            <Route path='new_request' element={<NewRequest/>}/>
+          </Route>
+
           <Route path='Departments' element={<DepartmentPage/>}>
                 <Route path='add' element={<AddDepartment />} />
                 <Route path='view' element={<ViewingDepartment />} />

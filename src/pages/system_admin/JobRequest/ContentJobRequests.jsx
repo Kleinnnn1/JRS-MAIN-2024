@@ -3,6 +3,7 @@ import Table from "../components/table";
 import { useNavigate } from "react-router-dom";
 import DropdownButton from "../components/ReusableDropdown";
 import ReusableViewButton from "../components/ReusableViewButon";
+import ReusableSearchBar from "../components/ReusableSearchBar";
 
 const options = [
   { value: "1", label: "CSWS" },
@@ -57,6 +58,8 @@ export default function ContentJobRequest() {
   ];
   return (
     <>
+    <ReusableSearchBar onClick={() => navigate("/system_admin/Job_Requests/new_request")}
+      ButtonTitle="New Request"/>
      
       <Table
         columns={7}

@@ -12,7 +12,7 @@ export default function Job_requests() {
                 <img src={userIcon} alt="UserIcon" className="w-9 h-9 ml-4" />
                 <p className='text-yellow-500 text-lg font-bold ml-3 flex items-center'>JOB REQUESTS</p>
             </div>
-            <ReusableSearchBar ButtonTitle='ADD NEW REQUEST' />
+            
             {otherContent ? (
                 <Outlet /> // Render nested routes if present
             ) : (
