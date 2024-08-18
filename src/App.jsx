@@ -12,7 +12,7 @@ import AddNewAdmin from './pages/system_admin/Users/addAdmin';
 import AddNewStaff from './pages/system_admin/Users/addAdmin';
 import ViewingDepartment from './pages/system_admin/Department/ViewDepartment';
 import PageHistory from './pages/system_admin/History/HistoryPage';
-import PageSettings from './pages/system_admin/Settings/SettingsPage';
+import PageReport from './pages/system_admin/Reports/ReportsPage';
 import NewRequest from './pages/system_admin/JobRequest/NewJobRequst';
 
 function App() {
@@ -40,7 +40,7 @@ function App() {
           </Route>
 
           <Route path='History' element={<PageHistory/>}/>
-          <Route path='Settings' element={<PageSettings/>}/>
+          <Route path='Settings' element={<PageReport/>}/>
 
         </Route>
       </Routes>

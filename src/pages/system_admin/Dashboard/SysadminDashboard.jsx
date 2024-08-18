@@ -14,7 +14,7 @@ export default function SysadminDashboard() {
         <div>
             <div className='flex items-center m-5 text-center' >
             <Analytics color="primary" fontSize="large"/>
-            <div className='text-yellow-500'>DASHBOARD</div>
+            <div className='text-yellow-500 font-bold'>DASHBOARD</div>
             </div>
             <div className="flex">
                 <div className="grid grid-cols-2 gap-5 p-11 flex justify-center">

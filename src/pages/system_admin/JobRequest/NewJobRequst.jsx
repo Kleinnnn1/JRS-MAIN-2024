@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Add } from '@mui/icons-material';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 export default function NewJobRequest() {
   const [fields, setFields] = useState([{ number: 1 }]); // Initial state with one field
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const addField = () => {
     setFields([...fields, { number: fields.length + 1 }]); // Add a new field with an incremented number
@@ -17,10 +20,19 @@ export default function NewJobRequest() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle form submission logic here
-    console.log('Form submitted');
+
+    // Display SweetAlert
+    await Swal.fire({
+      icon: 'success',
+      title: 'Submitted',
+      text: 'The job request has been successfully submitted!',
+    });
+
+    // Navigate back to the previous page
+    navigate(-1);
   };
 
   return (
@@ -107,10 +119,10 @@ export default function NewJobRequest() {
             </div>
           ))}
 
-          <div className="flex justify-start">
+          <div className="flex justify-end">
             <button
               type="submit"
-              className="ml-10 w-32 h-10 bg-blue-500 text-white text-lg font-bold rounded-md hover:bg-blue-700"
+              className="w-32 h-10 bg-blue-500 text-white text-lg font-bold rounded-md hover:bg-blue-700"
             >
               Submit
             </button>

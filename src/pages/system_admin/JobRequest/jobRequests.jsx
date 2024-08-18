@@ -1,6 +1,5 @@
 import 'remixicon/fonts/remixicon.css';
 import ContentJobRequest from './ContentJobRequests';
-import ReusableSearchBar from '../components/ReusableSearchBar';
 import userIcon from '/src/assets/images/SysAdIcons/userIcon.png';
 import { Outlet, useOutlet } from "react-router-dom";
 
