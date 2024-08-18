@@ -107,10 +107,10 @@ export default function NewJobRequest() {
             </div>
           ))}
 
-          <div className="flex justify-end">
+          <div className="flex justify-start">
             <button
               type="submit"
-              className="w-32 h-10 bg-blue-500 text-white text-lg font-bold rounded-md hover:bg-blue-700"
+              className="ml-10 w-32 h-10 bg-blue-500 text-white text-lg font-bold rounded-md hover:bg-blue-700"
             >
               Submit
             </button>
