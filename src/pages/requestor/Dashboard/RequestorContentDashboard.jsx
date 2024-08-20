@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../../components/SearchBar";
 import StatusCard from "../../../components/StatusCard";
-import NotificationAndCalendar from "../../../components/NotificationAndCalendar";
+import RequestorNotificationAndCalendar from "./RequestorNotificationAndCalendar";
 
 export default function ContentDashboard() {
   const navigate = useNavigate();
@@ -29,12 +29,12 @@ export default function ContentDashboard() {
         />
         <StatusCard
           title="Referral"
-          count={0}
+          count={1}
           bgColor="bg-purple-400"
           onClick={() => navigate("/")}
         />
       </div>
-      <NotificationAndCalendar />
+      <RequestorNotificationAndCalendar />
     </>
   );
 }

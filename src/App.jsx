@@ -27,7 +27,7 @@ import ChangeAvatar from "./pages/department_head/Profile/ChangeAvatar";
 import ChangePassword from "./pages/department_head/Profile/ChangePassword";
 import DashboardContent from "./pages/department_head/Dashboard/ContentDashboard.jsx";
 import UserInformation from "./pages/department_head/Profile/UserInformation.jsx";
-import PageRequestorDashboard from "./pages/requestor/Dashboard/PageRequestorDashboard.jsx";
+import PageRequestorDashboard from "./pages/requestor/Dashboard/RequestorPageDashboard.jsx";
 
 export default function App() {
   return (
