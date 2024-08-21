@@ -28,6 +28,8 @@ import ChangePassword from "./pages/department_head/Profile/ChangePassword";
 import DashboardContent from "./pages/department_head/Dashboard/ContentDashboard.jsx";
 import UserInformation from "./pages/department_head/Profile/UserInformation.jsx";
 import PageRequestorDashboard from "./pages/requestor/Dashboard/RequestorPageDashboard.jsx";
+import RequestorContentDashboard from "./pages/requestor/Dashboard/RequestorContentDashboard.jsx";
+import RequestorJobRequestDetail from "./pages/requestor/JobRequestDetail/RequestorPageJobRequestDetail.jsx";
 
 export default function App() {
   return (
@@ -35,8 +37,13 @@ export default function App() {
       <Routes>
         {/* Routes for Login*/}
         {/* <Route path="/login" element={<Login />} /> */}
-
-        <Route path="/requestor" element={<PageRequestorDashboard/>}></Route>
+{/* 
+        {/* Routes for Requestor */}
+        <Route path="/requestor" element={<PageRequestorDashboard />}>
+          <Route path="home" element={<RequestorContentDashboard />} ></Route>
+          <Route path="job_request_detail" element={<RequestorJobRequestDetail />} />
+        
+        </Route>
 
         {/* Routes for Department Head */}
         <Route

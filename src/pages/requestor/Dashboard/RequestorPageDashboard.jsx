@@ -4,7 +4,7 @@ import Logo from "../../../components/Logo";
 import ProfileRequestor from "../RequestorGlobalComponents/RequestorProfile";
 import ContentRequestorSideBar from "../RequestorGlobalComponents/RequestorContentSideBar ";
 import HorizontalNavBar from "../RequestorGlobalComponents/RequestorHorizontalNavbar";
-import MainBody from "../../department_head/Dashboard/MainBody";
+import RequestorMainBody from "../Dashboard/RequestorMainBody";
 import ContentDashboard from "./RequestorContentDashboard";
 
 export default function RequestorDashboard() {
@@ -19,10 +19,10 @@ export default function RequestorDashboard() {
                 
             </SideBar>
 
-            <MainBody>
+            <RequestorMainBody>
                 <HorizontalNavBar />
                 {otherContent ? <Outlet /> : <ContentDashboard />}
-            </MainBody>
+            </RequestorMainBody>
         </div>
     );
 }

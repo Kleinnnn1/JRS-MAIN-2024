@@ -15,7 +15,7 @@ export default function ContentRequestorSideBar() {
       <SidebarItem
         name="Home"
         image={iconHome}
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/requestor/home")}
       />
     {/* MY PROFILE ICON*/}
       <SidebarItem
