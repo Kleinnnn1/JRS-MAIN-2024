@@ -39,11 +39,11 @@ export default function App() {
         {/* <Route path="/login" element={<Login />} /> */}
 {/* 
         {/* Routes for Requestor */}
-        <Route path="/requestor" element={<PageRequestorDashboard />}>
-          <Route path="home" element={<RequestorContentDashboard />} ></Route>
-          <Route path="job_request_detail" element={<RequestorJobRequestDetail />} />
-        
-        </Route>
+  <Route path="/requestor" element={<PageRequestorDashboard />}>
+      <Route path="home" element={<RequestorContentDashboard />} />
+      <Route path="job_request_detail" element={<RequestorJobRequestDetail />} />
+    </Route>
+
 
         {/* Routes for Department Head */}
         <Route
