@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css'; // Import the calendar styles
 
 export default function RequestorStatusCardAndCalendar() {
   const navigate = useNavigate();
@@ -15,10 +17,10 @@ export default function RequestorStatusCardAndCalendar() {
           </div>
           <div className="p-4 flex-grow">
             <p>
-              <b>REFERRAL:</b> Your job request has been forwarded to CSWS.
-              <a 
-                href="#" 
-                onClick={() => navigate("/requestor/job_request_detail")} 
+              <b>REFERRAL:</b> Your job request has been forwarded to CSWS. 
+              <a
+                href="#"
+                onClick={() => navigate("/requestor/job_request_detail")}
                 className="text-blue-700"
               >
                 [SEE MORE]
@@ -29,12 +31,8 @@ export default function RequestorStatusCardAndCalendar() {
         </div>
 
         {/* CALENDAR */}
-        <div className="bg-white border border-black p-5 lg:col-span-1 shadow-md shadow-black/5 flex flex-col justify-between h-full">
-          <div className="text-xl text-black font-semibold">CALENDAR</div>
-          <div className="p-4 flex-grow">
-            <p>Date</p>
-          </div>
-        </div>
+
+        <Calendar className="h-full w-full text-xl" />
       </div>
     </div>
   );
