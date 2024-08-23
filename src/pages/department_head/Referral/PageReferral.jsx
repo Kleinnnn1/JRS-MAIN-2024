@@ -1,5 +1,6 @@
 import { Outlet, useOutlet } from "react-router-dom";
-import TableReferral from "./TableReferral";
+import TestTable from "./TestTable";
+import TestFormReferral from "./TestFormReferral";
 
 export default function Referral() {
   const otherContent = useOutlet(); // Get the current outlet
@@ -9,7 +10,10 @@ export default function Referral() {
       {otherContent ? (
         <Outlet /> // Render nested routes if present
       ) : (
-        <TableReferral />
+        <>
+          <TestTable />
+          <TestFormReferral />
+        </>
       )}
     </>
   );
