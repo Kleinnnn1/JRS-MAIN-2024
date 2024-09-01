@@ -1,27 +1,25 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import UserContent from "./pages/system_admin/Users/ContentUsers";
-import AdminContent from './pages/system_admin/Users/ContentDepartmentHead';
-import StaffContent from './pages/system_admin/Users/ContentStaff';
-import SystemAdDashboard from './pages/system_admin/Dashboard/PageDashboard';
-import UsersPage from './pages/system_admin/Users/sysadminUsers';
-import Job_requests from './pages/system_admin/JobRequest/jobRequests';
-import DepartmentPage from './pages/system_admin/Department/PageDepartment';
-import AddDepartment from './pages/system_admin/Department/addDepartment';
-import AddNewUser from './pages/system_admin/Users/addUser';
-import AddNewAdmin from './pages/system_admin/Users/addAdmin';
-import AddNewStaff from './pages/system_admin/Users/addAdmin';
-import ViewingDepartment from './pages/system_admin/Department/ViewDepartment';
-import PageHistory from './pages/system_admin/History/HistoryPage';
-import PageReport from './pages/system_admin/Reports/ReportsPage';
-import NewRequest from './pages/system_admin/JobRequest/NewJobRequst';
-import ViewUser from './pages/system_admin/Users/UserViewing';
-import ViewAdmin from './pages/system_admin/Users/AdminViewing';
-import ViewStaff from './pages/system_admin/Users/StaffViewing';
-
-function App() {
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import UserContent from "./pages/system_admin/Users/ContentUsers";
+import AdminContent from "./pages/system_admin/Users/ContentDepartmentHead";
+import StaffContent from "./pages/system_admin/Users/ContentStaff";
+import SystemAdDashboard from "./pages/system_admin/Dashboard/PageDashboard";
+import UsersPage from "./pages/system_admin/Users/sysadminUsers";
+import Job_requests from "./pages/system_admin/JobRequest/jobRequests";
+import DepartmentPage from "./pages/system_admin/Department/PageDepartment";
+import AddDepartment from "./pages/system_admin/Department/addDepartment";
+import AddNewUser from "./pages/system_admin/Users/addUser";
+import AddNewAdmin from "./pages/system_admin/Users/addAdmin";
+import AddNewStaff from "./pages/system_admin/Users/addAdmin";
+import ViewingDepartment from "./pages/system_admin/Department/ViewDepartment";
+import PageHistorySystemAdmin from "./pages/system_admin/History/HistoryPage";
+import PageReportSystemAdmin from "./pages/system_admin/Reports/ReportsPage";
+import NewRequest from "./pages/system_admin/JobRequest/NewJobRequst";
+import ViewUser from "./pages/system_admin/Users/UserViewing";
+import ViewAdmin from "./pages/system_admin/Users/AdminViewing";
+import ViewStaff from "./pages/system_admin/Users/StaffViewing";
+
 import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
-import PageReport from "./pages/department_head/SendReport/PageReport.jsx";
+import PageReportDepartmentHead from "./pages/department_head/SendReport/PageReport.jsx";
 import PageJobRequest from "./pages/department_head/JobRequest/PageJobRequest.jsx";
 import JobOngoing from "./pages/department_head/JobRequest/PageJobOngoing.jsx";
 import JobCompleted from "./pages/department_head/JobRequest/PageJobCompleted.jsx";
@@ -29,7 +27,7 @@ import PageEmployee from "./pages/department_head/Employee/PageEmployee.jsx";
 import PageReferral from "./pages/department_head/Referral/PageReferral.jsx";
 import PageProfile from "./pages/department_head/Profile/PageProfile.jsx";
 import PageCertificate from "./pages/department_head/ApprovingOfCertificateJobCompletion/PageCertificate.jsx";
-import PageHistory from "./pages/department_head/JobRequestHistory/PageHistory.jsx";
+import PageHistoryDepartmentHead from "./pages/department_head/JobRequestHistory/PageHistory.jsx";
 import ViewJobRequest from "./pages/department_head/JobRequest/ViewJobRequest.jsx";
 import ViewJobRequestRemarks from "./pages/department_head/JobRequest/ViewJobRequestRemarks.jsx";
 import ViewJobOngoing from "./pages/department_head/JobRequest/ViewJobOngoing.jsx";
@@ -66,49 +64,14 @@ const queryClient = new QueryClient({
 
 export default function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path='/system_admin' element={<SystemAdDashboard />}>
-
-          <Route path='Users' element={<UsersPage />}>
-              <Route path='reg_users' element={<UserContent />}/>
-              <Route path='add_user' element={<AddNewUser />}/>
-              <Route path='admin' element={<AdminContent />}/>
-              <Route path='add_admin' element={<AddNewAdmin />}/>
-              <Route path='staff' element={<StaffContent />}/>
-              <Route path='add_staff' element={<AddNewStaff />}/>
-              <Route path='view_user' element={<ViewUser />}/>
-              <Route path='view_admin' element={<ViewAdmin />}/>
-              <Route path='view_staff' element={<ViewStaff />}/>
-          </Route>
-   
-          <Route path='Job_Requests' element={<Job_requests />}>
-            <Route path='new_request' element={<NewRequest/>}/>
-          </Route>
-
-          <Route path='Departments' element={<DepartmentPage/>}>
-                <Route path='add' element={<AddDepartment />} />
-                <Route path='view' element={<ViewingDepartment />} />
-          </Route>
-
-          <Route path='History' element={<PageHistory/>}/>
-          <Route path='Reports' element={<PageReport/>}/>
-
-        </Route>
-      </Routes>
-    </Router>
-  );
-}
-
-export default App;
     <QueryClientProvider client={queryClient}>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
 
       <Router>
         <Routes>
-          {/* Routes for testing forms*/}
+          {/* Routes for testing forms */}
 
-          {/* Routes for Login*/}
+          {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
 
           {/* Protected Routes */}
@@ -121,24 +84,22 @@ export default App;
               </ProtectedRoute>
             }
           >
-            {/* <Route
-            path="/department_head"
-            element={<PageDepartMentHeadDashboard />}
-          > */}
             <Route path="dashboard" element={<DashboardContent />} />
-            {/* <Route path="dashboard" element={<DashboardContent />} /> */}
+
             {/* Routes for Profile */}
             <Route path="myprofile" element={<PageProfile />}>
               <Route path="user_account" element={<UserInformation />} />
               <Route path="change_avatar" element={<ChangeAvatar />} />
               <Route path="change_password" element={<ChangePassword />} />
             </Route>
+
             {/* Routes for Report */}
-            <Route path="report" element={<PageReport />}>
+            <Route path="report" element={<PageReportDepartmentHead />}>
               <Route path="view" element={<ReportView />} />
               <Route path="send_report" element={<SendReportForm />} />
               <Route path="employee" element={<ViewAddEmployee />} />
             </Route>
+
             {/* Routes for Employee */}
             <Route path="employee" element={<PageEmployee />}>
               <Route path="add" element={<ViewAddEmployee />} />
@@ -151,45 +112,66 @@ export default App;
             {/* Routes for Referral */}
             <Route path="referral" element={<PageReferral />}>
               <Route path="view" element={<ReferralJobRequestView />} />
-              <Route
-                path="edit/:referralId"
-                element={<EditFormReferral />}
-              />{" "}
-              {/* Updated route */}
-              {/* for testing edit data */}
+              <Route path="edit/:referralId" element={<EditFormReferral />} />
             </Route>
 
             {/* Routes for History */}
-            <Route path="history" element={<PageHistory />}>
+            <Route path="history" element={<PageHistoryDepartmentHead />}>
               <Route path="content" element={<TableHistory />}>
                 <Route path="information" element={<ViewHistory />} />
               </Route>
             </Route>
 
-            {/* Routes for Job Request  */}
-
+            {/* Routes for Job Request */}
             <Route path="job_request" element={<PageJobRequest />}>
               <Route path="view" element={<ViewJobRequest />} />
               <Route path="remarks" element={<ViewJobRequestRemarks />} />
             </Route>
 
-            {/* Routes for Job Ongoing  */}
+            {/* Routes for Job Ongoing */}
             <Route path="job_ongoing" element={<JobOngoing />}>
               <Route path="view" element={<ViewJobOngoing />} />
             </Route>
 
-            {/* Routes for Job Completed  */}
+            {/* Routes for Job Completed */}
             <Route path="job_completed" element={<JobCompleted />}>
               <Route path="view" element={<ViewJobCompleted />} />
             </Route>
 
-            {/* Routes for Aprroving of Job Completion  */}
+            {/* Routes for Approving of Job Completion */}
             <Route
               path="approving_of_job_completion"
               element={<PageCertificate />}
             >
               <Route path="content" element={<ContentAprrovingCertificate />} />
             </Route>
+          </Route>
+
+          {/* Routes for System Admin */}
+          <Route path="/system_admin" element={<SystemAdDashboard />}>
+            <Route path="Users" element={<UsersPage />}>
+              <Route path="reg_users" element={<UserContent />} />
+              <Route path="add_user" element={<AddNewUser />} />
+              <Route path="admin" element={<AdminContent />} />
+              <Route path="add_admin" element={<AddNewAdmin />} />
+              <Route path="staff" element={<StaffContent />} />
+              <Route path="add_staff" element={<AddNewStaff />} />
+              <Route path="view_user" element={<ViewUser />} />
+              <Route path="view_admin" element={<ViewAdmin />} />
+              <Route path="view_staff" element={<ViewStaff />} />
+            </Route>
+
+            <Route path="Job_Requests" element={<Job_requests />}>
+              <Route path="new_request" element={<NewRequest />} />
+            </Route>
+
+            <Route path="Departments" element={<DepartmentPage />}>
+              <Route path="add" element={<AddDepartment />} />
+              <Route path="view" element={<ViewingDepartment />} />
+            </Route>
+
+            <Route path="History" element={<PageHistorySystemAdmin />} />
+            <Route path="Reports" element={<PageReportSystemAdmin />} />
           </Route>
         </Routes>
       </Router>
