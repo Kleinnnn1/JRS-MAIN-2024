@@ -1,6 +1,6 @@
 import { Outlet, useOutlet } from "react-router-dom";
 import TestTable from "./TestTable";
-import TestFormReferral from "./TestFormReferral";
+import CreateFormReferral from "./CreateFormReferral";
 
 export default function Referral() {
   const otherContent = useOutlet(); // Get the current outlet
@@ -12,7 +12,7 @@ export default function Referral() {
       ) : (
         <>
           <TestTable />
-          <TestFormReferral />
+          <CreateFormReferral />
         </>
       )}
     </>

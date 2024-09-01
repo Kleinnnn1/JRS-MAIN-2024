@@ -14,7 +14,7 @@ export default function ContentSideBar() {
       <SidebarItem
         name="Home"
         image={iconHome}
-        onClick={() => navigate("/department_head/home")}
+        onClick={() => navigate("/department_head/dashboard")}
       />
       <SidebarItem
         name="My Profile"

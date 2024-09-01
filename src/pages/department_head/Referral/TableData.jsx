@@ -2,24 +2,25 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ButtonDeleteReferral from "./ButtonDeleteReferral";
 import { deleteReferral } from "../../../service/apiReferral";
 import toast from "react-hot-toast";
+import ButtonEditReferral from "./ButtonEditReferral";
+import { useNavigate } from "react-router-dom";
 
-export function TableData(referral) {
+export function TableData(referrals) {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationFn: deleteReferral,
     onSuccess: () => {
-      toast.success("Referral succesfully deleted");
-
-      queryClient.invalidateQueries({
-        queryKey: ["referrals"],
-      });
+      toast.success("Referral successfully deleted");
+      queryClient.invalidateQueries({ queryKey: ["referrals"] });
     },
     onError: (err) => toast.error(err.message),
   });
+
   // Transform the referral data into the desired format
-  const formattedData = referral
-    ? referral.map(
+  const formattedData = referrals
+    ? referrals.map(
         (
           {
             referral_id, // Destructuring each object
@@ -32,7 +33,7 @@ export function TableData(referral) {
           },
           index
         ) => [
-          `${index + 1}. ${String(referral_id)}`, // Sequential number + requester_id
+          `${index + 1}. ${String(referral_id)}`, // Sequential number + referral_id
           job_description,
           job_type,
           requestor_name,
@@ -40,6 +41,27 @@ export function TableData(referral) {
           location,
           <>
             <ButtonDeleteReferral onClick={() => mutate(referral_id)} />
+            <ButtonEditReferral
+              onClick={() =>
+                navigate(`/department_head/referral/edit/${referral_id}`, {
+                  state: {
+                    referral_id,
+                    job_description,
+                    job_type,
+                    requestor_name,
+                    date_submitted,
+                    location,
+                    image,
+                  },
+                })
+              }
+            />
+
+            {/* <ButtonEditReferral
+              onClick={() =>
+                navigate(`/department_head/referral/edit/${referral_id}`)
+              } // Use referral_id in URL
+            /> */}
           </>,
           image ? (
             <img

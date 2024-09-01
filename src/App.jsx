@@ -27,10 +27,12 @@ import ChangeAvatar from "./pages/department_head/Profile/ChangeAvatar";
 import ChangePassword from "./pages/department_head/Profile/ChangePassword";
 import DashboardContent from "./pages/department_head/Dashboard/ContentDashboard.jsx";
 import UserInformation from "./pages/department_head/Profile/UserInformation.jsx";
-import LogIn from "./pages/requestor/LogIn.jsx";
+import LogIn from "./auth/LogIn.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
+import EditFormReferral from "./pages/department_head/Referral/EditFormReferral.jsx";
+import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,7 +46,8 @@ const queryClient = new QueryClient({
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+
       <Router>
         <Routes>
           {/* Routes for testing forms*/}
@@ -52,12 +55,22 @@ export default function App() {
           {/* Routes for Login*/}
           <Route path="/login" element={<LogIn />} />
 
+          {/* Protected Routes */}
           {/* Routes for Department Head */}
           <Route
             path="/department_head"
-            element={<PageDepartMentHeadDashboard />}
+            element={
+              <ProtectedRoute>
+                <PageDepartMentHeadDashboard />
+              </ProtectedRoute>
+            }
           >
-            <Route path="home" element={<DashboardContent />} />
+            {/* <Route
+            path="/department_head"
+            element={<PageDepartMentHeadDashboard />}
+          > */}
+            <Route path="dashboard" element={<DashboardContent />} />
+            {/* <Route path="dashboard" element={<DashboardContent />} /> */}
             {/* Routes for Profile */}
             <Route path="myprofile" element={<PageProfile />}>
               <Route path="user_account" element={<UserInformation />} />
@@ -82,6 +95,12 @@ export default function App() {
             {/* Routes for Referral */}
             <Route path="referral" element={<PageReferral />}>
               <Route path="view" element={<ReferralJobRequestView />} />
+              <Route
+                path="edit/:referralId"
+                element={<EditFormReferral />}
+              />{" "}
+              {/* Updated route */}
+              {/* for testing edit data */}
             </Route>
 
             {/* Routes for History */}
