@@ -32,7 +32,7 @@ export default function ContentRequestorSideBar() {
       {/* REQUEST */}
       <SidebarItem
         name="Request"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/requestor/job_request")}
         image={iconRequest}
       />
       {/* LOGOUT */}

@@ -30,6 +30,7 @@ import UserInformation from "./pages/department_head/Profile/UserInformation.jsx
 import PageRequestorDashboard from "./pages/requestor/Dashboard/RequestorPageDashboard.jsx";
 import RequestorContentDashboard from "./pages/requestor/Dashboard/RequestorContentDashboard.jsx";
 import RequestorJobRequestDetail from "./pages/requestor/JobRequestDetail/RequestorPageJobRequestDetail.jsx";
+import RequestorJobRequest from "./pages/requestor/JobRequest/RequestorJobRequest.jsx";
 
 export default function App() {
   return (
@@ -41,7 +42,9 @@ export default function App() {
         {/* Routes for Requestor */}
   <Route path="/requestor" element={<PageRequestorDashboard />}>
       <Route path="home" element={<RequestorContentDashboard />} />
+      <Route path="job_request" element = {<RequestorJobRequest />} />
       <Route path="job_request_detail" element={<RequestorJobRequestDetail />} />
+      
     </Route>
 
 
