@@ -17,6 +17,11 @@ import NewRequest from './pages/system_admin/JobRequest/NewJobRequst';
 import ViewUser from './pages/system_admin/Users/UserViewing';
 import ViewAdmin from './pages/system_admin/Users/AdminViewing';
 import ViewStaff from './pages/system_admin/Users/StaffViewing';
+import UserInformation from "./pages/system_admin/Profile/UserInformation.jsx";
+import PageProfile from "./pages/system_admin/Profile/PageProfile.jsx";
+import ChangeAvatar from "./pages/system_admin/Profile/ChangeAvatar";
+import ChangePassword from "./pages/system_admin/Profile/ChangePassword";
+
 
 function App() {
   return (
@@ -47,6 +52,12 @@ function App() {
 
           <Route path='History' element={<PageHistory/>}/>
           <Route path='Reports' element={<PageReport/>}/>
+
+          <Route path="myprofile" element={<PageProfile />}>
+              <Route path="user_account" element={<UserInformation />} />
+              <Route path="change_avatar" element={<ChangeAvatar />} />
+              <Route path="change_password" element={<ChangePassword />} />
+            </Route>
 
         </Route>
       </Routes>
