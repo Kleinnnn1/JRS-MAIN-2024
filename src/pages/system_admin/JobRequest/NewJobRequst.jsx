@@ -4,11 +4,11 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 export default function NewJobRequest() {
-  const [fields, setFields] = useState([{ number: 1 }]); // Initial state with one field
+  const [fields, setFields] = useState([{ number: 1, jobType: '' }]); // Include jobType in initial state
   const navigate = useNavigate(); // Initialize useNavigate
 
   const addField = () => {
-    setFields([...fields, { number: fields.length + 1 }]); // Add a new field with an incremented number
+    setFields([...fields, { number: fields.length + 1, jobType: '' }]); // Add new field with jobType
   };
 
   const removeField = (index) => {
@@ -20,9 +20,26 @@ export default function NewJobRequest() {
     }
   };
 
+  const handleFieldChange = (index, event) => {
+    const { name, value } = event.target;
+    const updatedFields = fields.map((field, i) =>
+      i === index ? { ...field, [name]: value } : field
+    );
+    setFields(updatedFields);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle form submission logic here
+
+    // Log each field for debugging
+    fields.forEach(field => {
+      console.log('Item No.:', field.number);
+      console.log('Work Description:', field.workDescription);
+      console.log('Location:', field.location);
+      console.log('Photo:', field.photo);
+      console.log('Job Type:', field.jobType);
+    });
 
     // Display SweetAlert
     await Swal.fire({
@@ -43,66 +60,86 @@ export default function NewJobRequest() {
       <div className="bg-white p-8 shadow-md">
         <form className="space-y-6" onSubmit={handleSubmit}>
           {fields.map((field, index) => (
-            <div key={index} className="flex justify-evenly items-center">
-              <div className="mb-4">
+            <div key={index} className="flex flex-wrap mb-4 gap-10">
+              <div className="flex-1 min-w-[150px]">
                 <label className="block text-gray-700 font-bold text-sm mb-2" htmlFor={`requestId-${index}`}>
                   Item No.
                 </label>
                 <input
                   type="text"
                   id={`requestId-${index}`}
-                  name={`requestId-${index}`}
-                  className="border border-black rounded p-3 h-8 w-12"
+                  name="number"
+                  className="border border-black rounded p-3 h-8 "
                   value={field.number}
                   readOnly
                 />
               </div>
 
-              <div className="mb-4">
+              <div className="flex-1 min-w-[150px]">
                 <label className="block text-gray-700 font-bold text-sm mb-2" htmlFor={`requestTitle-${index}`}>
                   Work Description
                 </label>
                 <input
                   type="text"
                   id={`requestTitle-${index}`}
-                  name={`requestTitle-${index}`}
-                  className="border border-black rounded h-8 p-3"
+                  name="workDescription"
+                  className="border border-black rounded h-8 p-3 w-full"
+                  value={field.workDescription || ''}
+                  onChange={(e) => handleFieldChange(index, e)}
                   required
                 />
               </div>
 
-              <div className="mb-4">
+              <div className="flex-1 min-w-[150px]">
                 <label className="block text-gray-700 font-bold text-sm mb-2" htmlFor={`description-${index}`}>
                   Location
                 </label>
                 <input
+                  type="text"
                   id={`description-${index}`}
-                  name={`description-${index}`}
-                  className="border border-black rounded h-8 p-3"
+                  name="location"
+                  className="border border-black rounded h-8 p-3 w-full"
+                  value={field.location || ''}
+                  onChange={(e) => handleFieldChange(index, e)}
                   required
                 />
               </div>
 
-              <div className="mb-4">
-                <label className="block text-gray-700 font-bold text-sm mb-2" htmlFor={`priority-${index}`}>
+              <div className="flex-1 min-w-[150px]">
+                <label className="block text-gray-700 font-bold text-sm mb-2" htmlFor={`jobType-${index}`}>
+                  Job Type
+                </label>
+                <input
+                  type="text"
+                  id={`jobType-${index}`}
+                  name="jobType"
+                  className="border border-black rounded h-8 p-3 w-full"
+                  value={field.jobType || ''}
+                  onChange={(e) => handleFieldChange(index, e)}
+                  required
+                />
+              </div>
+
+              <div className="flex-1 min-w-[150px]">
+                <label className="block text-gray-700 font-bold text-sm mb-2" htmlFor={`photo-${index}`}>
                   Photo
                 </label>
                 <div
-                  id={`priority-${index}`}
-                  name={`priority-${index}`}
-                  className="flex items-center text-center border border-black h-8 w-52 rounded"
+                  id={`photo-${index}`}
+                  name="photo"
+                  className="flex items-center text-center border border-black h-8 w-full rounded"
                   required
                 >
                   <div className='bg-gray-400 h-8 rounded-l-md w-20 text-xs'>Choose Image</div>
                 </div>
               </div>
 
-              <div className="flex justify-end text-center">
+              <div className="flex items-center mt-6 justify-center w-full lg:w-auto">
                 {index === fields.length - 1 ? (
                   <div
                     type="button"
                     onClick={addField}
-                    className="w-12 h-8 mt-7 bg-green-500 text-white text-3xl font-bold rounded-md hover:bg-black flex items-center justify-center"
+                    className="w-12 h-8 bg-green-500 text-white text-3xl font-bold rounded-md hover:bg-black flex items-center justify-center"
                   >
                     <Add />
                   </div>
@@ -110,7 +147,7 @@ export default function NewJobRequest() {
                   <button
                     type="button"
                     onClick={() => removeField(index)}
-                    className="w-12 h-8 mt-7 bg-red-500 text-white text-3xl font-bold rounded-md hover:bg-black flex items-center justify-center"
+                    className="w-12 h-8 bg-red-500 text-white text-3xl font-bold rounded-md hover:bg-black flex items-center justify-center"
                   >
                     -
                   </button>
