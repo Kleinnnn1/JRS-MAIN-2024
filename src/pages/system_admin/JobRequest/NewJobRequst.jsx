@@ -161,7 +161,7 @@ export default function NewJobRequest() {
               type="submit"
               className="w-32 h-10 bg-blue-500 text-white text-lg font-bold rounded-md hover:bg-blue-700"
             >
-              Submit
+              SUBMIT
             </button>
           </div>
         </form>
