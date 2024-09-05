@@ -79,7 +79,7 @@ export default function ContentJobRequest() {
         <div className="p-4 flex justify-end space-x-4">
           <button className="bg-blue-500 text-white py-2 px-4 rounded">Update</button>
           <button className="bg-red-500 text-white py-2 px-4 rounded">Cancel Job Request</button>
-          <button className="bg-gray-700 text-white py-2 px-4 rounded" onClick={() => navigate("/requestor/home")}>Close</button>
+          <button className="bg-gray-700 text-white py-2 px-4 rounded" onClick={() => navigate("/requestor/job_request")}>Close</button>
         </div>
       </div>
     </div>

@@ -30,7 +30,9 @@ import UserInformation from "./pages/department_head/Profile/UserInformation.jsx
 import PageRequestorDashboard from "./pages/requestor/Dashboard/RequestorPageDashboard.jsx";
 import RequestorContentDashboard from "./pages/requestor/Dashboard/RequestorContentDashboard.jsx";
 import RequestorJobRequestDetail from "./pages/requestor/JobRequestDetail/RequestorPageJobRequestDetail.jsx";
-import RequestorJobRequest from "./pages/requestor/JobRequest/RequestorJobRequest.jsx";
+import RequestorJobRequest from "./pages/requestor/JobRequest/RequestorPageJobRequest.jsx";
+import RequestorJobRequestForm from "./pages/requestor/JobRequest/RequestorJobRequestForm.jsx";
+import RequestorJobRequestTable from "./pages/requestor/JobRequest/RequestorJobRequestTable.jsx";
 
 export default function App() {
   return (
@@ -40,12 +42,13 @@ export default function App() {
         {/* <Route path="/login" element={<Login />} /> */}
 {/* 
         {/* Routes for Requestor */}
-  <Route path="/requestor" element={<PageRequestorDashboard />}>
-      <Route path="home" element={<RequestorContentDashboard />} />
-      <Route path="job_request" element = {<RequestorJobRequest />} />
-      <Route path="job_request_detail" element={<RequestorJobRequestDetail />} />
-      
-    </Route>
+        <Route path="/requestor" element={<PageRequestorDashboard />}>
+          <Route path="home" element={<RequestorContentDashboard />} />
+          <Route path="job_request" element={<RequestorJobRequest />} />
+          <Route path="job_request_table" element={<RequestorJobRequestTable />} />
+          <Route path="job_request_detail" element={<RequestorJobRequestDetail />} />
+          <Route path="job_request_form" element={<RequestorJobRequestForm />} />
+        </Route>
 
 
         {/* Routes for Department Head */}
