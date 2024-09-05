@@ -33,6 +33,9 @@ import RequestorJobRequestDetail from "./pages/requestor/JobRequestDetail/Reques
 import RequestorJobRequest from "./pages/requestor/JobRequest/RequestorPageJobRequest.jsx";
 import RequestorJobRequestForm from "./pages/requestor/JobRequest/RequestorJobRequestForm.jsx";
 import RequestorJobRequestTable from "./pages/requestor/JobRequest/RequestorJobRequestTable.jsx";
+import RequestorPageProfile from "./pages/requestor/Profile/RequestorpPageProfile.jsx";
+import RequestorPageHistory from "./pages/requestor/History/RequestorPageHistory.jsx";
+import RequestorPageSchedule from "./pages/requestor/Schedules/RequestorPageSchedules.jsx";
 
 export default function App() {
   return (
@@ -44,12 +47,30 @@ export default function App() {
         {/* Routes for Requestor */}
         <Route path="/requestor" element={<PageRequestorDashboard />}>
           <Route path="home" element={<RequestorContentDashboard />} />
+          {/* JOB REQUEST */}
           <Route path="job_request" element={<RequestorJobRequest />} />
           <Route path="job_request_table" element={<RequestorJobRequestTable />} />
           <Route path="job_request_detail" element={<RequestorJobRequestDetail />} />
           <Route path="job_request_form" element={<RequestorJobRequestForm />} />
-        </Route>
 
+          {/* REQUESTOR'S PROFILE */}
+          <Route path="requestor_profile" element={<RequestorPageProfile />} >
+          </Route>
+
+          {/* REQUESTOR'S JOB REQUEST HISTORY */}
+          <Route path="job_request_history" element={<RequestorPageHistory />} >
+
+          </Route>
+
+          {/* REQUESTOR'S SCHEDULES */}
+          <Route path="requestor_schedule" element={<RequestorPageSchedule />} >
+          </Route>
+          
+          {/* USTP HARMONIZED CLIENT SATISFACTION SURVEY */}
+          <Route path="requestor_schedule" element={<RequestorPageSchedule />} >
+          </Route>
+        </Route>
+        {/* END OF REQUESTOR */}
 
         {/* Routes for Department Head */}
         <Route
