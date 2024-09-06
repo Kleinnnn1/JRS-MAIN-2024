@@ -36,6 +36,12 @@ import RequestorJobRequestTable from "./pages/requestor/JobRequest/RequestorJobR
 import RequestorPageProfile from "./pages/requestor/Profile/RequestorpPageProfile.jsx";
 import RequestorPageHistory from "./pages/requestor/History/RequestorPageHistory.jsx";
 import RequestorPageSchedule from "./pages/requestor/Schedules/RequestorPageSchedules.jsx";
+import ClientSatisfactionSurveySectionOne from "./pages/requestor/ClientSatisfactionSurvey/ClientSatisfactionSurveySectionOne.jsx";
+import ClientSatisfactionSurveySectionTwo from "./pages/requestor/ClientSatisfactionSurvey/ClientSatisfactionSurveySectionTwo.jsx";
+import ClientSatisfactionSurveySectionThree from "./pages/requestor/ClientSatisfactionSurvey/ClientSatisfactionSurveySectionThree.jsx";
+import ClientSatisfactionSurveySectionFour from "./pages/requestor/ClientSatisfactionSurvey/ClientSatisfactionSurveySectionFour.jsx";
+import ClientSatisfactionSurveySectionFive from "./pages/requestor/ClientSatisfactionSurvey/ClientSatisfactionSurveySectionFive.jsx";
+import ClientSatisfactionSurveySectionSix from "./pages/requestor/ClientSatisfactionSurvey/ClientSatisfactionSurveySectionSix.jsx";
 
 export default function App() {
   return (
@@ -65,10 +71,15 @@ export default function App() {
           {/* REQUESTOR'S SCHEDULES */}
           <Route path="requestor_schedule" element={<RequestorPageSchedule />} >
           </Route>
-          
+
           {/* USTP HARMONIZED CLIENT SATISFACTION SURVEY */}
-          <Route path="requestor_schedule" element={<RequestorPageSchedule />} >
-          </Route>
+          <Route path="section_one" element={<ClientSatisfactionSurveySectionOne />} />
+          <Route path="survey_section_two" element={<ClientSatisfactionSurveySectionTwo />} />
+          <Route path="section_three" element={<ClientSatisfactionSurveySectionThree />} />
+          <Route path="section_four" element={<ClientSatisfactionSurveySectionFour />} />
+          <Route path="section_five" element={<ClientSatisfactionSurveySectionFive />} />
+          <Route path="section_six" element={<ClientSatisfactionSurveySectionSix />} />
+          
         </Route>
         {/* END OF REQUESTOR */}
 

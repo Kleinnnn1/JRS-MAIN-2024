@@ -3,7 +3,6 @@ import Swal from 'sweetalert2'; // Import SweetAlert2
 import { useNavigate } from 'react-router-dom'; // For navigation
 
 export default function RequestorJobRequestForm({ onSubmit }) {
-  // Get the current date
   const getCurrentDate = () => {
     const date = new Date();
     const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
@@ -66,6 +65,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
+        // Submit the form data and show success alert
         Swal.fire({
           title: 'Submitted!',
           text: 'Your job request has been submitted successfully.',
@@ -74,8 +74,9 @@ export default function RequestorJobRequestForm({ onSubmit }) {
           // Submit the form data to the parent component
           onSubmit(jobRequests);
 
-          // Navigate back to the table view
-          navigate('/requestor/job_requests');
+          const jobRequests = () => {
+            navigate('/requestor/job_request');
+          };
         });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire('Cancelled', 'Your submission was cancelled.', 'error');
@@ -198,7 +199,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
             Back
           </button>
           <button
-            type="submit"
+            type="submit" // Handle form submission through onSubmit
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-all duration-200"
           >
             Submit

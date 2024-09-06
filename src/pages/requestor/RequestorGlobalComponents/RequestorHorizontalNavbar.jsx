@@ -22,7 +22,7 @@ export default function HorizontalNavBar() {
 
       
       <div className="text-xs font-semibold underline ml-auto hidden md:block">
-        <Link to="/survey" className="text-xs ml-8">
+        <Link to="/requestor/requestor_survey" className="text-xs ml-8">
           <u>[Take USTP Harmonized Client Satisfaction Survey Online Version]</u>
         </Link>
       </div>

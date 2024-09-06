@@ -9,7 +9,7 @@ export default function ContentDashboard() {
 
   // Navigation for the buttons
   const handleSurveyClick = () => {
-    navigate("/survey"); // Update this path to the actual survey route
+    navigate("/requestor/section_one"); // Update this path to the actual survey route
   };
 
   const handleMakeRequestClick = () => {
@@ -19,11 +19,32 @@ export default function ContentDashboard() {
   return (
     <>
       {/* Dashboard Header */}
-      <div className="my-4 mx-3 py-2 px-4 bg-blue-950 flex items-center min-h-20 shadow-md shadow-black/5 rounded-xl">
-        <img src={iconFile} alt="Folder Icon" className="h-6 w-6 mr-4" />
-        <h1 className="text-2xl font-medium text-white">Dashboard</h1>
+      <div className="my-4 mx-3 py-2 px-4 bg-blue-950 flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-md shadow-black/5 rounded-xl">
+        {/* Title and Icon on the Left */}
+        <div className="flex items-center mb-4 lg:mb-0">
+          <img src={iconFile} alt="Folder Icon" className="h-6 w-6 mr-4" />
+          <h1 className="text-2xl font-medium text-white">Dashboard</h1>
+        </div>
+
+        {/* Centered Buttons */}
+        <div className="flex justify-center space-x-4">
+          {/* USTP Harmonized Client Satisfaction Survey Button */}
+          <button
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md shadow-md transition duration-200"
+            onClick={handleSurveyClick}
+          >
+            USTP Harmonized Client Satisfaction Survey
+          </button>
+
+          {/* Make Request Button */}
+          <button
+            className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-md shadow-md transition duration-200"
+            onClick={handleMakeRequestClick}
+          >
+            Make Request
+          </button>
+        </div>
       </div>
-      
       
       {/* Status Cards Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
@@ -53,7 +74,6 @@ export default function ContentDashboard() {
         />
       </div>
 
- 
       {/* Notification and Calendar Section */}
       <div className="p-6">
         <RequestorNotificationAndCalendar />
