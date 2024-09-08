@@ -42,6 +42,10 @@ import ClientSatisfactionSurveySectionThree from "./pages/requestor/ClientSatisf
 import ClientSatisfactionSurveySectionFour from "./pages/requestor/ClientSatisfactionSurvey/ClientSatisfactionSurveySectionFour.jsx";
 import ClientSatisfactionSurveySectionFive from "./pages/requestor/ClientSatisfactionSurvey/ClientSatisfactionSurveySectionFive.jsx";
 import ClientSatisfactionSurveySectionSix from "./pages/requestor/ClientSatisfactionSurvey/ClientSatisfactionSurveySectionSix.jsx";
+import RequestorInformation from "./pages/requestor/Profile/RequestorUserInformation.jsx";
+import RequestorChangeAvatar from "./pages/requestor/Profile/RequestorChangeAvatar.jsx";
+import RequestorChangePassword from "./pages/requestor/Profile/RequestorChangePassword.jsx";
+
 
 export default function App() {
   return (
@@ -78,8 +82,19 @@ export default function App() {
           <Route path="section_three" element={<ClientSatisfactionSurveySectionThree />} />
           <Route path="section_four" element={<ClientSatisfactionSurveySectionFour />} />
           <Route path="section_five" element={<ClientSatisfactionSurveySectionFive />} />
-          <Route path="section_six" element={<ClientSatisfactionSurveySectionSix />} />
           
+          <Route path="section_six" element={<ClientSatisfactionSurveySectionSix />} />
+
+          {/* REQUESTOR PROFILE */}
+          <Route path="requestor_profile" element={<RequestorPageProfile />} >
+            <Route path="user_account" element={<RequestorInformation />} />
+            <Route path="change_avatar" element={<RequestorChangeAvatar />} />
+            <Route path="change_password" element={<RequestorChangePassword />} />
+          </Route>
+          
+
+          {/* REQUESTOR PROFILE */}
+      
         </Route>
         {/* END OF REQUESTOR */}
 
