@@ -1,13 +1,24 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useLogout } from "../auth/useLogout";
+import useUserStore from "../store/useUserStore";
 
 export default function MyProfileDropdown() {
+  const { userMetadata } = useUserStore();
   const { logout } = useLogout();
+  const navigate = useNavigate();
+  const [selectedOption, setSelectedOption] = useState("Kenneth");
 
   const handleSelectChange = (event) => {
-    if (event.target.value === "Logout") {
+    const value = event.target.value;
+    setSelectedOption(value);
+
+    if (value === "Logout") {
       logout();
+    } else if (value === "Profile") {
+      navigate("/department_head/myprofile");
+      setSelectedOption("Kenneth"); // Reset to "Kenneth" after navigating
     }
-    // You can handle other options here if needed
   };
 
   return (
@@ -15,11 +26,11 @@ export default function MyProfileDropdown() {
       id="profileDropdown"
       name="profile"
       className="bg-yellow-400 border-none focus:ring-0 focus:outline-none text-lg"
-      defaultValue="Kenneth"
+      value={selectedOption} // Controlled component with state
       onChange={handleSelectChange} // Handle change event
     >
       <option value="Kenneth" disabled hidden>
-        Kenneth
+        {userMetadata.lname}
       </option>
       <option value="Profile">Profile</option>
       <option value="Logout">Logout</option>

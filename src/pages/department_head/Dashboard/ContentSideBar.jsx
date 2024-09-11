@@ -62,6 +62,12 @@ export default function ContentSideBar() {
         onClick={() => navigate("/department_head/approving_of_job_completion")}
         image={iconRequest}
       />
+      {/*Create new user */}
+      <SidebarItem
+        name="User"
+        onClick={() => navigate("/department_head/user")}
+        image={iconRequest}
+      />
     </>
   );
 }

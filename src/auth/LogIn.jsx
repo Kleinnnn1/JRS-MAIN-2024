@@ -4,14 +4,14 @@ import ReusableFormRow from "../components/ReusableFormRow";
 import { useLogin } from "./useLogin";
 
 export default function LogIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [idnumber, setIdNumber] = useState(""); // Change email to idnumber
+  const [password, setPassword] = useState("12345678");
   const { login } = useLogin(); // Destructure 'login' from the object
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!email || !password) return;
-    login({ email, password });
+    if (!idnumber || !password) return;
+    login({ idnumber, password }); // Pass 'idnumber' instead of 'email'
   }
 
   return (
@@ -19,22 +19,22 @@ export default function LogIn() {
       <form
         method="POST"
         onSubmit={handleSubmit}
-        className="flex flex-col items-center justify-around h-96 w-80 p-6 rounded-sm  bg-acc-edd shadow-4xl"
+        className="flex flex-col items-center justify-around h-96 w-80 p-6 rounded-sm bg-acc-edd shadow-4xl"
       >
         <div className="flex flex-col items-center">
-          <img src={LogoUSTP} className="h-20 w-20" />
+          <img src={LogoUSTP} className="h-20 w-20" alt="USTP Logo" />
         </div>
 
         <ReusableFormRow>
           <div className="flex h-9 border border-gray-400 rounded-sm">
             <input
               className="border-l border-gray-400 p-2 outline-none"
-              placeholder="email"
-              type="email"
-              id="email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="ID Number"
+              type="text"
+              id="idnumber"
+              autoComplete="username"
+              value={idnumber}
+              onChange={(e) => setIdNumber(e.target.value)}
             />
           </div>
         </ReusableFormRow>
@@ -53,7 +53,7 @@ export default function LogIn() {
           </div>
         </ReusableFormRow>
 
-        <a href="" className="text-xs text-center  w-52">
+        <a href="" className="text-xs text-center w-52">
           By logging in, I agree to the Terms of Conditions and Privacy Policy
           of JRS.
         </a>
@@ -65,7 +65,7 @@ export default function LogIn() {
           LOG IN
         </button>
 
-        <a href="" className="text-xs text-center ">
+        <a href="" className="text-xs text-center">
           Forgot Password
         </a>
       </form>
@@ -73,55 +73,40 @@ export default function LogIn() {
   );
 }
 
-// export default function LogIn() {
-//   const [email, setEmail] = useState("kennbalino@gmail.com");
-//   const [password, setPassword] = useState("password1134");
-//   const { login } = useLogin();
+// import LogoUSTP from "/src/assets/images/logoUSTP.png";
+// import { useState } from "react";
+// import ReusableFormRow from "../components/ReusableFormRow";
+// import { useLogin } from "./useLogin";
 
-//   // METHOD
+// export default function LogIn() {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const { login } = useLogin(); // Destructure 'login' from the object
 
 //   function handleSubmit(e) {
 //     e.preventDefault();
 //     if (!email || !password) return;
 //     login({ email, password });
 //   }
-//   // const handleClickSignIn = async (e) => {
-//   //   e.preventDefault({});
-//   //   const { data, error } = await supabase.auth.signInWithPassword({
-//   //     email: e.target.email.value,
-//   //     password: e.target.password.value,
-//   //   });
-//   //   if (error) {
-//   //     console.log(error);
-//   //   } else if (!error) {
-//   //     navigate("/dashboard");
-//   //   }
-//   // };
 
 //   return (
-//     // BACKGROUND IMAGE
 //     <div className="flex justify-center items-center min-h-screen min-w-screen bg-background-image bg-cover">
-//       {/* CARD CONTAINER */}
 //       <form
 //         method="POST"
 //         onSubmit={handleSubmit}
 //         className="flex flex-col items-center justify-around h-96 w-80 p-6 rounded-sm  bg-acc-edd shadow-4xl"
 //       >
-//         {/* USTP LOGO */}
 //         <div className="flex flex-col items-center">
 //           <img src={LogoUSTP} className="h-20 w-20" />
 //         </div>
 
-//         {/* USERNAME  */}
 //         <ReusableFormRow>
 //           <div className="flex h-9 border border-gray-400 rounded-sm">
-//             {/* <img src={LoginUsername} className="p-1 w-12 h-7.5 bg-white" /> */}
 //             <input
 //               className="border-l border-gray-400 p-2 outline-none"
 //               placeholder="email"
-//               type="email"
+//               type="text"
 //               id="email"
-//               // This makes this form better for password managers
 //               autoComplete="email"
 //               value={email}
 //               onChange={(e) => setEmail(e.target.value)}
@@ -130,9 +115,7 @@ export default function LogIn() {
 //         </ReusableFormRow>
 
 //         <ReusableFormRow>
-//           {/* PASSWORD */}
 //           <div className="flex h-9 border border-gray-400 rounded-sm">
-//             {/* <img src={LoginPassword} className="p-1 w-12 h-7.5 bg-white" /> */}
 //             <input
 //               className="border-l border-gray-400 p-2 outline-none"
 //               placeholder="Password"
@@ -145,13 +128,11 @@ export default function LogIn() {
 //           </div>
 //         </ReusableFormRow>
 
-//         {/* TERMS OF CONDITIONS AND PRIVACY POLICY OF JRS */}
 //         <a href="" className="text-xs text-center  w-52">
 //           By logging in, I agree to the Terms of Conditions and Privacy Policy
 //           of JRS.
 //         </a>
 
-//         {/* LOGIN BUTTON */}
 //         <button
 //           className="w-60 p-1 font-semibold bg-yellow-500 hover:bg-yellow-600 transition duration-115 hover:ease-in"
 //           type="submit"
@@ -159,11 +140,9 @@ export default function LogIn() {
 //           LOG IN
 //         </button>
 
-//         {/* FORGOT PASSWORD */}
 //         <a href="" className="text-xs text-center ">
 //           Forgot Password
 //         </a>
-//         {/* <span className="text-red-500 font-semibold">{showError}</span> */}
 //       </form>
 //     </div>
 //   );

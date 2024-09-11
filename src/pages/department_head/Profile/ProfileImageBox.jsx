@@ -1,16 +1,18 @@
 import ProfileImage from "./ProfileImage";
+import useUserStore from "../../../store/useUserStore";
 
 export default function ProfileImageBox() {
+  const { userMetadata } = useUserStore();
   return (
     <div className="border border-black w-80 h-[40vh] p-10">
       <div className="flex flex-col items-center text-center text-white">
         <ProfileImage />
         <p className="font-semibold text-xm text-black">
-          Kenneth Jhun N. Balino
+          {userMetadata.fname} {userMetadata.lname}
         </p>
 
-        <p className="text-sm text-black">balino.kennethjhun@gmail.com</p>
-        <p className="text-xm text-black">Department Head</p>
+        <p className="text-sm text-black">{userMetadata.email}</p>
+        <p className="text-xm text-black">{userMetadata.role}</p>
       </div>
     </div>
   );
