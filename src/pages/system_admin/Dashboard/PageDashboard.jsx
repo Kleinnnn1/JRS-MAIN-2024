@@ -1,7 +1,8 @@
 import SysadminDashboard from "./SysadminDashboard";
 import MainBody from "../MainBody";
-import SysAdminHeader from "../components/sysadminHeader";
+import ReusableHeader from "../../../components/ReusableHeader";
 import SysAdminSidebar from "../components/SysAdminSidebar";
+import profilePic from '/src/assets/images/SysAdIcons/Saturo_Gojo.png';
 import { Outlet, useOutlet } from "react-router-dom";
 
 export default function SystemAdDashboard (){
@@ -12,7 +13,12 @@ export default function SystemAdDashboard (){
         <SysAdminSidebar />
     
         <MainBody>
-        <SysAdminHeader/>
+        <ReusableHeader
+        profilePicture={profilePic}
+        username="Leokanette"
+        profileLink="/system_admin/myprofile"
+        
+        />
         {otherContent ? <Outlet /> : <SysadminDashboard />}
       </MainBody>
      
