@@ -1,6 +1,7 @@
 import Logo from "../../../components/Logo";
 import Profile from "./StaffProfile";
-import HorizontalNavBar from "../../../components/StaffHoriNavbar";
+import profilePic from '../../../assets/images/raphael.jpg'
+import ReusableHeader from "../../../components/ReusableHeader";
 import SideBar from "../../../components/SideBar";
 import StaffScreen from "./StaffScreen";
 import { useOutlet, Outlet } from "react-router-dom";
@@ -19,7 +20,13 @@ export default function StaffMainDashboard() {
      </SideBar>
 
       <StaffScreen>
-        <HorizontalNavBar />
+        <ReusableHeader 
+        
+        profilePicture={profilePic}
+        username="Raphael"
+        profileLink="/Staff/Staffprofile"
+        
+        />
         {otherContent ? <Outlet /> : <StaffContentDash />}
       </StaffScreen>
     </div>
