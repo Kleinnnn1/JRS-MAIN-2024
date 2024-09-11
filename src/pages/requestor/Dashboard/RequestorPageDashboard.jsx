@@ -3,9 +3,10 @@ import SideBar from "../../../components/SideBar";
 import Logo from "../../../components/Logo";
 import ProfileRequestor from "../RequestorGlobalComponents/RequestorProfile";
 import ContentRequestorSideBar from "../RequestorGlobalComponents/RequestorContentSideBar ";
-import HorizontalNavBar from "../RequestorGlobalComponents/RequestorHorizontalNavbar";
+import ReusableHeader from "../../../components/ReusableHeader";
 import RequestorMainBody from "../Dashboard/RequestorMainBody";
 import ContentDashboard from "./RequestorContentDashboard";
+import profilePic from '../../../assets/images/BabyKaren.jpg';
 
 export default function RequestorDashboard() {
     const otherContent = useOutlet();
@@ -20,7 +21,13 @@ export default function RequestorDashboard() {
             </SideBar>
 
             <RequestorMainBody>
-                <HorizontalNavBar />
+                <ReusableHeader
+                
+                profilePicture={profilePic}
+                username="Karen"
+                profileLink="/requestor/requestor_profile"
+                
+                />
                 {otherContent ? <Outlet /> : <ContentDashboard />}
             </RequestorMainBody>
         </div>
