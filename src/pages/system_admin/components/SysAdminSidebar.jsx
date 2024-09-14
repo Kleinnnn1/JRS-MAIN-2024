@@ -84,6 +84,15 @@ export default function Sidebar() {
                     </div>
                 </li>
                 <li>
+                     <div
+                        onClick={() => handleNavigation('/system_admin/Register')}
+                        className={`flex items-center px-2 py-1 text-gray-300 hover:bg-blue-980 hover:bg-yellow-600 rounded-md cursor-pointer ${isActive('/system_admin/Reports') ? 'bg-white-950 text-white font-bold' : ''}`}
+                    >
+                        <img src={SettingsSidebarIcon} alt="Reports Icon" className="w-10 h-8 mr-4" />
+                        <span className="text-sm">Register</span>
+                    </div>
+                </li>
+                <li>
                     <div
                         onClick={() => handleNavigation('#')}
                         className="flex items-center px-2 py-1 text-gray-300 hover:bg-blue-980 hover:bg-yellow-600 rounded-md cursor-pointer"
