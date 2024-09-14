@@ -21,6 +21,7 @@ import UserInformation from "./pages/system_admin/Profile/UserInformation.jsx";
 import PageProfile from "./pages/system_admin/Profile/PageProfile.jsx";
 import ChangeAvatar from "./pages/system_admin/Profile/ChangeAvatar";
 import ChangePassword from "./pages/system_admin/Profile/ChangePassword";
+import RegisterMe from  "./pages/system_admin/Register/RegisterPage.jsx";
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
 
           <Route path='History' element={<PageHistory/>}/>
           <Route path='Reports' element={<PageReport/>}/>
+           <Route path='register' element={<RegisterMe/>}/>
 
           <Route path="myprofile" element={<PageProfile />}>
               <Route path="user_account" element={<UserInformation />} />
