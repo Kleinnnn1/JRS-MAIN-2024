@@ -2,7 +2,7 @@ import ChooseImageButton from "./ChooseImageButton";
 import ProfileImage from "./ProfileImage";
 import SaveChangesButton from "./SaveChangesButton";
 
-export default function ChangeAvatar() {
+export default function SysAdminChangeAvatar() {
   return (
     <div>
       <div className="flex justify-center mt-9">

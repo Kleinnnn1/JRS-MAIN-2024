@@ -1,6 +1,6 @@
 
 
-export default function ViewAdmin() {
+export default function SysAdminViewAdmin() {
     return (
         <>
        

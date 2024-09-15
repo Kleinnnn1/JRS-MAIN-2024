@@ -35,7 +35,7 @@ const transactions = [
   },
 ];
 
-export default function PageHistory() {
+export default function PageHistorySystemAdmin() {
   return (
     <div>
     <PageSubTitle title="HISTORY" iconSrc={userIcon} />

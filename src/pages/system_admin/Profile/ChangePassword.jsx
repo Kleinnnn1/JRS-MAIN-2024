@@ -1,6 +1,6 @@
 import SaveChangesButton from "./SaveChangesButton";
 
-export default function ChangePassword() {
+export default function SysAdminChangePassword() {
   return (
     <div className="space-y-4">
       <div className="flex flex-col mt-5 ml-5">

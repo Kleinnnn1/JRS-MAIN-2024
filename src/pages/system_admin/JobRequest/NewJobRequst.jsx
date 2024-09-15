@@ -3,7 +3,7 @@ import { Add } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-export default function NewJobRequest() {
+export default function SysAdminNewRequest() {
   const [fields, setFields] = useState([{ number: 1, jobType: '' }]); // Include jobType in initial state
   const navigate = useNavigate(); // Initialize useNavigate
 

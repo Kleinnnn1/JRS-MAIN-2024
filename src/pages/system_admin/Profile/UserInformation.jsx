@@ -1,6 +1,6 @@
 import SaveChangesButton from "./SaveChangesButton";
 
-export default function UserInformation() {
+export default function SysAdminUserInformation() {
   return (
     <div className="space-y-4">
       <div className="flex flex-col items-center">

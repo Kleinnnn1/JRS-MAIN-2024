@@ -45,7 +45,7 @@ const pageStyle = {
   chart: 'mt-8',
 };
 
-export default function PageReport() {
+export default function PageReportSystemAdmin() {
   return (
     <div>
    <PageSubTitle title="REPORT AND ANALYTICS" iconSrc={userIcon} />

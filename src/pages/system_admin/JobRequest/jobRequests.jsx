@@ -3,7 +3,7 @@ import ContentJobRequest from './ContentJobRequests';
 import userIcon from '/src/assets/images/SysAdIcons/userIcon.png';
 import { Outlet, useOutlet } from "react-router-dom";
 
-export default function Job_requests() {
+export default function SysAdminJob_requests() {
     const otherContent = useOutlet(); // Get the current outlet
     return (
         <div className="text-gray-800 font-inter">

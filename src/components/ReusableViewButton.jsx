@@ -4,7 +4,7 @@ export default function ReusableViewButton({ onClick }) {
   return (
     <button
       type="button"
-      className={`px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2`}
+      className={`px-3 py-1 text-sm font-medium text-center rounded-lg bg-yellow-400 text-white mr-2`}
       onClick={onClick}
     >
       View

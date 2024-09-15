@@ -5,7 +5,7 @@ import { Outlet, useOutlet } from "react-router-dom";
 import PageSubTitle from "/src/pages/system_admin/components/PageTitle"
 
 
-export default function UsersPage() {
+export default function SysAdminUsersPage() {
     const otherContent = useOutlet(); // Get the current outlet
     return (
         <div className="text-gray-800 font-inter">

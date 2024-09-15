@@ -3,7 +3,7 @@ import { Outlet, useOutlet } from "react-router-dom";
 import DeptTable from '../components/DepartmentTable';
 
 
-export default function DepartmentPage() {
+export default function SysAdminDepartmentPage() {
     const otherContent = useOutlet();
 
     return (
