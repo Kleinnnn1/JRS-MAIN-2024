@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../../components/SearchBar";
 import StatusCard from "../../../components/StatusCard";
-import NotificationAndCalendar from "../../../components/NotificationAndCalendar";
+import AdminStatusCardAndCalendar from "./AdminNotificationAndCalendar";
 
 export default function ContentDashboard() {
   const navigate = useNavigate();
@@ -34,7 +34,10 @@ export default function ContentDashboard() {
           onClick={() => navigate("/department_head/referral")}
         />
       </div>
-      <NotificationAndCalendar />
+      <div className="p-6">
+        <AdminStatusCardAndCalendar />
+      </div>
+     
     </>
   );
 }
