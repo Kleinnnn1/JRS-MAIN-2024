@@ -19,7 +19,6 @@ export default function Sidebar() {
   };
 
   const isActive = (path) => {
-    // Highlight if current path is exactly the path or is a nested route under it
     return (
       currentPath === path ||
       (path !== "/system_admin" && currentPath.startsWith(path))

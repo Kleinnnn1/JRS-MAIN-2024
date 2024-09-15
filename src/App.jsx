@@ -48,6 +48,7 @@ import PageReportSystemAdmin from "./pages/system_admin/Reports/ReportsPage";
 
 
 
+
 import ViewJobRequest from "./pages/department_head/JobRequest/ViewJobRequest.jsx";
 import ViewJobRequestRemarks from "./pages/department_head/JobRequest/ViewJobRequestRemarks.jsx";
 import JobOngoing from "./pages/department_head/JobRequest/PageJobOngoing.jsx";
@@ -125,6 +126,7 @@ export default function App() {
             <Route path="Reports" element={<PageReportSystemAdmin />} />
           </Route>
 
+
           {/* Protected Routes for Department Head */}
           <Route
             path="/department_head/*"
@@ -137,6 +139,18 @@ export default function App() {
             <Route path="user" element={<CreateNewUser />} />
             <Route path="dashboard" element={<DashboardContent />} />
             <Route path="myprofile" element={<PageProfile />}>
+
+          <Route path='Departments' element={<DepartmentPage/>}>
+                <Route path='add' element={<AddDepartment />} />
+                <Route path='view' element={<ViewingDepartment />} />
+          </Route>
+
+          <Route path='History' element={<PageHistory/>}/>
+          <Route path='Reports' element={<PageReport/>}/>
+           <Route path='register' element={<RegisterMe/>}/>
+
+          <Route path="myprofile" element={<PageProfile />}>
+
               <Route path="user_account" element={<UserInformation />} />
               <Route path="change_avatar" element={<ChangeAvatar />} />
               <Route path="change_password" element={<ChangePassword />} />
