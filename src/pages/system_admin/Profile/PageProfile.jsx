@@ -1,4 +1,3 @@
-import userIcon from "/src/assets/images/SysAdIcons/userIcon.png";
 import ProfileContent from "./ContentProfile";
 import SearchBar from "../../../components/SearchBar";
 

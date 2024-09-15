@@ -6,7 +6,6 @@ import maintenanceDept from '/src/assets/images/SysAdIcons/Maintenancedept.png';
 import Calendar from "../components/samplecal"
 import StatsCard from "../components/StatsCard";
 import StatusCard from "../components/StatusCard";
-import { Analytics } from '@mui/icons-material';
 import SearchBar from '../../../components/SearchBar';
 
 export default function SysadminDashboard() {
