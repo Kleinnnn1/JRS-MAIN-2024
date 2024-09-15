@@ -1,16 +1,23 @@
 import SysadminDashboard from "./SysadminDashboard";
 import MainBody from "../MainBody";
 import ReusableHeader from "../../../components/ReusableHeader";
-import SysAdminSidebar from "../components/SysAdminSidebar";
 import profilePic from '/src/assets/images/SysAdIcons/Saturo_Gojo.png';
 import { Outlet, useOutlet } from "react-router-dom";
+import ContentSideBar from "../components/ContentSideBar";
+import SideBar from "../../../components/SideBar";
+import Logo from "../../../components/Logo";
+import Profile from "./Profile";
 
 export default function SystemAdDashboard (){
     const otherContent = useOutlet();
 
     return(
         <>
-        <SysAdminSidebar />
+       <SideBar>
+        <Logo />
+        <Profile />
+        <ContentSideBar />
+      </SideBar>
     
         <MainBody>
         <ReusableHeader
