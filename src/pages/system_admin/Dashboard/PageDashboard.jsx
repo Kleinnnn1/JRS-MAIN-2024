@@ -19,6 +19,7 @@ export default function SystemAdDashboard (){
         profileLink="/system_admin/myprofile"
         
         />
+        
         {otherContent ? <Outlet /> : <SysadminDashboard />}
       </MainBody>
      

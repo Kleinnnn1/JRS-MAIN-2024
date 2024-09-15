@@ -1,11 +1,11 @@
-import PageSubTitle from '../components/PageTitle';
 import userIcon from "/src/assets/images/SysAdIcons/userIcon.png";
 import ProfileContent from "./ContentProfile";
+import SearchBar from "../../../components/SearchBar";
 
 export default function SysAdminPageProfile() {
   return (
     <div>
-      <PageSubTitle title="MY ACCOUNT" iconSrc={userIcon} />
+      <SearchBar Title="My Profile"/>
         <ProfileContent />
     </div>
   );

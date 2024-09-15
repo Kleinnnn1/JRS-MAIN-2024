@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import iconDropdown from '../assets/images/iconDropdown.png';
+import { HiMenu } from 'react-icons/hi'; // Import a hamburger icon from react-icons (using Heroicons)
 
 export default function ReusableHeader({ profilePicture, username, profileLink }) {
     const navigate = useNavigate(); // Initialize useNavigate hook
@@ -13,10 +14,15 @@ export default function ReusableHeader({ profilePicture, username, profileLink }
 
     return (
         <div className="py-3 px-6 bg-yellow-400 flex items-center justify-between min-h-10 shadow-md shadow-black/5 sticky top-0 left-0 z-30">
+            {/* Hamburger Icon and Email */}
             <div className="flex items-center">
+                <button type="button" className="text-gray-800 focus:outline-none mr-3">
+                    <HiMenu className="w-6 h-6" /> {/* Hamburger Icon */}
+                </button>
                 <a href="#" className="text-xs">jrs@ustp.edu.ph +384-3478-984</a>
             </div>
 
+            {/* Profile Dropdown */}
             <div className="relative ml-auto">
                 <button
                     type="button"

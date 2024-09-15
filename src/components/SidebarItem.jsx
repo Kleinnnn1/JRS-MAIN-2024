@@ -4,7 +4,7 @@ export default function SidebarItem({ name, onClick, image }) {
   return (
     <div
       onClick={onClick}
-      className="group-[.active]:bg-blue-950 group-[.active]:text-white cursor-pointer flex items-center py-2 px-4 my-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md"
+      className="group-[.active]:bg-blue-950 group-[.active]:text-white cursor-pointer flex items-center py-2 px-4 my-2 text-gray-300 hover:bg-yellow-500 hover:text-gray-100 font-bold rounded-md"
     >
       <img src={image} alt={`${name} Icon`} className="w-4 h-4 mr-3" />
       <span className="text-sm">{name}</span>

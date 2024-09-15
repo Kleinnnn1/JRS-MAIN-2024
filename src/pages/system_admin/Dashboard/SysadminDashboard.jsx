@@ -3,19 +3,16 @@ import numberOfRequests from '/src/assets/images/SysAdIcons/numofreq.png';
 import numberOfUsers from '/src/assets/images/SysAdIcons/numofusers.png';
 import numberOfEmployees from '/src/assets/images/SysAdIcons/numofemployees.png';
 import maintenanceDept from '/src/assets/images/SysAdIcons/Maintenancedept.png';
-
 import Calendar from "../components/samplecal"
 import StatsCard from "../components/StatsCard";
 import StatusCard from "../components/StatusCard";
 import { Analytics } from '@mui/icons-material';
+import SearchBar from '../../../components/SearchBar';
 
 export default function SysadminDashboard() {
     return (
         <div>
-            <div className='flex items-center m-5 text-center' >
-            <Analytics color="primary" fontSize="large"/>
-            <div className='text-yellow-500 font-bold'>DASHBOARD</div>
-            </div>
+            <SearchBar title="Dashboard" />
             <div className="flex">
                 <div className="grid grid-cols-2 gap-5 p-11 flex justify-center">
                     <StatsCard 
