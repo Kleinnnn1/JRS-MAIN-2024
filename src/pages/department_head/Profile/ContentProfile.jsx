@@ -1,5 +1,4 @@
 import ContentAndHeader from "./ContentAndHeader";
-import ProfileImageBox from "./ProfileImageBox";
 import ProfileInformationBox from "./ProfileInformationBox";
 import ProfileTab from "./ProfileTab";
 import UserInformation from "./UserInformation";
@@ -10,7 +9,6 @@ export default function ContentProfile() {
   const otherContent = useOutlet();
   return (
     <div className="flex justify-between items-start">
-      <ProfileImageBox />
 
       <ProfileInformationBox>
         <ContentAndHeader

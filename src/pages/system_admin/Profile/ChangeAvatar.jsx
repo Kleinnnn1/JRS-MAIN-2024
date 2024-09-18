@@ -11,7 +11,7 @@ export default function SysAdminChangeAvatar() {
       <div className="flex justify-center p-4">
         <ChooseImageButton />
       </div>
-      <div className="flex justify-end mt-6">
+      <div className="flex justify-end mt-8">
         <SaveChangesButton />
       </div>
     </div>

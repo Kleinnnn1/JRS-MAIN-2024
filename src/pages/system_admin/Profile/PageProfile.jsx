@@ -4,7 +4,7 @@ import SearchBar from "../../../components/SearchBar";
 export default function SysAdminPageProfile() {
   return (
     <div>
-      <SearchBar Title="My Profile"/>
+      <SearchBar title="My Profile"/>
         <ProfileContent />
     </div>
   );

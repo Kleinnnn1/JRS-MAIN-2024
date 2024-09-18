@@ -29,11 +29,7 @@ export default function ReusableHeader({ profilePicture, username, profileLink }
                     onClick={toggleDropdown}
                     className="text-md font-semibold text-gray-800 hover:text-gray-900 focus:outline-none flex items-center"
                 >
-                    <img
-                        src={profilePicture}
-                        alt="Profile"
-                        className="w-8 h-8 rounded-full object-cover mr-2"
-                    />
+                        
                     {username}
                     <img 
                         src={iconDropdown} 
