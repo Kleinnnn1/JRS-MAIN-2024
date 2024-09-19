@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
+
 // Components for system_admin
 
 // Components for department_head
@@ -25,7 +26,7 @@ import UserContent from "./pages/system_admin/Users/ContentUsers";
 import SysAdminContent from './pages/system_admin/Users/ContentDepartmentHead';
 import SysAdminStaffContent from './pages/system_admin/Users/ContentStaff';
 import SystemAdDashboard from './pages/system_admin/Dashboard/PageDashboard';
-import SysAdminUsersPage from './pages/system_admin/Users/SysadminUsers.jsx';
+import SysAdminUsersPage from "./pages/system_admin/Users/SysAdminUsersPage.jsx";
 import SysAdminJob_requests from './pages/system_admin/JobRequest/jobRequests';
 import SysAdminDepartmentPage from './pages/system_admin/Department/PageDepartment';
 import SysAdminAddDepartment from './pages/system_admin/Department/addDepartment';
