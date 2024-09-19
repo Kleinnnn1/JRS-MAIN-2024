@@ -1,5 +1,4 @@
 import ContentAndHeader from "./RequestorContentAndHeader";
-import ProfileImageBox from "./RequestorProfileImageBox";
 import ProfileInformationBox from "./RequestorProfileInformationBox";
 import ProfileTab from "./RequestorProfileTab";
 import UserInformation from "./RequestorUserInformation";
@@ -9,8 +8,8 @@ export default function RequestorContentProfile() {
   const navigate = useNavigate();
   const otherContent = useOutlet();
   return (
-    <div className="flex justify-between items-start">
-      <ProfileImageBox />
+    <div className="flex justify-center items-start">
+      
 
       <ProfileInformationBox>
         <ContentAndHeader

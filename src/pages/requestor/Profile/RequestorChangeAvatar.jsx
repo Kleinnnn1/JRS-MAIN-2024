@@ -1,5 +1,4 @@
 import ChooseImageButton from "./RequestorChooseImageButton";
-import ProfileImage from "./RequestorProfileImage";
 import SaveChangesButton from "./RequestorSaveChangesButton";
 
 export default function RequestorChangeAvatar() {
