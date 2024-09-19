@@ -11,7 +11,9 @@ export default {
       },
       colors: {
         'acc-edd': 'rgba(172, 206, 221, 0.9)',
+        'custom-blue': '#0D0745',
         'custom-orange': '#FCB217',
+        
       },
     },
   },

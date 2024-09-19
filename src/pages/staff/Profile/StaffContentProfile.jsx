@@ -1,5 +1,4 @@
 import ContentAndHeader from "./StaffContentHeader";
-import ProfileImageBox from "./StaffProfileImgBox";
 import ProfileInformationBox from "./StaffProfileInformationBox";
 import ProfileTab from "./StaffProfileTab";
 import UserInformation from "./StaffUserInfo";
@@ -9,14 +8,14 @@ export default function ContentProfile() {
   const navigate = useNavigate();
   const otherContent = useOutlet();
   return (
-    <div className="flex justify-between items-start">
-      <ProfileImageBox />
+    <div className="flex justify-center items-start">
+      
 
       <ProfileInformationBox>
         <ContentAndHeader
           content={otherContent ? <Outlet /> : <UserInformation />}
         >
-          <div className="flex justify-end space-x-4">
+          <div className="flex justify-center space-x-4">
           <ProfileTab
               name="Profile"
               onClick={() =>

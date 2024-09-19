@@ -1,13 +1,14 @@
 import PropTypes from "prop-types";
 
-export default function SidebarItem({ name, onClick, image }) {
+
+export default function SidebarItem({ name, onClick, image, bold }) {
   return (
     <div
       onClick={onClick}
-      className="group-[.active]:bg-blue-950 group-[.active]:text-white cursor-pointer flex items-center py-2 px-4 my-2 text-gray-300 hover:bg-blue-980 hover:text-gray-100 rounded-md"
+      className={`group-[.active]:bg-custom-blue group-[.active]:text-white cursor-pointer flex items-center py-2 px-4 my-2 text-gray-300 hover:bg-yellow-500 hover:text-gray-100 rounded-md ${bold ? 'font-bold' : 'font-normal'}`}
     >
-      <img src={image} alt={`${name} Icon`} className="w-4 h-4 mr-3" />
-      <span className="text-sm">{name}</span>
+    <img src={image} alt={name} className="w-6 h-6" />
+    <span className="ml-2 hidden md:block">{name}</span>
     </div>
   );
 }
