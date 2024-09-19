@@ -1,4 +1,4 @@
-import ProfilePic from "../../../assets/images/SysAdIcons/Saturo_Gojo.png";
+import ProfilePic from "/src/assets/images/kennimg.jpg";
 
 export default function ProfileImage() {
   return (

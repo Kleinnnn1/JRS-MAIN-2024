@@ -2,9 +2,9 @@ import PropTypes from "prop-types";
 
 export default function ProfileInformationBox({ children }) {
   return (
-    <div className="relative border border-black h-[60vh] w-[100vh] relative">
-      {children}
-    </div>
+    <div className="relative border border-black h-[80vh] w-[100vh] relative m-10">
+    {children}
+  </div>
   );
 }
 

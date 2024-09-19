@@ -89,6 +89,7 @@ export default function UserInformation() {
   // };
 
   return (
+    <div className="space-y-4">
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       {/* First Name */}
       <div className="flex flex-col items-center">
@@ -163,6 +164,7 @@ export default function UserInformation() {
         <SaveChangesButton />
       </div>
     </form>
+    </div>
   );
 }
 

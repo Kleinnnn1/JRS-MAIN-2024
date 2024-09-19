@@ -5,8 +5,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
-import ProtectedRoute from "./auth/ProtectedRoute.jsx";
-
 // Components for system_admin
 
 // Components for department_head
@@ -27,7 +25,7 @@ import UserContent from "./pages/system_admin/Users/ContentUsers";
 import SysAdminContent from './pages/system_admin/Users/ContentDepartmentHead';
 import SysAdminStaffContent from './pages/system_admin/Users/ContentStaff';
 import SystemAdDashboard from './pages/system_admin/Dashboard/PageDashboard';
-import SysAdminUsersPage from './pages/system_admin/Users/sysadminUsers';
+import SysAdminUsersPage from './pages/system_admin/Users/SysadminUsers.jsx';
 import SysAdminJob_requests from './pages/system_admin/JobRequest/jobRequests';
 import SysAdminDepartmentPage from './pages/system_admin/Department/PageDepartment';
 import SysAdminAddDepartment from './pages/system_admin/Department/addDepartment';
@@ -70,6 +68,11 @@ import UserInformation from "./pages/department_head/Profile/UserInformation.jsx
 import EditFormReferral from "./pages/department_head/Referral/EditFormReferral.jsx";
 import CreateNewUser from "./pages/department_head/CreateNewUserTest/CreateNewUser.jsx";
 import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
+import SysAdminAddNewSysAdmin from "./pages/system_admin/Users/addNewSysAdmin.jsx";
+import SysAdminViewSysAdmin from "./pages/system_admin/Users/SysAdminViewing.jsx";
+import SysAdminContentPage from "./pages/system_admin/Users/SystemAdminContent.jsx";
+import SystemAdminContentPage from "./pages/system_admin/Users/SystemAdminContent.jsx";
+
 
 
 const queryClient = new QueryClient({
@@ -94,9 +97,7 @@ export default function App() {
           <Route
             path="/system_admin/*"
             element={
-              <ProtectedRoute requiredRole="system admin">
                 <SystemAdDashboard />
-              </ProtectedRoute>
             }
           > 
             <Route path="myprofile" element={<SysAdminPageProfile />}>
@@ -114,6 +115,10 @@ export default function App() {
               <Route path="view_user" element={<SysAdminViewUser />} />
               <Route path="view_admin" element={<SysAdminViewAdmin />} />
               <Route path="view_staff" element={<SysAdminViewStaff />} />
+
+              <Route path="sysadmin" element={<SystemAdminContentPage />} />
+              <Route path="add_sysadmin" element={<SysAdminAddNewSysAdmin />} />
+              <Route path="view_sysadmin" element={<SysAdminViewSysAdmin />} />
             </Route>
             <Route path="Job_Requests" element={<SysAdminJob_requests />}>
               <Route path="new_request" element={<SysAdminNewRequest />} />
@@ -131,9 +136,7 @@ export default function App() {
           <Route
             path="/department_head/*"
             element={
-              <ProtectedRoute requiredRole="department head">
                 <PageDepartMentHeadDashboard />
-              </ProtectedRoute>
             }
           >
             <Route path="user" element={<CreateNewUser />} />

@@ -4,6 +4,7 @@ import { updateAvatar } from "../../../service/apiAuth";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "../../../store/useUserStore";
+import ProfileImage from "./ProfileImage";
 
 export default function ChangeAvatar() {
   const { register, handleSubmit } = useForm();
