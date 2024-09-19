@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../../components/SearchBar";
 import StatusCard from "../../../components/StatusCard";
-import NotificationAndCalendar from "../../../components/NotificationAndCalendar";
+import ReusableNotification from "../../../components/ReusableNotification";
+import ReusableCalendar from "../../../components/ReusableCalendar";
 
 export default function ContentDashboard() {
   const navigate = useNavigate();
@@ -34,7 +35,14 @@ export default function ContentDashboard() {
           onClick={() => navigate("/department_head/referral")}
         />
       </div>
-      <NotificationAndCalendar />
+      <div className="p-2">
+        <div className="grid lg:grid-cols-3 h-[50vh]">
+          <div className="col-span-2">
+            <ReusableNotification />
+            </div>
+            <ReusableCalendar />
+            </div>
+          </div>
     </>
   );
 }

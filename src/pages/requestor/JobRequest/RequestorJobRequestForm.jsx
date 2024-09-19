@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import { useState } from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes
 import { useNavigate } from 'react-router-dom'; // For navigation
+import { warningAlert, successAlert, confirmationAlert } from '../../../components/ReusableSweetAlert'; // Import reusable SweetAlerts
 
 export default function RequestorJobRequestForm({ onSubmit }) {
   const getCurrentDate = () => {
@@ -24,7 +25,9 @@ export default function RequestorJobRequestForm({ onSubmit }) {
   };
 
   const handleRemoveRow = (id) => {
-    setJobRequests(jobRequests.filter((request) => request.id !== id));
+    if (jobRequests.length > 1) {
+      setJobRequests(jobRequests.filter((request) => request.id !== id));
+    }
   };
 
   const handleInputChange = (id, field, value) => {
@@ -45,52 +48,35 @@ export default function RequestorJobRequestForm({ onSubmit }) {
     );
 
     if (hasEmptyFields) {
-      // Show a warning if any required field is empty
-      Swal.fire({
-        title: 'Warning 😭🫴',
-        text: 'Please fill out all required fields',
-        icon: 'warning',
-        confirmButtonText: 'OK',
-      });
+      // Show a SweetAlert warning if any required field is empty
+      warningAlert('Missing Required Fields', 'Please fill out all required fields before submitting.');
       return; // Stop form submission
     }
 
-    // Trigger SweetAlert confirmation
-    Swal.fire({
-      title: 'Are you sure you want to submit?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
+    // Trigger SweetAlert confirmation using the reusable confirmation alert
+    confirmationAlert(
+      'Are you sure you want to submit?',
+      'This action will submit your job request.',
+      () => {
         // Submit the form data and show success alert
-        Swal.fire({
-          title: 'Submitted!',
-          text: 'Your job request has been submitted successfully.',
-          icon: 'success',
-        }).then(() => {
-          // Submit the form data to the parent component
-          onSubmit(jobRequests);
+        successAlert('Submitted!', 'Your job request has been submitted successfully.');
 
-          const jobRequests = () => {
-            navigate('/requestor/job_request');
-          };
-        });
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire('Cancelled', 'Your submission was cancelled.', 'error');
+        // Submit the form data to the parent component
+        onSubmit(jobRequests);
+
+        // Redirect to job request page
+        navigate('/requestor/job_request');
       }
-    });
+    );
   };
 
-  const handleBack = () => {
-    // Navigate back to the job request table
-    navigate('/requestor/job_request');
-  };
+  // const handleBack = () => {
+  //   // Navigate back to the job request table
+  //   navigate('/requestor/job_request');
+  // };
 
   return (
-    <div className="max-w-6xl mx-auto my-10 bg-white p-6 rounded-lg shadow-lg">
+    <div className="rounded-lg ">
       {/* Header with Current Date and Title */}
       <header className="bg-indigo-900 text-white p-4 rounded-t-lg flex justify-between items-center">
         <div>
@@ -124,6 +110,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                       onChange={(e) =>
                         handleInputChange(request.id, 'description', e.target.value)
                       }
+                      required
                     />
                   </td>
                   <td className="px-4 py-2 border">
@@ -134,6 +121,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                       onChange={(e) =>
                         handleInputChange(request.id, 'location', e.target.value)
                       }
+                      required
                     />
                   </td>
                   <td className="px-4 py-2 border">
@@ -143,6 +131,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                       onChange={(e) =>
                         handleInputChange(request.id, 'category', e.target.value)
                       }
+                      required
                     >
                       <option value="">Select Category</option>
                       {jobCategories.map((category, idx) => (
@@ -163,15 +152,14 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                   </td>
                   <td className="px-4 py-2 border text-center">
                     <div className="flex justify-center space-x-2">
-                      {jobRequests.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveRow(request.id)}
-                          className="bg-red-600 text-white px-3 py-1 rounded-md"
-                        >
-                          -
-                        </button>
-                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveRow(request.id)}
+                        className={`bg-red-600 text-white px-3 py-1 rounded-md ${jobRequests.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        disabled={jobRequests.length === 1} // Disable button if there's only one row
+                      >
+                        -
+                      </button>
                       {index === jobRequests.length - 1 && (
                         <button
                           type="button"
@@ -192,13 +180,6 @@ export default function RequestorJobRequestForm({ onSubmit }) {
         {/* Back and Submit Buttons */}
         <div className="flex justify-end mt-4 space-x-4">
           <button
-            type="button"
-            onClick={handleBack} // Back button to navigate to job request table
-            className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition-all duration-200"
-          >
-            Back
-          </button>
-          <button
             type="submit" // Handle form submission through onSubmit
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-all duration-200"
           >
@@ -209,3 +190,8 @@ export default function RequestorJobRequestForm({ onSubmit }) {
     </div>
   );
 }
+
+// Add PropTypes validation
+RequestorJobRequestForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

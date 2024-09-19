@@ -1,11 +1,9 @@
-import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SidebarItem from "../../../components/SidebarItem";
 import iconHome from "../../../assets/images/iconHome.png";         // HOME ICON
 import iconProfile from "../../../assets/images/iconProfile.png";   // PROFILE ICON
 import iconRequest from "../../../assets/images/iconRequestHistory.png";   // REQUEST ICON
 import iconSchedule from "../../../assets/images/iconSchedule.png"; // SCHEDULE ICON
-import iconLogout from "../../../assets/images/iconLogoutSideBar.png";  // LOGOUT
 import iconHistory from "../../../assets/images/iconHistory.png"; // HISTORY
 
 export default function ContentRequestorSideBar() {

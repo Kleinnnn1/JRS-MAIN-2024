@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 export default function ReusableContent({ children }) {
   return (
-    <div className=" bg-white-300 m-4 p-10 h-[76vh] rounded-lg shadow-lg relative border border-black">
+    <div className=" bg-white-300 m-4 p-10 h-[76vh] rounded-lg shadow-lg ">
       {children}
     </div>
   );

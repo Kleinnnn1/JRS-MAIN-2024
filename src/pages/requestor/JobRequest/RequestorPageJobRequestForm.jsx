@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import RequestorJobRequestForm from './RequestorJobRequestForm';
 import RequestorJobRequestTable from './RequestorJobRequestTable';
 
@@ -18,7 +18,6 @@ export default function JobRequestPage() {
   ]);
 
   const handleFormSubmit = (newJobRequests) => {
-    // Add new job requests to the existing list
     setJobRequests([...jobRequests, ...newJobRequests]);
   };
 

@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import SearchBar from "../../../components/SearchBar";
+
 import StatusCard from "../../../components/StatusCard";
-import RequestorNotificationAndCalendar from "./RequestorNotificationAndCalendar";
+import ReusableNotification from "../../../components/ReusableNotification";
+import ReusableCalendar from "../../../components/ReusableCalendar";
 import iconFile from "../../../assets/images/iconDashboard.png"; 
 
 export default function ContentDashboard() {
@@ -19,18 +20,18 @@ export default function ContentDashboard() {
   return (
     <>
       {/* Dashboard Header */}
-      <div className="my-4 mx-3 py-2 px-4 bg-blue-950 flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-md shadow-black/5 rounded-xl">
+      <div className="my-4 mx-3 py-4 px-6 bg-blue-950 flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
         {/* Title and Icon on the Left */}
         <div className="flex items-center mb-4 lg:mb-0">
-          <img src={iconFile} alt="Folder Icon" className="h-6 w-6 mr-4" />
-          <h1 className="text-2xl font-medium text-white">Dashboard</h1>
+          <img src={iconFile} alt="Folder Icon" className="h-8 w-8 mr-4" />
+          <h1 className="text-2xl font-semibold text-white">Dashboard</h1>
         </div>
 
         {/* Centered Buttons */}
         <div className="flex justify-center space-x-4">
           {/* USTP Harmonized Client Satisfaction Survey Button */}
           <button
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md shadow-md transition duration-200"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105 duration-200"
             onClick={handleSurveyClick}
           >
             USTP Harmonized Client Satisfaction Survey
@@ -38,7 +39,7 @@ export default function ContentDashboard() {
 
           {/* Make Request Button */}
           <button
-            className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-md shadow-md transition duration-200"
+            className="bg-green-500 hover:bg-green-600 text-white font-medium px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105 duration-200"
             onClick={handleMakeRequestClick}
           >
             Make Request
@@ -74,9 +75,17 @@ export default function ContentDashboard() {
         />
       </div>
 
-      {/* Notification and Calendar Section */}
-      <div className="p-6">
-        <RequestorNotificationAndCalendar />
+      {/* Main Content Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+        {/* Left Side (Notifications) */}
+        <div className="col-span-2">
+          <ReusableNotification />
+        </div>
+        
+        {/* Right Side (Calendar) */}
+        <div className="lg:col-span-1 p-4 bg-white shadow-lg rounded-lg">
+          <ReusableCalendar />
+        </div>
       </div>
     </>
   );
