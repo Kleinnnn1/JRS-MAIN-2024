@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import ButtonEditReferral from "./ButtonEditReferral";
 import { useNavigate } from "react-router-dom";
 
-export function TableData(referrals) {
+export default function TableData(referrals) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -13,6 +13,10 @@ export function TableData(referrals) {
     mutationFn: deleteReferral,
     onSuccess: () => {
       toast.success("Referral successfully deleted");
+
+      // This line invalidates the "referrals" query, marking it as stale.
+      // As a result, React Query will automatically refetch the latest referral data
+      // from the API the next time the query is accessed (such as when visiting the referral page).
       queryClient.invalidateQueries({ queryKey: ["referrals"] });
     },
     onError: (err) => toast.error(err.message),

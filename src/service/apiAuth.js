@@ -1,27 +1,27 @@
 import supabase from "./supabase";
 
 export async function signUp({
-  fname,
-  lname,
-  idnumber,
+  fName,
+  lName,
+  idNumber,
   email,
   password,
-  userrole,
-  contactnumber,
-  departmentid,
-  jobid,
+  userRole,
+  contactNumber,
+  departmentId,
+  jobId,
 }) {
   try {
     console.log("SignUp Data:", {
-      fname,
-      lname,
-      idnumber,
+      fName,
+      lName,
+      idNumber,
       email,
       password,
-      userrole,
-      contactnumber,
-      departmentid,
-      jobid,
+      userRole,
+      contactNumber,
+      departmentId,
+      jobId,
     });
 
     // Sign up the user with email and password and pass metadata
@@ -30,13 +30,13 @@ export async function signUp({
       password,
       options: {
         data: {
-          fname,
-          lname,
-          idnumber,
-          userrole,
-          contactnumber,
-          departmentid,
-          jobid,
+          fName,
+          lName,
+          idNumber,
+          userRole,
+          contactNumber,
+          departmentId,
+          jobId,
         },
       },
     });
@@ -49,15 +49,15 @@ export async function signUp({
     const { error: profileError } = await supabase.from("profiles").insert([
       {
         id: user.id, // Use the user's ID as the foreign key
-        fname,
-        lname,
-        idnumber,
+        fName,
+        lName,
+        idNumber,
         password,
         email,
-        userrole,
-        contactnumber,
-        departmentid,
-        jobid,
+        userRole,
+        contactNumber,
+        departmentId,
+        jobId,
         avatar: "",
       },
     ]);
@@ -71,7 +71,7 @@ export async function signUp({
   }
 }
 
-export async function updateUserInformation({ fname, lname, contactNumber }) {
+export async function updateUserInformation({ fName, lName, contactNumber }) {
   try {
     // Get the current user
     const {
@@ -86,15 +86,15 @@ export async function updateUserInformation({ fname, lname, contactNumber }) {
 
     console.log("Updating user information...");
     console.log("User ID:", user.id);
-    console.log("Update data:", { fname, lname, contactnumber: contactNumber });
+    console.log("Update data:", { fName, lName, contactNumber: contactNumber });
 
     // Update the user's information in the "profiles" table
     const { data, error } = await supabase
       .from("profiles")
       .update({
-        fname,
-        lname,
-        contactnumber: contactNumber, // Ensure column name matches your table schema
+        fName,
+        lName,
+        contactNumber: contactNumber, // Ensure column name matches your table schema
       })
       .eq("id", user.id); // Use the current user's ID to update
 
@@ -122,69 +122,6 @@ export async function updateUserInformation({ fname, lname, contactNumber }) {
     throw error; // Rethrow the error to be handled by the calling function
   }
 }
-
-// export async function updateUserInformation({ fname, lname, contactNumber }) {
-//   // Update the user's first name, last name, and contact number in the profiles table directly
-//   const {
-//     data: { user },
-//     error: userError,
-//   } = await supabase.auth.getUser();
-
-//   if (userError) {
-//     console.error("Error fetching user:", userError.message);
-//     throw new Error(userError.message);
-//   }
-
-//   const { data, error } = await supabase
-//     .from("profiles")
-//     .update({
-//       fname,
-//       lname,
-//       contactnumber: contactNumber, // Correct column name is 'contactnumber'
-//     })
-//     .eq("id", user.id); // Update based on the current user's ID
-
-//   if (error) {
-//     console.error("Error updating user information:", error.message);
-//     throw new Error(error.message);
-//   }
-
-//   // Ensure session is refreshed after update to prevent logout
-//   await supabase.auth.refreshSession();
-
-//   console.log("User information updated successfully:", data);
-//   return data;
-// }
-
-// export async function updateContactNumber({ contactNumber }) {
-//   // Get the current user
-//   const {
-//     data: { user },
-//     error: userError,
-//   } = await supabase.auth.getUser();
-
-//   if (userError) {
-//     console.error("Error fetching user:", userError.message);
-//     throw new Error(userError.message);
-//   }
-
-//   // Update the contact number in Supabase
-//   const { data, error } = await supabase
-//     .from("profiles")
-//     .update({ contactnumber: contactNumber }) // Correct column name is 'contactnumber'
-//     .eq("id", user.id); // Update based on the current user's ID
-
-//   // Handle error
-//   if (error) {
-//     console.error("Error updating contact number:", error.message);
-//     throw new Error(error.message);
-//   }
-
-//   // Log success message
-//   console.log("Contact number updated successfully:", data);
-
-//   return data;
-// }
 
 export async function updatePassword({ password }) {
   // Update the user's password using Supabase Auth API
@@ -283,14 +220,14 @@ export async function updateAvatar({ avatar }) {
   }
 }
 
-export async function login({ idnumber, password }) {
-  // Fetch user by idnumber and include all necessary fields
+export async function login({ idNumber, password }) {
+  // Fetch user by idNumber and include all necessary fields
   const { data: userData, error: userError } = await supabase
     .from("profiles")
     .select(
-      "id, email, userrole, avatar, fname, lname, idnumber, contactnumber, departmentid, jobid"
+      "id, email, userRole, avatar, fName, lName, idNumber, contactNumber, departmentId, jobId"
     )
-    .eq("idnumber", idnumber)
+    .eq("idNumber", idNumber)
     .single();
 
   if (userError || !userData) {
@@ -309,14 +246,14 @@ export async function login({ idnumber, password }) {
   // Update user metadata with the additional profile information
   const { error: metadataError } = await supabase.auth.updateUser({
     data: {
-      userrole: userData.userrole,
+      userRole: userData.userRole,
       avatar: userData.avatar,
-      fname: userData.fname,
-      lname: userData.lname,
-      idnumber: userData.idnumber,
-      contactnumber: userData.contactnumber,
-      departmentid: userData.departmentid,
-      jobid: userData.jobid,
+      fName: userData.fName,
+      lName: userData.lName,
+      idNumber: userData.idNumber,
+      contactNumber: userData.contactNumber,
+      departmentId: userData.departmentId,
+      jobId: userData.jobId,
     },
   });
 
@@ -329,14 +266,14 @@ export async function login({ idnumber, password }) {
     ...authData,
     user: {
       ...authData.user,
-      userrole: userData.userrole,
+      userRole: userData.userRole,
       avatar: userData.avatar,
-      fname: userData.fname,
-      lname: userData.lname,
-      idnumber: userData.idnumber,
-      contactnumber: userData.contactnumber,
-      departmentid: userData.departmentid,
-      jobid: userData.jobid,
+      fName: userData.fName,
+      lName: userData.lName,
+      idNumber: userData.idNumber,
+      contactNumber: userData.contactNumber,
+      departmentId: userData.departmentId,
+      jobId: userData.jobId,
     },
   };
 }

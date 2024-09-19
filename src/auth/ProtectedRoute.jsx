@@ -8,7 +8,7 @@ function ProtectedRoute({ children, requiredRole }) {
     userMetadata: state.userMetadata,
   }));
 
-  const isAuthenticated = userMetadata?.idnumber !== null;
+  const isAuthenticated = userMetadata?.idNumber !== null;
   const userRole = userMetadata?.role;
   const isLoading = userMetadata === null; // Assuming initial state means loading
 
@@ -45,7 +45,7 @@ export default ProtectedRoute;
 //     setUserMetadata: state.setUserMetadata,
 //   }));
 
-//   const isAuthenticated = !!userMetadata.idnumber;
+//   const isAuthenticated = !!userMetadata.idNumber;
 //   const userRole = userMetadata.role;
 //   const isLoading = !userMetadata.idnumber && !userRole; // Assuming initial state means loading
 

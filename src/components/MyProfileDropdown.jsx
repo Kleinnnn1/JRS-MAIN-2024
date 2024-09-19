@@ -30,7 +30,7 @@ export default function MyProfileDropdown() {
       onChange={handleSelectChange} // Handle change event
     >
       <option value="Kenneth" disabled hidden>
-        {userMetadata.lname}
+        {userMetadata.lName}
       </option>
       <option value="Profile">Profile</option>
       <option value="Logout">Logout</option>

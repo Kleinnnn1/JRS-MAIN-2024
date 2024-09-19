@@ -12,7 +12,7 @@ export default function Profile() {
         className="w-16 h-16 rounded-full  border border-black object-cover mb-2"
       />
       <p className="font-semibold text-xm">
-        {userMetadata.fname} {userMetadata.lname}
+        {userMetadata.fName} {userMetadata.lName}
       </p>
       <p className="text-xs">{userMetadata.role}</p>
     </div>

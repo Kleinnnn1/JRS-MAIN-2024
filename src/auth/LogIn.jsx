@@ -4,14 +4,14 @@ import ReusableFormRow from "../components/ReusableFormRow";
 import { useLogin } from "./useLogin";
 
 export default function LogIn() {
-  const [idnumber, setIdNumber] = useState(""); // Change email to idnumber
+  const [idNumber, setIdNumber] = useState(""); // Change email to idNumber
   const [password, setPassword] = useState("12345678");
   const { login } = useLogin(); // Destructure 'login' from the object
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!idnumber || !password) return;
-    login({ idnumber, password }); // Pass 'idnumber' instead of 'email'
+    if (!idNumber || !password) return;
+    login({ idNumber, password }); // Pass 'idNumber' instead of 'email'
   }
 
   return (
@@ -31,9 +31,9 @@ export default function LogIn() {
               className="border-l border-gray-400 p-2 outline-none"
               placeholder="ID Number"
               type="text"
-              id="idnumber"
+              id="idNumber"
               autoComplete="username"
-              value={idnumber}
+              value={idNumber}
               onChange={(e) => setIdNumber(e.target.value)}
             />
           </div>

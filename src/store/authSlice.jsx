@@ -17,7 +17,7 @@ const createAuthSlice = (set, get) => ({
     set({
       user,
       isAuthenticated: !!user,
-      userRole: user?.userrole || null,
+      userRole: user?.userRole || null,
       isLoading: false,
     });
   },
@@ -32,7 +32,7 @@ const createAuthSlice = (set, get) => ({
         set({
           user: userData,
           isAuthenticated: !!userData,
-          userRole: userData?.userrole || null,
+          userRole: userData?.userRole || null,
           isLoading: false,
         });
       } catch (error) {

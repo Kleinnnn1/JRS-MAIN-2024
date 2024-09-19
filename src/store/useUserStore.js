@@ -4,11 +4,11 @@ import { create } from "zustand";
 const useUserStore = create((set) => {
   // Initialize state from localStorage or with default values
   const initialState = JSON.parse(localStorage.getItem("userMetadata")) || {
-    idnumber: null,
+    idNumber: null,
     role: null,
-    fname: null,
-    lname: null,
-    userrole: null,
+    fName: null,
+    lName: null,
+    userRole: null,
   };
 
   return {
@@ -25,11 +25,11 @@ const useUserStore = create((set) => {
       localStorage.removeItem("userMetadata");
       set({
         userMetadata: {
-          idnumber: null,
+          idNumber: null,
           role: null,
-          fname: null,
-          lname: null,
-          userrole: null,
+          fName: null,
+          lName: null,
+          userRole: null,
         },
       });
     },
@@ -43,10 +43,10 @@ export default useUserStore;
 
 // const useUserStore = create((set) => {
 //   const initialState = JSON.parse(localStorage.getItem("userMetadata")) || {
-//     idnumber: null,
+//     idNumber: null,
 //     role: null,
-//     fname: null,
-//     lname: null,
+//     fName: null,
+//     lName: null,
 //     userrole: null,
 //   };
 
@@ -64,7 +64,7 @@ export default useUserStore;
 //           idnumber: null,
 //           role: null,
 //           fname: null,
-//           lname: null,
+//           lName: null,
 //           userrole: null,
 //         },
 //       });

@@ -8,7 +8,7 @@ export function useUser() {
     staleTime: 10000, // Cache for 10 seconds
   });
 
-  const userRole = user?.userrole;
+  const userRole = user?.userRole;
   const isAuthenticated = !!user && !!userRole;
 
   if (!isLoading) {

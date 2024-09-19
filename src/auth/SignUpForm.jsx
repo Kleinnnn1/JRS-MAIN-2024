@@ -13,25 +13,25 @@ function SignUpForm() {
   } = useForm();
 
   function onSubmit({
-    fname,
-    lname,
+    fName,
+    lName,
     idnumber,
     email,
     password,
     userrole,
-    contactnumber,
+    contactNumber,
     departmentid,
     jobid,
   }) {
     signup(
       {
-        fname,
-        lname,
+        fName,
+        lName,
         idnumber,
         email,
         password,
         userrole,
-        contactnumber,
+        contactNumber,
         departmentid,
         jobid,
       },
@@ -48,22 +48,22 @@ function SignUpForm() {
     >
       <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
 
-      <FormRow label="First Name" error={errors.fname?.message}>
+      <FormRow label="First Name" error={errors.fName?.message}>
         <input
-          id="fname"
-          name="fname"
+          id="fName"
+          name="fName"
           type="text"
-          {...register("fname", { required: "This field is required" })}
+          {...register("fName", { required: "This field is required" })}
           className="mt-1 block w-full p-2 border border-gray-300 rounded"
         />
       </FormRow>
 
-      <FormRow label="Last Name" error={errors.lname?.message}>
+      <FormRow label="Last Name" error={errors.lName?.message}>
         <input
-          id="lname"
-          name="lname"
+          id="lName"
+          name="lName"
           type="text"
-          {...register("lname", { required: "This field is required" })}
+          {...register("lName", { required: "This field is required" })}
           className="mt-1 block w-full p-2 border border-gray-300 rounded"
         />
       </FormRow>
@@ -84,7 +84,6 @@ function SignUpForm() {
           name="email"
           type="email"
           {...register("email", {
-            required: "This field is required",
             pattern: {
               value: /\S+@\S+\.\S+/,
               message: "Please provide a valid email address",
@@ -93,6 +92,22 @@ function SignUpForm() {
           className="mt-1 block w-full p-2 border border-gray-300 rounded"
         />
       </FormRow>
+
+      {/* <FormRow label="Email" error={errors.email?.message}>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          {...register("email", {
+            required: "This field is required",
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Please provide a valid email address",
+            },
+          })}
+          className="mt-1 block w-full p-2 border border-gray-300 rounded"
+        />
+      </FormRow> */}
 
       <FormRow
         label="Password (min 8 characters)"
@@ -144,12 +159,12 @@ function SignUpForm() {
         </select>
       </FormRow>
 
-      <FormRow label="Contact Number" error={errors.contactnumber?.message}>
+      <FormRow label="Contact Number" error={errors.contactNumber?.message}>
         <input
-          id="contactnumber"
-          name="contactnumber"
+          id="contactNumber"
+          name="contactNumber"
           type="text"
-          {...register("contactnumber", { required: "This field is required" })}
+          {...register("contactNumber", { required: "This field is required" })}
           className="mt-1 block w-full p-2 border border-gray-300 rounded"
         />
       </FormRow>
