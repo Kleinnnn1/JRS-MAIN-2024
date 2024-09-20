@@ -14,7 +14,7 @@ export default function StaffContentDash() {
           title="Ongoing"
           count={0}
           bgColor="bg-yellow-400"
-          onClick={() => navigate("/Staff/ongoing")}
+          onClick={() => navigate("/Staff/StaffImagePage")}
         />
         <StatusCard
           title="Completed"
