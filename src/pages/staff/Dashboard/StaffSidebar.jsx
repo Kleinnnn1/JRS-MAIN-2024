@@ -2,49 +2,37 @@ import SidebarItem from "../../../components/SidebarItem";
 import iconHome from "../../../assets/images/iconHome.png";
 import iconRequest from "../../../assets/images/iconRequest.png";
 import iconProfile from "../../../assets/images/iconProfile.png";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function StaffSidebar() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const currentPath = location.pathname;
-
-  const handleNavigation = (path) => {
-    navigate(path, { replace: true });
-  };
-
-  const isActive = (path) => {
-    return (
-      currentPath === path ||
-      (path !== "/staff" && currentPath.startsWith(path))
-    );
-  };
+    const navigate = useNavigate();
         return (
         <>
           <SidebarItem 
             name="Dashboard" 
             image={iconHome}
-            onClick={() => navigate("/staff/home")}
-            bold={isActive("/staff/home")}
+            onClick={() => navigate("")}
            
           />
              <SidebarItem
              name="Profile"     
              onClick={() => navigate("/Staff/Staffprofile")}
-             image={iconProfile}
-             bold={isActive("/Staff/Staffprofile")}
+            image={iconProfile}
         />
             <SidebarItem
              name="My Ongoing Task"     
-             onClick={() => navigate("/Staff/ongoing")}
+             onClick={() => navigate("/Staff/StaffImagePage")}
              image={iconRequest}
-             bold={isActive("/Staff/ongoing")}
         />
             <SidebarItem
-             name="History"     
-             onClick={() => navigate("/Staff/CompletedStaff")}
+             name="Send Certificate"     
+             onClick={() => navigate("/Staff/StaffSendCert")}
             image={iconRequest}
-            bold={isActive("/Staff/CompletedStaff")}
+        />
+         <SidebarItem
+             name="History"     
+             onClick={() => navigate("/Staff/History")}
+            image={iconRequest}
         />
           
           </>
