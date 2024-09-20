@@ -20,7 +20,7 @@ export default function StaffContentDash() {
           title="Completed"
           count={0}
           bgColor="bg-green-200"
-          onClick={() => navigate("/Staff/CompletedStaff")}
+          onClick={() => navigate("/Staff/StaffSendCert")}
         />
       </div>
       <NotificationAndCalendar />
