@@ -11,7 +11,7 @@ import StaffPageCertificate from "./pages/staff/SendCert/StaffPageCert.jsx";
 import StaffSendCert from "./pages/staff/SendCert/StaffContentSendCert.jsx";
 import StaffImageContent from "./pages/staff/Task/StaffImageContent.jsx";
 import StaffImagePage from "./pages/staff/Task/StaffOngoingPage.jsx";
-import StaffHistoryPage from "./pages/staff/History/StaffHistoryPage.jsx";
+import StaffHistoryPage from "./pages/staff/History/CompletedTask.jsx";
 
 export default function App() {
   return (
