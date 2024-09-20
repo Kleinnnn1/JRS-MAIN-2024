@@ -8,12 +8,12 @@ import { useNavigate } from "react-router-dom";
 const tableHeaders = [
   "Task ID",
   "Job Description",
+  "Job Type",
   "Requestor",
   "Location",
   "Date Started",
   "Accomplished Date",
   "Status",
-  "Action",
   
 ];
 
@@ -21,17 +21,15 @@ export default function JobCompletedContent() {
   const navigate = useNavigate();
   const tableContent = [
     [
-        " ", 
+        "1001", 
       "Broken Door Knob",
+      "Carpentry",
       "Ms. Charlane Vallar",
       "CITC Building",
       "28 - 07 - 2024",
       "30 - 07 - 2024",
       "Completed",
       <>
-        <ReusableViewButton
-          onClick={() => navigate("/department_head/job_completed/view")}
-        />
       
       </>,
     ],
