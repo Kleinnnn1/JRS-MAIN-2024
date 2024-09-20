@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 export default function StatusCard({ title, count, bgColor, onClick }) {
   return (
     <div
-      className={`${bgColor} border-gray-100 p-5 shadow-md shadow-black/5 flex flex-col justify-between w-full cursor-pointer`}
+      className={`${bgColor} border-gray-100 p-5 shadow-md shadow-black/60 transition-transform duration-300 hover:shadow-lg hover:shadow-black/60 flex flex-col justify-between w-full cursor-pointer transform hover:scale-105 rounded-lg`} // Added rounded-lg class
       onClick={onClick}
     >
       <div className="text-xl font-semibold">{title}</div>
