@@ -49,9 +49,9 @@ export default function ReusableHeader({ profilePicture, username, profileLink }
                         </Link>
                         <Link
                             to="/logout"
-                            className="block px-4 py-2 text-sm text-gray-900 hover:bg-yellow-600 hover:text-white"
+                            className="block px-3 py-2 text-sm text-gray-900 hover:bg-yellow-600 hover:text-white"
                         >
-                            Logouty
+                            Logouteyyoyo
                         </Link>
                     </div>
                 )}
