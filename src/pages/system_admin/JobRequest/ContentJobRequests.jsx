@@ -1,5 +1,5 @@
 
-import Table from "../components/table";
+import Table from "../../../components/Table";
 import { useNavigate } from "react-router-dom";
 import DropdownButton from "../components/ReusableDropdown";
 import ReusableViewButton from "../components/ReusableViewButon";
@@ -41,20 +41,7 @@ export default function ContentJobRequest() {
         
       </>,
     ],
-    ["2."],
-    ["3."],
-    ["4."],
-    ["5."],
-    ["6."],
-    ["7."],
-    ["8."],
-    ["9."],
-    ["10."],
-    ["11."],
-    ["12."],
-    ["13."],
-    ["14."],
-    ["15."],
+
   ];
   return (
     <>

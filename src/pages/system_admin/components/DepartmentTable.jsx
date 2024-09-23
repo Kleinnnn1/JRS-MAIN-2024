@@ -1,6 +1,6 @@
 
 import 'remixicon/fonts/remixicon.css';
-import Table from './table';
+import Table from '../../../components/Table';
 import { useNavigate } from "react-router-dom";
 import ReusableViewButton from './ReusableViewButon';
 import ButtonAddDepartment from '../Department/buttonAddDep';
@@ -54,18 +54,7 @@ export default function DeptTable() {
           />
         </>,
        ],
-    ["4."],
-    ["5."],
-    ["6."],
-    ["7."],
-    ["8."],
-    ["9."],
-    ["10."],
-    ["11."],
-    ["12."],
-    ["13."],
-    ["14."],
-    ["15."],
+
   ];
   return (
     <>

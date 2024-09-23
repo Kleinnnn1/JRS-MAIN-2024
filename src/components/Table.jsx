@@ -31,7 +31,7 @@ export default function Table({
 
   return (
     <div className="m-2 px-2">
-      <table className="min-w-full max-w-md divide-y divide-black-200 shadow-2xl border border-black">
+      <table className="min-w-full max-w-md divide-y divide-black-200 shadow-2xl ">
         <thead className="bg-gray-50">
           <tr>
             {Array.from({ length: columns }, (_, colIndex) => (
