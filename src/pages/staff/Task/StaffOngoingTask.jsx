@@ -35,14 +35,7 @@ export default function TableCertificate() {
         />
       </>,
     ],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
+
   ];
   return (
     <>
