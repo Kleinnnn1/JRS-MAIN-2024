@@ -15,7 +15,9 @@ export default function SystemAdDashboard (){
         <>
        <SideBar>
         <Logo />
-        <Profile />
+        <div >
+          <Profile />
+        </div>
         <ContentSideBar />
       </SideBar>
     

@@ -10,10 +10,10 @@ export default function Profile() {
         alt="Profile"
         className="w-16 h-16 rounded-full  border border-black object-cover mb-2"
       />
-      <p className="font-semibold text-xm">
+      <p className="font-semibold text-xm hidden sm:block ">
         {userMetadata.fname} {userMetadata.lname}
       </p>
-      <p className="text-xs">{userMetadata.role}</p>
+      <p className="text-xs hidden sm:block">{userMetadata.role}</p>
     </div>
   );
 }

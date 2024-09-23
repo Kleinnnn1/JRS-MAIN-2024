@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 export default function MainBody({ children }) {
   return (
-    <main className="ml-64 bg-gray-50 min-h-screen transition-all">
+    <main className="ml-20 sm:ml-64 bg-gray-50 min-h-screen transition-all">
       {children}
     </main>
   );
