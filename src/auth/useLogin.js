@@ -30,7 +30,7 @@ export function useLogin() {
         lName: data.user.lName,
         userRole: data.user.userRole,
         contactNumber: data.user.contactNumber,
-        departmentId: data.user.departmentId,
+        deptId: data.user.deptId,
         jobId: data.user.jobId,
         email: data.user.email,
         avatar: data.user.avatar,

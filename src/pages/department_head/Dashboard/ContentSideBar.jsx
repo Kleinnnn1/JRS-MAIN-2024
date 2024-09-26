@@ -16,11 +16,11 @@ export default function ContentSideBar() {
         image={iconHome}
         onClick={() => navigate("/department_head/dashboard")}
       />
-      <SidebarItem
+      {/* <SidebarItem
         name="My Profile"
         onClick={() => navigate("/department_head/myprofile")}
         image={iconProfile}
-      />
+      /> */}
       <SidebarItem
         name="Job Request"
         onClick={() => navigate("/department_head/job_request")}

@@ -8,7 +8,7 @@ export async function signUp({
   password,
   userRole,
   contactNumber,
-  departmentId,
+  deptId,
   jobId,
 }) {
   try {
@@ -20,7 +20,7 @@ export async function signUp({
       password,
       userRole,
       contactNumber,
-      departmentId,
+      deptId,
       jobId,
     });
 
@@ -35,7 +35,7 @@ export async function signUp({
           idNumber,
           userRole,
           contactNumber,
-          departmentId,
+          deptId,
           jobId,
         },
       },
@@ -56,7 +56,7 @@ export async function signUp({
         email,
         userRole,
         contactNumber,
-        departmentId,
+        deptId,
         jobId,
         avatar: "",
       },
@@ -225,7 +225,7 @@ export async function login({ idNumber, password }) {
   const { data: userData, error: userError } = await supabase
     .from("profiles")
     .select(
-      "id, email, userRole, avatar, fName, lName, idNumber, contactNumber, departmentId, jobId"
+      "id, email, userRole, avatar, fName, lName, idNumber, contactNumber, deptId, jobId"
     )
     .eq("idNumber", idNumber)
     .single();
@@ -252,7 +252,7 @@ export async function login({ idNumber, password }) {
       lName: userData.lName,
       idNumber: userData.idNumber,
       contactNumber: userData.contactNumber,
-      departmentId: userData.departmentId,
+      deptId: userData.deptId,
       jobId: userData.jobId,
     },
   });
@@ -272,7 +272,7 @@ export async function login({ idNumber, password }) {
       lName: userData.lName,
       idNumber: userData.idNumber,
       contactNumber: userData.contactNumber,
-      departmentId: userData.departmentId,
+      deptId: userData.deptId,
       jobId: userData.jobId,
     },
   };

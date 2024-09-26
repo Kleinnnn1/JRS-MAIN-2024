@@ -15,25 +15,25 @@ function SignUpForm() {
   function onSubmit({
     fName,
     lName,
-    idnumber,
+    idNumber,
     email,
     password,
-    userrole,
+    userRole,
     contactNumber,
-    departmentid,
-    jobid,
+    deptId,
+    jobId,
   }) {
     signup(
       {
         fName,
         lName,
-        idnumber,
+        idNumber,
         email,
         password,
-        userrole,
+        userRole,
         contactNumber,
-        departmentid,
-        jobid,
+        deptId,
+        jobId,
       },
       {
         onSettled: () => reset,
@@ -68,12 +68,12 @@ function SignUpForm() {
         />
       </FormRow>
 
-      <FormRow label="ID Number" error={errors.idnumber?.message}>
+      <FormRow label="ID Number" error={errors.idNumber?.message}>
         <input
-          id="idnumber"
-          name="idnumber"
+          id="idNumber"
+          name="idNumber"
           type="text"
-          {...register("idnumber", { required: "This field is required" })}
+          {...register("idNumber", { required: "This field is required" })}
           className="mt-1 block w-full p-2 border border-gray-300 rounded"
         />
       </FormRow>
@@ -144,11 +144,11 @@ function SignUpForm() {
         />
       </FormRow>
 
-      <FormRow label="User Role" error={errors.userrole?.message}>
+      <FormRow label="User Role" error={errors.userRole?.message}>
         <select
-          id="userrole"
-          name="userrole"
-          {...register("userrole", { required: "This field is required" })}
+          id="userRole"
+          name="userRole"
+          {...register("userRole", { required: "This field is required" })}
           className="mt-1 block w-full p-2 border border-gray-300 rounded"
         >
           <option value="">Select a role</option>
@@ -169,22 +169,22 @@ function SignUpForm() {
         />
       </FormRow>
 
-      <FormRow label="Department ID" error={errors.departmentid?.message}>
+      <FormRow label="Department ID" error={errors.deptId?.message}>
         <input
-          id="departmentid"
-          name="departmentid"
+          id="deptId"
+          name="deptId"
           type="text"
-          {...register("departmentid", { required: "This field is required" })}
+          {...register("deptId", { required: "This field is required" })}
           className="mt-1 block w-full p-2 border border-gray-300 rounded"
         />
       </FormRow>
 
-      <FormRow label="Job ID" error={errors.jobid?.message}>
+      <FormRow label="Job ID" error={errors.jobId?.message}>
         <input
-          id="jobid"
-          name="jobid"
+          id="jobId"
+          name="jobId"
           type="text"
-          {...register("jobid", { required: "This field is required" })}
+          {...register("jobId", { required: "This field is required" })}
           className="mt-1 block w-full p-2 border border-gray-300 rounded"
         />
       </FormRow>

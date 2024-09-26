@@ -12,7 +12,7 @@ function SideBarProfile() {
         className="w-16 h-16 rounded-full object-cover mb-2"
       />
       <p className="font-bold text-xs">
-        {userMetadata.fname} {userMetadata.lname}
+        {userMetadata.fName} {userMetadata.lName}
       </p>
       <p className="text-xs">{userMetadata.role}</p>
     </div>
