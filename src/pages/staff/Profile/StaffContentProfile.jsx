@@ -10,7 +10,6 @@ export default function ContentProfile() {
   return (
     <div className="flex justify-center items-start">
       
-
       <ProfileInformationBox>
         <ContentAndHeader
           content={otherContent ? <Outlet /> : <UserInformation />}

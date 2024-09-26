@@ -1,4 +1,4 @@
-import CertificateOfJobCompletion from "/src/assets/images/certificateOfJobCompletion.png";
+import CertificateOfJobCompletion from "../../../assets/images/CertificateOfJobCompletion.png";
 
 export default function ImageCertificate() {
   return (

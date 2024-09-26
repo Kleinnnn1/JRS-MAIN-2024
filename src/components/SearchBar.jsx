@@ -1,11 +1,21 @@
 import PropTypes from "prop-types";
 
+// Helper function to format the date as "Month Day, Year Weekday"
+const formatDate = () => {
+  const currentDate = new Date();
+  
+  // Use toLocaleDateString to get the desired format
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  return currentDate.toLocaleDateString('en-US', options);
+};
+
+
 export default function SearchBar({ title, showInput, inputProps = {} }) {
   return (
-    <div className="my-4 mx-3 py-2 px-4 bg-blue-950 flex items-center min-h-20 shadow-md shadow-black/5 top-0 left-0 z-30 rounded-xl">
+    <div className="my-2 mx-3 py-1 bg-custom-blue flex items-center ">
       <div className="flex flex-col flex-grow">
         <span className="text-white text-2xl font-bold">{title}</span>
-        <span className="text-white text-xs mt-1">23/07/2024</span>
+        <span className="text-white text-xs mt-1">{formatDate()}</span>
       </div>
       {showInput && (
         <input
