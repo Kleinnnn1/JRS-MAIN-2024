@@ -1,23 +1,22 @@
-import React from 'react';
 import ReusableContent from "../../../components/ReusableContent";
 import SearchBar from "../../../components/SearchBar";
 import ReusableBackButton from "../../../components/ReusableBackButton";
 import ImageView from "./StaffViewImage";
 import ButtonApproveCertificate from "./StaffMarkComplete";
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function ContentApprovingCertificate() {
   const navigate = useNavigate();
 
   const handleApproveClick = () => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'Are you sure you want to mark this as completed?',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Are you sure you want to mark this as completed?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Yes, mark as completed!',
-      cancelButtonText: 'No, keep it pending'
+      confirmButtonText: "Yes, mark as completed!",
+      cancelButtonText: "No, keep it pending",
     }).then((result) => {
       if (result.isConfirmed) {
         navigate("/staff/StaffSendCert");
@@ -27,13 +26,11 @@ export default function ContentApprovingCertificate() {
 
   return (
     <>
-         <div className="my-4 mx-3 py-4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
+      <div className="my-4 mx-3 py-4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
         <SearchBar title="View Image" />
       </div>
       <ReusableContent className="p-6 bg-white shadow-md rounded-lg relative">
-        <span className="text-2xl font-bold mb-4 block">
-          Job Details
-        </span>
+        <span className="text-2xl font-bold mb-4 block">Job Details</span>
 
         <span className="block mb-2">
           <b>Requestor Name:</b> Ms. Charlane Vallar
@@ -66,7 +63,6 @@ export default function ContentApprovingCertificate() {
         <span className="block mb-2">
           <b>Prioritization:</b> High
         </span>
-
 
         <div className="absolute bottom-5 right-4 flex">
           <ReusableBackButton marginRight="mr-4" />

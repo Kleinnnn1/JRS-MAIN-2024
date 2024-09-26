@@ -10,21 +10,14 @@ const formatDate = () => {
 };
 
 
-export default function SearchBar({ title, showInput, inputProps = {} }) {
+export default function SearchBar({ title = {} }) {
   return (
     <div className="my-2 mx-3 py-1 bg-custom-blue flex items-center ">
       <div className="flex flex-col flex-grow">
         <span className="text-white text-2xl font-bold">{title}</span>
         <span className="text-white text-xs mt-1">{formatDate()}</span>
       </div>
-      {showInput && (
-        <input
-          type="text"
-          placeholder="Search..."
-          className="ml-4 py-1 px-3 rounded border border-gray-300 text-black w-64"
-          {...inputProps}
-        />
-      )}
+
     </div>
   );
 }

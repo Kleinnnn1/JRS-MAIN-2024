@@ -34,7 +34,7 @@ export default function ContentApprovingCertificate() {
         </span>
 
         <span className="block mb-2">
-          <b>Requestor Name:</b> Ms. Charlane Vallar
+          <b>Requestor Name:</b> Ms. Charlanees Vallar
         </span>
         <span className="block mb-2">
           <b>Job Description:</b> Broken Door Knob
