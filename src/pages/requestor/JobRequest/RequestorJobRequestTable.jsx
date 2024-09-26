@@ -1,8 +1,9 @@
 import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { getCurrentDate } from "./utils";
+
 import RequestorJobRequestForm from "./RequestorJobRequestForm"; // Import the form component
+import SearchBar from '../../../components/SearchBar';
 
 export default function RequestorJobRequestTable({ jobRequests }) {
   // const navigate = useNavigate();
@@ -56,10 +57,9 @@ export default function RequestorJobRequestTable({ jobRequests }) {
   return (
     <div className={`max-w-full mx-auto p-6 m-5 bg-white rounded-lg shadow-lg ${isModalOpen ? 'overflow-hidden' : ''}`}>
       {/* Header */}
-      <header className="bg-indigo-900 text-white p-4 rounded-t-lg flex justify-between items-center">
+      <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold">Job Requests</h1>
-          <p className="text-sm">{getCurrentDate()}</p>{" "}
+        <SearchBar title="Job Requests" />
           {/* Display current date */}
         </div>
         <div className="flex space-x-4">
