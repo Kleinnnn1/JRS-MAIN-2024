@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import SearchBar from '../../../components/SearchBar';
+import SearchItem from '../../../components/SearchItem'; // Import the SearchItem component
 
 export default function JobRequestHistory() {
   const [jobRequests, setJobRequests] = useState([
@@ -9,7 +10,7 @@ export default function JobRequestHistory() {
       workDescription: "Fixing computer issues in Room 101",
       category: "IT Support",
       noOfPerson: 2,
-      department: "IT dDepartment",
+      department: "IT Department",
       processedBy: "John Doe",
       photo: "https://via.placeholder.com/150", // Placeholder image URL for now
       status: "Completed",
@@ -42,14 +43,14 @@ export default function JobRequestHistory() {
       dateRequested: "2024-09-07",
       dateCompleted: "-",
     },
-    
   ]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRequests, setFilteredRequests] = useState(jobRequests);
+  const [rowsPerPage, setRowsPerPage] = useState(10); // Rows per page state
+  const [currentPage, setCurrentPage] = useState(1); // Current page state
 
   useEffect(() => {
-    // Filter job requests based on the search query
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filtered = jobRequests.filter((job) =>
       job.requestor.toLowerCase().includes(lowerCaseQuery) ||
@@ -58,10 +59,6 @@ export default function JobRequestHistory() {
     );
     setFilteredRequests(filtered);
   }, [searchQuery, jobRequests]);
-
-  const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
-  };
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -77,24 +74,36 @@ export default function JobRequestHistory() {
   };
 
   const handleViewClick = (requestId) => {
-    // Add functionality to handle when "View" is clicked
     alert(`Viewing details for Request ID: ${requestId}`);
+  };
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredRequests.length / rowsPerPage);
+  const paginatedRequests = filteredRequests.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-md rounded-lg">
       {/* Table Header */}
       <div className="bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
-      <SearchBar title="Job Request History" />
+        <SearchBar title="Job Request History" />
         <div className="flex space-x-2">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={handleSearch}
-            placeholder="Search..."
-            className="p-2 rounded border border-gray-300"
-          />
-          <button className="bg-yellow-500 p-2 rounded text-white">Search</button>
+          {/* Replace inline search with SearchItem */}
+          <SearchItem searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         </div>
       </div>
 
@@ -118,14 +127,14 @@ export default function JobRequestHistory() {
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-light">
-            {filteredRequests.length === 0 ? (
+            {paginatedRequests.length === 0 ? (
               <tr>
                 <td colSpan="12" className="text-center py-4">
                   No matching results found
                 </td>
               </tr>
             ) : (
-              filteredRequests.map((job, index) => (
+              paginatedRequests.map((job, index) => (
                 <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
                   <td className="py-3 px-6 text-left">{job.requestId}</td>
                   <td className="py-3 px-6 text-left">{job.requestor}</td>
@@ -163,11 +172,48 @@ export default function JobRequestHistory() {
         </table>
       </div>
 
-      {/* Footer */}
-      <div className="py-3 px-6 bg-gray-100 flex justify-between items-center rounded-b-lg">
-        <p className="text-sm text-gray-600">
-          Rows per page: {filteredRequests.length}
-        </p>
+      {/* Pagination */}
+      <div className="mt-4 flex justify-between items-center text-gray-600">
+        <div className="flex items-center">
+          <span className="mr-2">Rows per page:</span>
+          <select
+            value={rowsPerPage}
+            onChange={(e) => {
+              setRowsPerPage(Number(e.target.value));
+              setCurrentPage(1); // Reset to first page when rows per page changes
+            }}
+            className="border border-gray-300 rounded-md px-2 py-1"
+          >
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={30}>30</option>
+            <option value={40}>40</option>
+          </select>
+        </div>
+        <div className="flex space-x-2">
+          <button
+            onClick={handlePrevious}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 rounded-md ${
+              currentPage === 1
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-blue-500 text-white"
+            }`}
+          >
+            Previous
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={currentPage === totalPages || totalPages === 0}
+            className={`px-4 py-2 rounded-md ${
+              currentPage === totalPages || totalPages === 0
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-blue-500 text-white"
+            }`}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

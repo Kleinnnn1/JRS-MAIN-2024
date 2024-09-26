@@ -9,7 +9,7 @@ export default function SidebarItem({ name, onClick, image, isActive }) {
       }`}
     >
       <img src={image} alt={`${name} Icon`} className="w-4 h-4 mr-3" />
-      <span className="text-sm">{name}</span>
+      <span className="ml-2 hidden md:block">{name}</span>
     </div>
   );
 }
