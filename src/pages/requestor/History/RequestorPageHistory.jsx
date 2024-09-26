@@ -110,7 +110,7 @@ export default function JobRequestHistory() {
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto mt-2">
-          <thead className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+          <thead className="bg-yellow-100 text-gray-600 uppercase text-sm leading-normal">
             <tr>
               <th className="py-3 px-6 text-left">Request ID</th>
               <th className="py-3 px-6 text-left">Requestor</th>
