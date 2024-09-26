@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import StatusCard from "../../../components/StatusCard";
 import ReusableNotification from "../../../components/ReusableNotification";
 import ReusableCalendar from "../../../components/ReusableCalendar";
-import iconFile from "../../../assets/images/iconDashboard.png"; 
+import SearchBar from '../../../components/SearchBar';
 
 export default function ContentDashboard() {
   const navigate = useNavigate();
@@ -19,13 +19,16 @@ export default function ContentDashboard() {
 
   return (
     <>
-      {/* Dashboard Header */}
-      <div className="my-4 mx-3 py-4 px-6 bg-blue-950 flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
+      
+      <div className="my-4 mx-3 py-4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
         {/* Title and Icon on the Left */}
-        <div className="flex items-center mb-4 lg:mb-0">
+        {/* <div className="flex items-center mb-4 lg:mb-0">
           <img src={iconFile} alt="Folder Icon" className="h-8 w-8 mr-4" />
           <h1 className="text-2xl font-semibold text-white">Dashboard</h1>
-        </div>
+        </div>  */}
+
+        <SearchBar title="Dashboard" />
+        
 
         {/* Centered Buttons */}
         <div className="flex justify-center space-x-4">

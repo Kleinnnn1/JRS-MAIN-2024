@@ -1,18 +1,17 @@
-import { useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // Import the calendar styles
 import iconSchedule from "../../../assets/images/iconSchedule.png";
+import SearchBar from '../../../components/SearchBar';
 
 export default function RequestorPageSchedule() {
 
     return (
         <>
             {/* Dashboard Header */}
-            <div className="my-4 mx-3 py-2 px-4 bg-blue-950 flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-md shadow-black/5 rounded-xl">
+            <div className="my-4 mx-3 py-2 px-4 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-md shadow-black/5 rounded-xl">
                 {/* Title and Icon on the Left */}
                 <div className="flex items-center mb-4 lg:mb-0">
-                    <img src={iconSchedule} alt="Folder Icon" className="h-6 w-6 mr-4" />
-                    <h1 className="text-2xl font-medium text-white">Schedules</h1>
+                    <SearchBar title = "Schedules" />
                 </div>
             </div>
 

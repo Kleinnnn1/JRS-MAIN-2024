@@ -2,13 +2,10 @@ import { useState } from 'react';
 import PropTypes from 'prop-types'; // Import PropTypes
 import { useNavigate } from 'react-router-dom'; // For navigation
 import { warningAlert, successAlert, confirmationAlert } from '../../../components/ReusableSweetAlert'; // Import reusable SweetAlerts
+import SearchBar from '../../../components/SearchBar';
 
 export default function RequestorJobRequestForm({ onSubmit }) {
-  const getCurrentDate = () => {
-    const date = new Date();
-    const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-    return date.toLocaleDateString(undefined, options);
-  };
+
 
   const [jobRequests, setJobRequests] = useState([
     { id: 1, description: '', location: '', category: '', photo: null }, // Only one item in the initial state
@@ -66,22 +63,19 @@ export default function RequestorJobRequestForm({ onSubmit }) {
 
         // Redirect to job request page
         navigate('/requestor/job_request');
+
+        // Reset form fields after submission
+        setJobRequests([{ id: 1, description: '', location: '', category: '', photo: null }]);
       }
     );
   };
 
-  // const handleBack = () => {
-  //   // Navigate back to the job request table
-  //   navigate('/requestor/job_request');
-  // };
-
   return (
-    <div className="rounded-lg ">
+    <div className="rounded-lg">
       {/* Header with Current Date and Title */}
-      <header className="bg-indigo-900 text-white p-4 rounded-t-lg flex justify-between items-center">
+      <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold">Job Request Form</h1>
-          <p className="text-sm">{getCurrentDate()}</p> {/* Display the current date */}
+        <SearchBar title="Job Request Form" />
         </div>
       </header>
 
@@ -105,6 +99,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                   <td className="px-4 py-2 border">
                     <input
                       type="text"
+                      id={`description-${request.id}`}
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
                       value={request.description}
                       onChange={(e) =>
@@ -116,6 +111,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                   <td className="px-4 py-2 border">
                     <input
                       type="text"
+                      id={`location-${request.id}`}
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
                       value={request.location}
                       onChange={(e) =>
@@ -126,6 +122,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                   </td>
                   <td className="px-4 py-2 border">
                     <select
+                      id={`category-${request.id}`}
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
                       value={request.category}
                       onChange={(e) =>
@@ -144,6 +141,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                   <td className="px-4 py-2 border">
                     <input
                       type="file"
+                      id={`photo-${request.id}`}
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
                       onChange={(e) =>
                         handleInputChange(request.id, 'photo', e.target.files[0])

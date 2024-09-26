@@ -5,7 +5,7 @@ export default function SidebarItem({ name, onClick, image, isActive }) {
     <div
       onClick={onClick}
       className={`flex items-center py-2 px-4 my-2 cursor-pointer rounded-md ${
-        isActive ? 'bg-blue-950 text-white font-bold' : 'text-gray-300 hover:bg-blue-980 hover:bg-yellow-600'
+        isActive ? 'bg-custom-blue text-white font-bold' : 'text-gray-300 hover:bg-blue-980 hover:bg-yellow-600'
       }`}
     >
       <img src={image} alt={`${name} Icon`} className="w-4 h-4 mr-3" />

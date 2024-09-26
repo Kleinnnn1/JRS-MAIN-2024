@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import SearchBar from '../../../components/SearchBar';
 
 export default function JobRequestHistory() {
   const [jobRequests, setJobRequests] = useState([
@@ -8,7 +9,7 @@ export default function JobRequestHistory() {
       workDescription: "Fixing computer issues in Room 101",
       category: "IT Support",
       noOfPerson: 2,
-      department: "IT Department",
+      department: "IT dDepartment",
       processedBy: "John Doe",
       photo: "https://via.placeholder.com/150", // Placeholder image URL for now
       status: "Completed",
@@ -41,6 +42,7 @@ export default function JobRequestHistory() {
       dateRequested: "2024-09-07",
       dateCompleted: "-",
     },
+    
   ]);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,8 +84,8 @@ export default function JobRequestHistory() {
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-md rounded-lg">
       {/* Table Header */}
-      <div className="bg-blue-950 py-2 px-4 flex justify-between items-center rounded-t-lg">
-        <h1 className="text-xl font-bold text-white">Job Request History</h1>
+      <div className="bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
+      <SearchBar title="Job Request History" />
         <div className="flex space-x-2">
           <input
             type="text"
