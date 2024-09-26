@@ -1,8 +1,6 @@
-import { useNavigate } from "react-router-dom";
-import 'react-calendar/dist/Calendar.css'; 
+
 
 export default function ReusableNotification() {
-  const navigate = useNavigate();
 
   return (
     <div className="p-6 h-[60vh]"> {/* Set height to 80vh for a longer notification box */}
