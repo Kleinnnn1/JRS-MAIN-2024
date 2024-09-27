@@ -1,4 +1,5 @@
-import React from "react";
+
+import PropTypes from "prop-types"; // Import PropTypes
 
 export default function ReusablePagination({
   rowsPerPage,
@@ -31,7 +32,7 @@ export default function ReusablePagination({
           value={rowsPerPage}
           onChange={(e) => {
             setRowsPerPage(Number(e.target.value));
-            setCurrentPage(1);
+            setCurrentPage(1); // Reset to page 1 when rows per page changes
           }}
           className="border border-gray-300 rounded-md px-2 py-1"
         >
@@ -50,7 +51,7 @@ export default function ReusablePagination({
           className={`px-4 py-2 rounded-md ${
             currentPage === 1
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              : "bg-blue-500 text-white hover:bg-gray-300"
           }`}
         >
           Previous
@@ -61,7 +62,7 @@ export default function ReusablePagination({
           className={`px-4 py-2 rounded-md ${
             currentPage === totalPages || totalPages === 0
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-blue-500 text-gray-700 hover:bg-gray-300"
+              : "bg-blue-500 text-white hover:bg-gray-300"
           }`}
         >
           Next
@@ -70,3 +71,12 @@ export default function ReusablePagination({
     </div>
   );
 }
+
+// PropTypes validation
+ReusablePagination.propTypes = {
+  rowsPerPage: PropTypes.number.isRequired,
+  setRowsPerPage: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  setCurrentPage: PropTypes.func.isRequired,
+  totalPages: PropTypes.number.isRequired,
+};

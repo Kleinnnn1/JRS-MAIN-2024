@@ -55,11 +55,26 @@ export default function TableCertificate() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Function to get the color class based on priority level
+  const getPriorityColor = (priorityLevel) => {
+    switch (priorityLevel) {
+      case "High":
+        return "text-red-600 font-bold"; // Red for high priority
+      case "Medium":
+        return "text-yellow-600 font-bold"; // Yellow for medium priority
+      case "Low":
+        return "text-green-600 font-bold"; // Green for low priority
+      default:
+        return "text-gray-600"; // Default gray color
+    }
+  };
+
   // Filter table content based on search term
-  const filteredContent = tableContent.filter((request) =>
-    request.jobDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    request.requestor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    request.location.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredContent = tableContent.filter(
+    (request) =>
+      request.jobDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.requestor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Pagination logic
@@ -71,10 +86,12 @@ export default function TableCertificate() {
 
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
-   
       <div className="bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
-      <SearchBar title="Ongoing Task" />
-      <ReusableSearchTerm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <SearchBar title="Ongoing Task" />
+        <ReusableSearchTerm
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+        />
       </div>
 
       {/* Table */}
@@ -87,8 +104,15 @@ export default function TableCertificate() {
           <span key={`location-${index}`}>{request.location}</span>,
           <span key={`dateRequested-${index}`}>{request.dateRequested}</span>,
           <span key={`dateStarted-${index}`}>{request.dateStarted}</span>,
-          <span key={`expectedCompletionDate-${index}`}>{request.expectedCompletionDate}</span>,
-          <span key={`priorityLevel-${index}`}>{request.priorityLevel}</span>,
+          <span key={`expectedCompletionDate-${index}`}>
+            {request.expectedCompletionDate}
+          </span>,
+          <span
+            key={`priorityLevel-${index}`}
+            className={getPriorityColor(request.priorityLevel)} // Apply color coding
+          >
+            {request.priorityLevel}
+          </span>,
           <ReusableViewButton
             key={`view-btn-${index}`}
             onClick={() => navigate("/staff/StaffImagePage/StaffImageContent")}

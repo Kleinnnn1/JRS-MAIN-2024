@@ -27,7 +27,7 @@ export default function ContentApprovingCertificate() {
   return (
     <>
       <div className="my-4 mx-3 py-4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
-        <SearchBar title="View Image" />
+      <SearchBar title="View Image" />
       </div>
       <ReusableContent className="p-6 bg-white shadow-md rounded-lg relative">
         <span className="text-2xl font-bold mb-4 block">Job Details</span>

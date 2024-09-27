@@ -38,7 +38,7 @@ export default function Table({
         <div className="text-center py-4 text-gray-500">No Data Available</div> // Show empty state
       ) : (
         <table className="min-w-full max-w-full">
-          <thead className="bg-gray-100">
+          <thead className="bg-yellow-100"> {/* Updated to yellow header */}
             <tr>
               {Array.from({ length: columns }, (_, colIndex) => (
                 <th
@@ -63,10 +63,7 @@ Table.propTypes = {
   columns: PropTypes.number, // columns is optional and should be a number
   content: PropTypes.arrayOf(
     PropTypes.arrayOf(
-      PropTypes.oneOfType([
-        PropTypes.string, // Each cell can be a string
-        PropTypes.element, // Or it can be a React element (like a button)
-      ])
+      PropTypes.oneOfType([PropTypes.string, PropTypes.element]) // Each cell can be a string or a React element
     )
   ),
   headers: PropTypes.arrayOf(PropTypes.string), // headers should be an array of strings
