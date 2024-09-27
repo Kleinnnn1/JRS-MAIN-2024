@@ -23,8 +23,8 @@ export default function RequestorPageSchedule() {
                 </div>
 
                 {/* Right Side - Events & Request Schedules */}
-                <div className="flex-1 bg-white border border-opacity-80 p-5 rounded-lg">
-                    <h3 className="font-bold text-lg mb-5">Events & Request Schedules</h3>
+                <div className="flex-1 bg-white border border-opacity-80 p-3 rounded-lg">
+                    <h3 className="font-bold text-4xl mb-5">Events & Request Schedules</h3>
                     <div>
                         {[
                             { date: 'MAY 15', task: 'FIXING OF DOOR KNOB AT ICT BLDG, RM 9-201' },
@@ -33,7 +33,7 @@ export default function RequestorPageSchedule() {
                             { date: 'MAY 22', task: 'FIXING OF DOOR KNOB AT ICT BLDG, RM 9-201' },
                             { date: 'MAY 27', task: 'FIXING OF DOOR KNOB AT ICT BLDG, RM 9-201' },
                         ].map((event, index) => (
-                            <div key={index} className="mb-5 text-lg">
+                            <div key={index} className="mb-5 text-sm">
                                 <h4 className="text-2xl font-bold">{event.date}</h4>
                                 <p className="font-bold">CSWS : REQUEST SCHEDULE</p>
                                 <p>{event.task}</p>

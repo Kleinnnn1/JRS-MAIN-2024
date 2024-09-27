@@ -8,7 +8,7 @@ export default function SidebarItem({ name, onClick, image, isActive }) {
         isActive ? 'bg-custom-blue text-white font-bold' : 'text-gray-300 hover:bg-blue-980 hover:bg-yellow-600'
       }`}
     >
-      <img src={image} alt={`${name} Icon`} className="w-4 h-4 mr-3" />
+      <img src={image} alt={`${name} Icon`} className=" " />
       <span className="ml-2 hidden md:block">{name}</span>
     </div>
   );
