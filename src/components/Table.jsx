@@ -37,7 +37,7 @@ export default function Table({
       ) : content.length === 0 ? (
         <div className="text-center py-4 text-gray-500">No Data Available</div> // Show empty state
       ) : (
-        <table className="min-w-full max-w-md divide-y divide-black-200 shadow-2xl border border-gray-300">
+        <table className="min-w-full max-w-full">
           <thead className="bg-gray-100">
             <tr>
               {Array.from({ length: columns }, (_, colIndex) => (
