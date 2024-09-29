@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"; 
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../../components/SearchBar";
 import Table from "../../../components/Table";
@@ -55,17 +55,17 @@ export default function TableCertificate() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Function to get the color class based on priority level
-  const getPriorityColor = (priorityLevel) => {
-    switch (priorityLevel) {
+  // Function to get highlight class based on priority level
+  const getPriorityClass = (level) => {
+    switch (level) {
       case "High":
-        return "text-red-600 font-bold"; // Red for high priority
+        return "bg-red-500 text-white py-1 px-2 rounded"; // Red for High
       case "Medium":
-        return "text-yellow-600 font-bold"; // Yellow for medium priority
+        return "bg-yellow-500 text-black py-1 px-2 rounded"; // Yellow for Medium
       case "Low":
-        return "text-green-600 font-bold"; // Green for low priority
+        return "bg-green-500 text-white py-1 px-2 rounded"; // Green for Low
       default:
-        return "text-gray-600"; // Default gray color
+        return ""; // No highlight
     }
   };
 
@@ -107,10 +107,7 @@ export default function TableCertificate() {
           <span key={`expectedCompletionDate-${index}`}>
             {request.expectedCompletionDate}
           </span>,
-          <span
-            key={`priorityLevel-${index}`}
-            className={getPriorityColor(request.priorityLevel)} // Apply color coding
-          >
+          <span key={`priorityLevel-${index}`} className={getPriorityClass(request.priorityLevel)}>
             {request.priorityLevel}
           </span>,
           <ReusableViewButton

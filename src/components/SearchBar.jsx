@@ -9,13 +9,12 @@ const formatDate = () => {
   return currentDate.toLocaleDateString('en-US', options);
 };
 
-
-export default function SearchBar({ title = {} }) {
+export default function SearchBar({ title, showInput, inputProps = {} }) {
   return (
-    <div className="my-2 mx-3 py-1 bg-custom-blue flex items-center ">
+    <div className="my-4 mx-3 py-2 px-4 bg-custom-blue rounded-xl overflow-hidden">
       <div className="flex flex-col flex-grow">
-        <span className="text-white text-2xl font-bold">{title}</span>
-        <span className="text-white text-xs mt-1">{formatDate()}</span>
+        <span className="text-white text-2xl font-bold truncate">{title}</span>
+        <span className="text-white text-xs mt-1">{formatDate()}</span> {/* Current date in desired format */}
       </div>
 
     </div>

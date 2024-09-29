@@ -35,26 +35,22 @@ export default function StaffTableCertificate() {
       priorityLevel: "High",
       duration: "2 hours",
     },
-    {
-      jobDescription: "Broken Door",
-      jobType: "Carpenter",
-      dateStarted: "28 - 07 - 2024",
-      dateFinished: "28 - 08 - 2024",
-      location: "3rd floor ICT Building Room 309",
-      priorityLevel: "High",
-      duration: "2 hours",
-    },
-    {
-      jobDescription: "Broken Door",
-      jobType: "Carpenter",
-      dateStarted: "28 - 07 - 2024",
-      dateFinished: "28 - 08 - 2024",
-      location: "3rd floor ICT Building Room 309",
-      priorityLevel: "High",
-      duration: "2 hours",
-    },
     // Add more rows if necessary
   ];
+
+  // Function to get highlight class based on priority level
+  const getPriorityClass = (level) => {
+    switch (level) {
+      case "High":
+        return "bg-red-500 text-white"; // Red for High
+      case "Medium":
+        return "bg-yellow-500 text-black"; // Yellow for Medium
+      case "Low":
+        return "bg-green-500 text-white"; // Green for Low
+      default:
+        return ""; // No highlight
+    }
+  };
 
   // Filtered content based on the search term
   const filteredContent = tableContent.filter(
@@ -76,8 +72,6 @@ export default function StaffTableCertificate() {
       <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
         <div className="my-4 mx-3 py-4 px-6 bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
           <SearchBar title="Send Certificate" showInput={true} />
-          
-          {/* Use ReusableSearchTerm for the search functionality */}
           <ReusableSearchTerm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </div>
 
@@ -91,7 +85,9 @@ export default function StaffTableCertificate() {
             <span key={`dateStarted-${index}`}>{request.dateStarted}</span>,
             <span key={`dateFinished-${index}`}>{request.dateFinished}</span>,
             <span key={`location-${index}`}>{request.location}</span>,
-            <span key={`priorityLevel-${index}`}>{request.priorityLevel}</span>,
+            <span key={`priorityLevel-${index}`} className={`py-1 px-2 rounded ${getPriorityClass(request.priorityLevel)}`}>
+              {request.priorityLevel}
+            </span>,
             <span key={`duration-${index}`}>{request.duration}</span>,
             <ReusableViewButton
               key={`view-btn-${index}`}

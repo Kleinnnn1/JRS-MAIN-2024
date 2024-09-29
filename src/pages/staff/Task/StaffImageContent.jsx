@@ -4,30 +4,23 @@ import ReusableBackButton from "../../../components/ReusableBackButton";
 import ImageView from "./StaffViewImage";
 import ButtonApproveCertificate from "./StaffMarkComplete";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import { confirmationAlert } from '../../../components/ReusableSweetAlert'; // Import reusable alert
 
 export default function ContentApprovingCertificate() {
   const navigate = useNavigate();
 
   const handleApproveClick = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "Are you sure you want to mark this as completed?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, mark as completed!",
-      cancelButtonText: "No, keep it pending",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate("/staff/StaffSendCert");
-      }
-    });
+    confirmationAlert(
+      "Are you sure?",
+      "Are you sure you want to mark this as completed?",
+      () => navigate("/staff/StaffSendCert") // Callback to navigate on confirmation
+    );
   };
 
   return (
     <>
       <div className="my-4 mx-3 py-4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
-      <SearchBar title="View Image" />
+        <SearchBar title="View Image" />
       </div>
       <ReusableContent className="p-6 bg-white shadow-md rounded-lg relative">
         <span className="text-2xl font-bold mb-4 block">Job Details</span>

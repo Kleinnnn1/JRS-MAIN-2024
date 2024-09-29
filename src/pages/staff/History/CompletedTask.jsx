@@ -39,6 +39,19 @@ export default function JobCompletedContent() {
     // Add more rows as necessary
   ];
 
+  // Function to get highlight class based on status
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "Completed":
+        return "bg-green-500 text-white py-1 px-2 rounded"; // Green for Completed
+      case "Pending":
+        return "bg-yellow-500 text-black py-1 px-2 rounded"; // Yellow for Pending
+      case "Cancelled":
+        return "bg-red-500 text-white py-1 px-2 rounded"; // Red for Cancelled
+      default:
+        return "bg-gray-300 text-black py-1 px-2 rounded"; // Gray for default
+    }
+  };
 
   // Filtered content based on the search term
   const filteredContent = tableContent.filter(
@@ -60,8 +73,6 @@ export default function JobCompletedContent() {
       <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
         <div className="my-4 mx-3 py-4 px-6 bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
           <SearchBar title="History" showInput={true} />
-          
-          {/* ReusableSearchTerm component for searching */}
           <ReusableSearchTerm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </div>
 
@@ -77,7 +88,9 @@ export default function JobCompletedContent() {
             <span key={`location-${index}`}>{request.location}</span>,
             <span key={`dateStarted-${index}`}>{request.dateStarted}</span>,
             <span key={`accomplishedDate-${index}`}>{request.accomplishedDate}</span>,
-            <span key={`status-${index}`}>{request.status}</span>,
+            <span key={`status-${index}`} className={getStatusClass(request.status)}>
+              {request.status}
+            </span>,
             <ReusableViewButton
               key={`view-btn-${index}`}
               onClick={() => navigate("/staff/StaffSendCert/StaffCert")}
