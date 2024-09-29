@@ -40,7 +40,7 @@ export default function RequestorContentJobRequestApproved() {
 
         {/* Requestor Information Section */}
         <div className="p-4">
-          <div className="text-lg font-semibold text-black">REQUESTOR INFORMATION</div>
+          <div className="text-lg font-semibold text-black">REQUESTOR INFdORMATION</div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
             <div>
               <label className="block text-sm font-medium text-gray-700">Name</label>
