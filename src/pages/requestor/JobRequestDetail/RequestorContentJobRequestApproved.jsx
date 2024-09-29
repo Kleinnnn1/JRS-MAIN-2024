@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { confirmationAlert, successAlert } from '../../../components/ReusableSweetAlert'; // Import ReusableSweetAlert
 
-export default function ContentJobRequest() {
+export default function RequestorContentJobRequestApproved() {
   const navigate = useNavigate();
 
   // Handler for cancelling the job request
@@ -40,7 +40,7 @@ export default function ContentJobRequest() {
 
         {/* Requestor Information Section */}
         <div className="p-4">
-          <div className="text-lg font-semibold text-black">REQUESTOR INFORMATION</div>
+          <div className="text-lg font-semibold text-black">REQUESTOR INFdORMATION</div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
             <div>
               <label className="block text-sm font-medium text-gray-700">Name</label>
@@ -104,18 +104,7 @@ export default function ContentJobRequest() {
 
         {/* Buttons Section */}
         <div className="p-4 flex justify-end space-x-4">
-          <button
-            className="bg-blue-500 text-white py-2 px-4 rounded"
-            onClick={handleUpdateJobRequest} // Use the update confirmation alert
-          >
-            Update
-          </button>
-          <button
-            className="bg-red-500 text-white py-2 px-4 rounded"
-            onClick={handleCancelJobRequest} // Use the confirmation alert for cancel
-          >
-            Cancel Job Request
-          </button>
+
           <button className="bg-gray-700 text-white py-2 px-4 rounded" onClick={() => navigate("/requestor/home")}>
             Close
           </button>

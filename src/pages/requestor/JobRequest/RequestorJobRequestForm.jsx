@@ -5,8 +5,6 @@ import { warningAlert, successAlert, confirmationAlert } from '../../../componen
 import SearchBar from '../../../components/SearchBar';
 
 export default function RequestorJobRequestForm({ onSubmit }) {
-
-
   const [jobRequests, setJobRequests] = useState([
     { id: 1, description: '', location: '', category: '', photo: null }, // Only one item in the initial state
   ]);
@@ -56,13 +54,14 @@ export default function RequestorJobRequestForm({ onSubmit }) {
       'This action will submit your job request.',
       () => {
         // Submit the form data and show success alert
-        successAlert('Submitted!', 'Your job request has been submitted successfully.');
+        successAlert('Submitted!', 'Your job request has been submitted successfully.')
+          .then(() => {
+            // Redirect to job request page after showing success alert
+            navigate('/requestor/job_request_table');
+          });
 
         // Submit the form data to the parent component
         onSubmit(jobRequests);
-
-        // Redirect to job request page
-        navigate('/requestor/job_request');
 
         // Reset form fields after submission
         setJobRequests([{ id: 1, description: '', location: '', category: '', photo: null }]);
@@ -75,7 +74,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
       {/* Header with Current Date and Title */}
       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
         <div>
-        <SearchBar title="Job Request Form" />
+          <SearchBar title="Job Request Form" />
         </div>
       </header>
 

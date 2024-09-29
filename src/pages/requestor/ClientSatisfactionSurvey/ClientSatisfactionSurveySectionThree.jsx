@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Swal from 'sweetalert2';  // Import SweetAlert for alerts
 import USTPlogo from "../../../assets/images/logoUSTP.png";
 import { useNavigate } from 'react-router-dom';
 
@@ -13,6 +12,9 @@ export default function ClientSatisfactionSurveySectionThree() {
     sqd2: '',
   });
 
+  // State for validation errors
+  const [errors, setErrors] = useState({});
+
   // Handle input changes for the form fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,18 +25,21 @@ export default function ClientSatisfactionSurveySectionThree() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Initialize an empty object for errors
+    const newErrors = {};
+
     // Check if all required fields are filled
-    const { sqd0, sqd1, sqd2 } = formData;
-    if (!sqd0 || !sqd1 || !sqd2) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Missing Fields',
-        text: 'Please complete all the fields before proceeding.',
-      });
-      return; // Don't proceed to next page if fields are missing
+    if (!formData.sqd0) newErrors.sqd0 = 'This question is required';
+    if (!formData.sqd1) newErrors.sqd1 = 'This question is required';
+    if (!formData.sqd2) newErrors.sqd2 = 'This question is required';
+
+    // If there are errors, set them and don't proceed
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
     }
 
-    // If all fields are filled, navigate to the next section
+    // If no errors, navigate to the next section
     navigate('/requestor/section_four');
   };
 
@@ -159,6 +164,8 @@ export default function ClientSatisfactionSurveySectionThree() {
                 </td>
               ))}
             </tr>
+            {errors.sqd0 && <tr><td colSpan="7" className="text-red-500 text-sm">This question is required.</td></tr>}
+
             {/* SQD1 */}
             <tr>
               <td className="border px-4 py-2 text-left">
@@ -176,6 +183,8 @@ export default function ClientSatisfactionSurveySectionThree() {
                 </td>
               ))}
             </tr>
+            {errors.sqd1 && <tr><td colSpan="7" className="text-red-500 text-sm">This question is required.</td></tr>}
+
             {/* SQD2 */}
             <tr>
               <td className="border px-4 py-2 text-left">
@@ -193,6 +202,7 @@ export default function ClientSatisfactionSurveySectionThree() {
                 </td>
               ))}
             </tr>
+            {errors.sqd2 && <tr><td colSpan="7" className="text-red-500 text-sm">This question is required.</td></tr>}
           </tbody>
         </table>
 

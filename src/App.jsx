@@ -18,6 +18,9 @@ import ClientSatisfactionSurveySectionSix from "./pages/requestor/ClientSatisfac
 import RequestorInformation from "./pages/requestor/Profile/RequestorUserInformation.jsx";
 import RequestorChangeAvatar from "./pages/requestor/Profile/RequestorChangeAvatar.jsx";
 import RequestorChangePassword from "./pages/requestor/Profile/RequestorChangePassword.jsx";
+import RequestorJobRequestApproved from "./pages/requestor/JobRequestDetail/RequestorContentJobRequestApproved.jsx";
+import RequestorJobRequestCompleted from "./pages/requestor/JobRequestDetail/RequestorContentJobRequestCompleted.jsx";
+import RequestorCertificate from "./pages/requestor/JobRequestDetail/RequestorCertificate.jsx";
 
 
 export default function App() {
@@ -34,6 +37,9 @@ export default function App() {
           <Route path="job_request" element={<RequestorJobRequest />} />
           <Route path="job_request_table" element={<RequestorJobRequestTable />} />
           <Route path="job_request_detail" element={<RequestorJobRequestDetail />} />
+          <Route path="job_request_approved" element={<RequestorJobRequestApproved />} />
+          <Route path="job_request_completed" element={<RequestorJobRequestCompleted />} /> 
+          <Route path="job_request_certificate" element={<RequestorCertificate />} /> 
           <Route path="job_request_form" element={<RequestorJobRequestForm />} />
 
           {/* REQUESTOR'S PROFILE */}

@@ -41,13 +41,13 @@ export default function ContentDashboard() {
             USTP Harmonized Client Satisfaction Survey
           </button>
 
-          {/* Make Request Button */}
+          {/* Make Request Button
           <button
             className="bg-green-500 hover:bg-green-600 text-white font-medium px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105 duration-200"
             onClick={handleMakeRequestClick} // Open the modal on click
           >
             Make Request
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -92,26 +92,28 @@ export default function ContentDashboard() {
         </div>
       </div>
 
-      {/* Modal for Job Request Form */}
-      {isModalOpen && (
-        <div
-          id="modalBackdrop"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-          onClick={handleClickOutsideModal} // Close modal when clicked outside
-        >
-          <div className="bg-white p-10 rounded-lg shadow-lg max-w-7xl w-full relative">
-            <button
-              onClick={closeModal}
-              className="absolute -top-4 -right-4 bg-yellow-300 text-black text-4xl rounded-full h-10 w-10 flex items-center justify-center border-4 border-yellow-300 hover:bg-gray-100 hover:text-red-600 shadow-lg"
-              aria-label="Close Modal"
-            >
-              &times;
-            </button>
-            {/* Render the job request form here */}
-            <RequestorJobRequestForm onSubmit={closeModal} />
-          </div>
-        </div>
-      )}
+
     </>
   );
 }
+
+// Modal for Job Request Form
+// {isModalOpen && (
+//   <div
+//     id="modalBackdrop"
+//     className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+//     onClick={handleClickOutsideModal} // Close modal when clicked outside
+//   >
+//     <div className="bg-white p-10 rounded-lg shadow-lg max-w-7xl w-full relative">
+//       <button
+//         onClick={closeModal}
+//         className="absolute -top-4 -right-4 bg-yellow-300 text-black text-4xl rounded-full h-10 w-10 flex items-center justify-center border-4 border-yellow-300 hover:bg-gray-100 hover:text-red-600 shadow-lg"
+//         aria-label="Close Modal"
+//       >
+//         &times;
+//       </button>
+//       {/* Render the job request form here */}
+//       <RequestorJobRequestForm onSubmit={closeModal} />
+//     </div>
+//   </div>
+// )}

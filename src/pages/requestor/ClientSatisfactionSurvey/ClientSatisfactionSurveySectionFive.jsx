@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import Swal from 'sweetalert2'; // Import SweetAlert for alerts
 import USTPlogo from "../../../assets/images/logoUSTP.png";
 import { useNavigate } from 'react-router-dom';
 
 export default function ClientSatisfactionSurveySectionFive() {
-
   const navigate = useNavigate();
 
   // State for form data (service quality dimensions questions)
@@ -13,6 +11,9 @@ export default function ClientSatisfactionSurveySectionFive() {
     sqd7: '',
     sqd8: '',
   });
+
+  // State for validation errors
+  const [errors, setErrors] = useState({});
 
   // Handle input changes for the form fields
   const handleInputChange = (e) => {
@@ -24,18 +25,21 @@ export default function ClientSatisfactionSurveySectionFive() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Check if all required fields are filled
-    const { sqd6, sqd7, sqd8 } = formData;
-    if (!sqd6 || !sqd7 || !sqd8) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Missing Fields',
-        text: 'Please complete all the fields before proceeding.',
-      });
-      return; // Prevents form submission if fields are missing
+    // Initialize an empty errors object
+    const newErrors = {};
+
+    // Check if all required fields are filled and set error messages
+    if (!formData.sqd6) newErrors.sqd6 = 'This question is required.';
+    if (!formData.sqd7) newErrors.sqd7 = 'This question is required.';
+    if (!formData.sqd8) newErrors.sqd8 = 'This question is required.';
+
+    // If there are errors, set them in the state and stop submission
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
     }
 
-    // Navigate to the next section if all fields are filled
+    // If no errors, navigate to the next section
     navigate("/requestor/section_six");
   };
 
@@ -160,6 +164,8 @@ export default function ClientSatisfactionSurveySectionFive() {
                 </td>
               ))}
             </tr>
+            {errors.sqd6 && <tr><td colSpan="7" className="text-red-500 text-sm">This question is required.</td></tr>}
+
             {/* SQD7 */}
             <tr>
               <td className="border px-4 py-2 text-left">
@@ -177,6 +183,8 @@ export default function ClientSatisfactionSurveySectionFive() {
                 </td>
               ))}
             </tr>
+            {errors.sqd7 && <tr><td colSpan="7" className="text-red-500 text-sm">This question is required.</td></tr>}
+
             {/* SQD8 */}
             <tr>
               <td className="border px-4 py-2 text-left">
@@ -194,6 +202,7 @@ export default function ClientSatisfactionSurveySectionFive() {
                 </td>
               ))}
             </tr>
+            {errors.sqd8 && <tr><td colSpan="7" className="text-red-500 text-sm">This question is required.</td></tr>}
           </tbody>
         </table>
 

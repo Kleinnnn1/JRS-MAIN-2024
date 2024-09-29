@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { confirmationAlert, successAlert } from '../../../components/ReusableSweetAlert'; // Import ReusableSweetAlert
 
-export default function ContentJobRequest() {
+export default function RequestorContentJobRequestCompleted() {
   const navigate = useNavigate();
 
   // Handler for cancelling the job request
@@ -21,13 +21,23 @@ export default function ContentJobRequest() {
       'Are you sure you want to update this job request?',
       'Please confirm your updates before proceeding.',
       () => {
-        successAlert('Updated!', 'Your job request has been successfully updated.')
-          .then(() => {
-            // Navigate after the success alert
-            navigate('/requestor/job_request_detail');
-          });
+        successAlert('Updated!', 'Your job request has been successfully updated.').then(() => {
+          // Navigate after the success alert
+          navigate('/requestor/job_request_detail');
+        });
       }
     );
+  };
+
+  // Handler for Certificate button
+  const handleCertificate = () => {
+    // Add logic for Certificate button if required
+    navigate('/requestor/job_request_certificate');
+  };
+
+  // Handler for Client Satisfaction Survey button
+  const handleClientSatisfactionSurvey = () => {
+    navigate('/requestor/section_one');
   };
 
   return (
@@ -106,17 +116,20 @@ export default function ContentJobRequest() {
         <div className="p-4 flex justify-end space-x-4">
           <button
             className="bg-blue-500 text-white py-2 px-4 rounded"
-            onClick={handleUpdateJobRequest} // Use the update confirmation alert
+            onClick={handleCertificate} // Handle certificate button
           >
-            Update
+            Certificate
           </button>
           <button
-            className="bg-red-500 text-white py-2 px-4 rounded"
-            onClick={handleCancelJobRequest} // Use the confirmation alert for cancel
+            className="bg-green-500 text-white py-2 px-4 rounded"
+            onClick={handleClientSatisfactionSurvey} // Handle survey button
           >
-            Cancel Job Request
+            Client Satisfaction Survey
           </button>
-          <button className="bg-gray-700 text-white py-2 px-4 rounded" onClick={() => navigate("/requestor/home")}>
+          <button
+            className="bg-gray-700 text-white py-2 px-4 rounded"
+            onClick={() => navigate("/requestor/home")}
+          >
             Close
           </button>
         </div>

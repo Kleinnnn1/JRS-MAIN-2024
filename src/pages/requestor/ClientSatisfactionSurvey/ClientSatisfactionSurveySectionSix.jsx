@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'; // Import SweetAlert for alerts
 import USTPlogo from "../../../assets/images/logoUSTP.png";
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,9 @@ export default function ClientPageSatisfactionSurveySectionSix() {
     email: '',
   });
 
+  // State for validation errors
+  const [errors, setErrors] = useState({});
+
   // Handle input changes for the form fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -22,25 +25,34 @@ export default function ClientPageSatisfactionSurveySectionSix() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Check if any field is empty
-    if (!formData.suggestions || !formData.email) {
-      Swal.fire({
-        title: 'Error',
-        text: 'All fields are required. Please fill in the suggestions and email.',
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
-    } else {
-      // If all fields are filled, display success alert and navigate
-      Swal.fire({
-        title: 'Thank you!',
-        text: 'Your feedback has been submitted.',
-        icon: 'success',
-        confirmButtonText: 'Proceed',
-      }).then(() => {
-        navigate('/requestor/job_request'); // Proceed to job request table
-      });
+    // Initialize an empty errors object
+    const newErrors = {};
+
+    // Check if any required field is empty and set errors
+    if (!formData.suggestions) {
+      newErrors.suggestions = 'Suggestions field is required.';
     }
+    if (!formData.email) {
+      newErrors.email = 'Email address is required.';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email address is invalid.';
+    }
+
+    // If there are errors, set them in the state and prevent form submission
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // If no errors, show SweetAlert success message and navigate to the next section
+    Swal.fire({
+      title: 'Thank you!',
+      text: 'Your feedback has been submitted.',
+      icon: 'success',
+      confirmButtonText: 'Proceed',
+    }).then(() => {
+      navigate('/requestor/job_request'); // Proceed to job request table after submission
+    });
   };
 
   return (
@@ -130,7 +142,9 @@ export default function ClientPageSatisfactionSurveySectionSix() {
       {/* Form for Suggestions and Email */}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-m font-bold text-gray-700">Suggestions on how we can further improve our services (required):</label>
+          <label className="block text-m font-bold text-gray-700">
+            Suggestions on how we can further improve our services (required):
+          </label>
           <textarea
             name="suggestions"
             value={formData.suggestions}
@@ -139,6 +153,9 @@ export default function ClientPageSatisfactionSurveySectionSix() {
             rows="5"
             required
           ></textarea>
+          {errors.suggestions && (
+            <p className="text-red-500 text-sm mt-1">{errors.suggestions}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -151,6 +168,9 @@ export default function ClientPageSatisfactionSurveySectionSix() {
             className="mt-2 block w-full py-2 px-3 border border-gray-300 rounded-md"
             required
           />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+          )}
         </div>
 
         {/* Navigation Buttons */}

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Swal from 'sweetalert2';  // Import SweetAlert for alerts
 import USTPlogo from "../../../assets/images/logoUSTP.png";
 import { useNavigate } from 'react-router-dom';
 
@@ -13,6 +12,9 @@ export default function ClientSatisfactionSurveySectionTwo() {
     help: '',
   });
 
+  // State for errors
+  const [errors, setErrors] = useState({});
+
   // Handle input changes for the form fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,20 +25,28 @@ export default function ClientSatisfactionSurveySectionTwo() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Check if all fields are filled
-    const { awareness, visibility, help } = formData;
-    if (!awareness || !visibility || !help) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Missing Fields',
-        text: 'Please fill out all fields before proceeding!',
-      });
+    // Initialize an empty errors object
+    const newErrors = {};
+
+    // Check if all fields are filled, if not add error messages
+    if (!formData.awareness) {
+      newErrors.awareness = 'Awareness is required';
+    }
+    if (!formData.visibility) {
+      newErrors.visibility = 'Visibility is required';
+    }
+    if (!formData.help) {
+      newErrors.help = 'Helpfulness is required';
+    }
+
+    // If there are errors, set them in the state
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
-    // If all fields are filled, navigate to the next section
-      navigate('/requestor/section_three');
-
+    // If no errors, navigate to the next section
+    navigate('/requestor/section_three');
   };
 
   return (
@@ -179,6 +189,7 @@ export default function ClientSatisfactionSurveySectionTwo() {
               <span className="ml-2">I do not know what a CC is and I did not see one in this office</span>
             </label>
           </div>
+          {errors.awareness && <p className="text-red-500 text-sm">{errors.awareness}</p>}
         </div>
 
         {/* CC2: Visibility */}
@@ -236,6 +247,7 @@ export default function ClientSatisfactionSurveySectionTwo() {
               <span className="ml-2">N/A</span>
             </label>
           </div>
+          {errors.visibility && <p className="text-red-500 text-sm">{errors.visibility}</p>}
         </div>
 
         {/* CC3: Helpfulness */}
@@ -283,6 +295,7 @@ export default function ClientSatisfactionSurveySectionTwo() {
               <span className="ml-2">N/A</span>
             </label>
           </div>
+          {errors.help && <p className="text-red-500 text-sm">{errors.help}</p>}
         </div>
 
         {/* Back and Next Buttons */}

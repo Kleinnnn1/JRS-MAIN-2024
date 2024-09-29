@@ -12,3 +12,4 @@ export default function ReusableContent({ children }) {
 ReusableContent.propTypes = {
   children: PropTypes.node.isRequired, // children is required and can be any renderable content
 };
+
