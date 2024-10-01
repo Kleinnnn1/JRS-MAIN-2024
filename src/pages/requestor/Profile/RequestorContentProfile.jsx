@@ -9,7 +9,11 @@ export default function RequestorContentProfile() {
   const otherContent = useOutlet();
   return (
     <div className="flex justify-center items-start">
+<<<<<<< HEAD:src/pages/requestor/Profile/RequestorContentProfile.jsx
       
+=======
+      {/* <ProfileImageBox /> */}
+>>>>>>> RaphaelMerge3:src/pages/department_head/Profile/ContentProfile.jsx
 
       <ProfileInformationBox>
         <ContentAndHeader
