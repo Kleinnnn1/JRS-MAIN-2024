@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-{/* Staff */}
+{
+  /* Staff */
+}
 import ContentDashStaff from "./pages/staff/Dashboard/StaffContentDash.jsx";
 import MainDashStaff from "./pages/staff/Dashboard/StaffMainDashboard.jsx";
 import StaffProfile from "./pages/staff/Profile/StaffPageProfile.jsx";
@@ -35,7 +37,7 @@ import AddNewUser from "./pages/system_admin/Users/addUser";
 import AddNewAdmin from "./pages/system_admin/Users/addAdmin";
 import AddNewStaff from "./pages/system_admin/Users/addAdmin";
 import ViewingDepartment from "./pages/system_admin/Department/ViewDepartment";
-import NewRequest from "./pages/system_admin/JobRequest/New`JobRequst";
+import NewRequest from "./pages/system_admin/JobRequest/NewJobRequst";
 import ViewUser from "./pages/system_admin/Users/UserViewing";
 import ViewAdmin from "./pages/system_admin/Users/AdminViewing";
 import ViewStaff from "./pages/system_admin/Users/StaffViewing";
@@ -90,46 +92,34 @@ export default function App() {
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
 
-        {/* Routes for Department Head */}
-         {/* Routes for Staff */}
-         <Route
-          path="/staff"
-          element={<MainDashStaff/>}
-        >
-          <Route path="home" element={<ContentDashStaff />} />
-          {/* Routes for Ongoing */}
+          {/* Protected Routes for Staff */}
           <Route
-            path="StaffImagePage"
-            element={<StaffImagePage />}
+            path="/staff/*"
+            element={
+              <ProtectedRoute requiredRole="staff">
+                <MainDashStaff />
+              </ProtectedRoute>
+            }
           >
-            <Route path="StaffImageContent" element={<StaffImageContent/>} />
-            
+            <Route path="home" element={<ContentDashStaff />} />
+            <Route path="StaffImagePage" element={<StaffImagePage />}>
+              <Route path="StaffImageContent" element={<StaffImageContent />} />
+            </Route>
+            <Route path="History" element={<StaffHistoryPage />} />
+            <Route path="Staffprofile" element={<StaffProfile />}>
+              <Route path="user_account" element={<StaffUserInfo />} />
+              <Route
+                path="Staffchange_avatar"
+                element={<StaffChangeAvatar />}
+              />
+              <Route
+                path="Staffchange_password"
+                element={<StaffChangePassword />}
+              />
+            </Route>
+            <Route path="StaffSendCert" element={<StaffPageCertificate />} />
           </Route>
-            {/* Completed Staff */}
-             {/* Routes for History  */}
-             <Route
-              path="History"
-                element={<StaffHistoryPage />}
-              >
-                <Route path="StaffImageContent" element={<StaffImageContent/>} />
-                
-              </Route>
-          {/* Routes for Profile */}
-          <Route path="Staffprofile" element={<StaffProfile />}>
-            <Route path="user_account" element={<StaffUserInfo />} /> 
-            <Route path="Staffchange_avatar" element={<StaffChangeAvatar />} />
-            <Route path="Staffchange_password" element={<StaffChangePassword />} />
-          </Route>
-          {/* Routes for Sending Certificate  */}
-          <Route
-            path="StaffSendCert"
-            element={<StaffPageCertificate />}
-          >
-            <Route path="StaffCert" element={<StaffSendCert/>} />
-          </Route>
-        </Route>
-      </Routes>
-    </Router>
+
           {/* Protected Routes for System Admin */}
           <Route
             path="/system_admin/*"
@@ -216,27 +206,29 @@ export default function App() {
             </Route>
           </Route>
         </Routes>
+
+        <Toaster
+          position="top-center"
+          gutter={12}
+          containerStyle={{ margin: "8px" }}
+          toastOptions={{
+            success: {
+              duration: 3000,
+            },
+            error: {
+              duration: 5000,
+            },
+            style: {
+              fontSize: "16px",
+              maxWidth: "500px",
+              padding: "16px 24px",
+              color: "var(--color-grey-700)",
+            },
+          }}
+        />
+        {/* Uncomment if you want to use React Query Devtools */}
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </Router>
-      <Toaster
-        position="top-center"
-        gutter={12}
-        containerStyle={{ margin: "8px" }}
-        toastOptions={{
-          success: {
-            duration: 3000,
-          },
-          error: {
-            duration: 5000,
-          },
-          style: {
-            fontSize: "16px",
-            maxWidth: "500px",
-            padding: "16px 24px",
-            color: "var(--color-grey-700)",
-          },
-        }}
-      />
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }

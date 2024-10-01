@@ -41,6 +41,10 @@ export function useLogin() {
         navigate("/system_admin", { replace: true });
       } else if (data.user.userRole === "department head") {
         navigate("/department_head", { replace: true });
+      } else if (data.user.userRole === "staff") {
+        navigate("/staff", { replace: true }); // Add navigation for staff
+      } else if (data.user.userRole === "requestor") {
+        navigate("/requestor", { replace: true }); // Add navigation for requestor
       } else {
         navigate("/login", { replace: true });
       }
