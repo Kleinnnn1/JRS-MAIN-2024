@@ -1,6 +1,6 @@
 import Logo from "../../../components/Logo";
 import Profile from "./StaffProfile";
-import profilePic from '../../../assets/images/raphael.jpg'
+import profilePic from "../../../assets/images/raphael.jpg";
 import ReusableHeader from "../../../components/ReusableHeader";
 import SideBar from "../../../components/SideBar";
 import StaffScreen from "./StaffScreen";
@@ -14,18 +14,16 @@ export default function StaffMainDashboard() {
   return (
     <div className="text-gray-800 font-inter">
       <SideBar>
-      <Logo />
-      <Profile />
-      <StaffSideBar />
-     </SideBar>
+        <Logo />
+        <Profile />
+        <StaffSideBar />
+      </SideBar>
 
       <StaffScreen>
-        <ReusableHeader 
-        
-        profilePicture={profilePic}
-        username="Raphael"
-        profileLink="/Staff/Staffprofile"
-        
+        <ReusableHeader
+          profilePicture={profilePic}
+          username="Raphael"
+          profileLink="/Staff/Staffprofile"
         />
         {otherContent ? <Outlet /> : <StaffContentDash />}
       </StaffScreen>
