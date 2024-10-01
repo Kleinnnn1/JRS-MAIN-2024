@@ -14,13 +14,13 @@ export default function ContentSideBar() {
       <SidebarItem
         name="Home"
         image={iconHome}
-        onClick={() => navigate("/department_head/home")}
+        onClick={() => navigate("/department_head/dashboard")}
       />
-      <SidebarItem
+      {/* <SidebarItem
         name="My Profile"
         onClick={() => navigate("/department_head/myprofile")}
         image={iconProfile}
-      />
+      /> */}
       <SidebarItem
         name="Job Request"
         onClick={() => navigate("/department_head/job_request")}
@@ -60,6 +60,12 @@ export default function ContentSideBar() {
       <SidebarItem
         name="Certificate of Job Completion"
         onClick={() => navigate("/department_head/approving_of_job_completion")}
+        image={iconRequest}
+      />
+      {/*Create new user */}
+      <SidebarItem
+        name="User"
+        onClick={() => navigate("/department_head/user")}
         image={iconRequest}
       />
     </>

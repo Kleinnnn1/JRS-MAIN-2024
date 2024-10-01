@@ -9,8 +9,8 @@ export default function ContentProfile() {
   const navigate = useNavigate();
   const otherContent = useOutlet();
   return (
-    <div className="flex justify-between items-start">
-      <ProfileImageBox />
+    <div className="flex justify-center items-start">
+      {/* <ProfileImageBox /> */}
 
       <ProfileInformationBox>
         <ContentAndHeader

@@ -4,7 +4,6 @@ import HorizontalNavBar from "../../../components/HorizontalNavBar";
 import SideBar from "../../../components/SideBar";
 import MainBody from "./MainBody";
 import { useOutlet, Outlet } from "react-router-dom";
-
 import ContentDashboard from "./ContentDashboard";
 import ContentSideBar from "./ContentSideBar";
 
