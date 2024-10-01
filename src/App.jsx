@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
 import ProtectedRoute from "./auth/ProtectedRoute.jsx";
+import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
 
 // Components for system_admin
 import SystemAdDashboard from "./pages/system_admin/Dashboard/PageDashboard";
@@ -14,20 +15,6 @@ import Job_requests from "./pages/system_admin/JobRequest/jobRequests";
 import DepartmentPage from "./pages/system_admin/Department/PageDepartment";
 import PageHistorySystemAdmin from "./pages/system_admin/History/HistoryPage";
 import PageReportSystemAdmin from "./pages/system_admin/Reports/ReportsPage";
-
-// Components for department_head
-import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
-import PageReportDepartmentHead from "./pages/department_head/SendReport/PageReport.jsx";
-import PageJobRequest from "./pages/department_head/JobRequest/PageJobRequest.jsx";
-import PageEmployee from "./pages/department_head/Employee/PageEmployee.jsx";
-import PageReferral from "./pages/department_head/Referral/PageReferral.jsx";
-import PageProfile from "./pages/department_head/Profile/PageProfile.jsx";
-import PageCertificate from "./pages/department_head/ApprovingOfCertificateJobCompletion/PageCertificate.jsx";
-import PageHistoryDepartmentHead from "./pages/department_head/JobRequestHistory/PageHistory.jsx";
-
-// Additional imports for sub-routes
-import ViewJobOngoing from "./pages/department_head/JobRequest/ViewJobOngoing.jsx";
-import ViewJobCompleted from "./pages/department_head/JobRequest/ViewJobCompleted.jsx";
 import UserContent from "./pages/system_admin/Users/ContentUsers";
 import AdminContent from "./pages/system_admin/Users/ContentDepartmentHead";
 import StaffContent from "./pages/system_admin/Users/ContentStaff";
@@ -40,6 +27,16 @@ import NewRequest from "./pages/system_admin/JobRequest/NewJobRequst";
 import ViewUser from "./pages/system_admin/Users/UserViewing";
 import ViewAdmin from "./pages/system_admin/Users/AdminViewing";
 import ViewStaff from "./pages/system_admin/Users/StaffViewing";
+
+// Components for department_head
+import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
+import PageReportDepartmentHead from "./pages/department_head/SendReport/PageReport.jsx";
+import PageJobRequest from "./pages/department_head/JobRequest/PageJobRequest.jsx";
+import PageEmployee from "./pages/department_head/Employee/PageEmployee.jsx";
+import PageReferral from "./pages/department_head/Referral/PageReferral.jsx";
+import PageProfile from "./pages/department_head/Profile/PageProfile.jsx";
+import PageCertificate from "./pages/department_head/ApprovingOfCertificateJobCompletion/PageCertificate.jsx";
+import PageHistoryDepartmentHead from "./pages/department_head/JobRequestHistory/PageHistory.jsx";
 import ViewJobRequest from "./pages/department_head/JobRequest/ViewJobRequest.jsx";
 import ViewJobRequestRemarks from "./pages/department_head/JobRequest/ViewJobRequestRemarks.jsx";
 import JobOngoing from "./pages/department_head/JobRequest/PageJobOngoing.jsx";
@@ -60,7 +57,8 @@ import DashboardContent from "./pages/department_head/Dashboard/ContentDashboard
 import UserInformation from "./pages/department_head/Profile/UserInformation.jsx";
 import EditFormReferral from "./pages/department_head/Referral/EditFormReferral.jsx";
 import CreateNewUser from "./pages/department_head/CreateNewUserTest/CreateNewUser.jsx";
-import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
+import ViewJobOngoing from "./pages/department_head/JobRequest/ViewJobOngoing.jsx";
+import ViewJobCompleted from "./pages/department_head/JobRequest/ViewJobCompleted.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
