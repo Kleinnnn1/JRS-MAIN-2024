@@ -3,7 +3,7 @@ import { useLogout } from "../../../auth/useLogout";
 import { updatePassword } from "../../../service/apiAuth";
 import supabase from "../../../service/supabase"; // Import Supabase client
 import toast from "react-hot-toast";
-import SaveChangesButton from "./RequestorSaveChangesButton";
+import SaveChangesButton from "./SaveChangesButton";
 
 export default function ChangePassword() {
   const { logout } = useLogout();

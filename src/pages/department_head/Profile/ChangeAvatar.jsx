@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import ProfileImage from "./RequestorProfileImage";
-import SaveChangesButton from "./RequestorSaveChangesButton";
+import ProfileImage from "./ProfileImage";
+import SaveChangesButton from "./SaveChangesButton";
 import { updateAvatar } from "../../../service/apiAuth";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

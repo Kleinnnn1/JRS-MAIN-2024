@@ -74,14 +74,7 @@ import CreateNewUser from "./pages/department_head/CreateNewUserTest/CreateNewUs
 import ViewJobOngoing from "./pages/department_head/JobRequest/ViewJobOngoing.jsx";
 import ViewJobCompleted from "./pages/department_head/JobRequest/ViewJobCompleted.jsx";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 0,
-    },
-  },
-});
-
+//requestor components
 import PageRequestorDashboard from "./pages/requestor/Dashboard/RequestorPageDashboard.jsx";
 import RequestorContentDashboard from "./pages/requestor/Dashboard/RequestorContentDashboard.jsx";
 import RequestorJobRequestDetail from "./pages/requestor/JobRequestDetail/RequestorPageJobRequestDetail.jsx";
@@ -104,6 +97,13 @@ import RequestorJobRequestApproved from "./pages/requestor/JobRequestDetail/Requ
 import RequestorJobRequestCompleted from "./pages/requestor/JobRequestDetail/RequestorContentJobRequestCompleted.jsx";
 import RequestorCertificate from "./pages/requestor/JobRequestDetail/RequestorCertificate.jsx";
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+    },
+  },
+});
 
 export default function App() {
   return (
@@ -112,6 +112,7 @@ export default function App() {
         <Routes>
           {/* Routes for Unauthorized page */}
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
 
@@ -228,6 +229,85 @@ export default function App() {
               <Route path="content" element={<ContentAprrovingCertificate />} />
             </Route>
           </Route>
+
+          {/* Protected Routes for Requestor */}
+          <Route path="/requestor/*" element={<PageRequestorDashboard />}>
+            <Route path="home" element={<RequestorContentDashboard />} />
+            {/* JOB REQUEST */}
+            <Route path="job_request" element={<RequestorJobRequest />} />
+            <Route
+              path="job_request_table"
+              element={<RequestorJobRequestTable />}
+            />
+            <Route
+              path="job_request_detail"
+              element={<RequestorJobRequestDetail />}
+            />
+            <Route
+              path="job_request_approved"
+              element={<RequestorJobRequestApproved />}
+            />
+            <Route
+              path="job_request_completed"
+              element={<RequestorJobRequestCompleted />}
+            />
+            <Route
+              path="job_request_certificate"
+              element={<RequestorCertificate />}
+            />
+            <Route
+              path="job_request_form"
+              element={<RequestorJobRequestForm />}
+            />
+
+            {/* REQUESTOR'S PROFILE */}
+            <Route path="requestor_profile" element={<RequestorPageProfile />}>
+              <Route path="user_account" element={<RequestorInformation />} />
+              <Route path="change_avatar" element={<RequestorChangeAvatar />} />
+              <Route
+                path="change_password"
+                element={<RequestorChangePassword />}
+              />
+            </Route>
+
+            {/* REQUESTOR'S JOB REQUEST HISTORY */}
+            <Route
+              path="job_request_history"
+              element={<RequestorPageHistory />}
+            />
+
+            {/* REQUESTOR'S SCHEDULES */}
+            <Route
+              path="requestor_schedule"
+              element={<RequestorPageSchedule />}
+            />
+
+            {/* USTP HARMONIZED CLIENT SATISFACTION SURVEY */}
+            <Route
+              path="section_one"
+              element={<ClientSatisfactionSurveySectionOne />}
+            />
+            <Route
+              path="survey_section_two"
+              element={<ClientSatisfactionSurveySectionTwo />}
+            />
+            <Route
+              path="section_three"
+              element={<ClientSatisfactionSurveySectionThree />}
+            />
+            <Route
+              path="section_four"
+              element={<ClientSatisfactionSurveySectionFour />}
+            />
+            <Route
+              path="section_five"
+              element={<ClientSatisfactionSurveySectionFive />}
+            />
+            <Route
+              path="section_six"
+              element={<ClientSatisfactionSurveySectionSix />}
+            />
+          </Route>
         </Routes>
 
         <Toaster
@@ -253,59 +333,5 @@ export default function App() {
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </Router>
     </QueryClientProvider>
-    <Router>
-      <Routes>
-        {/* Routes for Login*/}
-        {/* <Route path="/login" element={<Login />} /> */}
-{/* 
-        {/* Routes for Requestor */}
-        <Route path="/requestor" element={<PageRequestorDashboard />}>
-          <Route path="home" element={<RequestorContentDashboard />} />
-          {/* JOB REQUEST */}
-          <Route path="job_request" element={<RequestorJobRequest />} />
-          <Route path="job_request_table" element={<RequestorJobRequestTable />} />
-          <Route path="job_request_detail" element={<RequestorJobRequestDetail />} />
-          <Route path="job_request_approved" element={<RequestorJobRequestApproved />} />
-          <Route path="job_request_completed" element={<RequestorJobRequestCompleted />} /> 
-          <Route path="job_request_certificate" element={<RequestorCertificate />} /> 
-          <Route path="job_request_form" element={<RequestorJobRequestForm />} />
-
-          {/* REQUESTOR'S PROFILE */}
-          <Route path="requestor_profile" element={<RequestorPageProfile />} >
-          </Route>
-
-          {/* REQUESTOR'S JOB REQUEST HISTORY */}
-          <Route path="job_request_history" element={<RequestorPageHistory />} >
-
-          </Route>
-
-          {/* REQUESTOR'S SCHEDULES */}
-          <Route path="requestor_schedule" element={<RequestorPageSchedule />} >
-          </Route>
-
-          {/* USTP HARMONIZED CLIENT SATISFACTION SURVEY */}
-          <Route path="section_one" element={<ClientSatisfactionSurveySectionOne />} />
-          <Route path="survey_section_two" element={<ClientSatisfactionSurveySectionTwo />} />
-          <Route path="section_three" element={<ClientSatisfactionSurveySectionThree />} />
-          <Route path="section_four" element={<ClientSatisfactionSurveySectionFour />} />
-          <Route path="section_five" element={<ClientSatisfactionSurveySectionFive />} />
-          
-          <Route path="section_six" element={<ClientSatisfactionSurveySectionSix />} />
-
-          {/* REQUESTOR PROFILE */}
-          <Route path="requestor_profile" element={<RequestorPageProfile />} >
-            <Route path="user_account" element={<RequestorInformation />} />
-            <Route path="change_avatar" element={<RequestorChangeAvatar />} />
-            <Route path="change_password" element={<RequestorChangePassword />} />
-          </Route>
-          
-
-          {/* REQUESTOR PROFILE */}
-      
-        </Route>
-        {/* END OF REQUESTOR */}
-
-      </Routes>
-    </Router>
   );
 }

@@ -1,13 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
+import supabase from "./supabase";
 
-<<<<<<< HEAD
-const supabaseUrl = "https://hnhwwcqwlcbcvbvryzxu.supabase.co";
-const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhuaHd3Y3F3bGNiY3ZidnJ5enh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk2Njg1NzMsImV4cCI6MjAzNTI0NDU3M30.maYvTklRhmitbHy0lNvH5L0ePG0C1mknO2QOfYOIeCg";
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-export default supabase;
-=======
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 
 // Fetch all referrals
@@ -132,4 +125,3 @@ export async function updateReferral(referral_id, updatedData) {
 //   .update({ other_column: 'otherValue' })
 //   .eq('some_column', 'someValue')
 //   .select()
->>>>>>> RaphaelMerge3

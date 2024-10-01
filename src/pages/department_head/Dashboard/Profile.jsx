@@ -1,6 +1,6 @@
 import useUserStore from "../../../store/useUserStore";
-import ProfilePic from "/src/assets/images/BabyKaren.jpg";
-import DefaultImageUser from "/src/assets/images/DefaultImageUser.jpg";
+import ProfilePic from "/src/assets/images/kennimg.jpg";
+import DefaultImageUser from "../../../assets/images/DefaultImageUser.jpg";
 
 export default function Profile() {
   const { userMetadata } = useUserStore();
@@ -11,8 +11,10 @@ export default function Profile() {
         alt="Profile"
         className="w-16 h-16 rounded-full  border border-black object-cover mb-2"
       />
-      <p className="font-semibold text-xm">Karen C. Cadalo</p>
-      <p className="text-xs">Faculty Teacher</p>
+      <p className="font-semibold text-xm">
+        {userMetadata.fName} {userMetadata.lName}
+      </p>
+      <p className="text-xs">{userMetadata.role}</p>
     </div>
   );
 }

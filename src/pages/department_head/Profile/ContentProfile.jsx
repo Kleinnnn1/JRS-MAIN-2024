@@ -1,14 +1,17 @@
-import ContentAndHeader from "./RequestorContentAndHeader";
-import ProfileInformationBox from "./RequestorProfileInformationBox";
-import ProfileTab from "./RequestorProfileTab";
-import UserInformation from "./RequestorUserInformation";
+import ContentAndHeader from "./ContentAndHeader";
+import ProfileImageBox from "./ProfileImageBox";
+import ProfileInformationBox from "./ProfileInformationBox";
+import ProfileTab from "./ProfileTab";
+import UserInformation from "./UserInformation";
 import { useNavigate, Outlet, useOutlet } from "react-router-dom";
 
-export default function RequestorContentProfile() {
+export default function ContentProfile() {
   const navigate = useNavigate();
   const otherContent = useOutlet();
   return (
     <div className="flex justify-center items-start">
+      {/* <ProfileImageBox /> */}
+
       <ProfileInformationBox>
         <ContentAndHeader
           content={otherContent ? <Outlet /> : <UserInformation />}
@@ -17,19 +20,19 @@ export default function RequestorContentProfile() {
             <ProfileTab
               name="User Account"
               onClick={() =>
-                navigate("/requestor/requestor_profile/user_account")
+                navigate("/department_head/myprofile/user_account")
               }
             />
             <ProfileTab
               name="Change Avatar"
               onClick={() =>
-                navigate("/requestor/requestor_profile/change_avatar")
+                navigate("/department_head/myprofile/change_avatar")
               }
             />
             <ProfileTab
               name="Change Password"
               onClick={() =>
-                navigate("/requestor/requestor_profile/change_password")
+                navigate("/department_head/myprofile/change_password")
               }
             />
           </div>
