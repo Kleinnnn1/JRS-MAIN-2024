@@ -231,7 +231,14 @@ export default function App() {
           </Route>
 
           {/* Protected Routes for Requestor */}
-          <Route path="/requestor/*" element={<PageRequestorDashboard />}>
+          <Route
+            path="/requestor/*"
+            element={
+              <ProtectedRoute requiredRole="requestor">
+                <PageRequestorDashboard />
+              </ProtectedRoute>
+            }
+          >
             <Route path="home" element={<RequestorContentDashboard />} />
             {/* JOB REQUEST */}
             <Route path="job_request" element={<RequestorJobRequest />} />
