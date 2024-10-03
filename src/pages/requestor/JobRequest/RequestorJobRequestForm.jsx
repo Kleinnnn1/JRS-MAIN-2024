@@ -1,21 +1,37 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes
-import { useNavigate } from 'react-router-dom'; // For navigation
-import { warningAlert, successAlert, confirmationAlert } from '../../../components/ReusableSweetAlert'; // Import reusable SweetAlerts
-import SearchBar from '../../../components/SearchBar';
+import { useState } from "react";
+import PropTypes from "prop-types"; // Import PropTypes
+import { useNavigate } from "react-router-dom"; // For navigation
+import {
+  warningAlert,
+  successAlert,
+  confirmationAlert,
+} from "../../../components/ReusableSweetAlert"; // Import reusable SweetAlerts
+import SearchBar from "../../../components/SearchBar";
 
 export default function RequestorJobRequestForm({ onSubmit }) {
   const [jobRequests, setJobRequests] = useState([
-    { id: 1, description: '', location: '', category: '', photo: null }, // Only one item in the initial state
+    { id: 1, description: "", location: "", category: "", photo: null }, // Only one item in the initial state
   ]);
 
-  const jobCategories = ['Electrical', 'Plumbing', 'Carpentry', 'HVAC', 'Painting'];
+  const jobCategories = [
+    "Electrical",
+    "Plumbing",
+    "Carpentry",
+    "HVAC",
+    "Painting",
+  ];
   const navigate = useNavigate(); // Hook for navigation
 
   const handleAddRow = () => {
     setJobRequests([
       ...jobRequests,
-      { id: jobRequests.length + 1, description: '', location: '', category: '', photo: null },
+      {
+        id: jobRequests.length + 1,
+        description: "",
+        location: "",
+        category: "",
+        photo: null,
+      },
     ]);
   };
 
@@ -44,27 +60,34 @@ export default function RequestorJobRequestForm({ onSubmit }) {
 
     if (hasEmptyFields) {
       // Show a SweetAlert warning if any required field is empty
-      warningAlert('Missing Required Fields', 'Please fill out all required fields before submitting.');
+      warningAlert(
+        "Missing Required Fields",
+        "Please fill out all required fields before submitting."
+      );
       return; // Stop form submission
     }
 
     // Trigger SweetAlert confirmation using the reusable confirmation alert
     confirmationAlert(
-      'Are you sure you want to submit?',
-      'This action will submit your job request.',
+      "Are you sure you want to submit?",
+      "This action will submit your job request.",
       () => {
         // Submit the form data and show success alert
-        successAlert('Submitted!', 'Your job request has been submitted successfully.')
-          .then(() => {
-            // Redirect to job request page after showing success alert
-            navigate('/requestor/job_request_table');
-          });
+        successAlert(
+          "Submitted!",
+          "Your job request has been submitted successfully."
+        ).then(() => {
+          // Redirect to job request page after showing success alert
+          navigate("/requestor/job_request_table");
+        });
 
         // Submit the form data to the parent component
         onSubmit(jobRequests);
 
         // Reset form fields after submission
-        setJobRequests([{ id: 1, description: '', location: '', category: '', photo: null }]);
+        setJobRequests([
+          { id: 1, description: "", location: "", category: "", photo: null },
+        ]);
       }
     );
   };
@@ -102,7 +125,11 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
                       value={request.description}
                       onChange={(e) =>
-                        handleInputChange(request.id, 'description', e.target.value)
+                        handleInputChange(
+                          request.id,
+                          "description",
+                          e.target.value
+                        )
                       }
                       required
                     />
@@ -114,7 +141,11 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
                       value={request.location}
                       onChange={(e) =>
-                        handleInputChange(request.id, 'location', e.target.value)
+                        handleInputChange(
+                          request.id,
+                          "location",
+                          e.target.value
+                        )
                       }
                       required
                     />
@@ -125,7 +156,11 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
                       value={request.category}
                       onChange={(e) =>
-                        handleInputChange(request.id, 'category', e.target.value)
+                        handleInputChange(
+                          request.id,
+                          "category",
+                          e.target.value
+                        )
                       }
                       required
                     >
@@ -143,7 +178,11 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                       id={`photo-${request.id}`}
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
                       onChange={(e) =>
-                        handleInputChange(request.id, 'photo', e.target.files[0])
+                        handleInputChange(
+                          request.id,
+                          "photo",
+                          e.target.files[0]
+                        )
                       }
                     />
                   </td>
@@ -152,7 +191,11 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                       <button
                         type="button"
                         onClick={() => handleRemoveRow(request.id)}
-                        className={`bg-red-600 text-white px-3 py-1 rounded-md ${jobRequests.length === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`bg-red-600 text-white px-3 py-1 rounded-md ${
+                          jobRequests.length === 1
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                        }`}
                         disabled={jobRequests.length === 1} // Disable button if there's only one row
                       >
                         -

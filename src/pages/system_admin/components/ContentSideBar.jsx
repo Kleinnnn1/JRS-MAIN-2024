@@ -62,12 +62,12 @@ export default function ContentSideBar() {
         onClick={() => handleNavigation("/system_admin/Reports")}
         bold={isActive("/system_admin/Reports")}
       />
-      <SidebarItem
+      {/* <SidebarItem
         name="Logout"
         image={iconLogoutSideBar}
         onClick={() => handleNavigation("/department_head/user")}
         bold={isActive("/department_head/user")}
-      />
+      /> */}
     </>
   );
 }

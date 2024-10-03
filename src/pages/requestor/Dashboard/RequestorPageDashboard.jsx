@@ -6,30 +6,31 @@ import ContentRequestorSideBar from "../RequestorGlobalComponents/RequestorConte
 import ReusableHeader from "../../../components/ReusableHeader";
 import RequestorMainBody from "../Dashboard/RequestorMainBody";
 import ContentDashboard from "./RequestorContentDashboard";
-import profilePic from '../../../assets/images/BabyKaren.jpg';
+import profilePic from "../../../assets/images/BabyKaren.jpg";
+import HorizontalNavBar from "../../../components/HorizontalNavBar";
 
 export default function RequestorDashboard() {
-    const otherContent = useOutlet();
+  const otherContent = useOutlet();
 
-    return (
-        <div className="text-gray-800 font-inter">
-            <SideBar>
-                <Logo />
-                <ProfileRequestor />
-                <ContentRequestorSideBar />
-                
-            </SideBar>
+  return (
+    <div className="text-gray-800 font-inter">
+      <SideBar>
+        <Logo />
+        <ProfileRequestor />
+        <ContentRequestorSideBar />
+      </SideBar>
 
-            <RequestorMainBody>
-                <ReusableHeader
+      <RequestorMainBody>
+        <HorizontalNavBar profileRoute="/requestor/requestor_profile" />
+        {/* <ReusableHeader
                 
                 profilePicture={profilePic}
                 username="Karen"
                 profileLink="/requestor/requestor_profile"
                 
-                />
-                {otherContent ? <Outlet /> : <ContentDashboard />}
-            </RequestorMainBody>
-        </div>
-    );
+                /> */}
+        {otherContent ? <Outlet /> : <ContentDashboard />}
+      </RequestorMainBody>
+    </div>
+  );
 }

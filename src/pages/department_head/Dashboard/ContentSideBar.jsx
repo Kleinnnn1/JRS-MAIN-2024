@@ -35,7 +35,7 @@ export default function ContentSideBar() {
         onClick={() => navigate("/department_head/myprofile")}
         image={iconProfile}
         bold={isActive("/department_head/myprofile")}
-      />
+      /> */}
       <SidebarItem
         name="Job Request"
         onClick={() => navigate("/department_head/job_request")}

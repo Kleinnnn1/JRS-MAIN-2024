@@ -14,23 +14,9 @@ const formatDate = () => {
   return currentDate.toLocaleDateString("en-US", options);
 };
 
-// Helper function to format the date as "Month Day, Year Weekday"
-const formatDate = () => {
-  const currentDate = new Date();
-
-  // Use toLocaleDateString to get the desired format
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  return currentDate.toLocaleDateString("en-US", options);
-};
-
-export default function SearchBar({ title = {} }) {
+export default function SearchBar({ title, inputProps = {} }) {
   return (
-    <div className="my-2 mx-3 py-1 bg-custom-blue flex items-center ">
+    <div className="my-2 mx-3 py-2 px-2 bg-custom-blue flex items-center rounded-lg">
       <div className="flex flex-col flex-grow">
         <span className="text-white text-2xl font-bold">{title}</span>
         <span className="text-white text-xs mt-1">{formatDate()}</span>

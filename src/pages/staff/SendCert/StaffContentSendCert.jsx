@@ -1,23 +1,23 @@
-import React from 'react';
+import React from "react";
 import ReusableContent from "../../../components/ReusableContent";
 import SearchBar from "../../../components/SearchBar";
 import ReusableBackButton from "../../../components/ReusableBackButton";
 import ButtonApproveCertificate from "./StaffButtonApproveCertificate";
 import ImageCertificate from "./StaffImageCert";
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2'; // Import SweetAlert
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; // Import SweetAlert
 
 export default function ContentApprovingCertificate() {
   const navigate = useNavigate();
 
   const handleSendCertificateClick = () => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'Are you sure you want to send the certificate?',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Are you sure you want to send the certificate?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Yes, send it!',
-      cancelButtonText: 'No, cancel'
+      confirmButtonText: "Yes, send it!",
+      cancelButtonText: "No, cancel",
     }).then((result) => {
       if (result.isConfirmed) {
         navigate("/staff/StaffSendCert/StaffCert");
@@ -29,9 +29,7 @@ export default function ContentApprovingCertificate() {
     <>
       <SearchBar title={`Send Certificate`} />
       <ReusableContent className="p-6 bg-white shadow-md rounded-lg">
-        <span className="text-2xl font-bold mb-4 block">
-          Job Details
-        </span>
+        <span className="text-2xl font-bold mb-4 block">Job Details</span>
 
         <span className="block mb-2">
           <b>Requestor Name:</b> Ms. Charlanees Vallar

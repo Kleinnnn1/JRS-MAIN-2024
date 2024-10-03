@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-{
-  /* Staff */
-}
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+// Components for staff
 import ContentDashStaff from "./pages/staff/Dashboard/StaffContentDash.jsx";
 import MainDashStaff from "./pages/staff/Dashboard/StaffMainDashboard.jsx";
 import StaffProfile from "./pages/staff/Profile/StaffPageProfile.jsx";
@@ -13,111 +15,41 @@ import StaffSendCert from "./pages/staff/SendCert/StaffContentSendCert.jsx";
 import StaffImageContent from "./pages/staff/Task/StaffImageContent.jsx";
 import StaffImagePage from "./pages/staff/Task/StaffOngoingPage.jsx";
 import StaffHistoryPage from "./pages/staff/History/CompletedTask.jsx";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "react-hot-toast";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-// Importing all the necessary components for the routes
-import LogIn from "./auth/LogIn.jsx";
-import ProtectedRoute from "./auth/ProtectedRoute.jsx";
-import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
-
-// Components for system_admin
-
-// Components for department_head
+// Components for department head
 import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
-import PageReportDepartmentHead from "./pages/department_head/SendReport/PageReport.jsx";
 import PageJobRequest from "./pages/department_head/JobRequest/PageJobRequest.jsx";
 import PageEmployee from "./pages/department_head/Employee/PageEmployee.jsx";
 import PageReferral from "./pages/department_head/Referral/PageReferral.jsx";
 import PageProfile from "./pages/department_head/Profile/PageProfile.jsx";
 import PageCertificate from "./pages/department_head/ApprovingOfCertificateJobCompletion/PageCertificate.jsx";
 import PageHistoryDepartmentHead from "./pages/department_head/JobRequestHistory/PageHistory.jsx";
-
-// Additional imports for sub-routes
 import ViewJobOngoing from "./pages/department_head/JobRequest/ViewJobOngoing.jsx";
 import ViewJobCompleted from "./pages/department_head/JobRequest/ViewJobCompleted.jsx";
-import SystemAdDashboard from "./pages/system_admin/Dashboard/PageDashboard";
-import UsersPage from "./pages/system_admin/Users/sysadminUsers";
-import Job_requests from "./pages/system_admin/JobRequest/jobRequests";
-import DepartmentPage from "./pages/system_admin/Department/PageDepartment";
-import PageHistorySystemAdmin from "./pages/system_admin/History/HistoryPage";
-import PageReportSystemAdmin from "./pages/system_admin/Reports/ReportsPage";
-import UserContent from "./pages/system_admin/Users/ContentUsers";
-
-import SysAdminContent from "./pages/system_admin/Users/ContentDepartmentHead";
-import SysAdminStaffContent from "./pages/system_admin/Users/ContentStaff";
-import SystemAdDashboard from "./pages/system_admin/Dashboard/PageDashboard";
-import SysAdminUsersPage from "./pages/system_admin/Users/SysAdminUsersPage.jsx";
-import SysAdminJob_requests from "./pages/system_admin/JobRequest/jobRequests";
-import SysAdminDepartmentPage from "./pages/system_admin/Department/PageDepartment";
-import SysAdminAddDepartment from "./pages/system_admin/Department/addDepartment";
-import SysAdminAddNewUser from "./pages/system_admin/Users/addUser";
-import SysAdminAddNewStaff from "./pages/system_admin/Users/addNewStaff.jsx";
-import SysAdminAddNewAdmin from "./pages/system_admin/Users/addNewAdmin.jsx";
-import SysAdminViewingDepartment from "./pages/system_admin/Department/ViewDepartment";
-import SysAdminNewRequest from "./pages/system_admin/JobRequest/NewJobRequst";
-import SysAdminViewUser from "./pages/system_admin/Users/UserViewing";
-import SysAdminViewAdmin from "./pages/system_admin/Users/AdminViewing";
-import SysAdminViewStaff from "./pages/system_admin/Users/StaffViewing";
-import SysAdminUserInformation from "./pages/system_admin/Profile/UserInformation.jsx";
-import SysAdminPageProfile from "./pages/system_admin/Profile/PageProfile.jsx";
-import SysAdminChangeAvatar from "./pages/system_admin/Profile/ChangeAvatar";
-import SysAdminChangePassword from "./pages/system_admin/Profile/ChangePassword";
-import PageHistorySystemAdmin from "./pages/system_admin/History/HistoryPage";
-import PageReportSystemAdmin from "./pages/system_admin/Reports/ReportsPage";
-
-import AdminContent from "./pages/system_admin/Users/ContentDepartmentHead";
-import StaffContent from "./pages/system_admin/Users/ContentStaff";
-import AddDepartment from "./pages/system_admin/Department/addDepartment";
-import AddNewUser from "./pages/system_admin/Users/addUser";
-import AddNewAdmin from "./pages/system_admin/Users/addAdmin";
-import AddNewStaff from "./pages/system_admin/Users/addAdmin";
-import ViewingDepartment from "./pages/system_admin/Department/ViewDepartment";
-import NewRequest from "./pages/system_admin/JobRequest/NewJobRequst";
-import ViewUser from "./pages/system_admin/Users/UserViewing";
-import ViewAdmin from "./pages/system_admin/Users/AdminViewing";
-import ViewStaff from "./pages/system_admin/Users/StaffViewing";
-
-// Components for department_head
-import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
-import PageReportDepartmentHead from "./pages/department_head/SendReport/PageReport.jsx";
-import PageJobRequest from "./pages/department_head/JobRequest/PageJobRequest.jsx";
-import PageEmployee from "./pages/department_head/Employee/PageEmployee.jsx";
-import PageReferral from "./pages/department_head/Referral/PageReferral.jsx";
-import PageProfile from "./pages/department_head/Profile/PageProfile.jsx";
-import PageCertificate from "./pages/department_head/ApprovingOfCertificateJobCompletion/PageCertificate.jsx";
-import PageHistoryDepartmentHead from "./pages/department_head/JobRequestHistory/PageHistory.jsx";
 import ViewJobRequest from "./pages/department_head/JobRequest/ViewJobRequest.jsx";
 import ViewJobRequestRemarks from "./pages/department_head/JobRequest/ViewJobRequestRemarks.jsx";
-import JobOngoing from "./pages/department_head/JobRequest/PageJobOngoing.jsx";
-import JobCompleted from "./pages/department_head/JobRequest/PageJobCompleted.jsx";
-import ViewEmployee from "./pages/department_head/Employee/ViewEmployee.jsx";
 import TableEmployeeHistory from "./pages/department_head/Employee/TableEmployeeHistory.jsx";
 import EmployeeHistoryView from "./pages/department_head/Employee/ViewEmployeeHistory.jsx";
-import ReportView from "./pages/department_head/SendReport/ReportView";
-import SendReportForm from "./pages/department_head/SendReport/SendReportForm";
 import ViewAddEmployee from "./pages/department_head/Employee/ViewAddEmployee.jsx";
-import ReferralJobRequestView from "./pages/department_head/Referral/ReferralJobRequestFormView";
+import ReferralJobRequestView from "./pages/department_head/Referral/ReferralJobRequestFormView.jsx";
 import TableHistory from "./pages/department_head/JobRequestHistory/TableHistory.jsx";
 import ViewHistory from "./pages/department_head/JobRequestHistory/ViewHistory.jsx";
-import ContentAprrovingCertificate from "./pages/department_head/ApprovingOfCertificateJobCompletion/ContentApprovingCertificate.jsx";
-import ChangeAvatar from "./pages/department_head/Profile/ChangeAvatar";
-import ChangePassword from "./pages/department_head/Profile/ChangePassword";
+import ContentApprovingCertificate from "./pages/department_head/ApprovingOfCertificateJobCompletion/ContentApprovingCertificate.jsx";
+import ChangeAvatar from "./pages/department_head/Profile/ChangeAvatar.jsx";
+import ChangePassword from "./pages/department_head/Profile/ChangePassword.jsx";
 import DashboardContent from "./pages/department_head/Dashboard/ContentDashboard.jsx";
 import UserInformation from "./pages/department_head/Profile/UserInformation.jsx";
 import EditFormReferral from "./pages/department_head/Referral/EditFormReferral.jsx";
+import ReportView from "./pages/department_head/SendReport/ReportView.jsx";
+import SendReportForm from "./pages/department_head/SendReport/SendReportForm.jsx";
 import CreateNewUser from "./pages/department_head/CreateNewUserTest/CreateNewUser.jsx";
-import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
-import SysAdminAddNewSysAdmin from "./pages/system_admin/Users/addNewSysAdmin.jsx";
-import SysAdminViewSysAdmin from "./pages/system_admin/Users/SysAdminViewing.jsx";
-import SysAdminContentPage from "./pages/system_admin/Users/SystemAdminContent.jsx";
-import SystemAdminContentPage from "./pages/system_admin/Users/SystemAdminContent.jsx";
+import PageReportDepartmentHead from "./pages/department_head/SendReport/PageReport.jsx";
+import ViewEmployee from "./pages/department_head/Employee/ViewEmployee.jsx";
+import JobOngoing from "./pages/department_head/JobRequest/PageJobOngoing.jsx";
+import JobCompleted from "./pages/department_head/JobRequest/PageJobCompleted.jsx";
+import ContentAprrovingCertificate from "./pages/department_head/ApprovingOfCertificateJobCompletion/ContentApprovingCertificate.jsx";
 
-import ViewJobOngoing from "./pages/department_head/JobRequest/ViewJobOngoing.jsx";
-import ViewJobCompleted from "./pages/department_head/JobRequest/ViewJobCompleted.jsx";
-
-//requestor components
+// Components for requestor
 import PageRequestorDashboard from "./pages/requestor/Dashboard/RequestorPageDashboard.jsx";
 import RequestorContentDashboard from "./pages/requestor/Dashboard/RequestorContentDashboard.jsx";
 import RequestorJobRequestDetail from "./pages/requestor/JobRequestDetail/RequestorPageJobRequestDetail.jsx";
@@ -139,6 +71,38 @@ import RequestorChangePassword from "./pages/requestor/Profile/RequestorChangePa
 import RequestorJobRequestApproved from "./pages/requestor/JobRequestDetail/RequestorContentJobRequestApproved.jsx";
 import RequestorJobRequestCompleted from "./pages/requestor/JobRequestDetail/RequestorContentJobRequestCompleted.jsx";
 import RequestorCertificate from "./pages/requestor/JobRequestDetail/RequestorCertificate.jsx";
+
+// Components for system admin
+import SystemAdDashboard from "./pages/system_admin/Dashboard/PageDashboard.jsx";
+import SysAdminUsersPage from "./pages/system_admin/Users/SysAdminUsersPage.jsx";
+import SysAdminJob_requests from "./pages/system_admin/JobRequest/jobRequests.jsx";
+import SysAdminDepartmentPage from "./pages/system_admin/Department/PageDepartment.jsx";
+import SysAdminAddDepartment from "./pages/system_admin/Department/addDepartment.jsx";
+import SysAdminAddNewUser from "./pages/system_admin/Users/addUser.jsx";
+import SysAdminAddNewStaff from "./pages/system_admin/Users/addNewStaff.jsx";
+import SysAdminAddNewAdmin from "./pages/system_admin/Users/addNewAdmin.jsx";
+import SysAdminViewingDepartment from "./pages/system_admin/Department/ViewDepartment.jsx";
+import SysAdminNewRequest from "./pages/system_admin/JobRequest/NewJobRequst.jsx";
+import SysAdminViewUser from "./pages/system_admin/Users/UserViewing.jsx";
+import SysAdminViewAdmin from "./pages/system_admin/Users/AdminViewing.jsx";
+import SysAdminViewStaff from "./pages/system_admin/Users/StaffViewing.jsx";
+import SysAdminUserInformation from "./pages/system_admin/Profile/UserInformation.jsx";
+import SysAdminPageProfile from "./pages/system_admin/Profile/PageProfile.jsx";
+import SysAdminChangeAvatar from "./pages/system_admin/Profile/ChangeAvatar.jsx";
+import SysAdminChangePassword from "./pages/system_admin/Profile/ChangePassword.jsx";
+import PageHistorySystemAdmin from "./pages/system_admin/History/HistoryPage.jsx";
+import PageReportSystemAdmin from "./pages/system_admin/Reports/ReportsPage.jsx";
+import SysAdminAddNewSysAdmin from "./pages/system_admin/Users/addNewSysAdmin.jsx";
+import SysAdminViewSysAdmin from "./pages/system_admin/Users/SysAdminViewing.jsx";
+import SystemAdminContentPage from "./pages/system_admin/Users/SystemAdminContent.jsx";
+import UserContent from "./pages/system_admin/Users/ContentUsers";
+import SysAdminContent from "./pages/system_admin/Users/ContentDepartmentHead";
+import SysAdminStaffContent from "./pages/system_admin/Users/ContentStaff";
+
+// Importing all the necessary components for the routes
+import LogIn from "./auth/LogIn.jsx";
+import ProtectedRoute from "./auth/ProtectedRoute.jsx";
+import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -188,7 +152,14 @@ export default function App() {
           </Route>
 
           {/* Protected Routes for System Admin */}
-          <Route path="/system_admin/*" element={<SystemAdDashboard />}>
+          <Route
+            path="/system_admin/*"
+            element={
+              <ProtectedRoute requiredRole="system admin">
+                <SystemAdDashboard />
+              </ProtectedRoute>
+            }
+          >
             <Route path="myprofile" element={<SysAdminPageProfile />}>
               <Route
                 path="user_account"
@@ -229,7 +200,11 @@ export default function App() {
           {/* Protected Routes for Department Head */}
           <Route
             path="/department_head/*"
-            element={<PageDepartMentHeadDashboard />}
+            element={
+              <ProtectedRoute requiredRole="department head">
+                <PageDepartMentHeadDashboard />
+              </ProtectedRoute>
+            }
           >
             <Route path="user" element={<CreateNewUser />} />
             <Route path="dashboard" element={<DashboardContent />} />

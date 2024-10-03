@@ -27,12 +27,12 @@ export default function ContentRequestorSideBar() {
         isActive={isActive("/requestor/home")}
       />
       {/* MY PROFILE ICON */}
-      <SidebarItem
+      {/* <SidebarItem
         name="My Profile"
         onClick={() => navigate("/requestor/requestor_profile")}
         image={iconProfile}
         isActive={isActive("/requestor/requestor_profile")}
-      />
+      /> */}
       {/* SCHEDULES */}
       <SidebarItem
         name="Schedules"

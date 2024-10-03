@@ -7,6 +7,7 @@ import StaffScreen from "./StaffScreen";
 import { useOutlet, Outlet } from "react-router-dom";
 import StaffContentDash from "./StaffContentDash";
 import StaffSideBar from "./StaffSidebar";
+import HorizontalNavBar from "../../../components/HorizontalNavBar";
 
 export default function StaffMainDashboard() {
   const otherContent = useOutlet();
@@ -20,11 +21,12 @@ export default function StaffMainDashboard() {
       </SideBar>
 
       <StaffScreen>
-        <ReusableHeader
+        <HorizontalNavBar profileRoute="/Staff/Staffprofile" />
+        {/* <ReusableHeader
           profilePicture={profilePic}
           username="Raphael"
           profileLink="/Staff/Staffprofile"
-        />
+        /> */}
         {otherContent ? <Outlet /> : <StaffContentDash />}
       </StaffScreen>
     </div>
