@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 import Swal from 'sweetalert2';
 
-export default function AddNewStaff() {
-  const [StaffID, setStaffID] = useState('');
-  const [StaffOffice, setOffice] = useState('');
-  const [StaffName, setStaffName] = useState('');
+export default function SysAdminAddNewSysAdmin() {
+  const [SysAdminID, setSysAdminID] = useState('');
+  const [SysAdminOffice, setOffice] = useState('');
+  const [SysAdminName, setSysAdminName] = useState('');
   const [Birthday, setBirthday] = useState('');
   const [Position, setPosition] = useState('');
   const [Status, setStatus] = useState('');
@@ -13,20 +13,20 @@ export default function AddNewStaff() {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle form submission, e.g., send data to an API or update state
-    console.log('Staff StaffID:', StaffID);
-    console.log('Staff StaffOffice:', StaffOffice);
-    console.log('Staff StaffName:', StaffName);
-    console.log('Staff Birthday:', Birthday);
+    console.log('SysAdmin SysAdminID:', SysAdminID);
+    console.log('SysAdmin SysAdminOffice:', SysAdminOffice);
+    console.log('SysAdmin SysAdminName:', SysAdminName);
+    console.log('SysAdmin Birthday:', Birthday);
     console.log('Position:', Position);
     console.log('Status:', Status);
 
     // Display success message
-    Swal.fire('Success', 'Successfully Added New Staff', 'success');
+    Swal.fire('Success', 'Successfully Added New SysAdmin', 'success');
 
     // Clear the form after submission
-    setStaffID('');
+    setSysAdminID('');
     setOffice('');
-    setStaffName('');
+    setSysAdminName('');
     setBirthday('');
     setPosition('');
     setStatus('');
@@ -35,55 +35,55 @@ export default function AddNewStaff() {
   const handleCancel = (event) => {
     event.preventDefault();
     // Display cancellation message
-    Swal.fire('Cancelled', 'Staff addition was cancelled', 'error');
+    Swal.fire('Cancelled', 'SysAdmin addition was cancelled', 'error');
   };
 
   return (
     <div className="m-5 bg-white shadow-md rounded-lg">
       <div className="bg-yellow-500 p-5 rounded-t-lg">
-        <p className="text-xl font-bold text-gray-600">New Staff Information</p>
+        <p className="text-xl font-bold text-gray-600">New SysAdmin Information</p>
       </div>
       <form className="items items-center">
         <div className='flex'>
           <div className="m-5">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="StaffID">
-              Staff ID
+            <label className="block text-gray-700 font-bold mb-2" htmlFor="SysAdminID">
+              SysAdmin ID
             </label>
             <input
               type="text"
-              id="StaffID"
-              name="StaffID"
+              id="SysAdminID"
+              name="SysAdminID"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              value={StaffID}
-              onChange={(e) => setStaffID(e.target.value)}
+              value={SysAdminID}
+              onChange={(e) => setSysAdminID(e.target.value)}
               required
             />
           </div>
           <div className="m-5">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="StaffOffice">
-            Staff Office
+            <label className="block text-gray-700 font-bold mb-2" htmlFor="SysAdminOffice">
+            SysAdmin Office
             </label>
             <input
               type="text"
-              id="StaffOffice"
-              name="StaffOffice"
+              id="SysAdminOffice"
+              name="SysAdminOffice"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              value={StaffOffice}
+              value={SysAdminOffice}
               onChange={(e) => setOffice(e.target.value)}
               required
             />
           </div>
           <div className="m-5">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="StaffName">
-            StaffName
+            <label className="block text-gray-700 font-bold mb-2" htmlFor="SysAdminName">
+            SysAdminName
             </label>
             <input
               type="email"
-              id="StaffName"
-              name="StaffName"
+              id="SysAdminName"
+              name="SysAdminName"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              value={StaffName}
-              onChange={(e) => setStaffName(e.target.value)}
+              value={SysAdminName}
+              onChange={(e) => setSysAdminName(e.target.value)}
               required
             />
           </div>
@@ -105,7 +105,7 @@ export default function AddNewStaff() {
         <div className='flex'>
           <div className="m-5">
             <label className="block text-gray-700 font-bold mb-2" htmlFor="Position">
-              Staff Position
+              SysAdmin Position
             </label>
             <input
               type="text"

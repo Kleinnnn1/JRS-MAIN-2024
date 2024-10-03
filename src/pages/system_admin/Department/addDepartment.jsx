@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 
-export default function AddDepartment() {
+export default function SysAdminAddDepartment() {
   const [departmentName, setDepartmentName] = useState('');
   const [departmentLocation, setDepartmentLocation] = useState('');
   const [departmentEmail, setDepartmentEmail] = useState('');

@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
-import ProfileImage from "./ProfileImage";
 import SaveChangesButton from "./SaveChangesButton";
 import { updateAvatar } from "../../../service/apiAuth";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "../../../store/useUserStore";
+import ProfileImage from "./ProfileImage";
 
 export default function ChangeAvatar() {
   const { register, handleSubmit } = useForm();
@@ -15,10 +15,7 @@ export default function ChangeAvatar() {
     mutationFn: updateAvatar,
     onSuccess: (data) => {
       // Update Zustand store with new avatar URL
-      setUserMetadata({
-        ...userMetadata,
-        avatar: data.avatar, // Assuming API returns the new avatar URL in 'data.avatar'
-      });
+      
       toast.success("Avatar Successfully Updated");
       queryClient.invalidateQueries({ queryKey: ["profiles"] }); // Invalidate cache
     },

@@ -5,7 +5,10 @@ import ReusableBackButton from "../../../components/ReusableBackButton";
 export default function ReportView() {
   return (
     <>
-      <SearchBar title="Job Completed Information" />
+      <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
+        <div className="my-4 mx-3 py-4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
+          <SearchBar title="Job Completed Information" />
+        </div>
       <ReusableContent>
         <p>
           <b>Requestor Name:</b> Ricardo Dalisay
@@ -59,6 +62,7 @@ export default function ReportView() {
           <ReusableBackButton />
         </div>
       </ReusableContent>
+      </div>
     </>
   );
 }

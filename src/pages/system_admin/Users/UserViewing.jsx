@@ -1,6 +1,6 @@
 
 
-export default function ViewUser() {
+export default function SysAdminViewUser() {
     return (
         <>
        

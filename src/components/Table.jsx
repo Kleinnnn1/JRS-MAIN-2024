@@ -38,7 +38,7 @@ export default function Table({
         <div className="text-center py-4 text-gray-500">No Data Available</div> // Show empty state
       ) : (
         <table className="min-w-full max-w-full">
-          <thead className="bg-yellow-100 "> {/* Updated to yellow header */}
+          <thead className="bg-yellow-100"> {/* Updated to yellow header */}
             <tr>
               {Array.from({ length: columns }, (_, colIndex) => (
                 <th

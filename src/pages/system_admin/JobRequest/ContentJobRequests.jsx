@@ -1,5 +1,4 @@
-
-import Table from "../components/table";
+import Table from "../../../components/Table";
 import { useNavigate } from "react-router-dom";
 import DropdownButton from "../components/ReusableDropdown";
 import ReusableViewButton from "../components/ReusableViewButon";
@@ -32,42 +31,24 @@ export default function ContentJobRequest() {
       "28 - 07 2024",
       "CITC Building 3rd floor Room 309",
       <>
-
-
-        <ReusableViewButton 
-          onClick={() => navigate("/")}
-        />
+        <ReusableViewButton onClick={() => navigate("/")} />
         <DropdownButton options={options} />
-        
       </>,
     ],
-    ["2."],
-    ["3."],
-    ["4."],
-    ["5."],
-    ["6."],
-    ["7."],
-    ["8."],
-    ["9."],
-    ["10."],
-    ["11."],
-    ["12."],
-    ["13."],
-    ["14."],
-    ["15."],
   ];
   return (
     <>
-    <ReusableSearchBar onClick={() => navigate("/system_admin/Job_Requests/new_request")}
-      ButtonTitle="New Request"/>
-     
+      <ReusableSearchBar
+        onClick={() => navigate("/system_admin/Job_Requests/new_request")}
+        ButtonTitle="New Request"
+      />
+
       <Table
         columns={7}
         rows={tableContent.length}
         content={tableContent}
         headers={tableHeaders}
       />
-     
-     </>
+    </>
   );
 }

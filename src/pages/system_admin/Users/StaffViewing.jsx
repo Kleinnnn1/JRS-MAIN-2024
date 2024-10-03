@@ -1,6 +1,6 @@
 
 
-export default function ViewStaff() {
+export default function SysAdminViewStaff() {
     return (
         <>
        

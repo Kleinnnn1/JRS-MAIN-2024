@@ -1,19 +1,11 @@
-import DefaultImageUser from "../../../assets/images/DefaultImageUser.jpg";
-import useUserStore from "../../../store/useUserStore";
+import ProfilePic from "/src/assets/images/kennimg.jpg";
 
 export default function ProfileImage() {
-  const { userMetadata } = useUserStore();
-
-  // Construct the full URL if needed
-  const avatarUrl = userMetadata.avatar
-    ? userMetadata.avatar
-    : DefaultImageUser;
-
   return (
     <img
-      src={avatarUrl}
+      src={ProfilePic}
       alt="Profile"
-      className="w-[20vh] h-[20vh] rounded-full border border-black object-cover"
+      className="w-[20vh] h-[20vh] rounded-full  border border-black object-cover"
     />
   );
 }

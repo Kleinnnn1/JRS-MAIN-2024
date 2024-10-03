@@ -19,7 +19,6 @@ export default function Sidebar() {
   };
 
   const isActive = (path) => {
-    // Highlight if current path is exactly the path or is a nested route under it
     return (
       currentPath === path ||
       (path !== "/system_admin" && currentPath.startsWith(path))
@@ -27,7 +26,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="fixed left-0 top-0 w-64 h-full bg-custom-blue p-4 z-50 sidebar-menu transition-transform">
+    <div >
       <SideBarMenu />
       <SideBarProfile />
 

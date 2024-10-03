@@ -1,4 +1,4 @@
-import MyProfileDropdown from "./MyProfileDropdown";
+import MyProfileDropdown from "./StaffProfileDropdown";
 
 export default function HorizontalNavBar() {
   return (

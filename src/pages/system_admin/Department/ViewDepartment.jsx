@@ -2,7 +2,7 @@ import { Edit } from "@mui/icons-material";
 import ReportTab from "./ReportTable";
 
 
-export default function ViewingDepartment (){
+export default function SysAdminViewingDepartment (){
     return(
     <div className="m-5"> 
      <div className="flex justify-between m-10"> 

@@ -1,10 +1,9 @@
 import 'remixicon/fonts/remixicon.css';
 import StatusBox from '../components/DepartmentTable';
 import ReusableSearchBar from '../components/ReusableSearchBar';
-import userIcon from '/src/assets/images/SysAdIcons/userIcon.png';
 import { useState } from 'react';
 import AddDepartment from './addDepartment';
-import PageSubTitle from '../components/PageTitle';
+import SearchBar from '../../../components/SearchBar';
 
 export default function Departments() {
     const [isAdding, setIsAdding] = useState(false); // State to manage form visibility
@@ -12,7 +11,7 @@ export default function Departments() {
     return (
         <div>
             <main>
-            <PageSubTitle title="ALL DEPARTMENT" iconSrc={userIcon} />
+            <SearchBar title="Departments" />
 
                 {isAdding ? (
                     <AddDepartment /> // Show form if isAdding is true

@@ -4,14 +4,14 @@ export default function SendReportButton({
   marginRight,
   marginLeft,
   margin,
-  border = "border border-black",
+  border, 
   onClick,
-  bgColor,
+  bgColor = "bg-green-500 text-white hover:bg-green-600",
 }) {
   return (
     <button
       type="button"
-      className={`px-3 py-1 text-sm font-medium text-center rounded-lg ${bgColor} ${marginLeft} ${marginRight} ${border} ${margin}`}
+      className={`px-4 py-1 text-sm font-medium text-center rounded-lg ${bgColor} ${marginLeft} ${marginRight} ${border} ${margin}`}
       onClick={onClick}
     >
       Send Report

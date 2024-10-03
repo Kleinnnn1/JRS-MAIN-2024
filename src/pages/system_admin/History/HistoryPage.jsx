@@ -1,6 +1,5 @@
 import React from 'react';
-import userIcon from "/src/assets/images/SysAdIcons/userIcon.png";
-import PageSubTitle from '../components/PageTitle';
+import SearchBar from '../../../components/SearchBar';
 
 
 // Sample data for transaction history
@@ -35,10 +34,10 @@ const transactions = [
   },
 ];
 
-export default function PageHistory() {
+export default function PageHistorySystemAdmin() {
   return (
     <div>
-    <PageSubTitle title="HISTORY" iconSrc={userIcon} />
+      <SearchBar title="History" />
     <div className="m-10 p-5 border border-gray-300 shadow-md rounded-lg">
       
       <table className="min-w-full divide-y divide-gray-200">
