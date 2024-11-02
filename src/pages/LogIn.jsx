@@ -26,10 +26,11 @@ export default function LogIn() {
 
     return (
         // BACKGROUND IMAGE
-        <div className="flex justify-center items-center min-h-screen min-w-screen bg-background-image bg-cover">
+        <div className="bg-gradient-to-tl from-purple-900 to green-700 h-96 bg-cover relative">
+    
 
             {/* CARD CONTAINER */}
-            <form method="POST" onSubmit={handleClickSignUp} className="flex flex-col items-center justify-around h-96 w-80 p-6 rounded-sm  bg-acc-edd shadow-4xl">
+            <form method="POST" onSubmit={handleClickSignUp} className="flex flex-col items-center justify-around h- w-80 p-6 rounded-2xl bg-acc-edd shadow-4xl">
                 
                 {/* USTP LOGO */}
                 <div className="flex flex-col items-center">
@@ -80,5 +81,6 @@ export default function LogIn() {
             </form>
 
         </div>
+
     )
 }
