@@ -6,7 +6,7 @@ export async function getRequestorRequest() {
   const { data, error } = await supabase
     .from("Request")
     .select(
-      "requestId, description, jobPosition, deptName, image, status, requestDate, dateCompleted" // Include deptReqAssId here
+      "requestId, description, jobPosition, deptName, image, status, requestDate, dateCompleted, staffName" // Include deptReqAssId here
     )
     .eq("idNumber", currentUser.idNumber); // Match the idNumber from the current user's profile
 
@@ -14,7 +14,7 @@ export async function getRequestorRequest() {
     console.error("Error fetching requests:", error);
     throw new Error("Request could not be loaded");
   }
-  console.log(data);
+  // console.log(data);
 
   return data; // Return the fetched data
 }

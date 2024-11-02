@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { insertRequest } from "../../../service/apiRequestorRequestTable";
 import toast from "react-hot-toast";
 
-export default function RequestorJobRequestForm() {
+export default function RequestorJobRequestForm({ closeModal }) {
   const { handleSubmit, reset } = useForm();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -263,6 +263,7 @@ export default function RequestorJobRequestForm() {
 
     toast.success("Your job request(s) have been submitted successfully.");
     navigate("/requestor/job_request_table");
+    closeModal();
 
     setJobRequests([
       {

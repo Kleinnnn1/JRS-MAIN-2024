@@ -11,9 +11,9 @@ import RequestorJobRequestData from "./RequestorJobRequestData";
 const tableHeaders = [
   "Request ID",
   "Job Description",
-  "Jop Position",
-  "Department",
-  "Processed by",
+  "Job Position",
+  "Process by Department",
+  "Staff Assigned",
   "Image",
   "Status",
   "Date Requested",
@@ -33,25 +33,28 @@ export default function RequestorJobRequestTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleMakeRequest = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
+  const closeModal = () => setIsModalOpen(false);
   const handleClickOutsideModal = (e) => {
     if (e.target.id === "modalBackdrop") closeModal();
   };
 
   const handleJobRequestSubmit = () => {
-    //newRequests
-    // Optionally, you can handle the new requests here
+    // Handle new requests here if necessary
     closeModal();
   };
 
-  // Filter job requests based on search term
-  const filteredRequests = request.filter(
-    (request) =>
-      request.requestor?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      request.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      request.status?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter job requests based on search term and sort by Date Requested
+  const filteredRequests = request
+    .filter(
+      (request) =>
+        request.requestor?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        request.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        request.status?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
+
+  // Sort by Date Requested in descending order
 
   const totalPages = Math.ceil(filteredRequests.length / rowsPerPage);
   const paginatedRequests = filteredRequests.slice(
@@ -60,7 +63,7 @@ export default function RequestorJobRequestTable() {
   );
 
   // Create table content or show no data message
-  const tableContent = RequestorJobRequestData(request) || [];
+  const tableContent = RequestorJobRequestData(paginatedRequests) || []; // Use paginated requests
 
   // UI LAYOUT
   return (
@@ -115,18 +118,16 @@ export default function RequestorJobRequestTable() {
               &times;
             </button>
             {/* Render the form component and pass onSubmit handler */}
-            <RequestorJobRequestForm onSubmit={handleJobRequestSubmit} />
+            <RequestorJobRequestForm
+              onSubmit={handleJobRequestSubmit}
+              closeModal={closeModal}
+            />
           </div>
         </div>
       )}
     </div>
   );
 }
-
-// PropTypes validation
-RequestorJobRequestTable.propTypes = {
-  // PropTypes have been removed since jobRequests is no longer needed as a prop
-};
 
 // import { useState } from "react";
 // import PropTypes from "prop-types";

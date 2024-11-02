@@ -5,7 +5,7 @@ import SearchBar from "../../../components/SearchBar";
 import { useAssignmentStore } from "../../../store/useAssignmentStore";
 import { insertStaff } from "../../../service/apiAssignStaff";
 
-export default function FormAssignStaff() {
+export default function FormAssignStaff({ onClose }) {
   const { handleSubmit, reset } = useForm();
   //test commit
 
@@ -146,6 +146,7 @@ export default function FormAssignStaff() {
   };
 
   const onSubmit = async () => {
+    console.log("Assignments before submission:", assignments);
     const hasEmptyFields = assignments.some(
       (assignment) =>
         !assignment.jobPosition || !assignment.location || !assignment.staffName
@@ -166,6 +167,7 @@ export default function FormAssignStaff() {
       }
       toast.success("Staff assignment(s) successfully submitted.");
       reset();
+      onClose();
       setAssignments([
         {
           id: 1,
@@ -245,6 +247,9 @@ export default function FormAssignStaff() {
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
                       required
                     >
+                      <option value="" className="hidden">
+                        Select Staff
+                      </option>
                       {staffName[assignment.jobPosition]?.map((staff, idx) => (
                         <option key={idx} value={staff}>
                           {staff}
