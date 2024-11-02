@@ -17,6 +17,9 @@ export function useLogout() {
       // Invalidate and remove queries
       queryClient.removeQueries();
 
+      // Clear all data from localStorage
+      localStorage.clear();
+
       // Navigate to login page
       navigate("/login", { replace: true });
     },

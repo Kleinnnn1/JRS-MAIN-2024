@@ -149,6 +149,7 @@ export default function App() {
               />
             </Route>
             <Route path="StaffSendCert" element={<StaffPageCertificate />} />
+            <Route path="StaffCert" element={<StaffSendCert />} />
           </Route>
 
           {/* Protected Routes for System Admin */}

@@ -14,7 +14,7 @@ export default function ButtonAddEmployeeTable({
       className={`px-5 py-2 text-sm font-medium text-center rounded-lg ${bgColor} ${marginLeft} ${marginRight} ${border} ${margin}`}
       onClick={onClick}
     >
-      Add Employee
+      Add Staff
     </button>
   );
 }

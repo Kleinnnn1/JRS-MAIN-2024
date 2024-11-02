@@ -280,20 +280,27 @@ export async function login({ idNumber, password }) {
 
 export async function getCurrentUser() {
   const { data: session } = await supabase.auth.getSession();
-  if (!session?.session) return null;
+  if (!session?.session) {
+    return null;
+  }
 
   const { data: authData, error: authError } = await supabase.auth.getUser();
-  if (authError) throw new Error(authError.message);
+  if (authError) {
+    throw new Error(authError.message);
+  }
+
+  const userId = authData?.user?.id;
 
   // Fetch additional user details from the `profiles` table using the user's id
-  const userId = authData?.user?.id;
   const { data: profileData, error: profileError } = await supabase
     .from("profiles")
     .select("*")
     .eq("id", userId)
     .single();
 
-  if (profileError) throw new Error(profileError.message);
+  if (profileError) {
+    throw new Error(profileError.message);
+  }
 
   // Merge authData with profileData
   return {
@@ -301,6 +308,30 @@ export async function getCurrentUser() {
     ...profileData,
   };
 }
+
+// export async function getCurrentUser() {
+//   const { data: session } = await supabase.auth.getSession();
+//   if (!session?.session) return null;
+
+//   const { data: authData, error: authError } = await supabase.auth.getUser();
+//   if (authError) throw new Error(authError.message);
+
+//   // Fetch additional user details from the `profiles` table using the user's id
+//   const userId = authData?.user?.id;
+//   const { data: profileData, error: profileError } = await supabase
+//     .from("profiles")
+//     .select("*")
+//     .eq("id", userId)
+//     .single();
+
+//   if (profileError) throw new Error(profileError.message);
+
+//   // Merge authData with profileData
+//   return {
+//     ...authData.user,
+//     ...profileData,
+//   };
+// }
 
 export async function logout() {
   const { error } = await supabase.auth.signOut();

@@ -64,7 +64,10 @@ export default function ContentJobOngoing() {
           <SearchBar title="Job Ongoing" showInput={true} />
 
           {/* Use ReusableSearchTerm for the search functionality */}
-          <ReusableSearchTerm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <ReusableSearchTerm
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+          />
         </div>
 
         {/* Table */}
@@ -74,13 +77,19 @@ export default function ContentJobOngoing() {
             rows={paginatedContent.length}
             content={paginatedContent.map((request, index) => [
               <span key={`requesterId-${index}`}>{request.requesterId}</span>,
-              <span key={`jobDescription-${index}`}>{request.jobDescription}</span>,
+              <span key={`jobDescription-${index}`}>
+                {request.jobDescription}
+              </span>,
               <span key={`jobType-${index}`}>{request.jobType}</span>,
               <span key={`requestor-${index}`}>{request.requestor}</span>,
-              <span key={`dateSubmitted-${index}`}>{request.dateSubmitted}</span>,
+              <span key={`dateSubmitted-${index}`}>
+                {request.dateSubmitted}
+              </span>,
               <span key={`assignedTo-${index}`}>{request.assignedTo}</span>,
               <span key={`location-${index}`}>{request.location}</span>,
-              <span key={`prioritization-${index}`}>{request.prioritization}</span>,
+              <span key={`prioritization-${index}`}>
+                {request.prioritization}
+              </span>,
               <ReusableViewButton
                 key={`view-btn-${index}`}
                 onClick={() => navigate("/department_head/job_ongoing/view")}

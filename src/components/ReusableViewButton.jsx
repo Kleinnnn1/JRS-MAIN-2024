@@ -7,7 +7,7 @@ export default function ReusableViewButton({ onClick }) {
       className={`px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2`}
       onClick={onClick}
     >
-      View
+      View Details
     </button>
   );
 }

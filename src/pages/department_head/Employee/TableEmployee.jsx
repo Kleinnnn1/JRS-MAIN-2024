@@ -56,17 +56,16 @@ export default function TableEmployee() {
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-md rounded-lg">
       <div className="bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
-      <SearchBar title="Employee Records" />
-      <div className="flex space-x-4">
-      
-        <ButtonAddEmployeeTable
-          onClick={() => navigate("/department_head/employee/add")}
-        />
-        <ReusableSearchTerm
+        <SearchBar title="Staff Records" />
+        <div className="flex space-x-4">
+          <ButtonAddEmployeeTable
+            onClick={() => navigate("/department_head/employee/add")}
+          />
+          <ReusableSearchTerm
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
           />
-              </div>
+        </div>
       </div>
 
       {/* Table */}

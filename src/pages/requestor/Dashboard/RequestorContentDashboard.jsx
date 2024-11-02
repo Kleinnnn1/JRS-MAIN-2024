@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import StatusCard from "../../../components/StatusCard";
 import ReusableNotification from "../../../components/ReusableNotification";
 import ReusableCalendar from "../../../components/ReusableCalendar";
-import SearchBar from '../../../components/SearchBar';
+import SearchBar from "../../../components/SearchBar";
 import RequestorJobRequestForm from "../JobRequest/RequestorJobRequestForm"; // Import the form component
 
 export default function ContentDashboard() {
@@ -60,7 +60,7 @@ export default function ContentDashboard() {
           onClick={() => navigate("/requestor/job_request")}
         />
         <StatusCard
-          title="Approved"
+          title="Ongoing"
           count={0}
           bgColor="bg-sky-200"
           onClick={() => navigate("/requestor/job_request")}
@@ -91,8 +91,6 @@ export default function ContentDashboard() {
           <ReusableCalendar />
         </div>
       </div>
-
-
     </>
   );
 }

@@ -49,7 +49,7 @@ export default function TableEmployeeHistory() {
         <Outlet /> // Render nested routes if present
       ) : (
         <>
-          <SearchBar title="Employee History" showInput={true} name="view" />
+          <SearchBar title="Staff History" showInput={true} name="view" />
           <Table
             columns={7}
             rows={tableContent.length}

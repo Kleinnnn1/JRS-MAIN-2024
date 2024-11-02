@@ -19,7 +19,7 @@ export default function LogIn() {
       <form
         method="POST"
         onSubmit={handleSubmit}
-        className="flex flex-col items-center justify-around h-96 w-80 p-6 rounded-sm bg-acc-edd shadow-4xl"
+        className="flex flex-col items-center justify-around h-96 w-80 p-6 rounded-sm bg-acc-edd bg-opacity-10 shadow-4xl"
       >
         <div className="flex flex-col items-center">
           <img src={LogoUSTP} className="h-20 w-20" alt="USTP Logo" />

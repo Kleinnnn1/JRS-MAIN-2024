@@ -1,26 +1,193 @@
 import { useState } from "react";
-import PropTypes from "prop-types"; // Import PropTypes
-import { useNavigate } from "react-router-dom"; // For navigation
-import {
-  warningAlert,
-  successAlert,
-  confirmationAlert,
-} from "../../../components/ReusableSweetAlert"; // Import reusable SweetAlerts
+import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 import SearchBar from "../../../components/SearchBar";
+import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { insertRequest } from "../../../service/apiRequestorRequestTable";
+import toast from "react-hot-toast";
 
-export default function RequestorJobRequestForm({ onSubmit }) {
+export default function RequestorJobRequestForm() {
+  const { handleSubmit, reset } = useForm();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const { mutate } = useMutation({
+    mutationFn: insertRequest,
+    onSuccess: () => {
+      toast.success("Job Request Successfully Submitted");
+      queryClient.invalidateQueries({ queryKey: ["requests"] });
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
   const [jobRequests, setJobRequests] = useState([
-    { id: 1, description: "", location: "", category: "", photo: null }, // Only one item in the initial state
+    {
+      id: 1,
+      description: "",
+      location: "",
+      category: "Carpenter",
+      photo: null,
+      priority: "Low",
+    },
   ]);
 
-  const jobCategories = [
-    "Electrical",
-    "Plumbing",
-    "Carpentry",
-    "HVAC",
-    "Painting",
+  const jobPosition = [
+    "Electrician",
+    "Cluster Leader",
+    "Welder",
+    "Street Sweeper & Ground Sweeper",
+    "Tile Setter",
+    "Plumber",
+    "Aircon Technicians",
+    "Carpenter",
+    "Elevator Attendants",
+    "Busser",
+    "Gardener/Landscaper",
+    "Housekeeper",
+    "Engineer",
+    "Foreman",
+    "Architect",
+    "Painter",
+    "Draftsman",
+    "Gymnasium Staff",
+    "Campus Grass & Bushes Maintainer",
+    "Laborer",
   ];
-  const navigate = useNavigate(); // Hook for navigation
+
+  const keywordMapping = {
+    Electrician: [
+      "electricity",
+      "wiring",
+      "lighting",
+      "circuit",
+      "power",
+      "electrical",
+      "maintenance",
+      "outlets",
+    ],
+    Carpenter: [
+      "wood",
+      "carpentry",
+      "furniture",
+      "construction",
+      "framing",
+      "trim",
+      "custom",
+      "cabinet",
+      "fix",
+    ],
+    Plumber: [
+      "plumbing",
+      "pipes",
+      "water",
+      "drainage",
+      "faucet",
+      "sewage",
+      "leak",
+      "valve",
+    ],
+    Welder: ["welding", "metal", "fabrication", "steel", "soldering"],
+    Housekeeper: [
+      "cleaning",
+      "housekeeping",
+      "sanitation",
+      "organization",
+      "supplies",
+      "rooms",
+      "upkeep",
+      "hospitality",
+      "laundry",
+    ],
+    "Cluster Leader": [
+      "management",
+      "team",
+      "leadership",
+      "coordination",
+      "supervision",
+      "organization",
+      "execution",
+      "strategy",
+      "communication",
+    ],
+    "Street Sweeper & Ground Sweeper": [
+      "sweeper",
+      "grounds",
+      "litter",
+      "debris",
+      "sweeping",
+      "landscape",
+      "public space",
+    ],
+    "Tile Setter": [
+      "tiles",
+      "ceramic",
+      "grouting",
+      "bathroom",
+      "kitchen",
+      "flooring",
+      "mosaic",
+      "layout",
+    ],
+    "Aircon Technicians": [
+      "HVAC",
+      "aircon",
+      "air conditioning",
+      "cooling",
+      "ventilation",
+    ],
+    "Elevator Attendants": ["elevator", "assistance"],
+    Busser: [
+      "restaurant",
+      "cleaning",
+      "tables",
+      "service",
+      "support",
+      "dishware",
+      "utensils",
+      "hospitality",
+      "environment",
+      "customer service",
+    ],
+    "Gardener/Landscaper": [
+      "gardening",
+      "landscaping",
+      "plants",
+      "outdoor",
+      "soil",
+      "pruning",
+      "seasonal",
+      "grass",
+      "flower",
+    ],
+    Engineer: ["construction", "project", "analysis"],
+    Foreman: ["supervision", "construction"],
+    Architect: ["design", "blueprints"],
+    Painter: [
+      "painting",
+      "walls",
+      "interior",
+      "exterior",
+      "finishing",
+      "color",
+      "brush",
+      "spray",
+    ],
+    Draftsman: ["drafting", "technical drawings", "blueprints", "CAD"],
+    "Gymnasium Staff": ["fitness", "training", "instructor", "supervision"],
+    "Campus Grass & Bushes Maintainer": ["grass", "bushes", "mowing"],
+    Laborer: [
+      "manual",
+      "physical",
+      "assistance",
+      "loading",
+      "unloading",
+      "workforce",
+      "transfering",
+    ],
+  };
+
+  const priorityOptions = ["Low", "Medium", "High"];
 
   const handleAddRow = () => {
     setJobRequests([
@@ -31,6 +198,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
         location: "",
         category: "",
         photo: null,
+        priority: "",
       },
     ]);
   };
@@ -43,74 +211,90 @@ export default function RequestorJobRequestForm({ onSubmit }) {
 
   const handleInputChange = (id, field, value) => {
     setJobRequests(
-      jobRequests.map((request) =>
-        request.id === id ? { ...request, [field]: value } : request
-      )
+      jobRequests.map((request) => {
+        if (request.id === id) {
+          let updatedRequest = { ...request, [field]: value };
+
+          if (field === "description") {
+            const matchedJob = Object.keys(keywordMapping).find((job) =>
+              keywordMapping[job].some((keyword) =>
+                value.toLowerCase().includes(keyword)
+              )
+            );
+
+            updatedRequest = {
+              ...updatedRequest,
+              category: matchedJob || "", // Set category if matched, else keep empty
+            };
+          }
+
+          return updatedRequest;
+        }
+        return request;
+      })
     );
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Validation: Check if any required field is empty
+  const onSubmit = () => {
     const hasEmptyFields = jobRequests.some(
       (request) =>
-        !request.description || !request.location || !request.category
+        !request.description ||
+        !request.location ||
+        !request.category ||
+        !request.priority
     );
 
     if (hasEmptyFields) {
-      // Show a SweetAlert warning if any required field is empty
-      warningAlert(
-        "Missing Required Fields",
-        "Please fill out all required fields before submitting."
-      );
-      return; // Stop form submission
+      toast.error("Please fill out all required fields before submitting.");
+      return;
     }
 
-    // Trigger SweetAlert confirmation using the reusable confirmation alert
-    confirmationAlert(
-      "Are you sure you want to submit?",
-      "This action will submit your job request.",
-      () => {
-        // Submit the form data and show success alert
-        successAlert(
-          "Submitted!",
-          "Your job request has been submitted successfully."
-        ).then(() => {
-          // Redirect to job request page after showing success alert
-          navigate("/requestor/job_request_table");
-        });
+    const formattedRequests = jobRequests.map((request) => ({
+      description: request.description,
+      location: request.location,
+      jobPosition: request.category,
+      image: request.photo,
+      priority: request.priority,
+    }));
 
-        // Submit the form data to the parent component
-        onSubmit(jobRequests);
+    formattedRequests.forEach((formattedData) => {
+      mutate(formattedData);
+    });
 
-        // Reset form fields after submission
-        setJobRequests([
-          { id: 1, description: "", location: "", category: "", photo: null },
-        ]);
-      }
-    );
+    toast.success("Your job request(s) have been submitted successfully.");
+    navigate("/requestor/job_request_table");
+
+    setJobRequests([
+      {
+        id: 1,
+        description: "",
+        location: "",
+        category: "",
+        photo: null,
+        priority: "",
+      },
+    ]);
   };
 
   return (
     <div className="rounded-lg">
-      {/* Header with Current Date and Title */}
       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
         <div>
           <SearchBar title="Job Request Form" />
         </div>
       </header>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white">
             <thead>
               <tr>
                 <th className="px-4 py-2 border text-center">Item No.</th>
-                <th className="px-4 py-2 border">Work Description</th>
+                <th className="px-4 py-2 border">Job Description</th>
                 <th className="px-4 py-2 border">Location (Bldg/Office)</th>
-                <th className="px-4 py-2 border">Job Category</th>
+                <th className="px-4 py-2 border">Job Position</th>
                 <th className="px-4 py-2 border">Photo (OPTIONAL)</th>
+                <th className="px-4 py-2 border">Priority</th>
                 <th className="px-4 py-2 border text-center">Actions</th>
               </tr>
             </thead>
@@ -164,8 +348,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                       }
                       required
                     >
-                      <option value="">Select Category</option>
-                      {jobCategories.map((category, idx) => (
+                      {jobPosition.map((category, idx) => (
                         <option key={idx} value={category}>
                           {category}
                         </option>
@@ -186,6 +369,27 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                       }
                     />
                   </td>
+                  <td className="px-4 py-2 border">
+                    <select
+                      id={`priority-${request.id}`}
+                      className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
+                      value={request.priority}
+                      onChange={(e) =>
+                        handleInputChange(
+                          request.id,
+                          "priority",
+                          e.target.value
+                        )
+                      }
+                      required
+                    >
+                      {priorityOptions.map((priority, idx) => (
+                        <option key={idx} value={priority}>
+                          {priority}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
                   <td className="px-4 py-2 border text-center">
                     <div className="flex justify-center space-x-2">
                       <button
@@ -196,7 +400,7 @@ export default function RequestorJobRequestForm({ onSubmit }) {
                             ? "opacity-50 cursor-not-allowed"
                             : ""
                         }`}
-                        disabled={jobRequests.length === 1} // Disable button if there's only one row
+                        disabled={jobRequests.length === 1}
                       >
                         -
                       </button>
@@ -216,12 +420,10 @@ export default function RequestorJobRequestForm({ onSubmit }) {
             </tbody>
           </table>
         </div>
-
-        {/* Back and Submit Buttons */}
-        <div className="flex justify-end mt-4 space-x-4">
+        <div className="flex justify-end mt-4">
           <button
-            type="submit" // Handle form submission through onSubmit
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-all duration-200"
+            type="submit"
+            className="bg-blue-500 text-white px-6 py-2 rounded-md"
           >
             Submit
           </button>
@@ -231,7 +433,6 @@ export default function RequestorJobRequestForm({ onSubmit }) {
   );
 }
 
-// Add PropTypes validation
 RequestorJobRequestForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
 };

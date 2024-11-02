@@ -1,22 +1,17 @@
 import PropTypes from "prop-types";
 
 export default function Table({
-  rows = 2,
-  columns = 6,
-  content = [],
+  content = [], // No need for rows prop
   headers = [],
   loading = false, // Add loading state as a prop
 }) {
-  // Fill the content array with empty strings if not enough data is provided
-  const filledContent = Array.from({ length: rows }, (_, rowIndex) =>
-    Array.from({ length: columns }, (_, colIndex) =>
-      content[rowIndex] && content[rowIndex][colIndex] !== undefined
-        ? content[rowIndex][colIndex]
-        : ""
-    )
-  );
+  // If there's no content, return null to render nothing
+  if (content.length === 0) {
+    return null; // or return <div className="text-center py-4 text-gray-500">No Data Available</div>;
+  }
 
-  const tableRows = filledContent.map((rowContent, rowIndex) => (
+  // Map filled content into table rows only if there is data
+  const tableRows = content.map((rowContent, rowIndex) => (
     <tr key={rowIndex} className="border-b">
       {rowContent.map((cellContent, colIndex) => (
         <td
@@ -34,24 +29,23 @@ export default function Table({
     <div className="m-2 px-2">
       {loading ? (
         <div className="text-center py-4 text-gray-500">Loading...</div> // Show loading state
-      ) : content.length === 0 ? (
-        <div className="text-center py-4 text-gray-500">No Data Available</div> // Show empty state
       ) : (
         <table className="min-w-full max-w-full">
-          <thead className="bg-yellow-100"> {/* Updated to yellow header */}
+          <thead className="bg-yellow-100">
             <tr>
-              {Array.from({ length: columns }, (_, colIndex) => (
+              {headers.map((header, colIndex) => (
                 <th
                   key={colIndex}
                   className="w-20 h-12 px-4 py-2 text-left text-sm font-medium text-gray-600"
                   style={{ minWidth: "80px", minHeight: "48px" }} // Optional inline styles
                 >
-                  {headers[colIndex] || `Header ${colIndex + 1}`} {/* Fallback header text */}
+                  {header || `Header ${colIndex + 1}`}{" "}
+                  {/* Fallback header text */}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="">{tableRows}</tbody>
+          <tbody>{tableRows}</tbody>
         </table>
       )}
     </div>
@@ -59,8 +53,6 @@ export default function Table({
 }
 
 Table.propTypes = {
-  rows: PropTypes.number, // rows is optional and should be a number
-  columns: PropTypes.number, // columns is optional and should be a number
   content: PropTypes.arrayOf(
     PropTypes.arrayOf(
       PropTypes.oneOfType([PropTypes.string, PropTypes.element]) // Each cell can be a string or a React element
@@ -69,3 +61,78 @@ Table.propTypes = {
   headers: PropTypes.arrayOf(PropTypes.string), // headers should be an array of strings
   loading: PropTypes.bool, // Optional loading prop
 };
+
+// import PropTypes from "prop-types";
+
+// export default function Table({
+//   rows = 2,
+//   columns = 6,
+//   content = [],
+//   headers = [],
+//   loading = false, // Add loading state as a prop
+// }) {
+//   // Fill the content array with empty strings if not enough data is provided
+//   const filledContent = Array.from({ length: rows }, (_, rowIndex) =>
+//     Array.from({ length: columns }, (_, colIndex) =>
+//       content[rowIndex] && content[rowIndex][colIndex] !== undefined
+//         ? content[rowIndex][colIndex]
+//         : ""
+//     )
+//   );
+
+//   const tableRows = filledContent.map((rowContent, rowIndex) => (
+//     <tr key={rowIndex} className="border-b">
+//       {rowContent.map((cellContent, colIndex) => (
+//         <td
+//           key={colIndex}
+//           className="px-4 py-2 text-left text-sm text-gray-600"
+//           style={{ minWidth: "80px", minHeight: "48px" }} // Optional inline styles
+//         >
+//           {cellContent}
+//         </td>
+//       ))}
+//     </tr>
+//   ));
+
+//   return (
+//     <div className="m-2 px-2">
+//       {loading ? (
+//         <div className="text-center py-4 text-gray-500">Loading...</div> // Show loading state
+//       ) : content.length === 0 ? (
+//         <div className="text-center py-4 text-gray-500">No Data Available</div> // Show empty state
+//       ) : (
+//         <table className="min-w-full max-w-full">
+//           <thead className="bg-yellow-100">
+//             {" "}
+//             {/* Updated to yellow header */}
+//             <tr>
+//               {Array.from({ length: columns }, (_, colIndex) => (
+//                 <th
+//                   key={colIndex}
+//                   className="w-20 h-12 px-4 py-2 text-left text-sm font-medium text-gray-600"
+//                   style={{ minWidth: "80px", minHeight: "48px" }} // Optional inline styles
+//                 >
+//                   {headers[colIndex] || `Header ${colIndex + 1}`}{" "}
+//                   {/* Fallback header text */}
+//                 </th>
+//               ))}
+//             </tr>
+//           </thead>
+//           <tbody className="">{tableRows}</tbody>
+//         </table>
+//       )}
+//     </div>
+//   );
+// }
+
+// Table.propTypes = {
+//   rows: PropTypes.number, // rows is optional and should be a number
+//   columns: PropTypes.number, // columns is optional and should be a number
+//   content: PropTypes.arrayOf(
+//     PropTypes.arrayOf(
+//       PropTypes.oneOfType([PropTypes.string, PropTypes.element]) // Each cell can be a string or a React element
+//     )
+//   ),
+//   headers: PropTypes.arrayOf(PropTypes.string), // headers should be an array of strings
+//   loading: PropTypes.bool, // Optional loading prop
+// };

@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import RequestorJobRequestForm from './RequestorJobRequestForm';
-import RequestorJobRequestTable from './RequestorJobRequestTable';
+import { useState } from "react";
+import RequestorJobRequestForm from "./RequestorJobRequestForm";
+import RequestorJobRequestTable from "./RequestorJobRequestTable";
 
 export default function JobRequestPage() {
   const [jobRequests, setJobRequests] = useState([
     {
       id: 1,
-      requestor: 'John Doe',
-      description: 'The aircon does not work',
-      persons: '-',
-      department: 'CSWS',
-      processedBy: 'CSWS',
-      status: 'Pending',
-      dateRequested: '26 - 05 - 2024',
-      dateCompleted: '-',
+      requestor: "John Doe",
+      description: "The aircon does not work",
+      persons: "-",
+      department: "CSWS",
+      processedBy: "CSWS",
+      status: "Pending",
+      dateRequested: "26 - 05 - 2024",
+      dateCompleted: "-",
     },
   ]);
 
