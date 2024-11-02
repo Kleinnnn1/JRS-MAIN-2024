@@ -17,7 +17,7 @@ export default function LogIn() {
   return (
     <div className="relative flex justify-center items-center min-h-screen min-w-screen bg-background-image bg-cover">
       {/* Dark Gray Overlay */}
-      <div className="absolute inset-0 bg-gray-800 opacity-50"></div>
+      <div className="absolute inset-0 bg-black opacity-60"></div>
 
       {/* Card Container */}
       <form
