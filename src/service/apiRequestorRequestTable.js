@@ -6,7 +6,7 @@ export async function getRequestorRequest() {
   const { data, error } = await supabase
     .from("Request")
     .select(
-      "requestId, description, jobPosition, deptName, image, status, requestDate, dateCompleted, staffName" // Include deptReqAssId here
+      "requestId, description, jobPosition, deptName, image, status, requestDate, dateCompleted, staffName, priority" // Include deptReqAssId here
     )
     .eq("idNumber", currentUser.idNumber); // Match the idNumber from the current user's profile
 

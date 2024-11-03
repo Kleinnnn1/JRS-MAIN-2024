@@ -13,7 +13,7 @@ export default function RequestorJobRequestData(requests) {
               image,
               status,
               requestDate,
-              dateCompleted,
+              priority,
             },
             index
           ) => [
@@ -32,10 +32,7 @@ export default function RequestorJobRequestData(requests) {
               minute: "2-digit",
               second: "2-digit",
             }),
-
-            dateCompleted
-              ? new Date(dateCompleted).toLocaleDateString()
-              : "N/A", // If dateCompleted is null, show "N/A"
+            priority || "N/A", // If dateCompleted is null, show "N/A"
             <button className="bg-blue-500 text-white px-4 py-1 rounded-md">
               View Details
             </button>,

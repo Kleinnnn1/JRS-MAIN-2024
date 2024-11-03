@@ -14,8 +14,9 @@ const tableHeaders = [
   "Job Position",
   "Date Submitted",
   "Location",
-  "Referral",
   "Image",
+  "Priority",
+  "Referral",
   "Action",
 ];
 
@@ -88,7 +89,7 @@ export default function ContentJobRequest() {
         {/* Table */}
         {paginatedContent.length > 0 ? (
           <Table
-            columns={8}
+            columns={tableHeaders.length}
             rows={paginatedContent.length}
             content={paginatedContent} // Use paginated content here
             headers={tableHeaders}

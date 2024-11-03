@@ -1,8 +1,7 @@
-import { useState } from "react"; 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../../components/SearchBar";
 import Table from "../../../components/Table";
-import ReusableViewButton from "../../../components/ReusableViewButton";
 import ReusablePagination from "../../../components/ReusablePagination";
 import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
 
@@ -12,7 +11,7 @@ const tableHeaders = [
   "Location",
   "Date Requested",
   "Date Started",
-  "Expected Accomplishment Date",
+  "Expected Completion Date",
   "Priority Level",
   "Action",
 ];
@@ -27,7 +26,7 @@ export default function TableCertificate() {
       location: "CITC Faculty Office",
       dateRequested: "28-08-2024",
       dateStarted: "28-08-2024",
-      expectedCompletionDate: "28-09-2024",
+      expectedCompletionDate: "N/A",
       priorityLevel: "High",
     },
     {
@@ -36,7 +35,7 @@ export default function TableCertificate() {
       location: "Conference Room A",
       dateRequested: "22-08-2024",
       dateStarted: "23-08-2024",
-      expectedCompletionDate: "25-08-2024",
+      expectedCompletionDate: "N/A",
       priorityLevel: "Medium",
     },
     {
@@ -45,7 +44,7 @@ export default function TableCertificate() {
       location: "Storage Room",
       dateRequested: "20-08-2024",
       dateStarted: "21-08-2024",
-      expectedCompletionDate: "23-08-2024",
+      expectedCompletionDate: "N/A",
       priorityLevel: "Low",
     },
     // Add more rows as needed
@@ -87,7 +86,7 @@ export default function TableCertificate() {
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
       <div className="bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
-        <SearchBar title="Ongoing Task" />
+        <SearchBar title="Assigned Job" />
         <ReusableSearchTerm
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
@@ -107,13 +106,15 @@ export default function TableCertificate() {
           <span key={`expectedCompletionDate-${index}`}>
             {request.expectedCompletionDate}
           </span>,
-          <span key={`priorityLevel-${index}`} className={getPriorityClass(request.priorityLevel)}>
+          <span
+            key={`priorityLevel-${index}`}
+            className={getPriorityClass(request.priorityLevel)}
+          >
             {request.priorityLevel}
           </span>,
-          <ReusableViewButton
-            key={`view-btn-${index}`}
-            onClick={() => navigate("/staff/StaffImagePage/StaffImageContent")}
-          />,
+          <button className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2">
+            Set Completion Date
+          </button>,
         ])}
         headers={tableHeaders}
       />

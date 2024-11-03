@@ -21,6 +21,7 @@ export default function DeptHeadRequestData(requests, openModal) {
               jobPosition,
               requestDate,
               image,
+              priority,
             },
             index
           ) => [
@@ -29,11 +30,13 @@ export default function DeptHeadRequestData(requests, openModal) {
             jobPosition,
             new Date(requestDate).toLocaleDateString(), // Format request date
             location,
+
+            image ? <img src={image} alt="Request" /> : "No Image",
+            priority || "N/A",
             <ReusableDropDownButton
               key={`dropdown-${index}`}
               options={options}
             />,
-            image ? <img src={image} alt="Request" /> : "No Image",
 
             <button
               key={`assign-btn-${index}`}

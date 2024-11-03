@@ -17,7 +17,7 @@ const tableHeaders = [
   "Image",
   "Status",
   "Date Requested",
-  "Date Completed",
+  "Priority",
   "Actions",
 ];
 
