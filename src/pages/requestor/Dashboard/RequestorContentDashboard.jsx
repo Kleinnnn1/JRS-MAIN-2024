@@ -34,12 +34,12 @@ export default function ContentDashboard() {
         {/* Centered Buttons */}
         <div className="flex justify-center space-x-4">
           {/* USTP Harmonized Client Satisfaction Survey Button */}
-          <button
+          {/* <button
             className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105 duration-200"
-            onClick={() => navigate("/requestor/section_one")}
+            onClick={() => navigate("/requestor/select")}
           >
             USTP Harmonized Client Satisfaction Survey
-          </button>
+          </button> */}
 
           {/* Make Request Button
           <button

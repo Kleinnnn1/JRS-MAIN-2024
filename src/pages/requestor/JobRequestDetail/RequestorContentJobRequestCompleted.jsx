@@ -37,7 +37,7 @@ export default function RequestorContentJobRequestCompleted() {
 
   // Handler for Client Satisfaction Survey button
   const handleClientSatisfactionSurvey = () => {
-    navigate('/requestor/section_one');
+    navigate('/requestor/select');
   };
 
   return (
