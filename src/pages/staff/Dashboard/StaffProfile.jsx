@@ -1,16 +1,20 @@
-import ProfilePic from "/src/assets/images/raphael.jpg";
+import useUserStore from "../../../store/useUserStore";
+import DefaultImageUser from "../../../assets/images/DefaultImageUser.jpg";
 
 export default function StaffProfile() {
+  const { userMetadata } = useUserStore();
+
   return (
     <div className="flex flex-col items-center text-center text-white mb-10 -mt-10">
       <img
-        src={ProfilePic}
+        src={userMetadata.avatar || DefaultImageUser}
         alt="Profile"
         className="w-16 h-16 rounded-full  border border-black object-cover mb-2"
       />
-
-      <p className="font-semibold text-xm">Raphael Albiso</p> {/* Sample only, database fetching involved here */}
-      <p className="text-xs">Staff</p>{/* Constant */}
+      <p className="font-semibold text-xm">
+        {userMetadata.fName || "First Name"} {userMetadata.lName || "Last Name"}
+      </p>
+      <p className="text-xs">Staff</p>
     </div>
   );
 }

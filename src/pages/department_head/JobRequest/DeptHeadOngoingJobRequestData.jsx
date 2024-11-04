@@ -9,7 +9,6 @@ export default function DeptHeadOngoingRequestData(requests) {
               description,
               jobPosition,
               staffName,
-              requestDate,
               location,
               image,
               priority,
@@ -22,7 +21,6 @@ export default function DeptHeadOngoingRequestData(requests) {
             description || "N/A",
             jobPosition || "N/A",
             staffName || "N/A",
-            requestDate ? new Date(requestDate).toLocaleDateString() : "N/A",
             location || "N/A",
             image ? <img src={image} alt="Request" /> : "No Image",
             priority || "N/A",
@@ -30,9 +28,12 @@ export default function DeptHeadOngoingRequestData(requests) {
             dateCompleted
               ? new Date(dateCompleted).toLocaleDateString()
               : "N/A",
+            <button className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2">
+              details
+            </button>,
           ]
         )
-      : [];
+      : [[]];
 
   return formattedData;
 }

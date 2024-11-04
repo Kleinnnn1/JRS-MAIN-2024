@@ -6,13 +6,14 @@ import ReusablePagination from "../../../components/ReusablePagination";
 import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
 
 const tableHeaders = [
-  "Job Description",
   "Requestor",
+  "Job Description",
   "Location",
+  "Image",
   "Date Requested",
   "Date Started",
-  "Expected Completion Date",
-  "Priority Level",
+  "Due Date",
+  "Priority",
   "Action",
 ];
 
@@ -25,8 +26,8 @@ export default function TableCertificate() {
       requestor: "Ms. Charlene V",
       location: "CITC Faculty Office",
       dateRequested: "28-08-2024",
-      dateStarted: "28-08-2024",
-      expectedCompletionDate: "N/A",
+      dateStarted: "N/A",
+      //  expectedCompletionDate: "Set Date",
       priorityLevel: "High",
     },
     {
@@ -34,8 +35,8 @@ export default function TableCertificate() {
       requestor: "Mr. John Doe",
       location: "Conference Room A",
       dateRequested: "22-08-2024",
-      dateStarted: "23-08-2024",
-      expectedCompletionDate: "N/A",
+      dateStarted: "N/A",
+      //  expectedCompletionDate: "Set Date",
       priorityLevel: "Medium",
     },
     {
@@ -43,8 +44,8 @@ export default function TableCertificate() {
       requestor: "Ms. Jane Smith",
       location: "Storage Room",
       dateRequested: "20-08-2024",
-      dateStarted: "21-08-2024",
-      expectedCompletionDate: "N/A",
+      dateStarted: "N/A",
+      //  expectedCompletionDate: "Set Date",
       priorityLevel: "Low",
     },
     // Add more rows as needed
@@ -101,11 +102,12 @@ export default function TableCertificate() {
           <span key={`jobDescription-${index}`}>{request.jobDescription}</span>,
           <span key={`requestor-${index}`}>{request.requestor}</span>,
           <span key={`location-${index}`}>{request.location}</span>,
+          <span>image</span>,
           <span key={`dateRequested-${index}`}>{request.dateRequested}</span>,
           <span key={`dateStarted-${index}`}>{request.dateStarted}</span>,
-          <span key={`expectedCompletionDate-${index}`}>
-            {request.expectedCompletionDate}
-          </span>,
+          <button className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2">
+            Set Date
+          </button>,
           <span
             key={`priorityLevel-${index}`}
             className={getPriorityClass(request.priorityLevel)}
@@ -113,7 +115,7 @@ export default function TableCertificate() {
             {request.priorityLevel}
           </span>,
           <button className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2">
-            Set Completion Date
+            Job Complete
           </button>,
         ])}
         headers={tableHeaders}

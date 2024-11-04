@@ -21,7 +21,7 @@ export default function StaffSidebar() {
             image={iconProfile}
         /> */}
       <SidebarItem
-        name="My Ongoing Task"
+        name="Assigned Job"
         onClick={() => navigate("/Staff/StaffImagePage")}
         image={iconOngoing}
       />

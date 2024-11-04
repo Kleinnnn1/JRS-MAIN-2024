@@ -67,80 +67,84 @@ export default function UserInformation() {
 
   return (
     <div className="space-y-4">
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {/* First Name */}
-      <div className="flex flex-col items-center">
-        <label htmlFor="fName" className="font-bold text-center mt-9">
-          First Name
-        </label>
-        <input
-          id="fName"
-          type="text"
-          className="border border-gray-300 p-2 rounded w-full max-w-xs text-center"
-          {...register("fName", {
-            required: "First name is required",
-          })}
-        />
-        {errors.fName && <p className="text-red-500">{errors.fName.message}</p>}
-      </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {/* First Name */}
+        <div className="flex flex-col items-center">
+          <label htmlFor="fName" className="font-bold text-center mt-9">
+            First Name
+          </label>
+          <input
+            id="fName"
+            type="text"
+            className="border border-gray-300 p-2 rounded w-full max-w-xs text-center"
+            {...register("fName", {
+              required: "First name is required",
+            })}
+          />
+          {errors.fName && (
+            <p className="text-red-500">{errors.fName.message}</p>
+          )}
+        </div>
 
-      {/* Last Name */}
-      <div className="flex flex-col items-center">
-        <label htmlFor="lName" className="font-bold text-center">
-          Last Name
-        </label>
-        <input
-          id="lName"
-          type="text"
-          className="border border-gray-300 p-2 rounded w-full max-w-xs text-center"
-          {...register("lName", {
-            required: "Last name is required",
-          })}
-        />
-        {errors.lName && <p className="text-red-500">{errors.lName.message}</p>}
-      </div>
+        {/* Last Name */}
+        <div className="flex flex-col items-center">
+          <label htmlFor="lName" className="font-bold text-center">
+            Last Name
+          </label>
+          <input
+            id="lName"
+            type="text"
+            className="border border-gray-300 p-2 rounded w-full max-w-xs text-center"
+            {...register("lName", {
+              required: "Last name is required",
+            })}
+          />
+          {errors.lName && (
+            <p className="text-red-500">{errors.lName.message}</p>
+          )}
+        </div>
 
-      {/* Email (Disabled) */}
-      <div className="flex flex-col items-center">
-        <label htmlFor="email" className="font-bold text-center">
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          className="border border-gray-300 p-2 rounded w-full max-w-xs text-center"
-          value={userMetadata?.email || ""}
-          disabled
-        />
-      </div>
+        {/* Email (Disabled) */}
+        <div className="flex flex-col items-center">
+          <label htmlFor="email" className="font-bold text-center">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            className="border border-gray-300 p-2 rounded w-full max-w-xs text-center"
+            value={userMetadata?.email || ""}
+            disabled
+          />
+        </div>
 
-      {/* Contact Number */}
-      <div className="flex flex-col items-center">
-        <label htmlFor="contact" className="font-bold text-center">
-          Contact Number
-        </label>
-        <input
-          id="contact"
-          type="tel"
-          className="border border-gray-300 p-2 rounded w-full max-w-xs text-center"
-          {...register("contact", {
-            required: "Contact number is required",
-            pattern: {
-              value: /^[0-9]+$/,
-              message: "Contact number must be digits only",
-            },
-          })}
-        />
-        {errors.contact && (
-          <p className="text-red-500">{errors.contact.message}</p>
-        )}
-      </div>
+        {/* Contact Number */}
+        <div className="flex flex-col items-center">
+          <label htmlFor="contact" className="font-bold text-center">
+            Contact Number
+          </label>
+          <input
+            id="contact"
+            type="tel"
+            className="border border-gray-300 p-2 rounded w-full max-w-xs text-center"
+            {...register("contact", {
+              required: "Contact number is required",
+              pattern: {
+                value: /^[0-9]+$/,
+                message: "Contact number must be digits only",
+              },
+            })}
+          />
+          {errors.contact && (
+            <p className="text-red-500">{errors.contact.message}</p>
+          )}
+        </div>
 
-      {/* Save Changes Button */}
-      <div className="flex justify-end">
-        <SaveChangesButton />
-      </div>
-    </form>
+        {/* Save Changes Button */}
+        <div className="flex justify-end">
+          <SaveChangesButton />
+        </div>
+      </form>
     </div>
   );
 }

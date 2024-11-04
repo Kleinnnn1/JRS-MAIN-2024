@@ -34,7 +34,7 @@ export default function RequestorJobRequestData(requests) {
             }),
             priority || "N/A", // If dateCompleted is null, show "N/A"
             <button className="bg-blue-500 text-white px-4 py-1 rounded-md">
-              View Details
+              details
             </button>,
           ]
         )
