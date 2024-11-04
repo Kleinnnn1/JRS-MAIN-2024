@@ -11,7 +11,6 @@ export default function ContentProfile() {
 
   return (
     <div className="flex justify-center items-start">
-
       <ProfileInformationBox>
         <ContentAndHeader
           content={otherContent ? <Outlet /> : <UserInformation />}
@@ -19,21 +18,34 @@ export default function ContentProfile() {
           <div className="flex justify-center space-x-4">
             <ProfileTab
               name="User Account"
-              className={location.pathname === "/department_head/myprofile/user_account" ? "font-bold" : ""}
+              className={
+                location.pathname === "/department_head/myprofile/user_account"
+                  ? "font-bold"
+                  : ""
+              }
               onClick={() =>
                 navigate("/department_head/myprofile/user_account")
               }
             />
             <ProfileTab
               name="Change Avatar"
-              className={location.pathname === "/department_head/myprofile/change_avatar" ? "font-bold" : ""}
+              className={
+                location.pathname === "/department_head/myprofile/change_avatar"
+                  ? "font-bold"
+                  : ""
+              }
               onClick={() =>
                 navigate("/department_head/myprofile/change_avatar")
               }
             />
             <ProfileTab
               name="Change Password"
-              className={location.pathname === "/department_head/myprofile/change_password" ? "font-bold" : ""}
+              className={
+                location.pathname ===
+                "/department_head/myprofile/change_password"
+                  ? "font-bold"
+                  : ""
+              }
               onClick={() =>
                 navigate("/department_head/myprofile/change_password")
               }

@@ -9,23 +9,18 @@ export default function ContentProfile() {
   const otherContent = useOutlet();
   return (
     <div className="flex justify-center items-start">
-      
       <ProfileInformationBox>
         <ContentAndHeader
           content={otherContent ? <Outlet /> : <UserInformation />}
         >
           <div className="flex justify-center space-x-4">
-          <ProfileTab
+            <ProfileTab
               name="Profile"
-              onClick={() =>
-                navigate("/Staff/Staffprofile")
-              }
+              onClick={() => navigate("/Staff/Staffprofile")}
             />
             <ProfileTab
               name="Change Avatar"
-              onClick={() =>
-                navigate("/Staff/Staffprofile/Staffchange_avatar")
-              }
+              onClick={() => navigate("/Staff/Staffprofile/Staffchange_avatar")}
             />
             <ProfileTab
               name="Change Password"
