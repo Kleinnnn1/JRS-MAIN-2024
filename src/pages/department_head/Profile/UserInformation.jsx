@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import supabase from "../../../service/supabase";
-import SaveChangesButton from "./SaveChangesButton";
+import SaveChangesButton from "../../../components/SaveChangesButton";
 import useUserStore from "../../../store/useUserStore";
 import { updateUserInformation } from "../../../service/apiAuth";
 import toast from "react-hot-toast";

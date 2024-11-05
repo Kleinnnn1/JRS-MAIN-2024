@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import ProfileImage from "./RequestorProfileImage";
-import SaveChangesButton from "./RequestorSaveChangesButton";
+import DefaultImageUser from "../../../assets/images/DefaultImageUser.jpg"; // Import the image file
+import SaveChangesButton from "../../../components/SaveChangesButton";
 import { updateAvatar } from "../../../service/apiAuth";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -39,7 +39,12 @@ export default function ChangeAvatar() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-center mt-9">
-        <ProfileImage />
+        {/* Display avatar or fallback to default image */}
+        <img
+          src={userMetadata.avatar || DefaultImageUser} // Show user's avatar or default image
+          alt="Profile"
+          className="rounded-full w-24 h-24 object-cover"
+        />
       </div>
       <div className="flex justify-center p-4">
         {/* File input element */}

@@ -3,7 +3,7 @@ import { useLogout } from "../../../auth/useLogout";
 import { updatePassword } from "../../../service/apiAuth";
 import supabase from "../../../service/supabase"; // Import Supabase client
 import toast from "react-hot-toast";
-import SaveChangesButton from "./RequestorSaveChangesButton";
+import SaveChangesButton from "../../../components/SaveChangesButton";
 
 export default function ChangePassword() {
   const { logout } = useLogout();
@@ -71,7 +71,7 @@ export default function ChangePassword() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="flex flex-col mt-5 ml-5">
+      <div className="flex flex-col items-center mt-5 ml-5">
         <label htmlFor="currentPassword" className="mb-2">
           Current Password
         </label>
@@ -87,7 +87,7 @@ export default function ChangePassword() {
           <p className="text-red-500">{errors.currentPassword.message}</p>
         )}
       </div>
-      <div className="flex flex-col mt-5 ml-5">
+      <div className="flex flex-col items-center mt-5 ml-5">
         <label htmlFor="newPassword" className="mb-2">
           New Password
         </label>
@@ -107,7 +107,7 @@ export default function ChangePassword() {
           <p className="text-red-500">{errors.newPassword.message}</p>
         )}
       </div>
-      <div className="flex flex-col mt-5 ml-5">
+      <div className="flex flex-col items-center mt-5 ml-5">
         <label htmlFor="confirmNewPassword" className="mb-2">
           Confirm New Password
         </label>
