@@ -22,6 +22,8 @@ export default function SelectSurveyForm() {
                         USTP HARMONIZED CLIENT SATISFACTION SURVEY (Online Version)
                     </h1>
                     <div>
+
+                        {/* ENGLISH VERSION FORM */}
                         <p className="text-gray-700 font-semibold">
                             (Your preferred language to use in answering this survey:)
                         </p>
@@ -30,16 +32,17 @@ export default function SelectSurveyForm() {
                         <p>
                             Please take a few minutes to complete the CLIENT SATISFACTION SURVEY FORM. Your feedback will enable us to see how we're doing and find out how we can improve. Please place a check mark in the space that corresponds to your answer.
                         </p>
-                        <button 
+                        <button
                             type="button"
                             onClick={() => handleLanguageSelection('/requestor/english_version')}
                             className="w-full mt-4 p-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none"
                         >
                             English
                         </button>
-                        
-                        <hr className="my-4"/>
-                        
+
+                        {/* TAGALOG VERSION */}
+                        <hr className="my-4" />
+
                         <p className="text-gray-700 font-semibold mb-2">
                             (Ang iyong gustong wikang gagamitin sa pagsagot sa surbey na ito:)
                         </p>
@@ -47,19 +50,19 @@ export default function SelectSurveyForm() {
                         <p>
                             Mangyaring maglaan ng ilang minuto upang kumpletuhin ang CLIENT SATISFACTION SURVEY FORM. Ang iyong feedback ay magbibigay-daan sa amin upang makita kung paano kami gumagana at malaman kung paano kami mapapabuti. Pakilagyan ng tsek ang patlang na tumutugma sa iyong sagot.
                         </p>
-                        <button 
+                        <button
                             type="button"
                             onClick={() => handleLanguageSelection('/requestor/tagalog_version')}
                             className="w-full mt-4 p-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none"
                         >
                             Filipino or Tagalog
                         </button>
-                        
-                        <hr className="my-4"/>
-                        
-                        <button 
+
+                        <hr className="my-4" />
+
+                        <button
                             type="button"
-                            disabled 
+                            disabled
                             className="w-full mt-4 p-2 bg-gray-300 text-gray-500 font-semibold rounded-md cursor-not-allowed"
                         >
                             Bisaya (Not yet available)
