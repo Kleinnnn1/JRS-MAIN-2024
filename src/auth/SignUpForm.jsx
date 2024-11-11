@@ -2,6 +2,30 @@ import FormRow from "../components/ReusableFormRow"; // Import the FormRow compo
 import { useForm } from "react-hook-form";
 import { useSignUp } from "./useSignUp";
 
+const jobOptions = [
+  { jobId: "CJ002", jobPosition: "Engineer" },
+  { jobId: "BJ005", jobPosition: "Busser" },
+  { jobId: "CJ008", jobPosition: "Plumber" },
+  { jobId: "BJ001", jobPosition: "Housekeeper" },
+  { jobId: "CJ009", jobPosition: "Painter" },
+  { jobId: "CJ003", jobPosition: "Draftsman" },
+  { jobId: "CJ004", jobPosition: "Foreman" },
+  { jobId: "CJ007", jobPosition: "Tile Setter" },
+  { jobId: "MJ003", jobPosition: "Elevator Attendants" },
+  { jobId: "BCL002", jobPosition: "Cluster Leader" },
+  { jobId: "CJ005", jobPosition: "Carpenter" },
+  { jobId: "MJ001", jobPosition: "Aircon Technicians" },
+  { jobId: "BJ004", jobPosition: "Gardener/Landscaper" },
+  { jobId: "CJ010", jobPosition: "Laborer" },
+  { jobId: "CJ001", jobPosition: "Architect" },
+  { jobId: "BJ003", jobPosition: "Campus Grass & Bushes Maintainer" },
+  { jobId: "BJ002", jobPosition: "Street Sweeper & Ground Sweeper" },
+  { jobId: "CJ006", jobPosition: "Welder" },
+  { jobId: "MJ002", jobPosition: "Electrician" },
+  { jobId: "BCL001", jobPosition: "Cluster Leader" },
+  { jobId: "MJ004", jobPosition: "Gymnasium Staff" },
+];
+
 function SignUpForm() {
   const { signup } = useSignUp();
   const {
@@ -151,7 +175,9 @@ function SignUpForm() {
           {...register("userRole", { required: "This field is required" })}
           className="mt-1 block w-full p-2 border border-gray-300 rounded"
         >
-          <option value="">Select a role</option>
+          <option value="" className="hidden">
+            Select a role
+          </option>
           <option value="requestor">Requestor</option>
           <option value="system admin">System Admin</option>
           <option value="staff">Staff</option>
@@ -170,6 +196,22 @@ function SignUpForm() {
       </FormRow>
 
       <FormRow label="Department ID" error={errors.deptId?.message}>
+        <select
+          id="deptId"
+          name="deptId"
+          {...register("deptId", { required: "This field is required" })}
+          className="mt-1 block w-full p-2 border border-gray-300 rounded"
+        >
+          <option value="" className="hidden">
+            Select Department
+          </option>
+          <option value="D001">BGMS</option>
+          <option value="D002">CSWS</option>
+          <option value="D003">MEWS</option>
+        </select>
+      </FormRow>
+
+      {/* <FormRow label="Department ID" error={errors.deptId?.message}>
         <input
           id="deptId"
           name="deptId"
@@ -177,16 +219,24 @@ function SignUpForm() {
           {...register("deptId", { required: "This field is required" })}
           className="mt-1 block w-full p-2 border border-gray-300 rounded"
         />
-      </FormRow>
+      </FormRow> */}
 
-      <FormRow label="Job ID" error={errors.jobId?.message}>
-        <input
+      <FormRow label="Job Position" error={errors.jobId?.message}>
+        <select
           id="jobId"
           name="jobId"
-          type="text"
           {...register("jobId", { required: "This field is required" })}
           className="mt-1 block w-full p-2 border border-gray-300 rounded"
-        />
+        >
+          <option value="" className="hidden">
+            Select Job Position
+          </option>
+          {jobOptions.map((job) => (
+            <option key={job.jobId} value={job.jobId}>
+              {job.jobPosition}
+            </option>
+          ))}
+        </select>
       </FormRow>
 
       <button

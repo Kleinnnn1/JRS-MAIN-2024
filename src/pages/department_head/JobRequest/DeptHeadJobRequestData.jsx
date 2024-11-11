@@ -1,6 +1,20 @@
 import ReusableDropDownButton from "../../../components/ReusableDropDownButton";
 import { useAssignmentStore } from "../../../store/useAssignmentStore";
 
+// Import or define getPriorityClass
+const getPriorityClass = (level) => {
+  switch (level) {
+    case "High":
+      return "bg-red-500 text-white py-1 px-2 rounded";
+    case "Medium":
+      return "bg-yellow-500 text-black py-1 px-2 rounded";
+    case "Low":
+      return "bg-green-500 text-white py-1 px-2 rounded";
+    default:
+      return "";
+  }
+};
+
 export default function DeptHeadRequestData(requests, openModal) {
   const options = [
     { value: "1", label: "CSWS" },
@@ -32,7 +46,11 @@ export default function DeptHeadRequestData(requests, openModal) {
             location,
 
             image ? <img src={image} alt="Request" /> : "No Image",
-            priority || "N/A",
+            priority ? (
+              <span className={getPriorityClass(priority)}>{priority}</span>
+            ) : (
+              "N/A"
+            ), // Apply styling to priority
             <ReusableDropDownButton
               key={`dropdown-${index}`}
               options={options}

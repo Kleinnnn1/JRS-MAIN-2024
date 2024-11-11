@@ -14,7 +14,7 @@ export default function StaffProfile() {
       <p className="font-semibold text-xm">
         {userMetadata.fName || "First Name"} {userMetadata.lName || "Last Name"}
       </p>
-      <p className="text-xs">Staff</p>
+      <p className="text-xs"> Staff</p>
     </div>
   );
 }

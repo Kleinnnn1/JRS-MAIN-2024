@@ -28,7 +28,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
       location: "",
       category: "Carpenter",
       photo: null,
-      priority: "Low",
+      priority: "",
     },
   ]);
 
@@ -374,7 +374,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
                     <select
                       id={`priority-${request.id}`}
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
-                      value={request.priority}
+                      value={request.priority || ""} // Default to empty string if priority is unset
                       onChange={(e) =>
                         handleInputChange(
                           request.id,
@@ -384,6 +384,10 @@ export default function RequestorJobRequestForm({ closeModal }) {
                       }
                       required
                     >
+                      <option value="" className="hidden">
+                        Select
+                      </option>
+                      {/* "Select" is explicitly set as the first option */}
                       {priorityOptions.map((priority, idx) => (
                         <option key={idx} value={priority}>
                           {priority}

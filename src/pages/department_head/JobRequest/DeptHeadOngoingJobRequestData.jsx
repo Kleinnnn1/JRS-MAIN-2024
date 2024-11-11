@@ -1,3 +1,17 @@
+// Import or define getPriorityClass
+const getPriorityClass = (level) => {
+  switch (level) {
+    case "High":
+      return "bg-red-500 text-white py-1 px-2 rounded";
+    case "Medium":
+      return "bg-yellow-500 text-black py-1 px-2 rounded";
+    case "Low":
+      return "bg-green-500 text-white py-1 px-2 rounded";
+    default:
+      return "";
+  }
+};
+
 export default function DeptHeadOngoingRequestData(requests) {
   // Format the fetched data only if requests are available
   const formattedData =
@@ -12,6 +26,7 @@ export default function DeptHeadOngoingRequestData(requests) {
               location,
               image,
               priority,
+              dateAssign,
               dateStarted,
               dateCompleted,
             },
@@ -23,13 +38,18 @@ export default function DeptHeadOngoingRequestData(requests) {
             staffName || "N/A",
             location || "N/A",
             image ? <img src={image} alt="Request" /> : "No Image",
-            priority || "N/A",
+            priority ? (
+              <span className={getPriorityClass(priority)}>{priority}</span>
+            ) : (
+              "N/A"
+            ), // Apply styling to priority
+            dateAssign ? new Date(dateCompleted).toLocaleDateString() : "N/A",
             dateStarted ? new Date(dateStarted).toLocaleDateString() : "N/A",
             dateCompleted
               ? new Date(dateCompleted).toLocaleDateString()
               : "N/A",
             <button className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2">
-              details
+              update
             </button>,
           ]
         )

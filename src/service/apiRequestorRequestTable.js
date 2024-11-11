@@ -19,25 +19,6 @@ export async function getRequestorRequest() {
   return data; // Return the fetched data
 }
 
-// export async function getRequestorRequest() {
-//   const currentUser = await getCurrentUser();
-//   const { data, error } = await supabase
-//     .from("Request")
-//     .select(
-//       "requestId, description, jobPosition, deptName, image, status, requestDate, dateCompleted"
-//     )
-//     .eq("idNumber", currentUser.idNumber); // Match the idNumber from the current user's profile
-
-//   if (error) {
-//     console.error("Error fetching requests:", error);
-//     throw new Error("Request could not be loaded");
-//   }
-
-//   // console.log(data);
-
-//   return data; // Return the fetched data
-// }
-
 export async function insertRequest(newRequest) {
   const currentUser = await getCurrentUser();
 
@@ -48,7 +29,7 @@ export async function insertRequest(newRequest) {
 
   // Prepare the data to insert
   const requestData = {
-    requestor: currentUser.requestorName,
+    requestor: currentUser.fullName,
     idNumber: currentUser.idNumber, // Add requestor here
     location: newRequest.location,
     description: newRequest.description,
@@ -70,48 +51,3 @@ export async function insertRequest(newRequest) {
 
   return data; // Return the inserted request data
 }
-
-// async function getData() {
-//   const { data, error } = await supabase
-//     .from("Department")
-//     .select("*")
-//     .limit(10); // Limit the data to 10 rows
-
-//   if (error) {
-//     console.error(error);
-//     throw new Error("Error fetching");
-//   }
-
-//   console.log("Job data:", data);
-
-//   return data;
-// }
-
-// // Call the function to execute it
-// getData();
-
-// export async function insertRequest(newRequest) {
-//   // Ensure the current user and their idNumber exist
-//   if (!currentUser || !currentUser.idNumber) {
-//     console.error("No current user or idNumber found.");
-//     throw new Error("User not authenticated or idNumber is missing");
-//   }
-
-//   // Prepare the data to insert
-//   const requestData = {
-//     idNumber: currentUser.idNumber, // Get idNumber from currentUser
-//     description: newRequest.description,
-//     location: newRequest.location,
-//     jobPosition: newRequest.jobPosition,
-//     image: newRequest.image,
-//   };
-
-//   const { data, error } = await supabase.from("Request").insert(requestData);
-
-//   if (error) {
-//     console.error("Error inserting request:", error);
-//     throw new Error("Request could not be inserted");
-//   }
-
-//   return data; // Return the inserted request data
-// }

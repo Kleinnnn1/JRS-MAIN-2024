@@ -1,3 +1,5 @@
+import SetDate from "./SetDate";
+
 // Import or define getPriorityClass
 const getPriorityClass = (level) => {
   switch (level) {
@@ -12,47 +14,48 @@ const getPriorityClass = (level) => {
   }
 };
 
-export default function RequestorJobRequestData(requests) {
+export default function StaffAssignJobData(requests) {
   // Format the fetched data
   const formattedData =
     requests.length > 0
       ? requests.map(
           (
             {
-              requestId,
+              requestor,
               description,
-              jobPosition,
-              deptName,
-              staffName,
+              location,
               image,
-              status,
               requestDate,
+              dateStarted,
+              dateCompleted,
               priority,
             },
             index
           ) => [
-            `${index + 1}. ${String(requestId)}`, // Sequential number + requestId
+            `${index + 1}. ${String(requestor)}`, // Sequential number + requestId
             description,
-            jobPosition,
-            deptName,
-            staffName || "N/A", // If staffName is undefined or null, display "N/A"
+            location,
             image ? <img src={image} alt="Request" /> : "No Image", // Display image if available, otherwise "No Image"
-            status,
-            new Date(requestDate).toLocaleString(undefined, {
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-            }),
+            requestDate
+              ? new Date(requestDate).toLocaleString(undefined, {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })
+              : "N/A",
+
+            <SetDate />,
+            <SetDate />,
             priority ? (
               <span className={getPriorityClass(priority)}>{priority}</span>
             ) : (
               "N/A"
             ), // Apply styling to priority
             <button className="bg-blue-500 text-white px-4 py-1 rounded-md">
-              details
+              Job Complete
             </button>,
           ]
         )
