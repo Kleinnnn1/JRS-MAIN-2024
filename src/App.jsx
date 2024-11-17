@@ -95,6 +95,7 @@ import SystemAdminContentPage from "./pages/system_admin/Users/SystemAdminConten
 import UserContent from "./pages/system_admin/Users/ContentUsers";
 import SysAdminContent from "./pages/system_admin/Users/ContentDepartmentHead";
 import SysAdminStaffContent from "./pages/system_admin/Users/ContentStaff";
+import SignUpForm from "./auth/SignUpForm.jsx";
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
@@ -117,8 +118,12 @@ export default function App() {
           {/* Routes for Unauthorized page */}
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
+  
+          <Route path="signup" element={<SignUpForm />} />
+
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
+          
 
           {/* Protected Routes for Staff */}
           <Route
@@ -322,11 +327,20 @@ export default function App() {
 
             {/* USTP HARMONIZED CLIENT SATISFACTION SURVEY */}
             {/* USTP HARMONIZED CLIENT SATISFACTION SURVEY */}
-            <Route path="select" element={<SelectSurveyForm />} />
-
-            <Route path="english_version" element={<EnglishVersionForm />} />
-
-            <Route path="tagalog_version" element={<TagalogVersionForm />} />
+            <Route
+              path="select"
+              element={<SelectSurveyForm />}
+            />
+            
+            <Route
+              path="english_version"
+              element={<EnglishVersionForm />}
+            />
+            
+            <Route
+              path="tagalog_version"
+              element={<TagalogVersionForm />}
+            />
           </Route>
         </Routes>
 
