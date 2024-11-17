@@ -43,10 +43,10 @@ export async function signUp({
 
     if (authError) throw new Error(`Auth Error: ${authError.message}`);
 
-    // If sign up is successful, store additional user data in the "profiles" table
+    // If sign up is successful, store additional user data in the "User" table
     const { user } = authData;
 
-    const { error: profileError } = await supabase.from("profiles").insert([
+    const { error: profileError } = await supabase.from("User").insert([
       {
         id: user.id, // Use the user's ID as the foreign key
         fName,
@@ -88,9 +88,9 @@ export async function updateUserInformation({ fName, lName, contactNumber }) {
     console.log("User ID:", user.id);
     console.log("Update data:", { fName, lName, contactNumber: contactNumber });
 
-    // Update the user's information in the "profiles" table
+    // Update the user's information in the "User" table
     const { data, error } = await supabase
-      .from("profiles")
+      .from("User")
       .update({
         fName,
         lName,
@@ -190,7 +190,7 @@ export async function updateAvatar({ avatar }) {
 
     // 4. Update the user's profile with the new avatar URL
     const { data: profileData, error: profileError } = await supabase
-      .from("profiles")
+      .from("User")
       .update({ avatar: publicURL })
       .eq("id", user.id)
       .select(); // Ensure .select() to retrieve the updated record
@@ -223,7 +223,7 @@ export async function updateAvatar({ avatar }) {
 export async function login({ idNumber, password }) {
   // Fetch user by idNumber and include all necessary fields
   const { data: userData, error: userError } = await supabase
-    .from("profiles")
+    .from("User")
     .select(
       "id, email, userRole, avatar, fName, lName, idNumber, contactNumber, deptId, jobId"
     )
@@ -291,9 +291,9 @@ export async function getCurrentUser() {
 
   const userId = authData?.user?.id;
 
-  // Fetch additional user details from the `profiles` table using the user's id
+  // Fetch additional user details from the `User` table using the user's id
   const { data: profileData, error: profileError } = await supabase
-    .from("profiles")
+    .from("User")
     .select("*")
     .eq("id", userId)
     .single();
@@ -316,10 +316,10 @@ export async function getCurrentUser() {
 //   const { data: authData, error: authError } = await supabase.auth.getUser();
 //   if (authError) throw new Error(authError.message);
 
-//   // Fetch additional user details from the `profiles` table using the user's id
+//   // Fetch additional user details from the `User` table using the user's id
 //   const userId = authData?.user?.id;
 //   const { data: profileData, error: profileError } = await supabase
-//     .from("profiles")
+//     .from("User")
 //     .select("*")
 //     .eq("id", userId)
 //     .single();

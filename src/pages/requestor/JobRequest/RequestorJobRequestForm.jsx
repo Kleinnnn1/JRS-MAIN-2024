@@ -32,7 +32,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
     },
   ]);
 
-  const jobPosition = [
+  const jobCategory = [
     "Electrician",
     "Cluster Leader",
     "Welder",
@@ -252,7 +252,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
     const formattedRequests = jobRequests.map((request) => ({
       description: request.description,
       location: request.location,
-      jobPosition: request.category,
+      jobCategory: request.category,
       image: request.photo,
       priority: request.priority,
     }));
@@ -349,7 +349,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
                       }
                       required
                     >
-                      {jobPosition.map((category, idx) => (
+                      {jobCategory.map((category, idx) => (
                         <option key={idx} value={category}>
                           {category}
                         </option>

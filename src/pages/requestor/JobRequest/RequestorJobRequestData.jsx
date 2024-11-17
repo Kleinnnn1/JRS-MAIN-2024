@@ -21,7 +21,7 @@ export default function RequestorJobRequestData(requests) {
             {
               requestId,
               description,
-              jobPosition,
+              jobCategory,
               deptName,
               staffName,
               image,
@@ -33,8 +33,8 @@ export default function RequestorJobRequestData(requests) {
           ) => [
             `${index + 1}. ${String(requestId)}`, // Sequential number + requestId
             description,
-            jobPosition,
-            deptName,
+            jobCategory || "N/A",
+            deptName || "N/A",
             staffName || "N/A", // If staffName is undefined or null, display "N/A"
             image ? <img src={image} alt="Request" /> : "No Image", // Display image if available, otherwise "No Image"
             status,

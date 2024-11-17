@@ -11,8 +11,8 @@ import RequestorJobRequestData from "./RequestorJobRequestData";
 const tableHeaders = [
   "Request ID",
   "Job Description",
-  "Job Position",
-  "Process by Department",
+  "Job Category",
+  "Process by",
   "Staff Assigned",
   "Image",
   "Status",

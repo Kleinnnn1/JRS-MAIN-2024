@@ -2,7 +2,7 @@ import CryptoJS from "crypto-js";
 
 class SecureStorage {
   // Use a static encryption key
-  static encryptionKey = "d1256163c78049502578ba2bb903f3ba"; // Predefined secret key
+  static encryptionKey = import.meta.env.VITE_ENCRYPT_KEY; // Predefined secret key
 
   // Encrypt a value with the static encryption key
   static encrypt(value) {

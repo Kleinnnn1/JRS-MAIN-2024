@@ -62,7 +62,8 @@ export default function LogIn() {
 
         {/* Terms and Privacy Policy */}
         <a href="#" className="text-xs text-center w-52">
-          By logging in, I agree to the Terms of Conditions and Privacy Policy of JRS.
+          By logging in, I agree to the Terms of Conditions and Privacy Policy
+          of JRS.
         </a>
 
         {/* Login Button */}

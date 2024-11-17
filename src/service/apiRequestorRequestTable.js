@@ -5,9 +5,7 @@ export async function getRequestorRequest() {
   const currentUser = await getCurrentUser();
   const { data, error } = await supabase
     .from("Request")
-    .select(
-      "requestId, description, jobPosition, deptName, image, status, requestDate, dateCompleted, staffName, priority" // Include deptReqAssId here
-    )
+    .select("*") // Select all columns
     .eq("idNumber", currentUser.idNumber); // Match the idNumber from the current user's profile
 
   if (error) {
@@ -29,12 +27,11 @@ export async function insertRequest(newRequest) {
 
   // Prepare the data to insert
   const requestData = {
-    requestor: currentUser.fullName,
     idNumber: currentUser.idNumber, // Add requestor here
     location: newRequest.location,
     description: newRequest.description,
     priority: newRequest.priority, // Ensure priority is included
-    jobPosition: newRequest.jobPosition,
+    jobCategory: newRequest.jobCategory,
     image: newRequest.image,
   };
 
