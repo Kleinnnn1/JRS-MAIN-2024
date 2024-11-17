@@ -68,12 +68,13 @@ export default function LogIn() {
             <a href="#">Forgot your password?</a>
           </div>
 
-          {/* <div className="mt-3 text-xs flex justify-between items-center text-[#002D74]">
+
+          <div className="mt-3 text-xs flex justify-between items-center text-[#002D74]">
             <p>Don't have an account?</p>
             <button onClick={() => navigate("/signup")} className="py-2 px-5 bg-yellow-300 border rounded-xl hover:scale-110  duration-300">
               Register
             </button>
-          </div> */}
+            </div> 
         </div>
       </div>
     </section>
