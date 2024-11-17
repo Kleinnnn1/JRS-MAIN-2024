@@ -322,20 +322,11 @@ export default function App() {
 
             {/* USTP HARMONIZED CLIENT SATISFACTION SURVEY */}
             {/* USTP HARMONIZED CLIENT SATISFACTION SURVEY */}
-            <Route
-              path="select"
-              element={<SelectSurveyForm />}
-            />
-            
-            <Route
-              path="english_version"
-              element={<EnglishVersionForm />}
-            />
-            
-            <Route
-              path="tagalog_version"
-              element={<TagalogVersionForm />}
-            />
+            <Route path="select" element={<SelectSurveyForm />} />
+
+            <Route path="english_version" element={<EnglishVersionForm />} />
+
+            <Route path="tagalog_version" element={<TagalogVersionForm />} />
           </Route>
         </Routes>
 
