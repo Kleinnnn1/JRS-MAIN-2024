@@ -95,6 +95,8 @@ import SystemAdminContentPage from "./pages/system_admin/Users/SystemAdminConten
 import UserContent from "./pages/system_admin/Users/ContentUsers";
 import SysAdminContent from "./pages/system_admin/Users/ContentDepartmentHead";
 import SysAdminStaffContent from "./pages/system_admin/Users/ContentStaff";
+import Registration from "./auth/Registration.jsx";
+import SignUpForm from "./auth/SignUpForm.jsx";
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
@@ -117,8 +119,14 @@ export default function App() {
           {/* Routes for Unauthorized page */}
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
+          {/* Routes for user registration */}
+
+          <Route path="register" element={<Registration />} /> 
+          <Route path="signup" element={<SignUpForm />} />
+
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
+          
 
           {/* Protected Routes for Staff */}
           <Route

@@ -235,6 +235,10 @@ export default function RequestorJobRequestForm({ closeModal }) {
     );
   };
 
+  const testSubmit = () => {
+
+    console.log(jobRequests)
+  }
   const onSubmit = () => {
     const hasEmptyFields = jobRequests.some(
       (request) =>
