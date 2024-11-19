@@ -6,27 +6,27 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate from react
 
 // Job options
 const jobOptions = [
-  { jobId: "CJ002", jobPosition: "Engineer" },
-  { jobId: "BJ005", jobPosition: "Busser" },
-  { jobId: "CJ008", jobPosition: "Plumber" },
-  { jobId: "BJ001", jobPosition: "Housekeeper" },
-  { jobId: "CJ009", jobPosition: "Painter" },
-  { jobId: "CJ003", jobPosition: "Draftsman" },
-  { jobId: "CJ004", jobPosition: "Foreman" },
-  { jobId: "CJ007", jobPosition: "Tile Setter" },
-  { jobId: "MJ003", jobPosition: "Elevator Attendants" },
-  { jobId: "BCL002", jobPosition: "Cluster Leader" },
-  { jobId: "CJ005", jobPosition: "Carpenter" },
-  { jobId: "MJ001", jobPosition: "Aircon Technicians" },
-  { jobId: "BJ004", jobPosition: "Gardener/Landscaper" },
-  { jobId: "CJ010", jobPosition: "Laborer" },
-  { jobId: "CJ001", jobPosition: "Architect" },
-  { jobId: "BJ003", jobPosition: "Campus Grass & Bushes Maintainer" },
-  { jobId: "BJ002", jobPosition: "Street Sweeper & Ground Sweeper" },
-  { jobId: "CJ006", jobPosition: "Welder" },
-  { jobId: "MJ002", jobPosition: "Electrician" },
-  { jobId: "BCL001", jobPosition: "Cluster Leader" },
-  { jobId: "MJ004", jobPosition: "Gymnasium Staff" },
+  { jobCategory: "CJ002", jobPosition: "Engineer" },
+  { jobCategory: "BJ005", jobPosition: "Busser" },
+  { jobCategory: "CJ008", jobPosition: "Plumber" },
+  { jobCategory: "BJ001", jobPosition: "Housekeeper" },
+  { jobCategory: "CJ009", jobPosition: "Painter" },
+  { jobCategory: "CJ003", jobPosition: "Draftsman" },
+  { jobCategory: "CJ004", jobPosition: "Foreman" },
+  { jobCategory: "CJ007", jobPosition: "Tile Setter" },
+  { jobCategory: "MJ003", jobPosition: "Elevator Attendants" },
+  { jobCategory: "BCL002", jobPosition: "Cluster Leader" },
+  { jobCategory: "CJ005", jobPosition: "Carpenter" },
+  { jobCategory: "MJ001", jobPosition: "Aircon Technicians" },
+  { jobCategory: "BJ004", jobPosition: "Gardener/Landscaper" },
+  { jobCategory: "CJ010", jobPosition: "Laborer" },
+  { jobCategory: "CJ001", jobPosition: "Architect" },
+  { jobCategory: "BJ003", jobPosition: "Campus Grass & Bushes Maintainer" },
+  { jobCategory: "BJ002", jobPosition: "Street Sweeper & Ground Sweeper" },
+  { jobCategory: "CJ006", jobPosition: "Welder" },
+  { jobCategory: "MJ002", jobPosition: "Electrician" },
+  { jobCategory: "BCL001", jobPosition: "Cluster Leader" },
+  { jobCategory: "MJ004", jobPosition: "Gymnasium Staff" },
 ];
 
 function SignUpForm() {
@@ -51,7 +51,8 @@ function SignUpForm() {
     userRole,
     contactNumber,
     deptId,
-    jobId,
+    jobCategory,
+    birthDate, // Add birthDate here
   }) {
     signup(
       {
@@ -63,7 +64,8 @@ function SignUpForm() {
         userRole,
         contactNumber,
         deptId,
-        jobId,
+        jobCategory,
+        birthDate, // Include birthDate in the signup data
       },
       {
         onSettled: () => reset(), // Correct way to invoke reset
@@ -105,6 +107,17 @@ function SignUpForm() {
               name="lName"
               type="text"
               {...register("lName", { required: "This field is required" })}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            />
+          </FormRow>
+
+          {/* Birth Date */}
+          <FormRow label="Birth Date" error={errors.birthDate?.message}>
+            <input
+              id="birthDate"
+              name="birthDate"
+              type="date"
+              {...register("birthDate", { required: "This field is required" })}
               className="mt-1 block w-full p-2 border border-gray-300 rounded"
             />
           </FormRow>
@@ -217,23 +230,25 @@ function SignUpForm() {
           </FormRow>
 
           {/* Job Position */}
-          <FormRow label="Job Position" error={errors.jobId?.message}>
+          <FormRow label="Job Position" error={errors.jobCategory?.message}>
             <select
-              id="jobId"
-              name="jobId"
-              {...register("jobId", { required: "This field is required" })}
+              id="jobCategory"
+              name="jobCategory"
+              {...register("jobCategory", { required: "This field is required" })}
               className="mt-1 block w-full p-2 border border-gray-300 rounded"
             >
               <option value="" className="hidden">
                 Select Job Position
               </option>
               {jobOptions.map((job) => (
-                <option key={job.jobId} value={job.jobId}>
+                <option key={job.jobCategory} value={job.jobCategory}>
                   {job.jobPosition}
                 </option>
               ))}
             </select>
           </FormRow>
+
+
 
           {/* Submit Button */}
           <button
