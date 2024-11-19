@@ -1,5 +1,4 @@
 import useUserStore from "../../../store/useUserStore";
-import ProfilePic from "/src/assets/images/BabyKaren.jpg";
 import DefaultImageUser from "/src/assets/images/DefaultImageUser.jpg";
 
 export default function Profile() {

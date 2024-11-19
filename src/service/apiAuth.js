@@ -224,9 +224,7 @@ export async function login({ idNumber, password }) {
   // Fetch user by idNumber and include all necessary fields
   const { data: userData, error: userError } = await supabase
     .from("User")
-    .select(
-      "id, email, userRole, avatar, fName, lName, idNumber, contactNumber, deptId, jobId"
-    )
+    .select("*")
     .eq("idNumber", idNumber)
     .single();
 
@@ -253,7 +251,6 @@ export async function login({ idNumber, password }) {
       idNumber: userData.idNumber,
       contactNumber: userData.contactNumber,
       deptId: userData.deptId,
-      jobId: userData.jobId,
     },
   });
 
