@@ -29,19 +29,19 @@ export default function DeptHeadRequestData(requests, openModal) {
       ? requests.map(
           (
             {
-              requestor,
+              fullName,
               description,
               location,
-              jobPosition,
+              jobCategory,
               requestDate,
               image,
               priority,
             },
             index
           ) => [
-            `${index + 1}. ${String(requestor)}`, // Sequential number + requestor name
+            `${index + 1}. ${String(fullName)}`, // Sequential number + fullName name
             description,
-            jobPosition,
+            jobCategory,
             new Date(requestDate).toLocaleDateString(), // Format request date
             location,
 
@@ -61,18 +61,18 @@ export default function DeptHeadRequestData(requests, openModal) {
               className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2"
               onClick={() => {
                 const {
-                  jobPosition,
+                  jobCategory,
                   location,
                   deptReqAssId,
                   requestId,
                   idNumber,
-                } = requests[index]; // Destructure to get jobPosition and location
+                } = requests[index]; // Destructure to get jobCategory and location
 
                 // Save to Zustand
                 useAssignmentStore
                   .getState()
                   .setAssignmentData(
-                    jobPosition,
+                    jobCategory,
                     location,
                     deptReqAssId,
                     requestId,
@@ -80,10 +80,10 @@ export default function DeptHeadRequestData(requests, openModal) {
                   );
 
                 console.log("Assigned Data:", {
-                  requestor,
+                  fullName,
                   description,
                   location,
-                  jobPosition,
+                  jobCategory,
                   requestDate,
                   image,
                   deptReqAssId,
@@ -117,7 +117,7 @@ export default function DeptHeadRequestData(requests, openModal) {
 //   return requests.length > 0
 //     ? requests.map(
 //         (
-//           { requestor, description, location, jobPosition, requestDate, image },
+//           { fullName, description, location, jobCategory, requestDate, image },
 //           index
 //         ) => [
 //           `${index + 1}. ${String(requestor)}`, // Sequential number + requestor name

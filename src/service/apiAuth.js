@@ -9,7 +9,7 @@ export async function signUp({
   userRole,
   contactNumber,
   deptId,
-  jobId,
+  birthDate,
 }) {
   try {
     console.log("SignUp Data:", {
@@ -21,7 +21,7 @@ export async function signUp({
       userRole,
       contactNumber,
       deptId,
-      jobId,
+      birthDate,
     });
 
     // Sign up the user with email and password and pass metadata
@@ -36,7 +36,7 @@ export async function signUp({
           userRole,
           contactNumber,
           deptId,
-          jobId,
+          birthDate,
         },
       },
     });
@@ -57,7 +57,7 @@ export async function signUp({
         userRole,
         contactNumber,
         deptId,
-        jobId,
+        birthDate,
         avatar: "",
       },
     ]);
@@ -270,7 +270,7 @@ export async function login({ idNumber, password }) {
       idNumber: userData.idNumber,
       contactNumber: userData.contactNumber,
       deptId: userData.deptId,
-      jobId: userData.jobId,
+      birthDate: userData.birthDate,
     },
   };
 }
@@ -305,30 +305,6 @@ export async function getCurrentUser() {
     ...profileData,
   };
 }
-
-// export async function getCurrentUser() {
-//   const { data: session } = await supabase.auth.getSession();
-//   if (!session?.session) return null;
-
-//   const { data: authData, error: authError } = await supabase.auth.getUser();
-//   if (authError) throw new Error(authError.message);
-
-//   // Fetch additional user details from the `User` table using the user's id
-//   const userId = authData?.user?.id;
-//   const { data: profileData, error: profileError } = await supabase
-//     .from("User")
-//     .select("*")
-//     .eq("id", userId)
-//     .single();
-
-//   if (profileError) throw new Error(profileError.message);
-
-//   // Merge authData with profileData
-//   return {
-//     ...authData.user,
-//     ...profileData,
-//   };
-// }
 
 export async function logout() {
   const { error } = await supabase.auth.signOut();

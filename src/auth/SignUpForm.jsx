@@ -137,7 +137,10 @@ function SignUpForm() {
           </FormRow>
 
           {/* Password */}
-          <FormRow label="Password (min 8 characters)" error={errors.password?.message}>
+          <FormRow
+            label="Password (min 8 characters)"
+            error={errors.password?.message}
+          >
             <input
               id="password"
               name="password"
@@ -154,7 +157,10 @@ function SignUpForm() {
           </FormRow>
 
           {/* Confirm Password */}
-          <FormRow label="Confirm Password" error={errors.passwordConfirm?.message}>
+          <FormRow
+            label="Confirm Password"
+            error={errors.passwordConfirm?.message}
+          >
             <input
               id="passwordConfirm"
               name="passwordConfirm"
@@ -194,7 +200,9 @@ function SignUpForm() {
               id="contactNumber"
               name="contactNumber"
               type="text"
-              {...register("contactNumber", { required: "This field is required" })}
+              {...register("contactNumber", {
+                required: "This field is required",
+              })}
               className="mt-1 block w-full p-2 border border-gray-300 rounded"
             />
           </FormRow>

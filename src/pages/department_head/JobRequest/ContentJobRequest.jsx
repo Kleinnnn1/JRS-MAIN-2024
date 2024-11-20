@@ -11,7 +11,7 @@ import ModalForm from "./ModalForm";
 const tableHeaders = [
   "Requestor",
   "Job Description",
-  "Job Position",
+  "Job Category",
   "Date Submitted",
   "Location",
   "Image",
