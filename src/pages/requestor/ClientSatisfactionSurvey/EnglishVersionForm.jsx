@@ -3,17 +3,25 @@ import { useNavigate } from "react-router-dom";
 import logoUSTP from "../../../assets/images/logoUSTP.png";
 import Swal from 'sweetalert2';
 
+// -Name, Email, Age is derived na sa Profile Account 
+//  so it has something to do sa backend to get it from the database
+// - Get the age is e subtract ang current year ug year(birthdate) sa user  ug ex. 2024 - 2002 = 22
+// - Automatic Set Region as Region X
+// - Automatic Set Campus in Cagayan De Oro
+// - Transacted Office is based on the Job Request Details referred "Department" e.g BGMS, CSWS, MEWS
+// - Ang Service availed is gikuha on Job Description
+
 const EnglishVersionForm = () => {
     const navigate = useNavigate();
     const [currentSection, setCurrentSection] = useState(1);
     const [attemptedSubmit, setAttemptedSubmit] = useState(false);
     const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        clientType: "Citizen",
-        role: "",
-        sex: "",
-        age: "",
+        name: "", //I based sa User Profile Name
+        email: "", //I based sa User Profile Email
+        clientType: "Citizen", // I set na daan Citizen
+        role: "",  
+        sex: "",  //I based sa User Profile detail sex
+        age: "", 
         region: "Region X",
         campus: "Cagayan de Oro",
         transactedOffice: "",
@@ -33,18 +41,6 @@ const EnglishVersionForm = () => {
         comments: "",
     });
 
-    const getTransactedOffices = (campus) => {
-        switch (campus) {
-            case "Cagayan de Oro":
-                return [
-                    "Building and Grounds Maintenance Unit (MEWS)",
-                    "Civil and Sanitary Works Unit (CSWS)",
-                    "Mechanical & Electrical Works Unit (MEWS)"
-                ];
-            default:
-                return [];
-        }
-    };
 
     // SweetAlert message shown when the form is loaded
     // useEffect(() => {
@@ -59,27 +55,6 @@ const EnglishVersionForm = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
-    };
-
-    const handleNext = () => {
-        setAttemptedSubmit(true);
-        if (currentSection === 1) {
-            if (formData.name && formData.email && formData.clientType && formData.role && formData.sex && formData.age && formData.region) {
-                setCurrentSection(currentSection + 1);
-            }
-        } else if (currentSection === 2) {
-            if (formData.campus) {
-                setCurrentSection(currentSection + 1);
-            }
-        } else if (currentSection === 3) {
-            if (formData.serviceAvailed) {
-                setCurrentSection(currentSection + 1);
-            }
-        }
-    };
-
-    const handleBack = () => {
-        setCurrentSection(currentSection - 1);
     };
 
     const handleSubmit = async (e) => {
