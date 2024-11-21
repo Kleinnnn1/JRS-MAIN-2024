@@ -102,6 +102,8 @@ import SPMSDashboard from "./pages/spms/Dashboard/SpmsPageDashboard.jsx";
 import LogIn from "./auth/LogIn.jsx";
 import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
+import PageDepartmentKeyWord from "./pages/department_head/keyword/PageDepartmentKeyword.jsx";
+import PageStaffKeyWord from "./pages/staff/keyword/PageStaffKeyword.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -119,7 +121,6 @@ export default function App() {
           {/* Routes for Unauthorized page */}
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-  
           <Route path="signup" element={<SignUpForm />} />
 
           {/* Routes for Login */}
@@ -138,6 +139,7 @@ export default function App() {
             }
           >
             <Route path="home" element={<ContentDashStaff />} />
+            <Route path="add_keyword" element={<PageStaffKeyWord />} />
             <Route path="StaffImagePage" element={<StaffImagePage />}>
               <Route path="StaffImageContent" element={<StaffImageContent />} />
             </Route>
@@ -215,6 +217,7 @@ export default function App() {
             <Route path="user" element={<CreateNewUser />} />
             <Route path="dashboard" element={<DashboardContent />} />
             <Route path="myprofile" element={<PageProfile />} />
+            <Route path="add_keyword" element={<PageDepartmentKeyWord />} />
 
             {/* <Route path='Departments' element={<DepartmentPage/>}>
                 <Route path='add' element={<AddDepartment />} />
@@ -330,20 +333,11 @@ export default function App() {
 
             {/* USTP HARMONIZED CLIENT SATISFACTION SURVEY */}
             {/* USTP HARMONIZED CLIENT SATISFACTION SURVEY */}
-            <Route
-              path="select"
-              element={<SelectSurveyForm />}
-            />
-            
-            <Route
-              path="english_version"
-              element={<EnglishVersionForm />}
-            />
-            
-            <Route
-              path="tagalog_version"
-              element={<TagalogVersionForm />}
-            />
+            <Route path="select" element={<SelectSurveyForm />} />
+
+            <Route path="english_version" element={<EnglishVersionForm />} />
+
+            <Route path="tagalog_version" element={<TagalogVersionForm />} />
           </Route>
         </Routes>
 

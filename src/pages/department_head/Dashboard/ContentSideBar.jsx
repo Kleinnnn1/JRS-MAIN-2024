@@ -86,9 +86,16 @@ export default function ContentSideBar() {
         bold={isActive("/department_head/approving_of_job_completion")}
       />
       {/*Create new user */}
-      <SidebarItem
+      {/* <SidebarItem
         name="User"
         onClick={() => navigate("/department_head/user")}
+        image={iconRequest}
+        bold={isActive("/department_head/user")}
+      /> */}
+      {/*add new keyword */}
+      <SidebarItem
+        name="Add Keyword"
+        onClick={() => navigate("/department_head/add_keyword")}
         image={iconRequest}
         bold={isActive("/department_head/user")}
       />
