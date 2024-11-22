@@ -18,12 +18,10 @@ export default function SPMSDashboard() {
         <ProfileSPMS />
         <SPMSContentSideBar />
       </SideBar>
-
       <SPMSMainBody>
         <HorizontalNavBar profileRoute="" />
-
-      <h1 className="justify-items-center"> SPMS </h1>
-      {otherContent ? <Outlet /> : <ContentDashboard />}
+        <h1 className="justify-items-center"> SPMS </h1>
+        {otherContent ? <Outlet /> : <ContentDashboard />}
       </SPMSMainBody>
     </div>
   );

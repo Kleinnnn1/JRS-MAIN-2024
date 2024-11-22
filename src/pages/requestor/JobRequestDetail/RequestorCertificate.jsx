@@ -11,12 +11,7 @@ export default function RequestorCertificate() {
   return (
     <div>
       {/* Button to trigger print */}
-      <button
-        onClick={handlePrint}
-        className="bg-blue-500 text-white py-2 px-4 rounded mb-4"
-      >
-        Print Certificate
-      </button>
+
 
       {/* Certificate layout */}
       <div ref={certificateRef} className="p-10 bg-white max-w-3xl mx-auto border shadow-md">

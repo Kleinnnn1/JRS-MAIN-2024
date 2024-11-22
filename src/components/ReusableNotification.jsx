@@ -16,7 +16,7 @@ export default function ReusableNotification() {
           </div>
   
           {/* REFERRAL NOTIFICATION */}
-          <div className="p-4 flex-grow">
+          <div className="p-4 text-lg flex-grow">
             <p>
               <b>COMPLETED:</b> Your job request is completed. 
               <a

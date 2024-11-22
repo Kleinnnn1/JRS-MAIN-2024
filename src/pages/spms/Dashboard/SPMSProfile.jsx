@@ -14,7 +14,6 @@ export default function Profile() {
       <p className="font-semibold text-xm">
        <h1>SPMS</h1>
       </p>
-     
     </div>
   );
 }

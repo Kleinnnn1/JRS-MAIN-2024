@@ -11,12 +11,13 @@ export default function RequestorStatusCardAndCalendar() {
         {/* NOTIFICATION */}
         <div className="bg-white  border lg:col-span-2 shadow-md shadow-black/5 flex flex-col justify-between  h-full">
           <div className="bg-yellow-400">
-            <div className="text-2xl p-2 ml-2 text-black font-bold">
+            <div className="text-3xl p-2 ml-2 text-black font-bold">
               Notifications
             </div>
           </div>
+       
           <div className="p-4 flex-grow">
-            <p>
+            <p>   <hr />
               <b>REFERRAL:</b> Your job request has been forwarded to CSWS. 
               <a
                 href="#"

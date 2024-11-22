@@ -4,6 +4,8 @@ import StatusCard from "../../../components/StatusCard";
 import ReusableNotification from "../../../components/ReusableNotification";
 import ReusableCalendar from "../../../components/ReusableCalendar";
 import SearchBar from "../../../components/SearchBar";
+import referralIcon from "../../../assets/images/iconOngoing.png"
+import { FaUsers } from 'react-icons/fa';
 import RequestorJobRequestForm from "../JobRequest/RequestorJobRequestForm"; // Import the form component
 
 export default function ContentDashboard() {
@@ -25,6 +27,7 @@ export default function ContentDashboard() {
       closeModal();
     }
   };
+
 
   return (
     <>
@@ -55,27 +58,30 @@ export default function ContentDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
         <StatusCard
           title="Pending"
-          count={0}
-          bgColor="bg-yellow-400"
+          count={1}
+          bgColor="bg-yellow-200"
           onClick={() => navigate("/requestor/job_request")}
         />
         <StatusCard
           title="Ongoing"
           count={0}
           bgColor="bg-sky-200"
+          icon={<FaUsers />} 
           onClick={() => navigate("/requestor/job_request")}
         />
         <StatusCard
           title="Completed"
           count={0}
-          bgColor="bg-green-400"
+          bgColor="bg-green-200"
           onClick={() => navigate("/requestor/job_request")}
         />
         <StatusCard
           title="Referral"
-          count={1}
-          bgColor="bg-purple-400"
+          count={0}
+         
+          bgColor="bg-purple-200"
           onClick={() => navigate("/requestor/job_request")}
+        
         />
       </div>
 
