@@ -7,11 +7,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { insertRequest } from "../../../service/apiRequestorRequestTable";
 import toast from "react-hot-toast";
 import supabase from "../../../service/supabase"; // Assume you've initialized Supabase in a separate file
+import { useNotifications } from "../../../components/NotificationContext";
+
 
 export default function RequestorJobRequestForm({ closeModal }) {
+  const { addNotification } = useNotifications();
   const { handleSubmit, reset } = useForm();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
   const [jobRequests, setJobRequests] = useState([
     {
       id: 1,
@@ -128,6 +132,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
       mutate(formattedData);
     });
 
+    addNotification("SUBMITTED. You have successfully submitted a job request ")
     toast.success("Your job request(s) have been submitted successfully.");
     navigate("/requestor/job_request_table");
     closeModal();

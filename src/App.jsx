@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+
 // Components for staff
 import ContentDashStaff from "./pages/staff/Dashboard/StaffContentDash.jsx";
 import MainDashStaff from "./pages/staff/Dashboard/StaffMainDashboard.jsx";
@@ -281,7 +282,13 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="home" element={<RequestorContentDashboard />} />
+            <Route path="home" element={
+            
+              <RequestorContentDashboard />
+              
+            
+            } 
+              />
             {/* JOB REQUEST */}
             <Route path="job_request" element={<RequestorJobRequest />} />
             <Route

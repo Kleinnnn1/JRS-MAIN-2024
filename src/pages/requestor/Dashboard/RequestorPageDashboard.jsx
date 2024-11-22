@@ -8,6 +8,7 @@ import RequestorMainBody from "../Dashboard/RequestorMainBody";
 import ContentDashboard from "./RequestorContentDashboard";
 import profilePic from "../../../assets/images/BabyKaren.jpg";
 import HorizontalNavBar from "../../../components/HorizontalNavBar";
+import { NotificationProvider } from "../../../components/NotificationContext";
 
 export default function RequestorDashboard() {
   const otherContent = useOutlet();
@@ -29,7 +30,11 @@ export default function RequestorDashboard() {
                 profileLink="/requestor/requestor_profile"
                 
                 /> */}
-        {otherContent ? <Outlet /> : <ContentDashboard />}
+        {otherContent ? <Outlet /> : 
+         
+         <ContentDashboard/>
+       
+        }
       </RequestorMainBody>
     </div>
   );
