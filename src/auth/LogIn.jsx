@@ -79,8 +79,13 @@ export default function LogIn() {
             </button>
           </form>
 
-          <div className="mt-5 text-xs border-b ] py-4 text-[#002D74]">
-            <a href="#">Forgot your password?</a>
+          <div className="mt-5 text-xs border-b py-4 text-[#002D74]">
+            <button
+              onClick={() => navigate("/forgot-password")}
+              className="underline hover:text-blue-600"
+            >
+              Forgot your password?
+            </button>
           </div>
 
           <div className="mt-3 text-xs flex justify-between items-center text-[#002D74]">

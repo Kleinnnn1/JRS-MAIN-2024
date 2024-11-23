@@ -104,6 +104,7 @@ import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
 import PageDepartmentKeyWord from "./pages/department_head/keyword/PageDepartmentKeyword.jsx";
 import PageStaffKeyWord from "./pages/staff/keyword/PageStaffKeyword.jsx";
+import ForgotPassword from "./auth/forgot-password.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -125,7 +126,7 @@ export default function App() {
 
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
-
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           {/* SPMS ROUTE */}
           <Route path="/spms" element={<SPMSDashboard />} />
 
