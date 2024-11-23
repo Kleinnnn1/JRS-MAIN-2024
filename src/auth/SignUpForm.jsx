@@ -149,7 +149,7 @@ function SignUpForm() {
                   <option value="department head">Department Head</option>
                 </select>
               </FormRow>
-              <FormRow label="Department ID" error={errors.deptId?.message}>
+              <FormRow label="Department" error={errors.deptId?.message}>
                 <select
                   {...register("deptId", { required: "Department ID is required" })}
                   className="w-full p-2 border border-gray-300 rounded"
