@@ -4,43 +4,26 @@ import { useSignUp } from "./useSignUp";
 import imageRegister from "../assets/images/register.png";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
-const jobOptions = [
-  { jobCategory: "CJ002", jobPosition: "Engineer" },
-  { jobCategory: "BJ005", jobPosition: "Busser" },
-  { jobCategory: "CJ008", jobPosition: "Plumber" },
-  { jobCategory: "BJ001", jobPosition: "Housekeeper" },
-  { jobCategory: "CJ009", jobPosition: "Painter" },
-  { jobCategory: "CJ003", jobPosition: "Draftsman" },
-  { jobCategory: "CJ004", jobPosition: "Foreman" },
-  { jobCategory: "CJ007", jobPosition: "Tile Setter" },
-  { jobCategory: "MJ003", jobPosition: "Elevator Attendants" },
-  { jobCategory: "BCL002", jobPosition: "Cluster Leader" },
-  { jobCategory: "CJ005", jobPosition: "Carpenter" },
-  { jobCategory: "MJ001", jobPosition: "Aircon Technicians" },
-  { jobCategory: "BJ004", jobPosition: "Gardener/Landscaper" },
-  { jobCategory: "CJ010", jobPosition: "Laborer" },
-  { jobCategory: "CJ001", jobPosition: "Architect" },
-  { jobCategory: "BJ003", jobPosition: "Campus Grass & Bushes Maintainer" },
-  { jobCategory: "BJ002", jobPosition: "Street Sweeper & Ground Sweeper" },
-  { jobCategory: "CJ006", jobPosition: "Welder" },
-  { jobCategory: "MJ002", jobPosition: "Electrician" },
-  { jobCategory: "BCL001", jobPosition: "Cluster Leader" },
-  { jobCategory: "MJ004", jobPosition: "Gymnasium Staff" },
-];
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 
 function SignUpForm() {
   const { signup } = useSignUp();
   const {
     register,
     formState: { errors },
-    getValues,
     handleSubmit,
     reset,
+    getValues,
+    setValue,
   } = useForm();
 
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State to toggle confirm password visibility
+  const [passwordError, setPasswordError] = useState(""); // Store password validation error messages
+  const [isPasswordValid, setIsPasswordValid] = useState(false); // Track if password is valid
+  const [isPasswordMatch, setIsPasswordMatch] = useState(true); // Track if passwords match
+
   const navigate = useNavigate();
-  const [selectedUserRole, setSelectedUserRole] = useState(""); // State to track the selected user role
 
   function onSubmit(data) {
     signup(data, {
@@ -48,13 +31,73 @@ function SignUpForm() {
     });
   }
 
-  function handleUserRoleChange(event) {
-    setSelectedUserRole(event.target.value); // Update the user role when the selection changes
-  }
+  // Real-time password validation
+  const validatePassword = (password) => {
+    const lowercase = /[a-z]/;
+    const uppercase = /[A-Z]/;
+    const number = /\d/;
+    const specialCharacter = /[@$!%*?&]/;
+    if (password.length < 8) {
+      setPasswordError("Password must be at least 8 characters.");
+      setIsPasswordValid(false);
+    } else if (!lowercase.test(password)) {
+      setPasswordError("Password must contain at least one lowercase letter.");
+      setIsPasswordValid(false);
+    } else if (!uppercase.test(password)) {
+      setPasswordError("Password must contain at least one uppercase letter.");
+      setIsPasswordValid(false);
+    } else if (!number.test(password)) {
+      setPasswordError("Password must contain at least one number.");
+      setIsPasswordValid(false);
+    } else if (!specialCharacter.test(password)) {
+      setPasswordError("Password must contain at least one special character.");
+      setIsPasswordValid(false);
+    } else {
+      setPasswordError("");
+      setIsPasswordValid(true);
+    }
+  };
+
+  // Real-time confirm password validation
+  const validateConfirmPassword = (confirmPassword) => {
+    if (confirmPassword !== getValues("password")) {
+      setIsPasswordMatch(false);
+    } else {
+      setIsPasswordMatch(true);
+    }
+  };
+
+  // Real-time number validation
+  const handleNumberInput = (e) => {
+    const value = e.target.value;
+    if (!/^\d*$/.test(value)) {
+      e.target.setCustomValidity("This field should only contain numbers.");
+    } else {
+      e.target.setCustomValidity("");
+    }
+  };
+
+  // Function to toggle password visibility and start timer
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState); // Toggle the password visibility
+    if (!showPassword) {
+      // If the password is being shown, start the 3-second timer to auto-hide
+      setTimeout(() => setShowPassword(false), 3000);
+    }
+  };
+
+  // Function to toggle confirm password visibility and start timer
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword((prevState) => !prevState); // Toggle the confirm password visibility
+    if (!showConfirmPassword) {
+      // If the confirm password is being shown, start the 3-second timer to auto-hide
+      setTimeout(() => setShowConfirmPassword(false), 3000);
+    }
+  };
 
   return (
     <section className="bg-gray-100 min-h-screen flex items-center justify-center">
-      <div className="bg-white flex flex-col md:flex-row rounded-2xl shadow-lg max-w-5xl w-full">
+      <div className="bg-white flex flex-col md:flex-row rounded-2xl shadow-lg max-w-4xl w-full h-auto p-4">
         {/* Image Section */}
         <div className="md:w-1/2 hidden md:block">
           <img
@@ -65,13 +108,13 @@ function SignUpForm() {
         </div>
 
         {/* Form Section */}
-        <div className="md:w-1/2 p-6 flex flex-col justify-center">
-          <h2 className="text-3xl font-bold mb-6 text-center text-blue-500">
+        <div className="md:w-1/2 flex flex-col justify-center px-4">
+          <h2 className="text-2xl font-bold mb-4 text-center text-blue-500">
             Create Your Account
           </h2>
-          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
             {/* First Row: First Name and Last Name */}
-            <div className="flex space-x-4">
+            <div className="flex space-x-3">
               <FormRow label="First Name" error={errors.fName?.message}>
                 <input
                   type="text"
@@ -89,7 +132,7 @@ function SignUpForm() {
             </div>
 
             {/* Second Row: Birth Date and ID Number */}
-            <div className="flex space-x-4">
+            <div className="flex space-x-3">
               <FormRow label="Birth Date" error={errors.birthDate?.message}>
                 <input
                   type="date"
@@ -100,14 +143,21 @@ function SignUpForm() {
               <FormRow label="ID Number" error={errors.idNumber?.message}>
                 <input
                   type="text"
-                  {...register("idNumber", { required: "ID Number is required" })}
+                  {...register("idNumber", {
+                    required: "ID Number is required",
+                    pattern: {
+                      value: /^\d+$/,
+                      message: "ID Number must contain only numbers",
+                    },
+                    onChange: handleNumberInput,
+                  })}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </FormRow>
             </div>
 
             {/* Third Row: Email and Contact Number */}
-            <div className="flex space-x-4">
+            <div className="flex space-x-3">
               <FormRow label="Email" error={errors.email?.message}>
                 <input
                   type="email"
@@ -126,112 +176,114 @@ function SignUpForm() {
                   type="text"
                   {...register("contactNumber", {
                     required: "Contact Number is required",
-                  })}
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </FormRow>
-            </div>
-
-            {/* Fourth Row: User Role and Department ID */}
-            <div className="flex space-x-4">
-              <FormRow label="User Role" error={errors.userRole?.message}>
-                <select
-                  {...register("userRole", { required: "User Role is required" })}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  onChange={handleUserRoleChange} // Trigger the change handler
-                >
-                  <option value="" disabled>
-                    Select a role
-                  </option>
-                  <option value="requestor">Requestor</option>
-                  <option value="system admin">System Admin</option>
-                  <option value="staff">Staff</option>
-                  <option value="department head">Department Head</option>
-                </select>
-              </FormRow>
-              <FormRow label="Department" error={errors.deptId?.message}>
-                <select
-                  {...register("deptId", { required: "Department ID is required" })}
-                  className="w-full p-2 border border-gray-300 rounded"
-                >
-                  <option value="" disabled>
-                    Select Department
-                  </option>
-                  <option value="D001">BGMS</option>
-                  <option value="D002">CSWS</option>
-                  <option value="D003">MEWSs</option>
-                </select>
-              </FormRow>
-            </div>
-
-            {/* Fifth Row: Job Position (Conditional) */}
-            {selectedUserRole === "staff" && ( // Only show if User Role is 'staff'
-              <FormRow label="Job Position" error={errors.jobCategory?.message}>
-                <select
-                  {...register("jobCategory", { required: "Job Position is required" })}
-                  className="w-full p-2 border border-gray-300 rounded"
-                >
-                  <option value="" disabled>
-                    Select Job Position
-                  </option>
-                  {jobOptions.map((job) => (
-                    <option key={job.jobCategory} value={job.jobCategory}>
-                      {job.jobPosition}
-                    </option>
-                  ))}
-                </select>
-              </FormRow>
-            )}
-
-            {/* Sixth Row: Password and Confirm Password */}
-            <div className="flex space-x-4">
-              <FormRow label="Password" error={errors.password?.message}>
-                <input
-                  type="password"
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 8,
-                      message: "Password must be at least 8 characters",
+                    pattern: {
+                      value: /^\d+$/,
+                      message: "Contact Number must contain only numbers",
                     },
+                    onChange: handleNumberInput,
                   })}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </FormRow>
-              <FormRow
-                label="Confirm Password"
-                error={errors.passwordConfirm?.message}
+            </div>
+
+            {/* Fourth Row: Department */}
+            <FormRow label="Department" error={errors.deptId?.message}>
+              <select
+                {...register("deptId", { required: "Department is required" })}
+                className="w-full p-2 border border-gray-300 rounded"
               >
-                <input
-                  type="password"
-                  {...register("passwordConfirm", {
-                    required: "Confirm Password is required",
-                    validate: (value) =>
-                      value === getValues("password") || "Passwords must match",
-                  })}
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
+                <option value="" disabled>
+                  Select Department
+                </option>
+                <option value="CDO Bites">CDO Bites</option>
+                <option value="Library">Library</option>
+                <option value="CEA Department">CEA Department</option>
+                <option value="CITC Department">CITC Department</option>
+                <option value="CSTE Department">CSTE Department</option>
+                <option value="LRC">LRC</option>
+                <option value="Others">Others</option>
+              </select>
+            </FormRow>
+
+            {/* Fifth Row: Password and Confirm Password */}
+            <div className="flex space-x-3">
+              <FormRow label="Password" error={errors.password?.message}>
+                <div className="relative w-full">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 8,
+                        message: "Password must be at least 8 characters",
+                      },
+                      onChange: (e) => {
+                        validatePassword(e.target.value);
+                      },
+                    })}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                  <span
+                    className={`absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer ${showPassword ? "opacity-100" : "opacity-50"}`}
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? <FaEye /> : <FaEyeSlash />}
+                  </span>
+                </div>
+                {passwordError && (
+                  <p className="text-red-500 text-sm">{passwordError}</p>
+                )}
+              </FormRow>
+
+              <FormRow label="Confirm Password" error={errors.confirmPassword?.message}>
+                <div className="relative w-full">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    {...register("confirmPassword", {
+                      required: "Confirm Password is required",
+                      validate: (value) =>
+                        value === getValues("password") || "Passwords do not match",
+                      onChange: (e) => {
+                        validateConfirmPassword(e.target.value);
+                      },
+                    })}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                  <span
+                    className={`absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer ${showConfirmPassword ? "opacity-100" : "opacity-50"}`}
+                    onClick={toggleConfirmPasswordVisibility}
+                  >
+                    {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+                  </span>
+                </div>
+                {!isPasswordMatch && (
+                  <p className="text-red-500 text-sm">Passwords do not match</p>
+                )}
               </FormRow>
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+              className="w-full bg-blue-500 text-white p-2 rounded mt-4 hover:bg-blue-600"
+              disabled={!isPasswordValid || !isPasswordMatch}
             >
               Sign Up
             </button>
 
-            {/* Navigation to Login */}
-        <p className="text-center text-sm mt-4">
-            Already have an account?{" "}
-            <span
-              className="text-blue-500 cursor-pointer hover:underline"
-              onClick={() => navigate("/login")} // Navigate to the login page
-            >
-              Log In
-            </span>
-          </p>
+            {/* Already have an account */}
+            <div className="text-center mt-4">
+              <p>
+                Already have an account?{" "}
+                <span
+                  className="text-blue-500 cursor-pointer"
+                  onClick={() => navigate("/login")}
+                >
+                  Log In
+                </span>
+              </p>
+            </div>
           </form>
         </div>
       </div>
