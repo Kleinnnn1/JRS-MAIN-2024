@@ -16,7 +16,7 @@ const DropdownButton = ({ options }) => {
         onChange={handleChange} // Handle change to update the selected state
         className="form-select rounded-lg bg-sky-200 text-gray-800 focus:outline-none mx-0 p-2 transition duration-5s ease-in-out hover:bg-sky-300"
       >
-        <option value="" disabled>
+        <option value="" disabled className="hidden">
           Select an option...
         </option>
         {options.map(({ value, label }, index) => (
