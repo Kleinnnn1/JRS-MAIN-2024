@@ -96,7 +96,7 @@ import UserContent from "./pages/system_admin/Users/ContentUsers";
 import SysAdminContent from "./pages/system_admin/Users/ContentDepartmentHead";
 import SysAdminStaffContent from "./pages/system_admin/Users/ContentStaff";
 import SignUpForm from "./auth/SignUpForm.jsx";
-import SPMEDashboard from "./pages/spme/Dashboard/SpmsPageDashboard.jsx";
+import SPMSDashboard from "./pages/spms/Dashboard/SpmsPageDashboard.jsx";
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
@@ -104,6 +104,7 @@ import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
 import PageDepartmentKeyWord from "./pages/department_head/keyword/PageDepartmentKeyword.jsx";
 import PageStaffKeyWord from "./pages/staff/keyword/PageStaffKeyword.jsx";
+import ForgotPassword from "./auth/forgot-password.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -125,9 +126,9 @@ export default function App() {
 
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
-
-          {/* SPME ROUTE */}
-          <Route path="/spme" element={<SPMEDashboard />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          {/* SPMS ROUTE */}
+          <Route path="/spms" element={<SPMSDashboard />} />
 
           {/* Protected Routes for Staff */}
           <Route
