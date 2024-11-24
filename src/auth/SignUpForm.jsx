@@ -1,287 +1,294 @@
-  import FormRow from "../components/ReusableFormRow"; // Import the FormRow component
-  import { useForm } from "react-hook-form";
-  import { useSignUp } from "./useSignUp";
-  import imageRegister from "../assets/images/register.png";
-  import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import FormRow from "../components/ReusableFormRow";
+import { useForm } from "react-hook-form";
+import { useSignUp } from "./useSignUp";
+import imageRegister from "../assets/images/register.png";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 
-  // Job options
-  const jobOptions = [
-    { jobCategory: "Engineer" },
-    { jobCategory: "Busser" },
-    { jobCategory: "Plumber" },
-    { jobCategory: "Housekeeper" },
-    { jobCategory: "Painter" },
-    { jobCategory: "Draftsman" },
-    { jobCategory: "Foreman" },
-    { jobCategory: "Tile Setter" },
-    { jobCategory: "Elevator Attendants" },
-    { jobCategory: "Cluster Leader" },
-    { jobCategory: "Carpenter" },
-    { jobCategory: "Aircon Technicians" },
-    { jobCategory: "Gardener/Landscaper" },
-    { jobCategory: "Laborer" },
-    { jobCategory: "Architect" },
-    { jobCategory: "Campus Grass & Bushes Maintainer" },
-    { jobCategory: "Street Sweeper & Ground Sweeper" },
-    { jobCategory: "Welder" },
-    { jobCategory: "Electrician" },
-    { jobCategory: "Cluster Leader" },
-    { jobCategory: "Gymnasium Staff" },
-  ];
+function SignUpForm() {
+  const { signup } = useSignUp();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+    getValues,
+    setValue,
+  } = useForm();
 
-  function SignUpForm() {
-    const { signup } = useSignUp();
-    const {
-      register,
-      formState: { errors },
-      getValues,
-      handleSubmit,
-      reset,
-    } = useForm();
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State to toggle confirm password visibility
+  const [passwordError, setPasswordError] = useState(""); // Store password validation error messages
+  const [isPasswordValid, setIsPasswordValid] = useState(false); // Track if password is valid
+  const [isPasswordMatch, setIsPasswordMatch] = useState(true); // Track if passwords match
 
-    const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
 
-    // Handle form submission
-    function onSubmit({
-      fName,
-      lName,
-      idNumber,
-      email,
-      password,
-      userRole,
-      contactNumber,
-      deptId,
-      jobCategory,
-      birthDate, // Add birthDate here
-    }) {
-      signup(
-        {
-          fName,
-          lName,
-          idNumber,
-          email,
-          password,
-          userRole,
-          contactNumber,
-          deptId,
-          jobCategory,
-          birthDate, // Include birthDate in the signup data
-        },
-        {
-          onSettled: () => reset(), // Correct way to invoke reset
-        }
-      );
+  function onSubmit(data) {
+    signup(data, {
+      onSettled: () => reset(),
+    });
+  }
+
+  // Real-time password validation
+  const validatePassword = (password) => {
+    const lowercase = /[a-z]/;
+    const uppercase = /[A-Z]/;
+    const number = /\d/;
+    const specialCharacter = /[@$!%*?&]/;
+    if (password.length < 8) {
+      setPasswordError("Password must be at least 8 characters.");
+      setIsPasswordValid(false);
+    } else if (!lowercase.test(password)) {
+      setPasswordError("Password must contain at least one lowercase letter.");
+      setIsPasswordValid(false);
+    } else if (!uppercase.test(password)) {
+      setPasswordError("Password must contain at least one uppercase letter.");
+      setIsPasswordValid(false);
+    } else if (!number.test(password)) {
+      setPasswordError("Password must contain at least one number.");
+      setIsPasswordValid(false);
+    } else if (!specialCharacter.test(password)) {
+      setPasswordError("Password must contain at least one special character.");
+      setIsPasswordValid(false);
+    } else {
+      setPasswordError("");
+      setIsPasswordValid(true);
     }
+  };
 
-    return (
-      <section className="bg-gray-100 min-h-screen flex items-center justify-center">
-        <div className="bg-white flex rounded-2xl shadow-lg max-w-5xl p-5 items-center">
-          <div className="md:block hidden w-6/12 h-full">
-            <img
-              className="rounded-2xl h-full w-full object-cover"
-              src={imageRegister}
-              alt="USTP Logo"
-            />
-          </div>
-          <form
-            className="max-w-lg mx-auto p-6 space-y-4 bg-white"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
+  // Real-time confirm password validation
+  const validateConfirmPassword = (confirmPassword) => {
+    if (confirmPassword !== getValues("password")) {
+      setIsPasswordMatch(false);
+    } else {
+      setIsPasswordMatch(true);
+    }
+  };
 
-            {/* First Name */}
-            <FormRow label="First Name" error={errors.fName?.message}>
-              <input
-                id="fName"
-                name="fName"
-                type="text"
-                {...register("fName", { required: "This field is required" })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              />
-            </FormRow>
+  // Real-time number validation
+  const handleNumberInput = (e) => {
+    const value = e.target.value;
+    if (!/^\d*$/.test(value)) {
+      e.target.setCustomValidity("This field should only contain numbers.");
+    } else {
+      e.target.setCustomValidity("");
+    }
+  };
 
-            {/* Last Name */}
-            <FormRow label="Last Name" error={errors.lName?.message}>
-              <input
-                id="lName"
-                name="lName"
-                type="text"
-                {...register("lName", { required: "This field is required" })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              />
-            </FormRow>
+  // Function to toggle password visibility and start timer
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState); // Toggle the password visibility
+    if (!showPassword) {
+      // If the password is being shown, start the 3-second timer to auto-hide
+      setTimeout(() => setShowPassword(false), 3000);
+    }
+  };
 
-            {/* Birth Date */}
-            <FormRow label="Birth Date" error={errors.birthDate?.message}>
-              <input
-                id="birthDate"
-                name="birthDate"
-                type="date"
-                {...register("birthDate", { required: "This field is required" })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              />
-            </FormRow>
+  // Function to toggle confirm password visibility and start timer
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword((prevState) => !prevState); // Toggle the confirm password visibility
+    if (!showConfirmPassword) {
+      // If the confirm password is being shown, start the 3-second timer to auto-hide
+      setTimeout(() => setShowConfirmPassword(false), 3000);
+    }
+  };
 
-            {/* ID Number */}
-            <FormRow label="ID Number" error={errors.idNumber?.message}>
-              <input
-                id="idNumber"
-                name="idNumber"
-                type="text"
-                {...register("idNumber", { required: "This field is required" })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              />
-            </FormRow>
+  return (
+    <section className="bg-gray-100 min-h-screen flex items-center justify-center">
+      <div className="bg-white flex flex-col md:flex-row rounded-2xl shadow-lg max-w-4xl w-full h-auto p-4">
+        {/* Image Section */}
+        <div className="md:w-1/2 hidden md:block">
+          <img
+            className="rounded-l-2xl object-cover h-full"
+            src={imageRegister}
+            alt="Sign Up"
+          />
+        </div>
 
-            {/* Email */}
-            <FormRow label="Email" error={errors.email?.message}>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                {...register("email", {
-                  pattern: {
-                    value: /\S+@\S+\.\S+/,
-                    message: "Please provide a valid email address",
-                  },
-                })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              />
-            </FormRow>
+        {/* Form Section */}
+        <div className="md:w-1/2 flex flex-col justify-center px-4">
+          <h2 className="text-2xl font-bold mb-4 text-center text-blue-500">
+            Create Your Account
+          </h2>
+          <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
+            {/* First Row: First Name and Last Name */}
+            <div className="flex space-x-3">
+              <FormRow label="First Name" error={errors.fName?.message}>
+                <input
+                  type="text"
+                  {...register("fName", { required: "First Name is required" })}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </FormRow>
+              <FormRow label="Last Name" error={errors.lName?.message}>
+                <input
+                  type="text"
+                  {...register("lName", { required: "Last Name is required" })}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </FormRow>
+            </div>
 
-            {/* Password */}
-            <FormRow
-              label="Password (min 8 characters)"
-              error={errors.password?.message}
-            >
-              <input
-                id="password"
-                name="password"
-                type="password"
-                {...register("password", {
-                  required: "This field is required",
-                  minLength: {
-                    value: 8,
-                    message: "Password needs a minimum of 8 characters",
-                  },
-                })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              />
-            </FormRow>
+            {/* Second Row: Birth Date and ID Number */}
+            <div className="flex space-x-3">
+              <FormRow label="Birth Date" error={errors.birthDate?.message}>
+                <input
+                  type="date"
+                  {...register("birthDate", { required: "Birth Date is required" })}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </FormRow>
+              <FormRow label="ID Number" error={errors.idNumber?.message}>
+                <input
+                  type="text"
+                  {...register("idNumber", {
+                    required: "ID Number is required",
+                    pattern: {
+                      value: /^\d+$/,
+                      message: "ID Number must contain only numbers",
+                    },
+                    onChange: handleNumberInput,
+                  })}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </FormRow>
+            </div>
 
-            {/* Confirm Password */}
-            <FormRow
-              label="Confirm Password"
-              error={errors.passwordConfirm?.message}
-            >
-              <input
-                id="passwordConfirm"
-                name="passwordConfirm"
-                type="password"
-                {...register("passwordConfirm", {
-                  required: "Confirm Password is required",
-                  validate: {
-                    matchesPreviousPassword: (value) =>
-                      value === getValues("password") || "Passwords must match",
-                  },
-                })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              />
-            </FormRow>
+            {/* Third Row: Email and Contact Number */}
+            <div className="flex space-x-3">
+              <FormRow label="Email" error={errors.email?.message}>
+                <input
+                  type="email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /\S+@\S+\.\S+/,
+                      message: "Please provide a valid email address",
+                    },
+                  })}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </FormRow>
+              <FormRow label="Contact Number" error={errors.contactNumber?.message}>
+                <input
+                  type="text"
+                  {...register("contactNumber", {
+                    required: "Contact Number is required",
+                    pattern: {
+                      value: /^\d+$/,
+                      message: "Contact Number must contain only numbers",
+                    },
+                    onChange: handleNumberInput,
+                  })}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </FormRow>
+            </div>
 
-            {/* User Role */}
-            <FormRow label="User Role" error={errors.userRole?.message}>
+            {/* Fourth Row: Department */}
+            <FormRow label="Department" error={errors.deptId?.message}>
               <select
-                id="userRole"
-                name="userRole"
-                {...register("userRole", { required: "This field is required" })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
+                {...register("deptId", { required: "Department is required" })}
+                className="w-full p-2 border border-gray-300 rounded"
               >
-                <option value="" className="hidden">
-                  Select a role
-                </option>
-                <option value="requestor">Requestor</option>
-                <option value="system admin">System Admin</option>
-                <option value="staff">Staff</option>
-                <option value="department head">Department Head</option>
-              </select>
-            </FormRow>
-
-            {/* Contact Number */}
-            <FormRow label="Contact Number" error={errors.contactNumber?.message}>
-              <input
-                id="contactNumber"
-                name="contactNumber"
-                type="text"
-                {...register("contactNumber", {
-                  required: "This field is required",
-                })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              />
-            </FormRow>
-
-            {/* Department ID */}
-            <FormRow label="Department ID" error={errors.deptId?.message}>
-              <select
-                id="deptId"
-                name="deptId"
-                {...register("deptId", { required: "This field is required" })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="" className="hidden">
+                <option value="" disabled>
                   Select Department
                 </option>
-                <option value="D001">BGMS</option>
-                <option value="D002">CSWS</option>
-                <option value="D003">MEWSs</option>
+                <option value="CDO Bites">CDO Bites</option>
+                <option value="Library">Library</option>
+                <option value="CEA Department">CEA Department</option>
+                <option value="CITC Department">CITC Department</option>
+                <option value="CSTE Department">CSTE Department</option>
+                <option value="LRC">LRC</option>
+                <option value="Others">Others</option>
               </select>
             </FormRow>
 
-            {/* Job Position */}
-            <FormRow label="Job Position" error={errors.jobCategory?.message}>
-              <select
-                id="jobCategory"
-                name="jobCategory"
-                {...register("jobCategory", { required: "This field is required" })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              >
-                <option value="" className="hidden">
-                  Select Job Position
-                </option>
-                {jobOptions.map((job) => (
-                  <option key={job.jobCategory} value={job.jobCategory}>
-                    {job.jobCategory} {/* Use jobCategory for the option label */}
-                  </option>
-                ))}
-              </select>
-            </FormRow>
+            {/* Fifth Row: Password and Confirm Password */}
+            <div className="flex space-x-3">
+              <FormRow label="Password" error={errors.password?.message}>
+                <div className="relative w-full">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 8,
+                        message: "Password must be at least 8 characters",
+                      },
+                      onChange: (e) => {
+                        validatePassword(e.target.value);
+                      },
+                    })}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                  <span
+                    className={`absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer ${showPassword ? "opacity-100" : "opacity-50"}`}
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? <FaEye /> : <FaEyeSlash />}
+                  </span>
+                </div>
+                {passwordError && (
+                  <p className="text-red-500 text-sm">{passwordError}</p>
+                )}
+              </FormRow>
 
-
+              <FormRow label="Confirm Password" error={errors.confirmPassword?.message}>
+                <div className="relative w-full">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    {...register("confirmPassword", {
+                      required: "Confirm Password is required",
+                      validate: (value) =>
+                        value === getValues("password") || "Passwords do not match",
+                      onChange: (e) => {
+                        validateConfirmPassword(e.target.value);
+                      },
+                    })}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                  <span
+                    className={`absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer ${showConfirmPassword ? "opacity-100" : "opacity-50"}`}
+                    onClick={toggleConfirmPasswordVisibility}
+                  >
+                    {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
+                  </span>
+                </div>
+                {!isPasswordMatch && (
+                  <p className="text-red-500 text-sm">Passwords do not match</p>
+                )}
+              </FormRow>
+            </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded justify-items-center hover:bg-blue-600 transition duration-300"
+              className="w-full bg-blue-500 text-white p-2 rounded mt-4 hover:bg-blue-600"
+              disabled={!isPasswordValid || !isPasswordMatch}
             >
               Sign Up
             </button>
 
-            <div className="mt-4 text-center">
-              <span className="text-sm text-[#002D74]">
+            {/* Already have an account */}
+            <div className="text-center mt-4">
+              <p>
                 Already have an account?{" "}
-                <button
-                  type="button"
+                <span
+                  className="text-blue-500 cursor-pointer"
                   onClick={() => navigate("/login")}
-                  className="text-[#002D74] font-semibold"
                 >
-                  Sign In
-                </button>
-              </span>
+                  Log In
+                </span>
+              </p>
             </div>
           </form>
         </div>
-      </section>
-    );
-  }
+      </div>
+    </section>
+  );
+}
 
-  export default SignUpForm;
+export default SignUpForm;
