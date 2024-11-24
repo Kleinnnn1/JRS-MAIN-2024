@@ -62,17 +62,23 @@ export default function ContentSideBar() {
         bold={isActive("/department_head/employee")}
       />
       <SidebarItem
+        name="Approve Staff"
+        onClick={() => navigate("/department_head/approve_employee")}
+        image={iconEmployee}
+        bold={isActive("/department_head/approve_employee")}
+      />
+      <SidebarItem
         name="Report"
         onClick={() => navigate("/department_head/report")}
         image={iconReport}
         bold={isActive("/department_head/report")}
       />
-      <SidebarItem
+      {/* <SidebarItem
         name="Referral"
         onClick={() => navigate("/department_head/referral")}
         image={iconReport}
         bold={isActive("/department_head/referral")}
-      />
+      /> */}
       <SidebarItem
         name="History"
         onClick={() => navigate("/department_head/history")}

@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
-import ReusableBackButton from '../../../components/ReusableBackButton';
-import ButtonAddEmployee from './ButtonAddEmployee';
+import ReusableBackButton from "../../../components/ReusableBackButton";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-export default function SysAdminAddNewAdmin() {
 
- 
-  const [AdminFirstName, setAdminFirstName] = useState('');
-  const [AdminLastName, setAdminLastName] = useState('');
+export default function ViewApproveStaff() {
+  
+  const [StaffFirstName, setStaffFirstName] = useState('');
+  const [StaffLastName, setStaffLastName] = useState('');
   const [Birthday, setBirthday] = useState('');
   const [IDNumber, setIDNumber] = useState('');
   const [Email, setEmail] = useState('');
@@ -22,10 +21,10 @@ export default function SysAdminAddNewAdmin() {
     event.preventDefault();
     // Handle form submission
 
-    Swal.fire('Success', 'Successfully Added New Admin', 'success');
+    Swal.fire('Success', 'Successfully Added New Staff', 'success');
     // Clear the form after submission
-    setAdminFirstName('');
-    setAdminLastName('');
+    setStaffFirstName('');
+    setStaffLastName('');
     setBirthday('');
     setIDNumber('');
     setEmail('');
@@ -36,41 +35,41 @@ export default function SysAdminAddNewAdmin() {
 
   const handleCancel = (event) => {
     event.preventDefault();
-    Swal.fire('Cancelled', 'Admin addition was cancelled', 'error');
+    Swal.fire('Cancelled', 'Staff addition was cancelled', 'error');
   };
 
   return (
     <div className="m-16 bg-white shadow-md rounded-lg">
       <div className="bg-yellow-500 p-5 rounded-t-lg">
-        <p className="text-xl font-bold text-gray-600">New Admin Information</p>
+        <p className="text-xl font-bold text-gray-600">New Staff Information</p>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 p-5">
           <div>
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="AdminFirstName">
+            <label className="block text-gray-700 font-bold mb-2" htmlFor="StaffFirstName">
               First Name
             </label>
             <input
               type="text"
-              id="AdminFirstName"
-              name="AdminFirstName"
+              id="StaffFirstName"
+              name="StaffFirstName"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              value={AdminFirstName}
-              onChange={(e) => setAdminFirstName(e.target.value)}
+              value={StaffFirstName}
+              onChange={(e) => setStaffFirstName(e.target.value)}
               required
             />
           </div>
           <div>
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="AdminLastName">
+            <label className="block text-gray-700 font-bold mb-2" htmlFor="StaffLastName">
               Last Name
             </label>
             <input
               type="text"
-              id="AdminLastName"
-              name="AdminLastName"
+              id="StaffLastName"
+              name="StaffLastName"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              value={AdminLastName}
-              onChange={(e) => setAdminLastName(e.target.value)}
+              value={StaffLastName}
+              onChange={(e) => setStaffLastName(e.target.value)}
               required
             />
           </div>
@@ -152,11 +151,23 @@ export default function SysAdminAddNewAdmin() {
               required
             />
           </div>
-         
+          <div>
+            <label className="block text-gray-700 font-bold mb-2" htmlFor="Job_Position">
+              Job Position
+            </label>
+            <input
+              type="text"
+              id="Job_Position"
+              name="Job_Position"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              value={Job_Position}
+              onChange={(e) => setJob_Position(e.target.value)}
+              required
+            />
+          </div>
         </div>
         <div className="flex justify-end p-4">
           <ReusableBackButton marginRight={`mr-4`} />
-          <ButtonAddEmployee />
         </div>
       </form>
     </div>

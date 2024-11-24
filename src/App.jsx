@@ -20,17 +20,22 @@ import StaffHistoryPage from "./pages/staff/History/CompletedTask.jsx";
 import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
 import PageJobRequest from "./pages/department_head/JobRequest/PageJobRequest.jsx";
 import PageEmployee from "./pages/department_head/Employee/PageEmployee.jsx";
+import PageApproveEmployeee from "./pages/department_head/ApproveStaff/PageApproveEmployee.jsx"
 import PageReferral from "./pages/department_head/Referral/PageReferral.jsx";
 import PageProfile from "./pages/department_head/Profile/PageProfile.jsx";
 import PageCertificate from "./pages/department_head/ApprovingOfCertificateJobCompletion/PageCertificate.jsx";
 import PageHistoryDepartmentHead from "./pages/department_head/JobRequestHistory/PageHistory.jsx";
+
 import ViewJobOngoing from "./pages/department_head/JobRequest/ViewJobOngoing.jsx";
 import ViewJobCompleted from "./pages/department_head/JobRequest/ViewJobCompleted.jsx";
 import ViewJobRequest from "./pages/department_head/JobRequest/ViewJobRequest.jsx";
 import ViewJobRequestRemarks from "./pages/department_head/JobRequest/ViewJobRequestRemarks.jsx";
+
 import TableEmployeeHistory from "./pages/department_head/Employee/TableEmployeeHistory.jsx";
 import EmployeeHistoryView from "./pages/department_head/Employee/ViewEmployeeHistory.jsx";
 import ViewAddEmployee from "./pages/department_head/Employee/ViewAddEmployee.jsx";
+import ViewApproveEmployee from "./pages/department_head/ApproveStaff/ViewApproveEmployee.jsx";
+
 import ReferralJobRequestView from "./pages/department_head/Referral/ReferralJobRequestFormView.jsx";
 import TableHistory from "./pages/department_head/JobRequestHistory/TableHistory.jsx";
 import ViewHistory from "./pages/department_head/JobRequestHistory/ViewHistory.jsx";
@@ -45,6 +50,7 @@ import SendReportForm from "./pages/department_head/SendReport/SendReportForm.js
 import CreateNewUser from "./pages/department_head/CreateNewUserTest/CreateNewUser.jsx";
 import PageReportDepartmentHead from "./pages/department_head/SendReport/PageReport.jsx";
 import ViewEmployee from "./pages/department_head/Employee/ViewEmployee.jsx";
+import ViewEmployeeApproval from "./pages/department_head/ApproveStaff/ViewEmployee.jsx";
 import JobOngoing from "./pages/department_head/JobRequest/PageJobOngoing.jsx";
 import JobCompleted from "./pages/department_head/JobRequest/PageJobCompleted.jsx";
 import ContentAprrovingCertificate from "./pages/department_head/ApprovingOfCertificateJobCompletion/ContentApprovingCertificate.jsx";
@@ -74,33 +80,41 @@ import SystemAdDashboard from "./pages/system_admin/Dashboard/PageDashboard.jsx"
 import SysAdminUsersPage from "./pages/system_admin/Users/SysAdminUsersPage.jsx";
 import SysAdminJob_requests from "./pages/system_admin/JobRequest/jobRequests.jsx";
 import SysAdminDepartmentPage from "./pages/system_admin/Department/PageDepartment.jsx";
+
 import SysAdminAddDepartment from "./pages/system_admin/Department/addDepartment.jsx";
 import SysAdminAddNewUser from "./pages/system_admin/Users/addUser.jsx";
 import SysAdminAddNewStaff from "./pages/system_admin/Users/addNewStaff.jsx";
 import SysAdminAddNewAdmin from "./pages/system_admin/Users/addNewAdmin.jsx";
+import SysAdminAddNewSpme from "./pages/system_admin/Users/addNewSpme.jsx";
+import SysAdminAddNewSysAdmin from "./pages/system_admin/Users/addNewSysAdmin.jsx";
+
 import SysAdminViewingDepartment from "./pages/system_admin/Department/ViewDepartment.jsx";
 import SysAdminNewRequest from "./pages/system_admin/JobRequest/NewJobRequst.jsx";
 import SysAdminViewUser from "./pages/system_admin/Users/UserViewing.jsx";
 import SysAdminViewAdmin from "./pages/system_admin/Users/AdminViewing.jsx";
 import SysAdminViewStaff from "./pages/system_admin/Users/StaffViewing.jsx";
+import SysAdminViewSpme from "./pages/system_admin/Users/SpmeViewing.jsx";
+import SysAdminViewSysAdmin from "./pages/system_admin/Users/SysAdminViewing.jsx";
+
 import SysAdminUserInformation from "./pages/system_admin/Profile/UserInformation.jsx";
 import SysAdminPageProfile from "./pages/system_admin/Profile/PageProfile.jsx";
 import SysAdminChangeAvatar from "./pages/system_admin/Profile/ChangeAvatar.jsx";
 import SysAdminChangePassword from "./pages/system_admin/Profile/ChangePassword.jsx";
 import PageHistorySystemAdmin from "./pages/system_admin/History/HistoryPage.jsx";
 import PageReportSystemAdmin from "./pages/system_admin/Reports/ReportsPage.jsx";
-import SysAdminAddNewSysAdmin from "./pages/system_admin/Users/addNewSysAdmin.jsx";
-import SysAdminViewSysAdmin from "./pages/system_admin/Users/SysAdminViewing.jsx";
+
 import SystemAdminContentPage from "./pages/system_admin/Users/SystemAdminContent.jsx";
 import UserContent from "./pages/system_admin/Users/ContentUsers";
 import SysAdminContent from "./pages/system_admin/Users/ContentDepartmentHead";
 import SysAdminStaffContent from "./pages/system_admin/Users/ContentStaff";
+import SysAdminSpmeContent from "./pages/system_admin/Users/ContentSpme";
+
 import SignUpForm from "./auth/SignUpForm.jsx";
 import SPMSDashboard from "./pages/spms/Dashboard/SpmsPageDashboard.jsx";
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
-import ProtectedRoute from "./auth/ProtectedRoute.jsx";
+// import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
 import PageDepartmentKeyWord from "./pages/department_head/keyword/PageDepartmentKeyword.jsx";
 import PageStaffKeyWord from "./pages/staff/keyword/PageStaffKeyword.jsx";
@@ -133,9 +147,9 @@ export default function App() {
           <Route
             path="/staff/*"
             element={
-              <ProtectedRoute requiredRole="staff">
+              // <ProtectedRoute requiredRole="staff">
                 <MainDashStaff />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           >
             <Route path="home" element={<ContentDashStaff />} />
@@ -163,9 +177,9 @@ export default function App() {
           <Route
             path="/system_admin/*"
             element={
-              <ProtectedRoute requiredRole="system admin">
+              // <ProtectedRoute requiredRole="system admin">
                 <SystemAdDashboard />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           >
             <Route path="myprofile" element={<SysAdminPageProfile />}>
@@ -182,17 +196,24 @@ export default function App() {
             <Route path="Users" element={<SysAdminUsersPage />}>
               <Route path="reg_users" element={<UserContent />} />
               <Route path="add_user" element={<SysAdminAddNewUser />} />
+              <Route path="view_user" element={<SysAdminViewUser />} />
+
               <Route path="admin" element={<SysAdminContent />} />
               <Route path="add_admin" element={<SysAdminAddNewAdmin />} />
+              <Route path="view_admin" element={<SysAdminViewAdmin />} />
+
               <Route path="staff" element={<SysAdminStaffContent />} />
               <Route path="add_staff" element={<SysAdminAddNewStaff />} />
-              <Route path="view_user" element={<SysAdminViewUser />} />
-              <Route path="view_admin" element={<SysAdminViewAdmin />} />
               <Route path="view_staff" element={<SysAdminViewStaff />} />
 
+              <Route path="spme" element={<SysAdminSpmeContent />} />
+              <Route path="add_spme" element={<SysAdminAddNewSpme />} />
+              <Route path="view_spme" element={<SysAdminViewSpme />} />
+          
               <Route path="sysadmin" element={<SystemAdminContentPage />} />
               <Route path="add_sysadmin" element={<SysAdminAddNewSysAdmin />} />
               <Route path="view_sysadmin" element={<SysAdminViewSysAdmin />} />
+
             </Route>
             <Route path="Job_Requests" element={<SysAdminJob_requests />}>
               <Route path="new_request" element={<SysAdminNewRequest />} />
@@ -209,9 +230,9 @@ export default function App() {
           <Route
             path="/department_head/*"
             element={
-              <ProtectedRoute requiredRole="department head">
+              // <ProtectedRoute requiredRole="department head">
                 <PageDepartMentHeadDashboard />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           >
             <Route path="user" element={<CreateNewUser />} />
@@ -245,6 +266,12 @@ export default function App() {
                 <Route path="view" element={<EmployeeHistoryView />} />
               </Route>
             </Route>
+
+            <Route path="approve_employee" element={<PageApproveEmployeee />}>
+            <Route path="approve" element={<ViewApproveEmployee />} />
+            <Route path="view" element={<ViewEmployeeApproval />} />
+            </Route>
+
             <Route path="referral" element={<PageReferral />}>
               <Route path="view" element={<ReferralJobRequestView />} />
               <Route path="edit/:referralId" element={<EditFormReferral />} />
@@ -276,9 +303,9 @@ export default function App() {
           <Route
             path="/requestor/*"
             element={
-              <ProtectedRoute requiredRole="requestor">
+              // <ProtectedRoute requiredRole="requestor">
                 <PageRequestorDashboard />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           >
             <Route path="home" element={<RequestorContentDashboard />} />
