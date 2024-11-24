@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logoUSTP from "../../../assets/images/logoUSTP.png";
 import Swal from 'sweetalert2';
+import * as XLSX from 'xlsx'; // Import xlsx library
 
 const EnglishVersionForm = () => {
     const navigate = useNavigate();
@@ -31,6 +32,7 @@ const EnglishVersionForm = () => {
         SQD7: "",
         SQD8: "",
         comments: "",
+        timePeriod: "Quarterly"  // New state to track selected time period
     });
 
     const handleChange = (e) => {
@@ -38,62 +40,50 @@ const EnglishVersionForm = () => {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const { name, email, clientType, role, sex, age, region, campus, transactedOffice, serviceAvailed, ccAwareness, ccVisibility, ccHelp, SQD0, SQD1, SQD2, SQD3, SQD4, SQD5, SQD6, SQD7, SQD8, comments } = formData;
+    // Function to generate Excel file
+    const handleDownload = () => {
+        const sheetData = [
+            ["Timestamp", "Name", "Email", "Client Type", "Role", "Sex", "Age", "Region", "Campus", "Transacted Office", "Service Availed", "CC Awareness", "CC Visibility", "CC Help", "SQD0", "SQD1", "SQD2", "SQD3", "SQD4", "SQD5", "SQD6", "SQD7", "SQD8", "Comments", "Time Period"],
+            [
+                new Date().toLocaleString(), 
+                formData.name, 
+                formData.email, 
+                formData.clientType, 
+                formData.role, 
+                formData.sex, 
+                formData.age, 
+                formData.region, 
+                formData.campus, 
+                formData.transactedOffice, 
+                formData.serviceAvailed, 
+                formData.ccAwareness, 
+                formData.ccVisibility, 
+                formData.ccHelp, 
+                formData.SQD0, 
+                formData.SQD1, 
+                formData.SQD2, 
+                formData.SQD3, 
+                formData.SQD4, 
+                formData.SQD5, 
+                formData.SQD6, 
+                formData.SQD7, 
+                formData.SQD8, 
+                formData.comments,
+                formData.timePeriod  // Add the selected time period to the data
+            ]
+        ];
 
-        try {
-            const response = await fetch(`https://v1.nocodeapi.com/krunxx/google_sheets/IjTkhUmrxJEeUdCx?tabId=English`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify([[new Date().toLocaleString(), name, email, clientType, role, sex, age, region, campus, transactedOffice, serviceAvailed, ccAwareness, ccVisibility, ccHelp, SQD0, SQD1, SQD2, SQD3, SQD4, SQD5, SQD6, SQD7, SQD8, comments]])
-            });
-
-            if (response.ok) {
-                Swal.fire({
-                    title: 'Thank you!',
-                    text: "Thank you for answering the survey. God Bless!",
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-                setFormData({
-                    name: "",
-                    email: "",
-                    clientType: "",
-                    role: "",
-                    sex: "",
-                    age: "",
-                    region: "",
-                    campus: "",
-                    transactedOffice: "",
-                    serviceAvailed: "",
-                    ccAwareness: "",
-                    ccVisibility: "",
-                    ccHelp: "",
-                    SQD0: "",
-                    SQD1: "",
-                    SQD2: "",
-                    SQD3: "",
-                    SQD4: "",
-                    SQD5: "",
-                    SQD6: "",
-                    SQD7: "",
-                    SQD8: "",
-                    comments: "",
-                });
-                setCurrentSection(1);
-                navigate("/requestor/home");
-            }
-        } catch (error) {
-            console.error("Error submitting form: ", error);
-        }
+        const ws = XLSX.utils.aoa_to_sheet(sheetData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Survey Responses");
+        
+        // Create the download link and trigger it
+        XLSX.writeFile(wb, `survey_responses_${formData.timePeriod.toLowerCase()}.xlsx`);
     };
 
     return (
         <div className="flex justify-center items-center bg-gray-100">
-            <form onSubmit={handleSubmit} className="w-11/12 bg-white shadow-lg rounded-lg p-6">
+            <form className="w-11/12 bg-white shadow-lg rounded-lg p-6">
                 <div className="mt-4 bg-transparent p-6">
                     <div className="flex justify-center">
                         <img src={logoUSTP} alt="Description of image" className="max-h-40" />
@@ -197,7 +187,7 @@ const EnglishVersionForm = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {[
+                            {[ 
                                 "I am satisfied with the service that I availed.",
                                 "I spent a reasonable amount of time on my transaction.",
                                 "The office followed the transaction's requirements and steps based on the information provided.",
@@ -237,12 +227,32 @@ const EnglishVersionForm = () => {
                         />
                     </div>
 
+                    <div className="mt-4 mb-6">
+                        <strong className="text-xl">Select the time period for your report:</strong>
+                        <div className="flex">
+                            {["Quarterly", "Semi-Annually", "Annually"].map((period) => (
+                                <div key={period} className="mr-4">
+                                    <input
+                                        type="radio"
+                                        name="timePeriod"
+                                        value={period}
+                                        checked={formData.timePeriod === period}
+                                        onChange={handleChange}
+                                        className="form-radio h-6 w-6 text-blue-600"
+                                    />
+                                    <label className="ml-2 text-xl">{period}</label>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
                     <div className="text-center mt-10">
                         <button
-                            type="submit"
+                            type="button"
+                            onClick={handleDownload} // Trigger Excel download
                             className="bg-blue-500 text-white py-2 px-4 rounded-lg text-xl"
                         >
-                            Submit Survey
+                            Download Survey Data as Excel
                         </button>
                     </div>
                 </div>
@@ -252,4 +262,3 @@ const EnglishVersionForm = () => {
 };
 
 export default EnglishVersionForm;
- 

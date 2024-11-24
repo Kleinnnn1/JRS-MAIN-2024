@@ -9,6 +9,7 @@ import StatusCard from "../components/StatusCard";
 import SearchBar from '../../../components/SearchBar';
 
 export default function SysadminDashboard() {
+    const statusCardColor = "bg-blue-50";
     return (
         <div>
             <SearchBar title="Dashboard" />

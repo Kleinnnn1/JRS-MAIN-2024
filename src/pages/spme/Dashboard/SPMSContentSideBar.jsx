@@ -27,12 +27,13 @@ export default function SPMSContentSideBar() {
         isActive={isActive("/requestor/home")}
       />
       {/* MY PROFILE ICON */}
-      {/* <SidebarItem
-        name="My Profile"
-        onClick={() => navigate("/requestor/requestor_profile")}
+      <SidebarItem
+        name="Download Report"
+        onClick={() => navigate("")}
         image={iconProfile}
         isActive={isActive("/requestor/requestor_profile")}
-      /> */}
+      />
+      
       {/* SCHEDULES */}
       {/* <SidebarItem
         name="Schedules"

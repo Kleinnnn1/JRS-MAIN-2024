@@ -1,34 +1,45 @@
 import PropTypes from "prop-types";
-import { FaBeer } from 'react-icons/fa'; // Example icon from react-icons
 
-export default function StatusCard({ title, count, bgColor, onClick, icon, titleColor, iconColor }) {
+export default function StatusCard({ title, count, bgColor, subText, onClick, icon, titleColor, iconColor }) {
   return (
     <div
-      className={`${bgColor} border-gray-100 p-5 shadow-md shadow-black/20 transition-transform duration-300 hover:shadow-lg hover:shadow-black/60 flex flex-col justify-between w-full cursor-pointer transform hover:scale-105 rounded-lg`} 
+      className={`flex flex-col justify-center items-center ${bgColor} p-6 bg-white shadow-lg rounded-lg shadow-black/2 hover:shadow-sm hover:shadow-black/20 transform hover:scale-105 cursor-pointer transition-transform duration-300`}
       onClick={onClick}
     >
-      <div className="flex items-center space-x-2">
-        {/* Title with dynamic text color */}
-        <div className={`text-xl opacity-90 ${titleColor ? titleColor : 'text-black'}`}>{title}</div>
-        {/* Icon with dynamic color */}
+      {/* Count and Icon Section */}
+      <div className="flex items-center justify-center space-x-2">
+        <div className="text-3xl font-bold">
+          {count}
+        </div>
         {icon && (
-          <div className={`ml-auto text-2xl opacity-50 ${iconColor ? iconColor : 'text-gray-500'}`}>
+          <div className={`text-2xl ${iconColor ? iconColor : 'text-gray-400'}`}>
             {icon}
           </div>
         )}
       </div>
-      <div className="text-4xl font-semibold mt-5">{count}</div>
+
+      {/* Title and Subtext */}
+      <div className="text-center mt-4">
+        <div className={`text-lg ${titleColor ? titleColor : 'text-gray-800'} font-medium`}>
+          {title}
+        </div>
+        {subText && (
+          <div className="text-sm text-gray-500 mt-1">
+            {subText}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-// Define PropTypes for the component
 StatusCard.propTypes = {
-  title: PropTypes.string.isRequired, // title is required and should be a string
-  count: PropTypes.number.isRequired, // count is required and should be a number
-  bgColor: PropTypes.string, // bgColor is optional and should be a string
-  onClick: PropTypes.func, // onClick is optional and should be a function
-  icon: PropTypes.node, // icon is optional and can be any React node (e.g., JSX or component)
-  titleColor: PropTypes.string, // titleColor is optional and should be a string for text color
-  iconColor: PropTypes.string, // iconColor is optional and should be a string for the icon's color
+  title: PropTypes.string.isRequired, // Title of the card
+  count: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, // Main count
+  subText: PropTypes.string, // Optional subtext (e.g., "+20.1% from last month")
+  bgColor: PropTypes.string, // Background color for the card
+  onClick: PropTypes.func, // Click handler
+  icon: PropTypes.node, // Optional icon
+  titleColor: PropTypes.string, // Color for the title
+  iconColor: PropTypes.string, // Color for the icon
 };

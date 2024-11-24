@@ -7,18 +7,18 @@ import Table from "../../../components/Table";
 import SearchBar from "../../../components/SearchBar";
 
 const tableHeaders = [
-  "Timestamp",
-  "Requestor",
-  "Work Description",
-  "Category",
-  "No. of Person",
-  "Department",
-  "Processed by",
-  "Photo",
-  "Status",
-  "Date Requested",
-  "Date Completed",
-  "Actions",
+  "Date",
+  "Name", //I concat sa first name ug last name
+  "Client Type",
+  "Role",
+  "Sex",
+  "Age",
+  "Region",
+  "Campus",
+  "Transacted Office",
+  "Service Availed",
+  "CC Awareness",
+  "CC Visibility",
 ];
 
 export default function SPMSContentTable() {

@@ -49,7 +49,7 @@ export default function ContentRequestorSideBar() {
       />
       {/* REQUEST */}
       <SidebarItem
-        name="Request"
+        name="My Request"
         onClick={() => navigate("/requestor/job_request")}
         image={iconRequest}
         isActive={isActive("/requestor/job_request")}

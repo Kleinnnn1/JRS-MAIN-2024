@@ -1,5 +1,4 @@
-
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types";
 
 export default function ReusablePagination({
   rowsPerPage,
@@ -20,54 +19,79 @@ export default function ReusablePagination({
     }
   };
 
-  return (
-    <div className="flex items-center justify-between ml-4 mr-4 text-sm">
-      {/* Rows per page selector */}
-      <div className="flex items-center space-x-2">
-        <label htmlFor="rows-per-page" className="text-gray-700">
-          Rows per page:
-        </label>
-        <select
-          id="rows-per-page"
-          value={rowsPerPage}
-          onChange={(e) => {
-            setRowsPerPage(Number(e.target.value));
-            setCurrentPage(1); // Reset to page 1 when rows per page changes
-          }}
-          className="border border-gray-300 rounded-md px-2 py-1"
-        >
-          <option value={10}>10</option>
-          <option value={20}>20</option>
-          <option value={30}>30</option>
-          <option value={40}>40</option>
-        </select>
-      </div>
+  const generatePageNumbers = () => {
+    const pages = [];
+    const visibleRange = 3; // Number of visible pages before and after the current page
 
-      {/* Pagination buttons */}
-      <div className="flex space-x-2">
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage > visibleRange + 1) {
+        pages.push(1, "...");
+      }
+
+      const start = Math.max(1, currentPage - visibleRange);
+      const end = Math.min(totalPages, currentPage + visibleRange);
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+
+      if (currentPage < totalPages - visibleRange) {
+        pages.push("...", totalPages);
+      }
+    }
+
+    return pages;
+  };
+
+  return (
+    <div className="flex items-center justify-center space-x-4 text-sm">
+      {/* Previous Button */}
+      <button
+        onClick={handlePrevious}
+        disabled={currentPage === 1}
+        className={`px-3 py-1 rounded-md ${
+          currentPage === 1
+            ? "text-gray-500 cursor-not-allowed"
+            : "text-blue-600 hover:text-blue-800"
+        }`}
+      >
+        &lt; Previous
+      </button>
+
+      {/* Page Numbers */}
+      {generatePageNumbers().map((page, index) => (
         <button
-          onClick={handlePrevious}
-          disabled={currentPage === 1}
-          className={`px-4 py-2 rounded-md ${
-            currentPage === 1
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-blue-500 text-white hover:bg-gray-300"
+          key={index}
+          onClick={() => typeof page === "number" && setCurrentPage(page)}
+          className={`px-3 py-1 rounded-md ${
+            currentPage === page
+              ? "bg-gray-300 text-black font-semibold"
+              : typeof page === "number"
+              ? "text-blue-600 hover:text-blue-800"
+              : "text-gray-500"
           }`}
+          disabled={typeof page !== "number"}
         >
-          Previous
+          {page}
         </button>
-        <button
-          onClick={handleNext}
-          disabled={currentPage === totalPages || totalPages === 0}
-          className={`px-4 py-2 rounded-md ${
-            currentPage === totalPages || totalPages === 0
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-blue-500 text-white hover:bg-gray-300"
-          }`}
-        >
-          Next
-        </button>
-      </div>
+      ))}
+
+      {/* Next Button */}
+      <button
+        onClick={handleNext}
+        disabled={currentPage === totalPages || totalPages === 0}
+        className={`px-3 py-1 rounded-md ${
+          currentPage === totalPages || totalPages === 0
+            ? "text-gray-500 cursor-not-allowed"
+            : "text-blue-600 hover:text-blue-800"
+        }`}
+      >
+        Next &gt;
+      </button>
     </div>
   );
 }
