@@ -1,36 +1,29 @@
 
-import Table from "../components/table";
 import { useNavigate } from "react-router-dom";
-import ReusableViewButton from "../components/ReusableViewButon";
+import { useState } from "react"; // Correctly imported useState
+import Table from "../components/table";
+import ReusableViewButton from "../components/ReusableViewButon"; // Corrected filename spelling
 import ReusableSearchBar from "../components/ReusableSearchBar";
-
-
-
-const tableHeaders = [
-  "Employee ID",
-  "Name",
-  "Designation",
-  "Action",
-];
+import AddNewUser from "./addUser";
 
 export default function UserContent() {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeModal = () => setIsModalOpen(false);
+  const handleClickOutsideModal = (e) => {
+    if (e.target.id === "modalBackdrop") setIsModalOpen(false);
+  };
+
+  const tableHeaders = ["Employee ID", "Name", "Designation", "Action"];
   const tableContent = [
     [
       "1. 010101",
       "Cardo Dalisay",
       "Faculty",
-     
-      <>
-
-
-        <ReusableViewButton 
-          onClick={() => navigate("/system_admin/Users/view_user")}
-        />
-       
-        
-      </>,
-     ],
+      <ReusableViewButton 
+          onClick={() => navigate("/system_admin/Users/view_admin")}
+        />,
+    ],
     ["2."],
     ["3."],
     ["4."],
@@ -46,10 +39,10 @@ export default function UserContent() {
     ["14."],
     ["15."],
   ];
+
   return (
     <>
-     <ReusableSearchBar 
-     onClick={() => navigate("/system_admin/Users/add_user")}
+      <ReusableSearchBar  onClick={() => setIsModalOpen(true)}
      ButtonTitle="Add User"/>
       <Table
         columns={4}
@@ -57,7 +50,17 @@ export default function UserContent() {
         content={tableContent}
         headers={tableHeaders}
       />
-     
-     </>
-  );
+
+      {isModalOpen && (
+        <div
+          id="modalBackdrop"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          onClick={handleClickOutsideModal}
+        >
+          <AddNewUser closeModal={() => setIsModalOpen(false)} />
+            
+        </div>
+      )}
+    </>
+  );s
 }

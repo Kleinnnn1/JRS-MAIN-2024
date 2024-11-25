@@ -30,7 +30,7 @@ export default function UserType() {
                 </button>
 
                 {/* Button 3 */}
-                <button
+                {/* <button
                     onClick={() => navigate("/system_admin/Users/sysadmin")}
                     className='text-center bg-custom-blue text-white border border-zinc-700 rounded font-bold p-10'
                 >
@@ -38,7 +38,7 @@ export default function UserType() {
                     <p className='text-yellow-500 m-3'>SYSTEM ADMIN</p>
                     <p className='font-thin'>No of System Admin: </p>
                     <p className='text-center'>1000</p>
-                </button>
+                </button> */}
 
                 {/* Button 4 */}
                 <button
