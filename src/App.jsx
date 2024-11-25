@@ -104,7 +104,6 @@ import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
 import PageDepartmentKeyWord from "./pages/department_head/keyword/PageDepartmentKeyword.jsx";
 import PageStaffKeyWord from "./pages/staff/keyword/PageStaffKeyword.jsx";
-import ForgotPassword from "./auth/forgot-password.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -121,15 +120,11 @@ export default function App() {
         <Routes>
           {/* Routes for Unauthorized page */}
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
-
           <Route path="signup" element={<SignUpForm />} />
-
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          {/* SPMS ROUTE */}
-          <Route path="/spms" element={<SPMEDashboard />} />
-
+          {/* SPME ROUTE */}
+          <Route path="/spme" element={<SPMEDashboard />} />
           {/* Protected Routes for Staff */}
           <Route
             path="/staff/*"
@@ -159,7 +154,6 @@ export default function App() {
             <Route path="StaffSendCert" element={<StaffPageCertificate />} />
             <Route path="StaffCert" element={<StaffSendCert />} />
           </Route>
-
           {/* Protected Routes for System Admin */}
           <Route
             path="/system_admin/*"
@@ -205,7 +199,6 @@ export default function App() {
             <Route path="History" element={<PageHistorySystemAdmin />} />
             <Route path="Reports" element={<PageReportSystemAdmin />} />
           </Route>
-
           {/* Protected Routes for Department Head */}
           <Route
             path="/department_head/*"
@@ -272,7 +265,6 @@ export default function App() {
               <Route path="content" element={<ContentAprrovingCertificate />} />
             </Route>
           </Route>
-
           {/* Protected Routes for Requestor */}
           <Route
             path="/requestor/*"

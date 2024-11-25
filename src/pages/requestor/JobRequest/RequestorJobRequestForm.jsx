@@ -57,17 +57,21 @@ export default function RequestorJobRequestForm({ closeModal }) {
   });
 
   const handleAddRow = () => {
-    setJobRequests([
-      ...jobRequests,
-      {
-        id: jobRequests.length + 1,
-        description: "",
-        location: "",
-        category: "",
-        photo: null,
-        priority: "",
-      },
-    ]);
+    if (jobRequests.length < 9) {
+      setJobRequests([
+        ...jobRequests,
+        {
+          id: jobRequests.length + 1,
+          description: "",
+          location: "",
+          category: "",
+          photo: null,
+          priority: "",
+        },
+      ]);
+    } else {
+      toast.error("You can only add up to 9 job requests.");
+    }
   };
 
   const handleRemoveRow = (id) => {
@@ -308,7 +312,7 @@ RequestorJobRequestForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
-// import { useState } from "react";
+// import { useState, useEffect } from "react";
 // import PropTypes from "prop-types";
 // import { useNavigate } from "react-router-dom";
 // import SearchBar from "../../../components/SearchBar";
@@ -316,21 +320,12 @@ RequestorJobRequestForm.propTypes = {
 // import { useMutation, useQueryClient } from "@tanstack/react-query";
 // import { insertRequest } from "../../../service/apiRequestorRequestTable";
 // import toast from "react-hot-toast";
+// import supabase from "../../../service/supabase"; // Assume you've initialized Supabase in a separate file
 
 // export default function RequestorJobRequestForm({ closeModal }) {
 //   const { handleSubmit, reset } = useForm();
 //   const queryClient = useQueryClient();
 //   const navigate = useNavigate();
-
-//   const { mutate } = useMutation({
-//     mutationFn: insertRequest,
-//     onSuccess: () => {
-//       toast.success("Job Request Successfully Submitted");
-//       queryClient.invalidateQueries({ queryKey: ["requests"] });
-//     },
-//     onError: (err) => toast.error(err.message),
-//   });
-
 //   const [jobRequests, setJobRequests] = useState([
 //     {
 //       id: 1,
@@ -341,119 +336,39 @@ RequestorJobRequestForm.propTypes = {
 //       priority: "",
 //     },
 //   ]);
-
-//   const jobCategory = [
-//     "Electrician",
-//     "Cluster Leader",
-//     "Welder",
-//     "Street Sweeper & Ground Sweeper",
-//     "Tile Setter",
-//     "Plumber",
-//     "Aircon Technicians",
-//     "Carpenter",
-//     "Elevator Attendants",
-//     "Busser",
-//     "Gardener/Landscaper",
-//     "Housekeeper",
-//     "Engineer",
-//     "Foreman",
-//     "Architect",
-//     "Painter",
-//     "Draftsman",
-//     "Gymnasium Staff",
-//     "Campus Grass & Bushes Maintainer",
-//     "Laborer",
-//   ];
-
-//   const keywordMapping = {
-//     Electrician: [
-//       "electricity",
-//       "wiring",
-//       "lighting",
-//       "circuit",
-//       "power",
-//       "electrical",
-//       "maintenance",
-//       "outlets",
-//     ],
-//     Carpenter: [
-//       "wood",
-//       "carpentry",
-//       "furniture",
-//       "custom",
-//       "cabinet",
-//       "repair",
-//     ],
-//     Plumber: [
-//       "plumbing",
-//       "pipes",
-//       "water",
-//       "drainage",
-//       "faucet",
-//       "sewage",
-//       "leak",
-//       "valve",
-//     ],
-//     Welder: ["welding", "metal", "fabrication", "steel", "soldering"],
-//     Housekeeper: ["cleaning", "housekeep", "rooms"],
-//     "Cluster Leader": [
-//       "management",
-//       "team",
-//       "leadership",
-//       "coordination",
-//       "supervision",
-//       "organization",
-//       "execution",
-//       "strategy",
-//       "communication",
-//     ],
-//     "Street Sweeper & Ground Sweeper": [
-//       "sweeper",
-//       "grounds",
-//       "litter",
-//       "debris",
-//       "sweeping",
-//       "landscape",
-//       "public space",
-//     ],
-//     "Tile Setter": ["tiles", "grouting", "flooring"],
-//     "Aircon Technicians": [
-//       "HVAC",
-//       "aircon",
-//       "air conditioning",
-//       "cooling",
-//       "ventilation",
-//       "cleaning",
-//     ],
-//     "Elevator Attendants": ["elevator", "assistance"],
-//     Busser: [
-//       "cleaning",
-//       "tables",
-//       "service",
-//       "dishware",
-//       "utensils",
-//       "helping",
-//     ],
-//     "Gardener/Landscaper": ["gardening", "landscaping"],
-//     Engineer: ["construction", "project", "analysis"],
-//     Foreman: ["supervision", "construction"],
-//     Architect: ["design", "blueprints"],
-//     Painter: ["painting", "walls", "interior", "exterior"],
-//     Draftsman: ["drafting", "technical drawings", "blueprints", "CAD"],
-//     "Gymnasium Staff": ["fitness", "training", "instructor", "supervision"],
-//     "Campus Grass & Bushes Maintainer": ["grass", "bushes", "mowing"],
-//     Laborer: [
-//       "physical",
-//       "assistance",
-//       "loading",
-//       "unloading",
-//       "workforce",
-//       "transfering",
-//       "help",
-//     ],
-//   };
-
+//   const [keywordMapping, setKeywordMapping] = useState({});
 //   const priorityOptions = ["Low", "Medium", "High"];
+
+//   // Fetch the keyword mappings from Supabase
+//   useEffect(() => {
+//     const fetchKeywordMappings = async () => {
+//       const { data, error } = await supabase
+//         .from("keyword_mappings")
+//         .select("category, keyword");
+
+//       if (error) {
+//         toast.error(error.message);
+//       } else {
+//         const mapping = data.reduce((acc, { category, keyword }) => {
+//           if (!acc[category]) acc[category] = [];
+//           acc[category].push(keyword);
+//           return acc;
+//         }, {});
+//         setKeywordMapping(mapping);
+//       }
+//     };
+
+//     fetchKeywordMappings();
+//   }, []);
+
+//   const { mutate } = useMutation({
+//     mutationFn: insertRequest,
+//     onSuccess: () => {
+//       toast.success("Job Request Successfully Submitted");
+//       queryClient.invalidateQueries({ queryKey: ["requests"] });
+//     },
+//     onError: (err) => toast.error(err.message),
+//   });
 
 //   const handleAddRow = () => {
 //     setJobRequests([
@@ -481,7 +396,7 @@ RequestorJobRequestForm.propTypes = {
 //         if (request.id === id) {
 //           let updatedRequest = { ...request, [field]: value };
 
-//           if (field === "description") {
+//           if (field === "description" && keywordMapping) {
 //             const matchedJob = Object.keys(keywordMapping).find((job) =>
 //               keywordMapping[job].some((keyword) =>
 //                 value.toLowerCase().includes(keyword)
@@ -615,7 +530,7 @@ RequestorJobRequestForm.propTypes = {
 //                       }
 //                       required
 //                     >
-//                       {jobCategory.map((category, idx) => (
+//                       {Object.keys(keywordMapping).map((category, idx) => (
 //                         <option key={idx} value={category}>
 //                           {category}
 //                         </option>
@@ -640,7 +555,7 @@ RequestorJobRequestForm.propTypes = {
 //                     <select
 //                       id={`priority-${request.id}`}
 //                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
-//                       value={request.priority || ""} // Default to empty string if priority is unset
+//                       value={request.priority || ""}
 //                       onChange={(e) =>
 //                         handleInputChange(
 //                           request.id,
@@ -653,7 +568,6 @@ RequestorJobRequestForm.propTypes = {
 //                       <option value="" className="hidden">
 //                         Select
 //                       </option>
-//                       {/* "Select" is explicitly set as the first option */}
 //                       {priorityOptions.map((priority, idx) => (
 //                         <option key={idx} value={priority}>
 //                           {priority}
