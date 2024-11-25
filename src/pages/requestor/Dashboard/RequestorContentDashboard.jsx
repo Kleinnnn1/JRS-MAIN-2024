@@ -6,8 +6,10 @@ import ReusableCalendar from "../../../components/ReusableCalendar";
 import SearchBar from "../../../components/SearchBar";
 import { FaHourglassStart, FaClock, FaCheckCircle, FaRegHandPointer } from 'react-icons/fa'; 
 
+
 export default function ContentDashboard() {
   const navigate = useNavigate();
+  const statusCardColor = "bg-blue-50"; 
 
   return (
     <>
@@ -21,28 +23,36 @@ export default function ContentDashboard() {
           title="Pending"
           count={1}
           icon={<FaClock />}
-          // iconColor="text-gray-400" 
+          iconColor="text-red-400" 
+          titleColor = "text-red-500"
+          bgColor={statusCardColor}
           onClick={() => navigate("/requestor/job_request")}
         />
         <StatusCard
           title="Ongoing"
           count={0}
+          bgColor={statusCardColor}
           icon={<FaHourglassStart />}
-          // iconColor="text-yellow-500"
+          iconColor="text-yellow-400"
+          titleColor = "text-yellow-500"
           onClick={() => navigate("/requestor/job_ongoing")}
         />
         <StatusCard
           title="Completed"
+          bgColor={statusCardColor}
           count={0}
           icon={<FaCheckCircle />}
-          // iconColor="text-green-500"
+          titleColor = "text-green-500"
+          iconColor="text-green-500"
           onClick={() => navigate("/requestor/job_completed")}
         />
         <StatusCard
           title="Referral"
           count={0}
           icon={<FaRegHandPointer />}
-          // iconColor="text-blue-500"
+          bgColor={statusCardColor}
+          titleColor = "text-purple-500"
+          iconColor="text-purple-500"
           onClick={() => navigate("/requestor/job_referral")}
         />
       </div>

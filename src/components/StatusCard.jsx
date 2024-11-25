@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 export default function StatusCard({ title, count, bgColor, subText, onClick, icon, titleColor, iconColor }) {
   return (
     <div
-      className={`flex flex-col justify-center items-center ${bgColor} p-6 bg-white shadow-lg rounded-lg shadow-black/2 hover:shadow-sm hover:shadow-black/20 transform hover:scale-105 cursor-pointer transition-transform duration-300`}
+      className={`flex flex-col justify-center items-center ${bgColor} p-6 shadow-lg rounded-lg shadow-black/2 hover:shadow-sm hover:shadow-black/20 transform hover:scale-105 cursor-pointer transition-transform duration-300`}
       onClick={onClick}
     >
       {/* Count and Icon Section */}

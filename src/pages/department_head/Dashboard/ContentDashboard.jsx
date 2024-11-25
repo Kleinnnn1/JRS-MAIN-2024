@@ -23,7 +23,9 @@ export default function ContentDashboard() {
           count={0}
           icon={<FaClipboard className="text-md" />} // Set the icon size to 3xl
           bgColor={statusCardColor}
-          iconColor={iconColor}
+           iconColor="text-red-400" 
+          titleColor = "text-red-500"
+          
           onClick={() => navigate("/department_head/job_request")}
         />
         
@@ -33,7 +35,8 @@ export default function ContentDashboard() {
           count={0}
           icon={<FaHourglassStart className="text-md" />} // Icon for Ongoing Jobs
           bgColor={statusCardColor}
-          iconColor={iconColor}
+          iconColor="text-yellow-400"
+          titleColor = "text-yellow-500"
           onClick={() => navigate("/department_head/job_ongoing")}
         />
         
@@ -43,7 +46,8 @@ export default function ContentDashboard() {
           count={0}
           icon={<FaCheckCircle className="text-md" />} // Icon for Completed Jobs
           bgColor={statusCardColor}
-          iconColor={iconColor}
+         titleColor = "text-green-500"
+          iconColor="text-green-500"
           onClick={() => navigate("/department_head/job_completed")}
         />
         
@@ -53,7 +57,8 @@ export default function ContentDashboard() {
           count={0}
           icon={<FaRegHandPointer className="text-md" />} // Icon for Referral Jobs
           bgColor={statusCardColor}
-          iconColor={iconColor}
+          titleColor = "text-purple-500"
+          iconColor="text-purple-500"
           onClick={() => navigate("/department_head/referral")}
         />
       </div>
