@@ -45,7 +45,7 @@ export default function SelectSurveyForm() {
 
                         {/* TAGALOG VERSION */}
                         <div className="p-4 bg-indigo-50 rounded-lg shadow-md">
-                            <p className="text-gray-700 font-semibold mb-2">
+                            <p className="text-gray-700 font-semibold mb-8">
                                 (Ang iyong gustong wikang gagamitin sa pagsagot sa surbey na ito:)
                             </p>
                             <b>Minamahal na Kliyente,</b>
@@ -54,7 +54,7 @@ export default function SelectSurveyForm() {
                             </p>
                             <button
                                 type="button"
-                                onClick={() => handleLanguageSelection('/requestor/tagalog_version')}
+                                // onClick={() => handleLanguageSelection('/requestor/tagalog_version')}
                                 className="w-full mt-4 p-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none"
                             >
                                 Filipino or Tagalogs

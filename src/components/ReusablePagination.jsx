@@ -1,5 +1,5 @@
-
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
 
 export default function ReusablePagination({
   rowsPerPage,
@@ -8,6 +8,13 @@ export default function ReusablePagination({
   setCurrentPage,
   totalPages,
 }) {
+  const [inputPage, setInputPage] = useState(currentPage);
+
+  // Sync the inputPage with currentPage when currentPage changes
+  useEffect(() => {
+    setInputPage(currentPage);
+  }, [currentPage]);
+
   const handlePrevious = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -20,54 +27,69 @@ export default function ReusablePagination({
     }
   };
 
-  return (
-    <div className="flex items-center justify-between ml-4 mr-4 text-sm">
-      {/* Rows per page selector */}
-      <div className="flex items-center space-x-2">
-        <label htmlFor="rows-per-page" className="text-gray-700">
-          Rows per page:
-        </label>
-        <select
-          id="rows-per-page"
-          value={rowsPerPage}
-          onChange={(e) => {
-            setRowsPerPage(Number(e.target.value));
-            setCurrentPage(1); // Reset to page 1 when rows per page changes
-          }}
-          className="border border-gray-300 rounded-md px-2 py-1"
-        >
-          <option value={10}>10</option>
-          <option value={20}>20</option>
-          <option value={30}>30</option>
-          <option value={40}>40</option>
-        </select>
-      </div>
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    if (value === "" || /^[0-9]*$/.test(value)) {
+      setInputPage(value);
+    }
+  };
 
-      {/* Pagination buttons */}
-      <div className="flex space-x-2">
-        <button
-          onClick={handlePrevious}
-          disabled={currentPage === 1}
-          className={`px-4 py-2 rounded-md ${
-            currentPage === 1
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-blue-500 text-white hover:bg-gray-300"
-          }`}
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleNext}
-          disabled={currentPage === totalPages || totalPages === 0}
-          className={`px-4 py-2 rounded-md ${
-            currentPage === totalPages || totalPages === 0
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-blue-500 text-white hover:bg-gray-300"
-          }`}
-        >
-          Next
-        </button>
-      </div>
+  const handleInputBlur = () => {
+    if (inputPage >= 1 && inputPage <= totalPages) {
+      setCurrentPage(Number(inputPage));
+    } else {
+      setInputPage(currentPage); // Revert if the input is invalid
+    }
+  };
+
+  const handleInputKeyPress = (event) => {
+    if (event.key === "Enter") {
+      if (inputPage >= 1 && inputPage <= totalPages) {
+        setCurrentPage(Number(inputPage));
+      } else {
+        setInputPage(currentPage); // Revert if the input is invalid
+      }
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-center space-x-4 text-sm">
+      {/* Previous Button */}
+      <button
+        onClick={handlePrevious}
+        disabled={currentPage === 1}
+        className={`px-3 py-1 rounded-md ${
+          currentPage === 1
+            ? "text-gray-500 cursor-not-allowed"
+            : "text-blue-600 hover:text-blue-800"
+        }`}
+      >
+        &lt; Previous
+      </button>
+
+      {/* Editable Input for Page Number */}
+      <input
+        type="text"
+        value={inputPage}
+        onChange={handleInputChange}
+        onBlur={handleInputBlur}
+        onKeyPress={handleInputKeyPress}
+        className="px-3 py-1 rounded-md text-blue-600"
+        style={{ width: "40px", textAlign: "center" }}
+      />
+
+      {/* Next Button */}
+      <button
+        onClick={handleNext}
+        disabled={currentPage === totalPages || totalPages === 0}
+        className={`px-3 py-1 rounded-md ${
+          currentPage === totalPages || totalPages === 0
+            ? "text-gray-500 cursor-not-allowed"
+            : "text-blue-600 hover:text-blue-800"
+        }`}
+      >
+        Next &gt;
+      </button>
     </div>
   );
 }

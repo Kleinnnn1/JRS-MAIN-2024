@@ -110,7 +110,7 @@ import SysAdminStaffContent from "./pages/system_admin/Users/ContentStaff";
 import SysAdminSpmeContent from "./pages/system_admin/Users/ContentSpme";
 
 import SignUpForm from "./auth/SignUpForm.jsx";
-import SPMSDashboard from "./pages/spms/Dashboard/SpmsPageDashboard.jsx";
+import SPMEDashboard from "./pages/spme/Dashboard/SpmsPageDashboard.jsx";
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
@@ -134,15 +134,11 @@ export default function App() {
         <Routes>
           {/* Routes for Unauthorized page */}
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
-
           <Route path="signup" element={<SignUpForm />} />
-
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
-
-          {/* SPMS ROUTE */}
-          <Route path="/spms" element={<SPMSDashboard />} />
-
+          {/* SPME ROUTE */}
+          <Route path="/spme" element={<SPMEDashboard />} />
           {/* Protected Routes for Staff */}
           <Route
             path="/staff/*"
@@ -172,7 +168,6 @@ export default function App() {
             <Route path="StaffSendCert" element={<StaffPageCertificate />} />
             <Route path="StaffCert" element={<StaffSendCert />} />
           </Route>
-
           {/* Protected Routes for System Admin */}
           <Route
             path="/system_admin/*"
@@ -225,7 +220,6 @@ export default function App() {
             <Route path="History" element={<PageHistorySystemAdmin />} />
             <Route path="Reports" element={<PageReportSystemAdmin />} />
           </Route>
-
           {/* Protected Routes for Department Head */}
           <Route
             path="/department_head/*"
@@ -298,7 +292,6 @@ export default function App() {
               <Route path="content" element={<ContentAprrovingCertificate />} />
             </Route>
           </Route>
-
           {/* Protected Routes for Requestor */}
           <Route
             path="/requestor/*"

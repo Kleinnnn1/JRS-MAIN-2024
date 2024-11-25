@@ -23,16 +23,17 @@ export default function SPMSContentSideBar() {
       <SidebarItem
         name="Home"
         image={iconHome}
-        onClick={() => navigate("/requestor/home")}
+       
         isActive={isActive("/requestor/home")}
       />
       {/* MY PROFILE ICON */}
-      {/* <SidebarItem
-        name="My Profile"
-        onClick={() => navigate("/requestor/requestor_profile")}
+      <SidebarItem
+        name="Download Report"
+        onClick={() => navigate("")}
         image={iconProfile}
         isActive={isActive("/requestor/requestor_profile")}
-      /> */}
+      />
+      
       {/* SCHEDULES */}
       {/* <SidebarItem
         name="Schedules"
@@ -41,12 +42,12 @@ export default function SPMSContentSideBar() {
         isActive={isActive("/requestor/requestor_schedule")}
       /> */}
       {/* HISTORY */}
-      {/* <SidebarItem
-        name="History"
+   {/* <SidebarItem
+        name="Reports"
         onClick={() => navigate("/requestor/job_request_history")}
         image={iconHistory}
-        isActive={isActive("/requestor/job_request_history")}
-      /> */}
+        isActive={isActive("#")}
+      />  */}
       {/* REQUEST */}
       {/* <SidebarItem
         name="Request"

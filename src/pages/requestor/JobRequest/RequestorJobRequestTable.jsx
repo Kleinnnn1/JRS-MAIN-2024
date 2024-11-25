@@ -8,12 +8,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getRequestorRequest } from "../../../service/apiRequestorRequestTable";
 import RequestorJobRequestData from "./RequestorJobRequestData";
 
+//Update
 const tableHeaders = [
   "Request ID",
   "Job Description",
   "Job Category",
-  "Process by",
-  "Staff Assigned",
+  "Office",
+  "Assigned Staff",
   "Image",
   "Status",
   "Date Requested",

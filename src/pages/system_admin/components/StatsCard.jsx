@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 
+//SPECIFIC FOR SYS ADMIN
 const StatsCard = ({ title, value, dateRange, iconSrc, textColor }) => (
     <div className="bg-white border border-gray-300 rounded p-4 w-80">
         <p className="text-s font-inter text-left">{title}</p>
