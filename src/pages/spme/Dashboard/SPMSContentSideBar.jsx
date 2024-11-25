@@ -22,9 +22,16 @@ export default function SPMSContentSideBar() {
       {/* HOME ICON */}
       <SidebarItem
         name="Home"
+        onClick={() => navigate("/spme")}
         image={iconHome}
-       
-        isActive={isActive("/requestor/home")}
+        isActive={isActive("/spme")}
+      />
+       {/* Make request ICON*/}
+       <SidebarItem
+        name="Make Request"
+        onClick={() => navigate("/spme/make_requestSpme")}
+        image={iconProfile}
+        isActive={isActive("/spme/make_requestSpme")}
       />
       {/* MY PROFILE ICON */}
       <SidebarItem

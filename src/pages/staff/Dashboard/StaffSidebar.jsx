@@ -37,7 +37,7 @@ export default function StaffSidebar() {
       />
         <SidebarItem
         name="My Request"
-        onClick={() => navigate("/Staff/History")}
+        onClick={() => navigate("/Staff/make_requestStaff")}
         image={iconHistory}
       />
       <SidebarItem

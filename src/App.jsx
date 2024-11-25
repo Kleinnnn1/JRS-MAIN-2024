@@ -15,6 +15,13 @@ import StaffSendCert from "./pages/staff/SendCert/StaffContentSendCert.jsx";
 import StaffImageContent from "./pages/staff/Task/StaffImageContent.jsx";
 import StaffImagePage from "./pages/staff/Task/StaffOngoingPage.jsx";
 import StaffHistoryPage from "./pages/staff/History/CompletedTask.jsx";
+import StaffJobRequest from "./pages/staff/JobRequestStaff/RequestorPageJobRequest.jsx";
+import StaffJobRequestForm from "./pages/staff/JobRequestStaff/RequestorJobRequestForm.jsx";
+import StaffJobRequestTable from "./pages/staff/JobRequestStaff/RequestorJobRequestTable.jsx";
+import StaffJobRequestDetail from "./pages/staff/JobRequestDetailStaff/RequestorPageJobRequestDetail.jsx";
+import StaffJobRequestApproved from "./pages/staff/JobRequestDetailStaff/RequestorContentJobRequestApproved.jsx";
+import StaffJobRequestCompleted from "./pages/staff/JobRequestDetailStaff/RequestorContentJobRequestCompleted.jsx";
+import StaffCertificate from "./pages/staff/JobRequestDetailStaff/RequestorCertificate.jsx";
 
 // Components for department head
 import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
@@ -117,7 +124,16 @@ import SysAdminStaffContent from "./pages/system_admin/Users/ContentStaff";
 import SysAdminSpmeContent from "./pages/system_admin/Users/ContentSpme";
 
 import SignUpForm from "./auth/SignUpForm.jsx";
+// SPME
 import SPMEDashboard from "./pages/spme/Dashboard/SpmsPageDashboard.jsx";
+import SpmeJobRequest from "./pages/spme/JobRequestspme/RequestorPageJobRequest.jsx";
+import SpmeJobRequestForm from "./pages/spme/JobRequestspme/RequestorJobRequestForm.jsx";
+import SpmeJobRequestTable from "./pages/spme/JobRequestspme/RequestorJobRequestTable.jsx";
+import SpmeJobRequestDetail from "./pages/spme/JobRequestDetailspme/RequestorPageJobRequestDetail.jsx";
+import SpmeJobRequestApproved from "./pages/spme/JobRequestDetailspme/RequestorContentJobRequestApproved.jsx";
+import SpmeJobRequestCompleted from "./pages/spme/JobRequestDetailspme/RequestorContentJobRequestCompleted.jsx";
+import SpmeCertificate from "./pages/spme/JobRequestDetailspme/RequestorCertificate.jsx";
+
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
@@ -145,7 +161,32 @@ export default function App() {
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
           {/* SPME ROUTE */}
-          <Route path="/spme" element={<SPMEDashboard />} />
+          <Route path="/spme" element={ <SPMEDashboard />} > 
+          <Route path="make_requestSpme" element={<SpmeJobRequest />} />
+          <Route
+                path="make_request_tableSpme"
+                element={<SpmeJobRequestTable />}/>
+          <Route
+                  path="make_request_formSpme"
+                  element={<SpmeJobRequestForm />}
+               />
+               <Route
+                  path="job_request_detailSpme"
+                  element={<SpmeJobRequestDetail />}
+                />
+                <Route
+                  path="job_request_approvedSpme"
+                  element={<SpmeJobRequestApproved />}
+                />
+                <Route
+                  path="job_request_completedSpme"
+                  element={<SpmeJobRequestCompleted />}
+                />
+                <Route
+                  path="job_request_certificateSpme"
+                  element={<SpmeCertificate />}/>
+              </Route>
+       
           {/* Protected Routes for Staff */}
           <Route
             path="/staff/*"
@@ -172,6 +213,31 @@ export default function App() {
                 element={<StaffChangePassword />}
               />
             </Route>
+            <Route path="make_requestStaff" element={<StaffJobRequest/>} >
+              <Route
+                path="make_request_tableStaff"
+                element={<StaffJobRequestTable />}
+                 />
+               <Route
+                  path="make_request_formStaff"
+                  element={<StaffJobRequestForm/>}
+               />
+               <Route
+                  path="job_request_detailStaff"
+                  element={<StaffJobRequestDetail />}
+                />
+                <Route
+                  path="job_request_approvedStaff"
+                  element={<StaffJobRequestApproved />}
+                />
+                <Route
+                  path="job_request_completedStaff"
+                  element={<StaffJobRequestCompleted />}
+                />
+                <Route
+                  path="job_request_certificateStaff"
+                  element={<StaffCertificate />}/>
+              </Route>
             <Route path="StaffSendCert" element={<StaffPageCertificate />} />
             <Route path="StaffCert" element={<StaffSendCert />} />
           </Route>
@@ -391,6 +457,7 @@ export default function App() {
 
             <Route path="tagalog_version" element={<TagalogVersionForm />} />
           </Route>
+          
         </Routes>
 
         <Toaster
