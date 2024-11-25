@@ -6,6 +6,7 @@ function AddKeyword() {
   const [keyword, setKeyword] = useState("");
   const [message, setMessage] = useState("");
   const [keywordsList, setKeywordsList] = useState([]);
+  const [showKeywords, setShowKeywords] = useState(false); // State to toggle visibility
 
   // Fetch keywords for the selected category
   const fetchKeywords = async (category) => {
@@ -29,7 +30,6 @@ function AddKeyword() {
   }, [category]);
 
   // Handle form submission for adding a new keyword
-  // Handle form submission for adding a new keyword
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -46,7 +46,6 @@ function AddKeyword() {
       if (error) {
         // Check for duplicate error based on unique constraint violation
         if (error.code === "23505") {
-          // Unique constraint violation error code
           setMessage(
             `The keyword "${keyword}" is already duplicated in this category.`
           );
@@ -170,8 +169,15 @@ function AddKeyword() {
           </p>
         )}
 
+        <button
+          onClick={() => setShowKeywords((prev) => !prev)}
+          className="mt-4 w-full py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+        >
+          {showKeywords ? "Hide Keywords" : "Show Keywords"}
+        </button>
+
         {/* Display Keywords for the Selected Category */}
-        {category && keywordsList.length > 0 && (
+        {showKeywords && category && keywordsList.length > 0 && (
           <div className="mt-6">
             <div className="flex flex-wrap gap-4">
               {keywordsList.map((item) => (
