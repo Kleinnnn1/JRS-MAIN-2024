@@ -91,6 +91,12 @@ export default function ContentSideBar() {
         image={iconRequest}
         bold={isActive("/department_head/approving_of_job_completion")}
       />
+       <SidebarItem
+        name="My Request"
+        onClick={() => navigate("/department_head/make_requestDeptHead")}
+        image={iconRequest}
+        bold={isActive("/department_head/make_requestDeptHead")}
+      />
       {/*Create new user */}
       {/* <SidebarItem
         name="User"

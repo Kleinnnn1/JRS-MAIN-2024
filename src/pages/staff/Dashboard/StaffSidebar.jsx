@@ -35,6 +35,11 @@ export default function StaffSidebar() {
         onClick={() => navigate("/Staff/History")}
         image={iconHistory}
       />
+        <SidebarItem
+        name="My Request"
+        onClick={() => navigate("/Staff/History")}
+        image={iconHistory}
+      />
       <SidebarItem
         name="Add Keyword"
         onClick={() => navigate("/Staff/add_keyword")}

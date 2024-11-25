@@ -54,6 +54,13 @@ import ViewEmployeeApproval from "./pages/department_head/ApproveStaff/ViewEmplo
 import JobOngoing from "./pages/department_head/JobRequest/PageJobOngoing.jsx";
 import JobCompleted from "./pages/department_head/JobRequest/PageJobCompleted.jsx";
 import ContentAprrovingCertificate from "./pages/department_head/ApprovingOfCertificateJobCompletion/ContentApprovingCertificate.jsx";
+import RequestorJobRequestDeptHead from "./pages/department_head/JobRequestDeptHead/RequestorPageJobRequest.jsx";
+import RequestorJobRequestFormDeptHead from "./pages/department_head/JobRequestDeptHead/RequestorJobRequestForm.jsx";
+import RequestorJobRequestTableDeptHead from "./pages/department_head/JobRequestDeptHead/RequestorJobRequestTable.jsx";
+import RequestorJobRequestDetailDeptHead from "./pages/department_head/JobRequestDetailDeptHead/RequestorPageJobRequestDetail.jsx";
+import RequestorJobRequestApprovedDeptHead from "./pages/department_head/JobRequestDetailDeptHead/RequestorContentJobRequestApproved.jsx";
+import RequestorJobRequestCompletedDeptHead from "./pages/department_head/JobRequestDetailDeptHead/RequestorContentJobRequestCompleted.jsx";
+import RequestorCertificateDeptHead from "./pages/department_head/JobRequestDetailDeptHead/RequestorCertificate.jsx";
 
 // Components for requestor
 import PageRequestorDashboard from "./pages/requestor/Dashboard/RequestorPageDashboard.jsx";
@@ -288,9 +295,34 @@ export default function App() {
             <Route
               path="approving_of_job_completion"
               element={<PageCertificate />}
-            >
+                  ></Route>
+              <Route path="make_requestDeptHead" element={<RequestorJobRequestDeptHead />} >
+              <Route
+                path="make_request_tableDeptHead"
+                element={<RequestorJobRequestTableDeptHead />}
+                 />
+               <Route
+                  path="make_request_formDeptHead"
+                  element={<RequestorJobRequestFormDeptHead />}
+               />
+               <Route
+                  path="job_request_detailDeptHead"
+                  element={<RequestorJobRequestDetailDeptHead />}
+                />
+                <Route
+                  path="job_request_approvedDeptHead"
+                  element={<RequestorJobRequestApprovedDeptHead />}
+                />
+                <Route
+                  path="job_request_completedDeptHead"
+                  element={<RequestorJobRequestCompletedDeptHead />}
+                />
+                <Route
+                  path="job_request_certificateDeptHead"
+                  element={<RequestorCertificateDeptHead />}/>
+              </Route>
               <Route path="content" element={<ContentAprrovingCertificate />} />
-            </Route>
+            
           </Route>
           {/* Protected Routes for Requestor */}
           <Route
