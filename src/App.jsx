@@ -96,7 +96,7 @@ import UserContent from "./pages/system_admin/Users/ContentUsers";
 import SysAdminContent from "./pages/system_admin/Users/ContentDepartmentHead";
 import SysAdminStaffContent from "./pages/system_admin/Users/ContentStaff";
 import SignUpForm from "./auth/SignUpForm.jsx";
-import SPMSDashboard from "./pages/spms/Dashboard/SpmsPageDashboard.jsx";
+import SPMEDashboard from "./pages/spme/Dashboard/SpmsPageDashboard.jsx";
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
@@ -128,7 +128,7 @@ export default function App() {
           <Route path="/login" element={<LogIn />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           {/* SPMS ROUTE */}
-          <Route path="/spms" element={<SPMSDashboard />} />
+          <Route path="/spms" element={<SPMEDashboard />} />
 
           {/* Protected Routes for Staff */}
           <Route
