@@ -28,7 +28,7 @@ export default function LogIn() {
   }
 
   return (
-    <section className="bg-gray-100 min-h-screen flex items-center justify-center">
+    <section className="bg-blue-100 min-h-screen flex items-center justify-center">
       <div className="bg-white flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
         <div className="md:block hidden w-1/2">
           <img className="rounded-2xl" src={imageLogin} alt="USTP Logo" />

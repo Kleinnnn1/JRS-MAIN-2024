@@ -102,7 +102,7 @@ function SignUpForm() {
   };
 
   return (
-    <section className="bg-gray-100 min-h-screen flex items-center justify-center">
+    <section className="bg-blue-100 min-h-screen flex items-center justify-center">
       <div className="bg-white flex flex-col md:flex-row rounded-2xl shadow-lg max-w-4xl w-full h-auto p-4">
         {/* Image Section */}
         <div className="md:w-1/2 hidden md:block">
