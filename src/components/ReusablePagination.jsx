@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ReusablePagination({
   rowsPerPage,
@@ -9,6 +9,11 @@ export default function ReusablePagination({
   totalPages,
 }) {
   const [inputPage, setInputPage] = useState(currentPage);
+
+  // Sync the inputPage with currentPage when currentPage changes
+  useEffect(() => {
+    setInputPage(currentPage);
+  }, [currentPage]);
 
   const handlePrevious = () => {
     if (currentPage > 1) {
@@ -47,34 +52,6 @@ export default function ReusablePagination({
     }
   };
 
-  const generatePageNumbers = () => {
-    const pages = [];
-    const visibleRange = 3; // Number of visible pages before and after the current page
-
-    if (totalPages <= 5) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      if (currentPage > visibleRange + 1) {
-        pages.push(1, "...");
-      }
-
-      const start = Math.max(1, currentPage - visibleRange);
-      const end = Math.min(totalPages, currentPage + visibleRange);
-
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-
-      if (currentPage < totalPages - visibleRange) {
-        pages.push("...", totalPages);
-      }
-    }
-
-    return pages;
-  };
-
   return (
     <div className="flex items-center justify-center space-x-4 text-sm">
       {/* Previous Button */}
@@ -89,24 +66,6 @@ export default function ReusablePagination({
       >
         &lt; Previous
       </button>
-
-      {/* Page Numbers */}
-      {generatePageNumbers().map((page, index) => (
-        <button
-          key={index}
-          onClick={() => typeof page === "number" && setCurrentPage(page)}
-          className={`px-3 py-1 rounded-md ${
-            currentPage === page
-              ? "bg-gray-300 text-black font-semibold"
-              : typeof page === "number"
-              ? "text-blue-600 hover:text-blue-800"
-              : "text-gray-500"
-          }`}
-          disabled={typeof page !== "number"}
-        >
-          {page}
-        </button>
-      ))}
 
       {/* Editable Input for Page Number */}
       <input
