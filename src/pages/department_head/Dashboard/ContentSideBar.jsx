@@ -22,8 +22,9 @@ export default function ContentSideBar() {
       (path !== "/department_head" && currentPath.startsWith(path))
     );
   };
+
   return (
-    <>
+    <div style={{ maxHeight: '100vh', overflowY: 'auto' }}>
       <SidebarItem
         name="Home"
         image={iconHome}
@@ -54,19 +55,18 @@ export default function ContentSideBar() {
         image={iconRequest}
         bold={isActive("/department_head/job_completed")}
       />
-
       <SidebarItem
         name="Staff"
         onClick={() => navigate("/department_head/employee")}
         image={iconEmployee}
         bold={isActive("/department_head/employee")}
       />
-      <SidebarItem
+      {/* <SidebarItem
         name="Approve Staff"
         onClick={() => navigate("/department_head/approve_employee")}
         image={iconEmployee}
         bold={isActive("/department_head/approve_employee")}
-      />
+      /> */}
       <SidebarItem
         name="Report"
         onClick={() => navigate("/department_head/report")}
@@ -91,19 +91,19 @@ export default function ContentSideBar() {
         image={iconRequest}
         bold={isActive("/department_head/approving_of_job_completion")}
       />
-       <SidebarItem
+      <SidebarItem
         name="My Request"
         onClick={() => navigate("/department_head/make_requestDeptHead")}
         image={iconRequest}
         bold={isActive("/department_head/make_requestDeptHead")}
       />
       {/*Create new user */}
-      {/* <SidebarItem
+      <SidebarItem
         name="User"
         onClick={() => navigate("/department_head/user")}
         image={iconRequest}
         bold={isActive("/department_head/user")}
-      /> */}
+      />
       {/*add new keyword */}
       <SidebarItem
         name="Add Keyword"
@@ -111,6 +111,6 @@ export default function ContentSideBar() {
         image={iconRequest}
         bold={isActive("/department_head/user")}
       />
-    </>
+    </div>
   );
 }

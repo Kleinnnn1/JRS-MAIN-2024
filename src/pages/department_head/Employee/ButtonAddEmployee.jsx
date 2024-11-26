@@ -6,7 +6,7 @@ export default function ButtonAddEmployee({ onClick }) {
       className={`bg-blue-400 text-white px-3 py-1 text-lg font-medium text-center rounded-lg`}
       onClick={onClick}
     >
-     Confirm
+   Submit
     </button>
   );
 }

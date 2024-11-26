@@ -208,10 +208,7 @@ function SignUpForm() {
                   Select Department
                 </option>
 
-                <option value="1">BMGS</option>
-                <option value="2">CSWS</option>
-                <option value="3">MEWS</option>
-                <option value="4">Library</option>
+
                 <option value="CDO Bites">CDO Bites</option>
                 <option value="CEA Department">CEA Department</option>
                 <option value="CITC Department">CITC Department</option>

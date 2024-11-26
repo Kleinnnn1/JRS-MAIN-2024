@@ -11,7 +11,7 @@ export default function ButtonAddEmployeeTable({
   return (
     <button
       type="button"
-      className={`px-5 py-2 text-sm font-medium text-center rounded-lg ${bgColor} ${marginLeft} ${marginRight} ${border} ${margin}`}
+      className={`px-5 py-2 text-lg font-medium text-center rounded-lg ${bgColor} ${marginLeft} ${marginRight} ${border} ${margin}`}
       onClick={onClick}
     >
       Add Staff
