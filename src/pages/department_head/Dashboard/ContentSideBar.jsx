@@ -98,12 +98,12 @@ export default function ContentSideBar() {
         bold={isActive("/department_head/make_requestDeptHead")}
       />
       {/*Create new user */}
-      <SidebarItem
+      {/* <SidebarItem
         name="User"
         onClick={() => navigate("/department_head/user")}
         image={iconRequest}
         bold={isActive("/department_head/user")}
-      />
+      /> */}
       {/*add new keyword */}
       <SidebarItem
         name="Add Keyword"

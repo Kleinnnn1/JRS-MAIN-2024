@@ -207,8 +207,6 @@ function SignUpForm() {
                 <option value="" disabled className="hidden">
                   Select Department
                 </option>
-
-
                 <option value="CDO Bites">CDO Bites</option>
                 <option value="CEA Department">CEA Department</option>
                 <option value="CITC Department">CITC Department</option>
