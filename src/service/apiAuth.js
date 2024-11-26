@@ -348,28 +348,44 @@ export async function login({ idNumber, email, password }) {
 // }
 
 export async function getCurrentUser() {
-  const { data: session } = await supabase.auth.getSession();
+  // Fetch the session
+  const { data: session, error: sessionError } =
+    await supabase.auth.getSession();
+  if (sessionError) throw new Error(sessionError.message);
+
+  // Check if the session exists and is valid
   if (!session?.session) {
     return null;
   }
 
-  const { data: authData, error: authError } = await supabase.auth.getUser();
-  if (authError) {
-    throw new Error(authError.message);
+  // Check if the session is close to expiring and refresh if necessary
+  const expiresAt = new Date(session.session.expires_at * 1000); // Supabase returns `expires_at` in seconds
+  const now = new Date();
+
+  if (expiresAt - now < 0) {
+    // Session expired
+    return null;
+  } else if (expiresAt - now < 60 * 60 * 1000) {
+    // Refresh session if it expires in less than 1 hour
+    const { error: refreshError } = await supabase.auth.refreshSession();
+    if (refreshError)
+      throw new Error("Failed to refresh session: " + refreshError.message);
   }
+
+  // Fetch user details
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+  if (authError) throw new Error(authError.message);
 
   const userId = authData?.user?.id;
 
-  // Fetch additional user details from the `User` table using the user's id
+  // Fetch additional user details from the `User` table
   const { data: profileData, error: profileError } = await supabase
     .from("User")
     .select("*")
     .eq("id", userId)
     .single();
 
-  if (profileError) {
-    throw new Error(profileError.message);
-  }
+  if (profileError) throw new Error(profileError.message);
 
   // Merge authData with profileData
   return {
@@ -377,6 +393,42 @@ export async function getCurrentUser() {
     ...profileData,
   };
 }
+
+// Optional: Configure session expiration (1 day)
+await supabase.auth.setSession({
+  expires_in: 86400, // 86400 seconds = 1 day
+});
+
+// export async function getCurrentUser() {
+//   const { data: session } = await supabase.auth.getSession();
+//   if (!session?.session) {
+//     return null;
+//   }
+
+//   const { data: authData, error: authError } = await supabase.auth.getUser();
+//   if (authError) {
+//     throw new Error(authError.message);
+//   }
+
+//   const userId = authData?.user?.id;
+
+//   // Fetch additional user details from the `User` table using the user's id
+//   const { data: profileData, error: profileError } = await supabase
+//     .from("User")
+//     .select("*")
+//     .eq("id", userId)
+//     .single();
+
+//   if (profileError) {
+//     throw new Error(profileError.message);
+//   }
+
+//   // Merge authData with profileData
+//   return {
+//     ...authData.user,
+//     ...profileData,
+//   };
+// }
 
 export async function logout() {
   const { error } = await supabase.auth.signOut();
