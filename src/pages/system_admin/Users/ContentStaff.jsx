@@ -91,7 +91,7 @@ export default function StaffContent() {
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
       />
-
+{/* staffs */}
       {/* Modal for adding new staff */}
       {isModalOpen && (
         <div
