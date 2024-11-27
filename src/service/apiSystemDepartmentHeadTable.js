@@ -1,5 +1,5 @@
-import { supabase } from "./supabaseClient"; // Import supabase client
-import { getCurrentUser } from "./auth"; // Adjust the path to your getCurrentUser function
+import supabase from "./supabase"; // Import supabase client
+import { getCurrentUser } from "./apiAuth"; // Adjust the path to your getCurrentUser function
 
 // Fetch Departments
 export async function getDepartments() {

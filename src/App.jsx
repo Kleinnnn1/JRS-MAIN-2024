@@ -27,7 +27,7 @@ import StaffCertificate from "./pages/staff/JobRequestDetailStaff/RequestorCerti
 import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
 import PageJobRequest from "./pages/department_head/JobRequest/PageJobRequest.jsx";
 import PageEmployee from "./pages/department_head/Employee/PageEmployee.jsx";
-import PageApproveEmployeee from "./pages/department_head/ApproveStaff/PageApproveEmployee.jsx"
+import PageApproveEmployeee from "./pages/department_head/ApproveStaff/PageApproveEmployee.jsx";
 import PageReferral from "./pages/department_head/Referral/PageReferral.jsx";
 import PageProfile from "./pages/department_head/Profile/PageProfile.jsx";
 import PageCertificate from "./pages/department_head/ApprovingOfCertificateJobCompletion/PageCertificate.jsx";
@@ -134,10 +134,9 @@ import SpmeJobRequestApproved from "./pages/spme/JobRequestDetailspme/RequestorC
 import SpmeJobRequestCompleted from "./pages/spme/JobRequestDetailspme/RequestorContentJobRequestCompleted.jsx";
 import SpmeCertificate from "./pages/spme/JobRequestDetailspme/RequestorCertificate.jsx";
 
-
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
-// import ProtectedRoute from "./auth/ProtectedRoute.jsx";
+import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
 import PageDepartmentKeyWord from "./pages/department_head/keyword/PageDepartmentKeyword.jsx";
 import PageStaffKeyWord from "./pages/staff/keyword/PageStaffKeyword.jsx";
@@ -161,39 +160,41 @@ export default function App() {
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
           {/* SPME ROUTE */}
-          <Route path="/spme" element={ <SPMEDashboard />} > 
-          <Route path="make_requestSpme" element={<SpmeJobRequest />} />
-          <Route
-                path="make_request_tableSpme"
-                element={<SpmeJobRequestTable />}/>
-          <Route
-                  path="make_request_formSpme"
-                  element={<SpmeJobRequestForm />}
-               />
-               <Route
-                  path="job_request_detailSpme"
-                  element={<SpmeJobRequestDetail />}
-                />
-                <Route
-                  path="job_request_approvedSpme"
-                  element={<SpmeJobRequestApproved />}
-                />
-                <Route
-                  path="job_request_completedSpme"
-                  element={<SpmeJobRequestCompleted />}
-                />
-                <Route
-                  path="job_request_certificateSpme"
-                  element={<SpmeCertificate />}/>
-              </Route>
-       
+          <Route path="/spme" element={<SPMEDashboard />}>
+            <Route path="make_requestSpme" element={<SpmeJobRequest />} />
+            <Route
+              path="make_request_tableSpme"
+              element={<SpmeJobRequestTable />}
+            />
+            <Route
+              path="make_request_formSpme"
+              element={<SpmeJobRequestForm />}
+            />
+            <Route
+              path="job_request_detailSpme"
+              element={<SpmeJobRequestDetail />}
+            />
+            <Route
+              path="job_request_approvedSpme"
+              element={<SpmeJobRequestApproved />}
+            />
+            <Route
+              path="job_request_completedSpme"
+              element={<SpmeJobRequestCompleted />}
+            />
+            <Route
+              path="job_request_certificateSpme"
+              element={<SpmeCertificate />}
+            />
+          </Route>
+
           {/* Protected Routes for Staff */}
           <Route
             path="/staff/*"
             element={
-              // <ProtectedRoute requiredRole="staff">
+              <ProtectedRoute requiredRole="staff">
                 <MainDashStaff />
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           >
             <Route path="home" element={<ContentDashStaff />} />
@@ -213,31 +214,32 @@ export default function App() {
                 element={<StaffChangePassword />}
               />
             </Route>
-            <Route path="make_requestStaff" element={<StaffJobRequest/>} >
+            <Route path="make_requestStaff" element={<StaffJobRequest />}>
               <Route
                 path="make_request_tableStaff"
                 element={<StaffJobRequestTable />}
-                 />
-               <Route
-                  path="make_request_formStaff"
-                  element={<StaffJobRequestForm/>}
-               />
-               <Route
-                  path="job_request_detailStaff"
-                  element={<StaffJobRequestDetail />}
-                />
-                <Route
-                  path="job_request_approvedStaff"
-                  element={<StaffJobRequestApproved />}
-                />
-                <Route
-                  path="job_request_completedStaff"
-                  element={<StaffJobRequestCompleted />}
-                />
-                <Route
-                  path="job_request_certificateStaff"
-                  element={<StaffCertificate />}/>
-              </Route>
+              />
+              <Route
+                path="make_request_formStaff"
+                element={<StaffJobRequestForm />}
+              />
+              <Route
+                path="job_request_detailStaff"
+                element={<StaffJobRequestDetail />}
+              />
+              <Route
+                path="job_request_approvedStaff"
+                element={<StaffJobRequestApproved />}
+              />
+              <Route
+                path="job_request_completedStaff"
+                element={<StaffJobRequestCompleted />}
+              />
+              <Route
+                path="job_request_certificateStaff"
+                element={<StaffCertificate />}
+              />
+            </Route>
             <Route path="StaffSendCert" element={<StaffPageCertificate />} />
             <Route path="StaffCert" element={<StaffSendCert />} />
           </Route>
@@ -245,9 +247,9 @@ export default function App() {
           <Route
             path="/system_admin/*"
             element={
-              // <ProtectedRoute requiredRole="system admin">
+              <ProtectedRoute requiredRole="system admin">
                 <SystemAdDashboard />
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           >
             <Route path="myprofile" element={<SysAdminPageProfile />}>
@@ -277,11 +279,10 @@ export default function App() {
               <Route path="spme" element={<SysAdminSpmeContent />} />
               <Route path="add_spme" element={<SysAdminAddNewSpme />} />
               <Route path="view_spme" element={<SysAdminViewSpme />} />
-          
+
               <Route path="sysadmin" element={<SystemAdminContentPage />} />
               <Route path="add_sysadmin" element={<SysAdminAddNewSysAdmin />} />
               <Route path="view_sysadmin" element={<SysAdminViewSysAdmin />} />
-
             </Route>
             <Route path="Job_Requests" element={<SysAdminJob_requests />}>
               <Route path="new_request" element={<SysAdminNewRequest />} />
@@ -297,9 +298,9 @@ export default function App() {
           <Route
             path="/department_head/*"
             element={
-              // <ProtectedRoute requiredRole="department head">
+              <ProtectedRoute requiredRole="department head">
                 <PageDepartMentHeadDashboard />
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           >
             <Route path="user" element={<CreateNewUser />} />
@@ -335,8 +336,8 @@ export default function App() {
             </Route>
 
             <Route path="approve_employee" element={<PageApproveEmployeee />}>
-            <Route path="approve" element={<ViewApproveEmployee />} />
-            <Route path="view" element={<ViewEmployeeApproval />} />
+              <Route path="approve" element={<ViewApproveEmployee />} />
+              <Route path="view" element={<ViewEmployeeApproval />} />
             </Route>
 
             <Route path="referral" element={<PageReferral />}>
@@ -361,42 +362,45 @@ export default function App() {
             <Route
               path="approving_of_job_completion"
               element={<PageCertificate />}
-                  ></Route>
-              <Route path="make_requestDeptHead" element={<RequestorJobRequestDeptHead />} >
+            ></Route>
+            <Route
+              path="make_requestDeptHead"
+              element={<RequestorJobRequestDeptHead />}
+            >
               <Route
                 path="make_request_tableDeptHead"
                 element={<RequestorJobRequestTableDeptHead />}
-                 />
-               <Route
-                  path="make_request_formDeptHead"
-                  element={<RequestorJobRequestFormDeptHead />}
-               />
-               <Route
-                  path="job_request_detailDeptHead"
-                  element={<RequestorJobRequestDetailDeptHead />}
-                />
-                <Route
-                  path="job_request_approvedDeptHead"
-                  element={<RequestorJobRequestApprovedDeptHead />}
-                />
-                <Route
-                  path="job_request_completedDeptHead"
-                  element={<RequestorJobRequestCompletedDeptHead />}
-                />
-                <Route
-                  path="job_request_certificateDeptHead"
-                  element={<RequestorCertificateDeptHead />}/>
-              </Route>
-              <Route path="content" element={<ContentAprrovingCertificate />} />
-            
+              />
+              <Route
+                path="make_request_formDeptHead"
+                element={<RequestorJobRequestFormDeptHead />}
+              />
+              <Route
+                path="job_request_detailDeptHead"
+                element={<RequestorJobRequestDetailDeptHead />}
+              />
+              <Route
+                path="job_request_approvedDeptHead"
+                element={<RequestorJobRequestApprovedDeptHead />}
+              />
+              <Route
+                path="job_request_completedDeptHead"
+                element={<RequestorJobRequestCompletedDeptHead />}
+              />
+              <Route
+                path="job_request_certificateDeptHead"
+                element={<RequestorCertificateDeptHead />}
+              />
+            </Route>
+            <Route path="content" element={<ContentAprrovingCertificate />} />
           </Route>
           {/* Protected Routes for Requestor */}
           <Route
             path="/requestor/*"
             element={
-              // <ProtectedRoute requiredRole="requestor">
+              <ProtectedRoute requiredRole="requestor">
                 <PageRequestorDashboard />
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           >
             <Route path="home" element={<RequestorContentDashboard />} />
@@ -457,7 +461,6 @@ export default function App() {
 
             <Route path="tagalog_version" element={<TagalogVersionForm />} />
           </Route>
-          
         </Routes>
 
         <Toaster
