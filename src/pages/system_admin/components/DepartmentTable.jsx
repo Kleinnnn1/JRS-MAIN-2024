@@ -172,7 +172,7 @@ const DeptTable = () => {
   const handleCloseModal = () => setIsModalOpen(false);
 
   return (
-    <div className="mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
+    <div className="p-6 mx-5 mt-10 bg-white rounded-lg shadow-lg">
       {/* Header with Add Department and Search */}
       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
         <SearchBar title="Departments" />

@@ -246,7 +246,7 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
 
       {/* Modal Header */}
       <header className="w-full text-lg p-5 font-semibold bg-custom-blue text-center text-white rounded mb-4 mt-0">
-        Admin Registration Form
+        Department Head Registration Form
       </header>
 
       {/* Form */}

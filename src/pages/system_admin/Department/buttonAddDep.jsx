@@ -7,7 +7,7 @@ export default function ButtonAddDepartment({ onClick }) {
 
       onClick={onClick}
     >
-      Add Department
+      Add Department Name
     </button>
   );
 }
