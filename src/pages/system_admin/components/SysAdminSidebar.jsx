@@ -84,7 +84,7 @@ export default function Sidebar() {
               alt="Department Icon"
               className="w-12 h-11 mr-2"
             />
-            <span className="text-sm">Department</span>
+            <span className="text-sm">Departmentssss</span>
           </div>
         </li>
         <li>
