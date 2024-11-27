@@ -38,12 +38,12 @@ export default function ContentSideBar() {
         onClick={() => handleNavigation("/system_admin/Users")}
         bold={isActive("/system_admin/Users")}
       />
-      <SidebarItem
+      {/* <SidebarItem
         name="Job Request"
         image={iconRequest}
         onClick={() => handleNavigation("/system_admin/Job_Requests")}
         bold={isActive("/system_admin/Job_Requests")}
-      />
+      /> */}
       <SidebarItem
         name="Department"
         image={iconProfile}

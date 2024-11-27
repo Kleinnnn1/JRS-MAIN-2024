@@ -129,7 +129,7 @@ export default function SysAdminNewRequest({ closeModal }) {
     });
 
     toast.success("Your job request(s) have been submitted successfully.");
-    navigate("/requestor/job_request_table");
+    navigate("/system_admin/job_request_table");
     closeModal();
 
     setJobRequests([
