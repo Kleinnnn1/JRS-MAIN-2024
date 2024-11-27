@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 export default function ButtonAddDepartment({ onClick }) {
   return (
     <button
-      className={`bg-blue-500 text-white m-5 px-3 py-1 text-md font-medium text-center rounded-lg`}
+      className={`bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2  rounded-md`}
+
       onClick={onClick}
     >
       Add Department
@@ -15,3 +16,4 @@ export default function ButtonAddDepartment({ onClick }) {
 ButtonAddDepartment.propTypes = {
   onClick: PropTypes.func, // marginRight is optional and should be a string
 };
+
