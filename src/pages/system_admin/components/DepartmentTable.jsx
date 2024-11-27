@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import 'remixicon/fonts/remixicon.css';
 import Table from '../../../components/Table';
+import ReusablePagination from '../../../components/ReusablePagination';
+import ReusableSearchTerm from '../../../components/ReusableSearchTerm';
 import { useNavigate } from "react-router-dom";
-import ReusableViewButton from './ReusableViewButon';
+import ReusableViewButton from '../../../components/ReusableViewButton';
 import ButtonAddDepartment from '../Department/buttonAddDep';
+import SearchBar from '../../../components/SearchBar';
 import Swal from 'sweetalert2';
 
 // Modal Form (SysAdminAddDepartment)
@@ -43,7 +46,7 @@ const SysAdminAddDepartment = ({ closeModal }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white rounded-lg p-4 w-full max-w-2xl relative">
+      <div className="bg-white rounded-lg p-4  max-w-2xl relative">
         {/* Close Button */}
         <button
           onClick={closeModal}
@@ -54,7 +57,7 @@ const SysAdminAddDepartment = ({ closeModal }) => {
         </button>
 
         {/* Modal Header */}
-        <header className="w-full text-lg p-5 font-semibold bg-custom-blue text-center text-white rounded-t-lg relative">
+        <header className="w-full text-lg p-5 font-semibold bg-custom-blue text-center text-white rounded-lg relative">
           Add Department
         </header>
         
@@ -93,7 +96,11 @@ const SysAdminAddDepartment = ({ closeModal }) => {
 const DeptTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-  
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const tableHeaders = [
     "Department/Section",
     "Head",
@@ -102,39 +109,79 @@ const DeptTable = () => {
     "Action",
   ];
 
-  const tableContent = [
-    [
-      "1. Building And Grounds Maintenance Section",
-      "Thomas Xxxxx",
-      "Active",
-      "Bldg 2",
-      <ReusableViewButton onClick={() => navigate("/")} />,
-    ],
-    [
-      "2. Civil and Sanitary Works Section",
-      "Engr. Balabis Xxxxx",
-      "Active",
-      "Bldg 5, Room 110",
-      <ReusableViewButton onClick={() => navigate("/")} />,
-    ],
-    [
-      "3. Mechanical And Electrical Works Section",
-      "Thomas Xxxxx",
-      "Active",
-      "DRER Right side",
-      <ReusableViewButton onClick={() => navigate("/system_admin/Departments/view")} />,
-    ],
+  const departments = [
+    {
+      name: "Building And Grounds Maintenance Section",
+      head: "Thomas Xxxxx",
+      status: "Active",
+      location: "Bldg 2",
+    },
+    {
+      name: "Civil and Sanitary Works Section",
+      head: "Engr. Balabis Xxxxx",
+      status: "Active",
+      location: "Bldg 5, Room 110",
+    },
+    {
+      name: "Mechanical And Electrical Works Section",
+      head: "Thomas Xxxxx",
+      status: "Active",
+      location: "DRER Right side",
+    },
+    // Add more department data here...
   ];
+
+  const filteredDepartments = departments
+    .filter((department) =>
+      department.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      department.head.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      department.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      department.location.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+  const totalPages = Math.ceil(filteredDepartments.length / rowsPerPage);
+  const paginatedDepartments = filteredDepartments.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
+
+  const tableContent = paginatedDepartments.map((department, index) => [
+    department.name,
+    department.head,
+    department.status,
+    department.location,
+    <ReusableViewButton onClick={() => navigate("/system_admin/Departments/view")} />,
+  ]);
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
   return (
-    <>
-      <ButtonAddDepartment onClick={handleOpenModal} />
-      <Table columns={5} rows={tableContent.length} content={tableContent} headers={tableHeaders} />
+    <div className="mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
+      {/* Header with Add Department and Search */}
+      <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
+      <SearchBar title="Departments" />
+        <div className="flex space-x-4">
+          <ButtonAddDepartment onClick={handleOpenModal} />
+          <ReusableSearchTerm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        </div>
+      </header>
+
+      {/* Table */}
+      <Table columns={5} rows={paginatedDepartments.length} content={tableContent} headers={tableHeaders} />
+
+      {/* Pagination */}
+      <ReusablePagination
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+      />
+
+      {/* Modal for adding department */}
       {isModalOpen && <SysAdminAddDepartment closeModal={handleCloseModal} />}
-    </>
+    </div>
   );
 };
 

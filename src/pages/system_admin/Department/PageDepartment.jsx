@@ -8,12 +8,9 @@ export default function SysAdminDepartmentPage() {
 
     return (
         <>
-         <SearchBar title="Department" />
-           {otherContent ? (
-        <Outlet /> // Render nested routes if present
-      ) : (
+
         <DeptTable />
-      )}
+  
         </>
     );
 }
