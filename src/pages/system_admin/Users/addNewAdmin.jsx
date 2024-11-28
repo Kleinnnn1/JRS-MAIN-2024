@@ -6,10 +6,9 @@
 
 // export default function SysAdminAddNewAdmin() {
 
- 
-//   const [AdminFirstName, setAdminFirstName] = useState('');
-//   const [AdminLastName, setAdminLastName] = useState('');
-//   const [Birthday, setBirthday] = useState('');
+//   const [AdminfName, setAdminfName] = useState('');
+//   const [AdminlName, setAdminLastName] = useState('');
+//   const [birthDate, setbirthDate] = useState('');
 //   const [IDNumber, setIDNumber] = useState('');
 //   const [Email, setEmail] = useState('');
 //   const [Password, setPassword] = useState('');
@@ -26,7 +25,7 @@
 //     // Clear the form after submission
 //     setAdminFirstName('');
 //     setAdminLastName('');
-//     setBirthday('');
+//     setbirthDate('');
 //     setIDNumber('');
 //     setEmail('');
 //     setPassword('');
@@ -152,7 +151,7 @@
 //               required
 //             />
 //           </div>
-         
+
 //         </div>
 //         <div className="flex justify-end p-4">
 //           <ReusableBackButton marginRight={`mr-4`} />
@@ -163,46 +162,59 @@
 //   );
 // }
 // __________________________________________________________________________________________________________
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { insertRequest } from "../../../service/apiRequestorRequestTable";
+import { useSignUp } from "../../../auth/useSignUp"; // Import useSignUp hook
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import supabase from "../../../service/supabase"; // Import your Supabase client
 
 // SysAdminAddNewAdmin Component
 export default function SysAdminAddNewAdmin({ closeModal }) {
   const { handleSubmit } = useForm();
   const queryClient = useQueryClient();
-  const [jobRequests, setJobRequests] = useState([
+  const { signup } = useSignUp(); // Use the signup hook
+  const [accounts, setAccounts] = useState([
     {
       id: 1,
-      employeeId: "",
-      firstName: "",
-      lastName: "",
-      birthday: "",
-      email: "",
-      password: "",
-      department: "",
+      idNumber: "1",
+      fName: "1",
+      lName: "1",
+      birthDate: "",
+      email: "1@gmail.com",
+      password: "12345678",
+      contactNumber: "1", // Add contactNumber to account state
+      deptId: "", // Renamed to deptId
     },
   ]);
   const [showPassword, setShowPassword] = useState(false);
+  const [departments, setDepartments] = useState([]); // Store departments from Supabase
 
-  const { mutate } = useMutation({
-    mutationFn: insertRequest,
-    onSuccess: () => {
-      toast.success("Successfully Registered New User");
-      queryClient.invalidateQueries({ queryKey: ["requests"] });
-    },
-    onError: (err) => toast.error(err.message),
-  });
+  // Fetch departments from Supabase when the component mounts
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      const { data, error } = await supabase
+        .from("Department")
+        .select("deptId, deptName");
+
+      if (error) {
+        toast.error("Failed to load departments.");
+        console.error(error);
+      } else {
+        setDepartments(data); // Set departments in state
+      }
+    };
+
+    fetchDepartments();
+  }, []); // Run once when the component mounts
 
   // Update specific input fields based on their id and field name
   const handleInputChange = (id, field, value) => {
-    setJobRequests((prevRequests) =>
-      prevRequests.map((request) =>
-        request.id === id ? { ...request, [field]: value } : request
+    setAccounts((prevAccounts) =>
+      prevAccounts.map((account) =>
+        account.id === id ? { ...account, [field]: value } : account
       )
     );
   };
@@ -212,15 +224,15 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
   };
 
   const onSubmit = () => {
-    const hasEmptyFields = jobRequests.some(
-      (request) =>
-        !request.employeeId ||
-        !request.firstName ||
-        !request.lastName ||
-        !request.birthday ||
-        !request.email ||
-        !request.password ||
-        !request.department
+    const hasEmptyFields = accounts.some(
+      (account) =>
+        !account.idNumber ||
+        !account.fName ||
+        !account.lName ||
+        !account.birthDate ||
+        !account.email ||
+        !account.contactNumber || // Check for contactNumber
+        !account.deptId // Check for deptId
     );
 
     if (hasEmptyFields) {
@@ -228,7 +240,23 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
       return;
     }
 
-    jobRequests.forEach((request) => mutate(request));
+    // Map accounts to signup payload and assign default userRole as "department head"
+    accounts.forEach((account) => {
+      const newUser = {
+        idNumber: account.idNumber,
+        fName: account.fName,
+        lName: account.lName,
+        birthDate: account.birthDate,
+        email: account.email,
+        contactNumber: account.contactNumber, // Add contactNumber to the payload
+        password: "12345678", // Default password
+        deptId: account.deptId, // This is now deptId (department ID)
+        userRole: "department head", // Default role
+      };
+
+      signup(newUser); // Call the signup API
+    });
+
     toast.success("Successfully Submitted.");
     closeModal();
   };
@@ -251,15 +279,15 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
 
       {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)}>
-        {jobRequests.map((request) => (
-          <div key={request.id} className="space-y-4">
+        {accounts.map((account) => (
+          <div key={account.id} className="space-y-4">
             <input
               type="text"
               placeholder="Employee ID"
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={request.employeeId}
+              value={account.idNumber}
               onChange={(e) =>
-                handleInputChange(request.id, "employeeId", e.target.value)
+                handleInputChange(account.id, "idNumber", e.target.value)
               }
               required
             />
@@ -267,9 +295,9 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
               type="text"
               placeholder="First Name"
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={request.firstName}
+              value={account.fName}
               onChange={(e) =>
-                handleInputChange(request.id, "firstName", e.target.value)
+                handleInputChange(account.id, "fName", e.target.value)
               }
               required
             />
@@ -277,19 +305,19 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
               type="text"
               placeholder="Last Name"
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={request.lastName}
+              value={account.lName}
               onChange={(e) =>
-                handleInputChange(request.id, "lastName", e.target.value)
+                handleInputChange(account.id, "lName", e.target.value)
               }
               required
             />
             <input
               type="date"
-              placeholder="Birthday"
+              placeholder="birthDate"
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={request.birthday}
+              value={account.birthDate}
               onChange={(e) =>
-                handleInputChange(request.id, "birthday", e.target.value)
+                handleInputChange(account.id, "birthDate", e.target.value)
               }
               required
             />
@@ -297,9 +325,19 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
               type="email"
               placeholder="Email"
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={request.email}
+              value={account.email}
               onChange={(e) =>
-                handleInputChange(request.id, "email", e.target.value)
+                handleInputChange(account.id, "email", e.target.value)
+              }
+              required
+            />
+            <input
+              type="tel"
+              placeholder="Contact Number"
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+              value={account.contactNumber}
+              onChange={(e) =>
+                handleInputChange(account.id, "contactNumber", e.target.value)
               }
               required
             />
@@ -308,9 +346,9 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-                value={request.password}
+                value={account.password}
                 onChange={(e) =>
-                  handleInputChange(request.id, "password", e.target.value)
+                  handleInputChange(account.id, "password", e.target.value)
                 }
                 required
               />
@@ -322,16 +360,25 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
-            <input
-              type="text"
-              placeholder="Department"
+
+            {/* Department Dropdown */}
+            <select
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={request.department}
-              onChange={(e) =>
-                handleInputChange(request.id, "department", e.target.value)
-              }
+              value={account.deptId} // Now uses deptId
+              onChange={(e) => {
+                handleInputChange(account.id, "deptId", e.target.value); // Update deptId
+              }}
               required
-            />
+            >
+              <option value="" className="hidden">
+                Select Department
+              </option>
+              {departments.map((dept) => (
+                <option key={dept.deptId} value={dept.deptId}>
+                  {dept.deptName} {/* Displays department name */}
+                </option>
+              ))}
+            </select>
           </div>
         ))}
 
