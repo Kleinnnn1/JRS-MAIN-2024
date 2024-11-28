@@ -87,7 +87,7 @@ export default function AdminContent() {
     "Date Joined",
     "Actions",
   ];
-// dept head
+  // dept head
   return (
     <div className="p-6 mx-5 mt-10 bg-white rounded-lg shadow-lg">
       {/* Header with Search and Add Admin button */}
