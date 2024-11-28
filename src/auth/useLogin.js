@@ -54,6 +54,8 @@ export function useLogin() {
         "department head": "/department_head",
         staff: "/staff",
         requestor: "/requestor",
+        "office head": "/office_head",
+        spme: "/spme",
       };
 
       const targetRoute = roleRoutes[data.user.userRole] || "/login";

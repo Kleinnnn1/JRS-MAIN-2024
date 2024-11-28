@@ -126,7 +126,6 @@ import SysAdminSpmeContent from "./pages/system_admin/Users/ContentSpme";
 // Office Head
 import ContentDashboard from "./pages/office_org_head/Dashboard/ContentDashboard.jsx";
 
-
 import SignUpForm from "./auth/SignUpForm.jsx";
 // SPME
 import SPMEDashboard from "./pages/spme/Dashboard/SpmsPageDashboard.jsx";
@@ -188,32 +187,34 @@ export default function App() {
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
           {/* SPME ROUTE */}
-          <Route path="/spme" element={ <SPMEDashboard />} > 
-          <Route path="make_requestSpme" element={<SpmeJobRequest />} />
-          <Route
-                path="make_request_tableSpme"
-                element={<SpmeJobRequestTable />}/>
-          <Route
-                  path="make_request_formSpme"
-                  element={<SpmeJobRequestForm />}
-               />
-               <Route
-                  path="job_request_detailSpme"
-                  element={<SpmeJobRequestDetail />}
-                />
-                <Route
-                  path="job_request_approvedSpme"
-                  element={<SpmeJobRequestApproved />}
-                />
-                <Route
-                  path="job_request_completedSpme"
-                  element={<SpmeJobRequestCompleted />}
-                />
-                <Route
-                  path="job_request_certificateSpme"
-                  element={<SpmeCertificate />}/>
-              </Route>
-       
+          <Route path="/spme" element={<SPMEDashboard />}>
+            <Route path="make_requestSpme" element={<SpmeJobRequest />} />
+            <Route
+              path="make_request_tableSpme"
+              element={<SpmeJobRequestTable />}
+            />
+            <Route
+              path="make_request_formSpme"
+              element={<SpmeJobRequestForm />}
+            />
+            <Route
+              path="job_request_detailSpme"
+              element={<SpmeJobRequestDetail />}
+            />
+            <Route
+              path="job_request_approvedSpme"
+              element={<SpmeJobRequestApproved />}
+            />
+            <Route
+              path="job_request_completedSpme"
+              element={<SpmeJobRequestCompleted />}
+            />
+            <Route
+              path="job_request_certificateSpme"
+              element={<SpmeCertificate />}
+            />
+          </Route>
+
           {/* Protected Routes for Staff */}
           <Route
             path="/staff/*"
@@ -305,7 +306,7 @@ export default function App() {
               <Route path="spme" element={<SysAdminSpmeContent />} />
               <Route path="add_spme" element={<SysAdminAddNewSpme />} />
               <Route path="view_spme" element={<SysAdminViewSpme />} />
-{/* WALAY OFFICE HEAD */}
+              {/* WALAY OFFICE HEAD */}
               <Route path="sysadmin" element={<SystemAdminContentPage />} />
               <Route path="add_sysadmin" element={<SysAdminAddNewSysAdmin />} />
               <Route path="view_sysadmin" element={<SysAdminViewSysAdmin />} />
@@ -324,37 +325,64 @@ export default function App() {
           {/* Protected Routes for Office Head */}
 
           <Route
-            path="/office_head/"
+            path="/office_head/*"
             element={
-              // <ProtectedRoute requiredRole="Office head">
+              <ProtectedRoute requiredRole="office head">
                 <OfficeHeadDashboard />
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           >
             <Route path="dashboard" element={<OfficeHeadContentDashboard />} />
-            <Route path="myprofile" element={<OfficeHeadProfilePage />} >
-            <Route path="user_account" element={<OfficeHeadUserInformation />} />
-              <Route path="change_avatar" element={<OfficeHeadChangeAvatar />} />
-              <Route path="change_password" element={<OfficeHeadChangePassword />} />
+            <Route path="myprofile" element={<OfficeHeadProfilePage />}>
+              <Route
+                path="user_account"
+                element={<OfficeHeadUserInformation />}
+              />
+              <Route
+                path="change_avatar"
+                element={<OfficeHeadChangeAvatar />}
+              />
+              <Route
+                path="change_password"
+                element={<OfficeHeadChangePassword />}
+              />
             </Route>
             <Route path="staff" element={<OfficeHeadEmployee />}>
               <Route path="add" element={<OfficeHeadViewAddStaff />} />
               <Route path="view" element={<OfficeHeadViewEmployee />} />
-              <Route path="history" element={<OfficeHeadTableEmployeeHistory />}>
-                <Route path="view" element={<OfficeHeadViewEmployeeHistory />} />
+              <Route
+                path="history"
+                element={<OfficeHeadTableEmployeeHistory />}
+              >
+                <Route
+                  path="view"
+                  element={<OfficeHeadViewEmployeeHistory />}
+                />
               </Route>
             </Route>
             <Route path="report" element={<OfficeHeadReport />}>
               <Route path="view" element={<OfficeHeadReportView />} />
-              <Route path="send_report" element={<OfficeHeadSendReportView />} />
+              <Route
+                path="send_report"
+                element={<OfficeHeadSendReportView />}
+              />
               <Route path="employee" element={<ViewAddEmployee />} />
             </Route>
-            <Route path="my_requests" element={<JobRequestPage />} >
-              <Route path="my_request_table" element={<OfficeHeadJobRequestTable />}/>
-              <Route path="my_request_form" element={<OfficeHeadJobRequestForm />}/>
+            <Route path="my_requests" element={<JobRequestPage />}>
+              <Route
+                path="my_request_table"
+                element={<OfficeHeadJobRequestTable />}
+              />
+              <Route
+                path="my_request_form"
+                element={<OfficeHeadJobRequestForm />}
+              />
             </Route>
-            <Route path="approve_staff" element={<OfficeHeadApproveEmployee />} />
-            
+            <Route
+              path="approve_staff"
+              element={<OfficeHeadApproveEmployee />}
+            />
+
             {/* <Route path='Departments' element={<DepartmentPage/>}>
                 <Route path='add' element={<AddDepartment />} />
                 <Route path='view' element={<ViewingDepartment />} />
@@ -363,11 +391,7 @@ export default function App() {
           <Route path='History' element={<PageHistoryDepartmentHead/>}/>
           <Route path='Reports' element={<PageReport/>}/>
            <Route path='register' element={<RegisterMe/>}/> */}
-
           </Route>
-
-
-
 
           {/* Protected Routes for Department Head */}
           <Route

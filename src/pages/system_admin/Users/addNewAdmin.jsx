@@ -240,8 +240,12 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
       return;
     }
 
-    // Map accounts to signup payload and assign default userRole as "department head"
+    // Map accounts to signup payload and assign userRole based on deptId
     accounts.forEach((account) => {
+      const userRole = [1, 2, 3].includes(account.deptId)
+        ? "department head"
+        : "office head";
+
       const newUser = {
         idNumber: account.idNumber,
         fName: account.fName,
@@ -251,7 +255,7 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
         contactNumber: account.contactNumber, // Add contactNumber to the payload
         password: "12345678", // Default password
         deptId: account.deptId, // This is now deptId (department ID)
-        userRole: "department head", // Default role
+        userRole: userRole, // Set the userRole based on deptId
       };
 
       signup(newUser); // Call the signup API
