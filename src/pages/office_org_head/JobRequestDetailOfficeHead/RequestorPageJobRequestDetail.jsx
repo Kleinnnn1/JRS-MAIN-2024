@@ -1,0 +1,15 @@
+import SearchBar from "../../../components/SearchBar";
+import OfficeHeadContentJobRequest from "../JobRequestDetailOfficeHead/RequestorContentJobRequestDetail"
+
+
+export default function OfficeHeadRequestorJobRequestDetail() {
+    return (
+      <>
+        <div className="my-4 mx-3 py-2 px-4 bg-custom-blue flex items-center min-h-20 shadow-md shadow-black/5 rounded-xl">
+        <SearchBar title="Specific Record" />
+        </div>
+
+        <OfficeHeadContentJobRequest />
+      </>
+    );
+}
