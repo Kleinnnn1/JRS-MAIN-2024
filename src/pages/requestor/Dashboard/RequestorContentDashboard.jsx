@@ -18,12 +18,16 @@ export default function ContentDashboard() {
     queryFn: getRequestorRequest,
   });
 
-  // Count the number of pending requests
-  const pendingCount = requests.length;
-
+  // Handle any errors while fetching data
   if (error) {
     console.error("Error fetching requests:", error);
   }
+
+  // Count the number of requests in each status
+  const pendingCount = requests.filter(request => request.status === "Pending").length;
+  const ongoingCount = requests.filter(request => request.status === "InProgress").length;
+  const completedCount = requests.filter(request => request.status === "Completed").length;
+  const referralCount = requests.filter(request => request.status === "Referral").length;
 
   return (
     <>
@@ -44,29 +48,29 @@ export default function ContentDashboard() {
         />
         <StatusCard
           title="Ongoing"
-          count={0}
-          bgColor={statusCardColor}
+          count={ongoingCount} // Display the count of ongoing requests
           icon={<FaHourglassStart />}
           iconColor="text-yellow-400"
           titleColor="text-yellow-500"
+          bgColor={statusCardColor}
           onClick={() => navigate("/requestor/job_ongoing")}
         />
         <StatusCard
           title="Completed"
-          bgColor={statusCardColor}
-          count={0}
+          count={completedCount} // Display the count of completed requests
           icon={<FaCheckCircle />}
-          titleColor="text-green-500"
           iconColor="text-green-500"
+          titleColor="text-green-500"
+          bgColor={statusCardColor}
           onClick={() => navigate("/requestor/job_completed")}
         />
         <StatusCard
           title="Referral"
-          count={0}
+          count={referralCount} // Display the count of referral requests
           icon={<FaRegHandPointer />}
-          bgColor={statusCardColor}
-          titleColor="text-purple-500"
           iconColor="text-purple-500"
+          titleColor="text-purple-500"
+          bgColor={statusCardColor}
           onClick={() => navigate("/requestor/job_referral")}
         />
       </div>
