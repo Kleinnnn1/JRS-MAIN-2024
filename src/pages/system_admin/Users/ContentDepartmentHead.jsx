@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ReusablePagination from "../../../components/ReusablePagination"; // Assuming this component exists
-import ReusableSearchTerm from "../../../components/ReusableSearchTerm"; // Assuming this component exists
+import ReusablePagination from "../../../components/ReusablePagination";
+import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
 import Table from "../../../components/Table";
-import SearchBar from "../../../components/SearchBar"; // Assuming this component exists
-import SysAdminAddNewAdmin from "./addNewAdmin"; // Ensure the path matches your file structure
-import { getDepartmentHeads } from "../../../service/apiSysAdDeptHeadUser"; // Import the API function
+import SearchBar from "../../../components/SearchBar";
+import SysAdminAddNewAdmin from "./addNewAdmin";
+import supabase from "../../../service/supabase";
 
 export default function AdminContent() {
   const navigate = useNavigate();
 
-  // States for modal, search, pagination, and data fetching
+  // States
   const [searchTerm, setSearchTerm] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,29 +19,68 @@ export default function AdminContent() {
   const [loading, setLoading] = useState(true);
 
   // Fetch department heads from the backend
-  useEffect(() => {
-    const fetchAdmins = async () => {
-      try {
-        const data = await getDepartmentHeads();
-        const formattedData = data.flatMap((department) =>
-          department.heads.map((head) => ({
-            deptName: department.deptName,
-            fullName: head.fullName,
-            dateCreated: new Date(head.createdAt).toLocaleDateString(),
-          }))
+  const fetchAdmins = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("Department")
+        .select(
+          `
+          deptName,
+          User (
+            fullName,
+            userRole,
+            created_at
+          )
+        `
         );
-        setAdmins(formattedData);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching department heads:", error);
-        setLoading(false);
-      }
-    };
+      if (error) throw error;
+
+      const formattedData = data.flatMap((department) =>
+        department.User.filter(
+          (user) => user.userRole === "department head" || user.userRole === "office head"
+        ).map((head) => ({
+          deptName: department.deptName,
+          fullName: head.fullName,
+          dateCreated: new Date(head.created_at).toLocaleDateString(),
+        }))
+      );
+      setAdmins([...formattedData]);  // Ensure a new reference for re-render
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching department heads:", error);
+      setLoading(false);
+    }
+  };
+
+  // UseEffect to fetch initial data and setup realtime subscription
+  useEffect(() => {
+    // Fetch initial data
     fetchAdmins();
+
+    // Subscribe to realtime updates from the User table, not Department
+    const channel = supabase
+      .channel("public:User")  // Listen to the 'User' table for any changes
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "User" },
+        async (payload) => {
+          console.log("Realtime event:", payload);
+          await fetchAdmins(); // Refresh data on any change
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on component unmount
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleAddAdmin = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const closeModal = async () => {
+    setIsModalOpen(false);
+    await fetchAdmins();  // Ensure data is refreshed after closing the modal
+  };
   const handleClickOutsideModal = (e) => {
     if (e.target.id === "modalBackdrop") closeModal();
   };
@@ -61,7 +100,7 @@ export default function AdminContent() {
     currentPage * rowsPerPage
   );
 
-  // Table content for displaying admins
+  // Table content
   const tableContent =
     paginatedAdmins.length > 0
       ? paginatedAdmins.map((admin, index) => [
@@ -70,15 +109,14 @@ export default function AdminContent() {
           admin.dateCreated,
           <button
             key={index}
-            onClick={() => navigate(`/system_admin/Users/view_admin/${index}`)} // Navigate to view specific admin
+            onClick={() => navigate(`/system_admin/Users/view_admin/${index}`)}
             className="text-blue-600 hover:text-blue-800"
           >
             View
           </button>,
         ])
-      : [[]]; // Default value when no admins are available
+      : [[]];
 
-  // Table headers for admins
   const tableHeaders = [
     "Name",
     "Department",
@@ -88,7 +126,7 @@ export default function AdminContent() {
 
   return (
     <div className="p-6 mx-5 mt-10 bg-white rounded-lg shadow-lg">
-      {/* Header with Search and Add Admin button */}
+      {/* Header */}
       <header className="bg-custom-blue text-white p-4 rounded-lg flex justify-between items-center">
         <SearchBar title="Department Head" />
         <div className="flex space-x-4">
@@ -106,9 +144,8 @@ export default function AdminContent() {
       </header>
 
       {/* Table */}
-
       <Table
-        columns={4} // Adjusted for the number of columns (Name, Department, Date Created, Actions)
+        columns={4}
         rows={paginatedAdmins.length}
         content={tableContent}
         headers={tableHeaders}
@@ -123,7 +160,7 @@ export default function AdminContent() {
         totalPages={totalPages}
       />
 
-      {/* Modal for adding a new admin */}
+      {/* Modal */}
       {isModalOpen && (
         <div
           id="modalBackdrop"
@@ -136,6 +173,7 @@ export default function AdminContent() {
     </div>
   );
 }
+
 
 // import { useNavigate } from "react-router-dom";
 // import { useState } from "react";
