@@ -9,7 +9,7 @@ export default function UserType() {
         <>
             <SearchBar title="Users" />
             <div className='m-5'>
-                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6'>
                     {/* Button 1: USER / REQUESTOR */}
                     <button
                         onClick={() => navigate("/system_admin/Users/reg_users")}
@@ -50,7 +50,7 @@ export default function UserType() {
                     </button>
 
                     {/* Button 4: SPME */}
-                    <button
+                    {/* <button
                         onClick={() => navigate("/system_admin/Users/spme")}
                         className='text-center bg-custom-color border shadow-md rounded-lg hover:scale-105 hover:shadow-lg hover:bg-custom-hover-color transition-all duration-300 font-bold p-10'
                     >
@@ -60,7 +60,7 @@ export default function UserType() {
                         </div>
                         <p className='font-thin'>No of spme users: </p>
                         <p className='text-center font-thin'>1000</p>
-                    </button>
+                    </button> */}
                 </div>
 
                 <Outlet />
