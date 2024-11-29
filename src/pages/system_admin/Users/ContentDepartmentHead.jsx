@@ -62,18 +62,21 @@ export default function AdminContent() {
   );
 
   // Table content for displaying admins
-  const tableContent = paginatedAdmins.map((admin, index) => [
-    admin.fullName,
-    admin.deptName,
-    admin.dateCreated,
-    <button
-      key={index}
-      onClick={() => navigate(`/system_admin/Users/view_admin/${index}`)} // Navigate to view specific admin
-      className="text-blue-600 hover:text-blue-800"
-    >
-      View
-    </button>,
-  ]);
+  const tableContent =
+    paginatedAdmins.length > 0
+      ? paginatedAdmins.map((admin, index) => [
+          admin.fullName,
+          admin.deptName,
+          admin.dateCreated,
+          <button
+            key={index}
+            onClick={() => navigate(`/system_admin/Users/view_admin/${index}`)} // Navigate to view specific admin
+            className="text-blue-600 hover:text-blue-800"
+          >
+            View
+          </button>,
+        ])
+      : [[]]; // Default value when no admins are available
 
   // Table headers for admins
   const tableHeaders = [
@@ -103,16 +106,13 @@ export default function AdminContent() {
       </header>
 
       {/* Table */}
-      {loading ? (
-        <p className="text-center text-gray-500 mt-10">Loading...</p>
-      ) : (
-        <Table
-          columns={4} // Adjusted for the number of columns (Name, Department, Date Created, Actions)
-          rows={paginatedAdmins.length}
-          content={tableContent}
-          headers={tableHeaders}
-        />
-      )}
+
+      <Table
+        columns={4} // Adjusted for the number of columns (Name, Department, Date Created, Actions)
+        rows={paginatedAdmins.length}
+        content={tableContent}
+        headers={tableHeaders}
+      />
 
       {/* Pagination */}
       <ReusablePagination

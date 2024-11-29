@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { useSignUp } from "./useSignUp";
 import imageRegister from "../assets/images/register.png";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
+import supabase from "../service/supabase"; // Import Supabase client
 
 function SignUpForm() {
   const { signup } = useSignUp();
@@ -23,7 +24,29 @@ function SignUpForm() {
   const [isPasswordValid, setIsPasswordValid] = useState(false); // Track if password is valid
   const [isPasswordMatch, setIsPasswordMatch] = useState(true); // Track if passwords match
 
+  const [departments, setDepartments] = useState([]); // Store departments from Supabase
+
   const navigate = useNavigate();
+
+  // Fetch departments from Supabase when the component mounts
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      const { data, error } = await supabase
+        .from("Department")
+        .select("deptId, deptName")
+        .neq("deptId", 1) // Exclude deptId = 1
+        .neq("deptId", 2) // Exclude deptId = 2
+        .neq("deptId", 3); // Exclude deptId = 3
+
+      if (error) {
+        console.error(error);
+      } else {
+        setDepartments(data); // Set departments in state
+      }
+    };
+
+    fetchDepartments();
+  }, []);
 
   function onSubmit(data) {
     // Add userRole with default value "requestor" before submitting
@@ -33,6 +56,10 @@ function SignUpForm() {
     };
 
     signup(formData, {
+      onSuccess: () => {
+        // Navigate to login page after successful sign up
+        navigate("/login");
+      },
       onSettled: () => reset(),
     });
   }
@@ -198,25 +225,24 @@ function SignUpForm() {
               </FormRow>
             </div>
 
-            {/* Fourth Row: Department */}
+            {/* Department Dropdown */}
             <FormRow label="Department" error={errors.deptId?.message}>
               <select
                 {...register("deptId", { required: "Department is required" })}
                 className="w-full p-2 border border-gray-300 rounded"
               >
-                <option value="" disabled className="hidden">
+                <option value="" className="hidden">
                   Select Department
                 </option>
-                <option value="CDO Bites">CDO Bites</option>
-                <option value="CEA Department">CEA Department</option>
-                <option value="CITC Department">CITC Department</option>
-                <option value="CSTE Department">CSTE Department</option>
-                <option value="LRC">LRC</option>
-                <option value="Others">Others</option>
+                {departments.map((dept) => (
+                  <option key={dept.deptId} value={dept.deptId}>
+                    {dept.deptName}
+                  </option>
+                ))}
               </select>
             </FormRow>
 
-            {/* Fifth Row: Password and Confirm Password */}
+            {/* Password and Confirm Password */}
             <div className="flex space-x-3">
               <FormRow label="Password" error={errors.password?.message}>
                 <div className="relative w-full">
@@ -228,17 +254,13 @@ function SignUpForm() {
                         value: 8,
                         message: "Password must be at least 8 characters",
                       },
-                      onChange: (e) => {
-                        validatePassword(e.target.value);
-                      },
+                      onChange: (e) => validatePassword(e.target.value),
                     })}
                     className="w-full p-2 border border-gray-300 rounded"
                   />
                   <span
-                    className={`absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer ${
-                      showPassword ? "opacity-100" : "opacity-50"
-                    }`}
                     onClick={togglePasswordVisibility}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
                   >
                     {showPassword ? <FaEye /> : <FaEyeSlash />}
                   </span>
@@ -257,20 +279,13 @@ function SignUpForm() {
                     type={showConfirmPassword ? "text" : "password"}
                     {...register("confirmPassword", {
                       required: "Confirm Password is required",
-                      validate: (value) =>
-                        value === getValues("password") ||
-                        "Passwords do not match",
-                      onChange: (e) => {
-                        validateConfirmPassword(e.target.value);
-                      },
+                      validate: validateConfirmPassword,
                     })}
                     className="w-full p-2 border border-gray-300 rounded"
                   />
                   <span
-                    className={`absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer ${
-                      showConfirmPassword ? "opacity-100" : "opacity-50"
-                    }`}
                     onClick={toggleConfirmPasswordVisibility}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
                   >
                     {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
                   </span>
@@ -284,12 +299,11 @@ function SignUpForm() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white p-2 rounded mt-4 hover:bg-blue-600"
+              className="w-full p-2 bg-blue-500 text-white rounded"
               disabled={!isPasswordValid || !isPasswordMatch}
             >
               Sign Up
             </button>
-
             {/* Already have an account */}
             <div className="text-center mt-4">
               <p>

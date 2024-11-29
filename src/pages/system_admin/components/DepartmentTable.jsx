@@ -8,46 +8,36 @@ import ReusableViewButton from "../../../components/ReusableViewButton";
 import ButtonAddDepartment from "../Department/buttonAddDep";
 import SearchBar from "../../../components/SearchBar";
 import Swal from "sweetalert2";
-import { insertDepartment } from "../../../service/apiSystemDepartmentHeadTable";
+import { insertDepartment } from "../../../service/apiSysAdDepartments";
 import toast from "react-hot-toast";
-import { getDepartments } from "../../../service/apiSystemDepartmentHeadTable"; // Import getDepartments
+import { getDepartments } from "../../../service/apiSysAdDepartments";
 
-// Modal Form (SysAdminAddDepartment)
 const SysAdminAddDepartment = ({ closeModal }) => {
   const [departmentName, setDepartmentName] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validate department name
     if (!departmentName) {
       Swal.fire("Error", "Department name is required", "error");
       return;
     }
 
     try {
-      // Call backend to insert the department
       const newDepartment = { deptName: departmentName };
       await insertDepartment(newDepartment);
 
-      // Success message
       toast.success("Department added successfully");
-
-      // Clear the form after submission
       setDepartmentName("");
-
-      // Close the modal after submission
       closeModal();
     } catch (error) {
-      // Error handling
       Swal.fire("Error", error.message || "An error occurred", "error");
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white rounded-lg p-4  max-w-2xl relative">
-        {/* Close Button */}
+      <div className="bg-white rounded-lg p-4 max-w-2xl relative">
         <button
           onClick={closeModal}
           className="absolute -top-4 -right-4 bg-yellow-300 text-black text-4xl rounded-full h-10 w-10 flex items-center justify-center border-4 border-yellow-300 hover:bg-gray-100 hover:text-red-600 shadow-lg"
@@ -55,15 +45,10 @@ const SysAdminAddDepartment = ({ closeModal }) => {
         >
           &times;
         </button>
-
-        {/* Modal Header */}
         <header className="w-full text-lg p-5 font-semibold bg-custom-blue text-center text-white rounded-lg relative">
           Add Department
         </header>
-
-        {/* Modal Body */}
         <form className="mt-5" onSubmit={handleSubmit}>
-          {/* Department Name */}
           <div>
             <label
               className="text-gray-700 font-bold mb-10"
@@ -81,7 +66,6 @@ const SysAdminAddDepartment = ({ closeModal }) => {
               required
             />
           </div>
-          {/* Add Button */}
           <div className="flex justify-end">
             <button
               type="submit"
@@ -98,14 +82,13 @@ const SysAdminAddDepartment = ({ closeModal }) => {
 
 const DeptTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [departments, setDepartments] = useState([]); // State to store departments
+  const [departments, setDepartments] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
   const tableHeaders = ["Department Name", "Department/Office Head", "Action"];
 
-  // Fetch departments data
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
@@ -117,7 +100,7 @@ const DeptTable = () => {
     };
 
     fetchDepartments();
-  }, []); // Fetch departments when the component mounts
+  }, []);
 
   const filteredDepartments = departments.filter(
     (department) =>
@@ -131,18 +114,20 @@ const DeptTable = () => {
     currentPage * rowsPerPage
   );
 
-  const tableContent = paginatedDepartments.map((department, index) => [
-    department.deptName, // Adjust based on the response data
-    department.deptHead, // Adjust based on the response data
-    <ReusableViewButton key={department.id} id={department.id} />, // Assuming you have an ID
-  ]);
+  const tableContent =
+    paginatedDepartments.length > 0
+      ? paginatedDepartments.map((department, index) => [
+          department.deptName,
+          department.deptHead,
+          <ReusableViewButton key={department.id} id={department.id} />,
+        ])
+      : [[]];
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
   return (
     <div className="p-6 mx-5 mt-10 bg-white rounded-lg shadow-lg">
-      {/* Header with Add Department and Search */}
       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
         <SearchBar title="Departments" />
         <div className="flex space-x-4">
@@ -153,16 +138,12 @@ const DeptTable = () => {
           />
         </div>
       </header>
-
-      {/* Table */}
       <Table
         columns={5}
         rows={paginatedDepartments.length}
         content={tableContent}
         headers={tableHeaders}
       />
-
-      {/* Pagination */}
       <ReusablePagination
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
@@ -170,8 +151,6 @@ const DeptTable = () => {
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
       />
-
-      {/* Modal for adding department */}
       {isModalOpen && <SysAdminAddDepartment closeModal={handleCloseModal} />}
     </div>
   );
