@@ -1,9 +1,19 @@
 import PropTypes from "prop-types";
 
-export default function StatusCard({ title, count, bgColor, subText, onClick, icon, titleColor, iconColor }) {
+export default function StatusCard({
+  title,
+  count,
+  bgColor = "bg-blue-50",
+  subText,
+  onClick,
+  icon,
+  titleColor = "text-gray-800",
+  iconColor = "text-gray-400",
+  gridSpan = "lg:col-span-1", // Default grid span, can be overridden
+}) {
   return (
     <div
-      className={`flex flex-col justify-center items-center ${bgColor} p-6 shadow-lg rounded-lg shadow-black/2 hover:shadow-sm hover:shadow-black/20 transform hover:scale-105 cursor-pointer transition-transform duration-300`}
+      className={`flex flex-col justify-center items-center ${bgColor} p-6 shadow-lg rounded-lg shadow-black/2 hover:shadow-sm hover:shadow-black/20 transform hover:scale-105 cursor-pointer transition-transform duration-300 ${gridSpan}`}
       onClick={onClick}
     >
       {/* Count and Icon Section */}
@@ -12,7 +22,7 @@ export default function StatusCard({ title, count, bgColor, subText, onClick, ic
           {count}
         </div>
         {icon && (
-          <div className={`text-2xl ${iconColor ? iconColor : 'text-gray-400'}`}>
+          <div className={`text-2xl ${iconColor}`}>
             {icon}
           </div>
         )}
@@ -20,7 +30,7 @@ export default function StatusCard({ title, count, bgColor, subText, onClick, ic
 
       {/* Title and Subtext */}
       <div className="text-center mt-4">
-        <div className={`text-lg ${titleColor ? titleColor : 'text-gray-800'} font-medium`}>
+        <div className={`text-lg ${titleColor} font-medium`}>
           {title}
         </div>
         {subText && (
@@ -42,4 +52,5 @@ StatusCard.propTypes = {
   icon: PropTypes.node, // Optional icon
   titleColor: PropTypes.string, // Color for the title
   iconColor: PropTypes.string, // Color for the icon
+  gridSpan: PropTypes.string, // Optional grid span to control how much space it takes
 };

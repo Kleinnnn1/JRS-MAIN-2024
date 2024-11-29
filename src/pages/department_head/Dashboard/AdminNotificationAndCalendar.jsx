@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import Calendar from 'react-calendar';
+import ReusableCalendar from "../../../components/ReusableCalendar";
 import 'react-calendar/dist/Calendar.css'; // Import the calendar styles
 
 export default function AdminStatusCardAndCalendar() {
@@ -10,8 +10,8 @@ export default function AdminStatusCardAndCalendar() {
       <div className="grid lg:grid-cols-3 gap-10 h-[50vh]">
         {/* NOTIFICATION */}
         <div className="bg-white  border lg:col-span-2 shadow-md shadow-black/5 flex flex-col justify-between  h-full">
-          <div className="bg-yellow-400">
-            <div className="text-2xl p-2 ml-2 text-black font-bold">
+        <div className="bg-custom-blue rounded-t-lg  ">
+            <div className="text-2xl text-white p-2 ml-2 text-black font-bold">
               Notifications
             </div>
           </div>
@@ -44,7 +44,7 @@ export default function AdminStatusCardAndCalendar() {
 
         {/* CALENDAR */}
 
-        <Calendar className="h-full w-full text-xl" />
+       <ReusableCalendar />
       </div>
     </div>
   );

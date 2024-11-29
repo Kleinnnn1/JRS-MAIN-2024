@@ -9,60 +9,57 @@ export default function UserType() {
         <>
             <SearchBar title="Users" />
             <div className='m-5'>
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-                    {/* Button 1 */}
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+                    {/* Button 1: USER / REQUESTOR */}
                     <button
                         onClick={() => navigate("/system_admin/Users/reg_users")}
-                        className='text-center bg-custom-blue text-white border border-zinc-700 rounded font-bold p-10'
+                        className='text-center bg-custom-color border shadow-md rounded-lg hover:scale-105 hover:shadow-lg hover:bg-custom-hover-color transition-all duration-300 font-bold p-10'
                     >
-                        <p className='text-xs m-2 text-white'>Click to view</p>
-                        <p className='text-yellow-500 m-3'>USER / REQUESTOR</p>
+                        <div className='flex justify-center items-center'>
+                        <i className='ri-user-star-line text-4xl mr-3'></i>
+                            <p className='text-black text-xl font-bold font-sans m-3'>USER / REQUESTOR</p>
+                        </div>
                         <p className='font-thin'>No of Users: </p>
-                        <p className='text-center'>1000</p>
+                        <p className='text-center font-thin'>1000</p>
                     </button>
 
-                    {/* Button 2 */}
+                    {/* Button 2: DEPARTMENT HEAD */}
                     <button
                         onClick={() => navigate("/system_admin/Users/admin")}
-                        className='text-center bg-custom-blue text-white border border-zinc-700 rounded font-bold p-10'
+                        className='text-center bg-custom-color border shadow-md rounded-lg hover:scale-105 hover:shadow-lg hover:bg-custom-hover-color transition-all duration-300 font-bold p-10'
                     >
-                        <p className='text-xs m-2 text-white'>Click to view</p>
-                        <p className='text-yellow-500 m-3'>DEPARTMENT HEAD</p>
+                        <div className='flex justify-center items-center'>
+                        <i className='ri-user-star-line text-4xl mr-3'></i>
+                            <p className='text-black text-xl font-bold font-sans m-3'>DEPARTMENT HEAD</p>
+                        </div>
                         <p className='font-thin'>No of Admin: </p>
-                        <p className='text-center'>1000</p>
+                        <p className='text-center font-thin'>1000</p>
                     </button>
 
-                    {/* Button 3 */}
-                    {/* <button
-                        onClick={() => navigate("/system_admin/Users/sysadmin")}
-                        className='text-center bg-custom-blue text-white border border-zinc-700 rounded font-bold p-10'
-                    >
-                        <p className='text-xs m-2 text-white'>Click to view</p>
-                        <p className='text-yellow-500 m-3'>SYSTEM ADMIN</p>
-                        <p className='font-thin'>No of System Admin: </p>
-                        <p className='text-center'>1000</p>
-                    </button> */}
-
-                    {/* Button 4 */}
+                    {/* Button 3: DEPARTMENT STAFF */}
                     <button
                         onClick={() => navigate("/system_admin/Users/staff")}
-                        className='text-center bg-custom-blue text-white border border-zinc-700 rounded font-bold p-10'
+                        className='text-center bg-custom-color border shadow-md rounded-lg hover:scale-105 hover:shadow-lg hover:bg-custom-hover-color transition-all duration-300 font-bold p-10'
                     >
-                        <p className='text-xs m-2 text-white'>Click to view</p>
-                        <p className='text-yellow-500 m-3'>DEPARTMENT STAFF</p>
-                        <p className='font-thin'>No of Staff: </p>
-                        <p className='text-center'>1000</p>
+                        <div className='flex justify-center items-center'>
+                        <i className='ri-user-star-line text-4xl mr-3'></i>
+                            <p className='text-black text-xl font-bold font-sans m-3'>DEPARTMENT STAFF</p>
+                        </div>
+                        <p className='font-thin text-black'>No of Staff: </p>
+                        <p className='text-center font-thin'>1000</p>
                     </button>
 
-                    {/* Button 5 */}
+                    {/* Button 4: SPME */}
                     <button
                         onClick={() => navigate("/system_admin/Users/spme")}
-                        className='text-center bg-custom-blue text-white border border-zinc-700 rounded font-bold p-10'
+                        className='text-center bg-custom-color border shadow-md rounded-lg hover:scale-105 hover:shadow-lg hover:bg-custom-hover-color transition-all duration-300 font-bold p-10'
                     >
-                        <p className='text-xs m-2 text-white'>Click to view</p>
-                        <p className='text-yellow-500 m-3'>SPME</p>
+                        <div className='flex justify-center items-center'>
+                             <i className='ri-user-star-line text-4xl mr-3'></i>
+                            <p className='text-black text-xl font-bold font-sans m-3'>SPME</p>
+                        </div>
                         <p className='font-thin'>No of spme users: </p>
-                        <p className='text-center'>1000</p>
+                        <p className='text-center font-thin'>1000</p>
                     </button>
                 </div>
 

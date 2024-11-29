@@ -1,7 +1,7 @@
-import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css'; // Import the calendar styles
 import iconSchedule from "../../../assets/images/iconSchedule.png";
 import SearchBar from '../../../components/SearchBar';
+import ReusableCalendar from '../../../components/ReusableCalendar';
 
 export default function RequestorPageSchedule() {
 
@@ -19,11 +19,11 @@ export default function RequestorPageSchedule() {
             <div className="flex h-screen p-5">
                 {/* Left Side - Calendar */}
                 <div className="flex-1 bg-white-100 p-5 rounded-lg mr-5">
-                    <Calendar className="h-min w-full text-xl" />
+                   <ReusableCalendar />
                 </div>
 
                 {/* Right Side - Events & Request Schedules */}
-                <div className="flex-1 bg-white border border-opacity-80 p-3 rounded-lg">
+                <div className="flex-1 bg-white border border-opacity-80 p-3  shadow-lg rounded-lg">
                     <h3 className="font-bold text-4xl mb-5">Events & Request Schedules</h3>
                     <div>
                         {[
