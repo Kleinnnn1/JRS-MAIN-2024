@@ -6,7 +6,7 @@ import Table from "../../../components/Table";
 import SearchBar from "../../../components/SearchBar";
 import SysAdminAddNewStaff from "./addNewStaff";
 import supabase from "../../../service/supabase";
-//removed unnecessary imports
+
 export default function StaffContent() {
   const navigate = useNavigate();
 
@@ -41,12 +41,13 @@ export default function StaffContent() {
       );
 
       const formattedData = filteredData.flatMap((department) =>
-        department.User.map((user) => ({
-          deptName: department.deptName,
-          fullName: user.fullName,
-          birthDate: new Date(user.birthDate).toLocaleDateString(),
-          userRole: user.userRole,
-        }))
+        department.User.filter((user) => user.userRole !== "department head") // Exclude department heads
+          .map((user) => ({
+            deptName: department.deptName,
+            fullName: user.fullName,
+            birthDate: new Date(user.birthDate).toLocaleDateString(),
+            userRole: user.userRole,
+          }))
       );
 
       setStaffs([...formattedData]); // Ensure a new reference for re-render
