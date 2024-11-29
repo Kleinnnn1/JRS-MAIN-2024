@@ -15,9 +15,9 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
   const [accounts, setAccounts] = useState([
     {
       id: 1,
-      idNumber: "1",
-      fName: "1",
-      lName: "1",
+      idNumber: "",
+      fName: "",
+      lName: "",
       birthDate: "",
       email: "1@gmail.com",
       password: "12345678",
