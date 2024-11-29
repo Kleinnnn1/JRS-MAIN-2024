@@ -6,7 +6,7 @@ import Table from "../../../components/Table";
 import SearchBar from "../../../components/SearchBar";
 import SysAdminAddNewStaff from "./addNewStaff";
 import supabase from "../../../service/supabase";
-
+//removed unnecessary imports
 export default function StaffContent() {
   const navigate = useNavigate();
 
