@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSignUp } from "../../../auth/useSignUp"; // Import useSignUp hook
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -10,7 +9,6 @@ import supabase from "../../../service/supabase"; // Import your Supabase client
 // SysAdminAddNewAdmin Component
 export default function SysAdminAddNewAdmin({ closeModal }) {
   const { handleSubmit } = useForm();
-  const queryClient = useQueryClient();
   const { signup } = useSignUp(); // Use the signup hook
   const [accounts, setAccounts] = useState([
     {
