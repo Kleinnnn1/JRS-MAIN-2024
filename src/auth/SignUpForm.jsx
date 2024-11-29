@@ -52,7 +52,7 @@ function SignUpForm() {
     // Add userRole with default value "requestor" before submitting
     const formData = {
       ...data,
-      userRole: "requestor", // Set the default user role
+      userRole: "unverified", // Set the default user role
     };
 
     signup(formData, {

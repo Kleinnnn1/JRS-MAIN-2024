@@ -32,6 +32,13 @@ export function useLogin() {
         return;
       }
 
+      // Check if userRole is 'unverified'
+      if (data.user.userRole === "unverified") {
+        toast.error("Please wait for the account to be verified.");
+        console.warn("User role is 'unverified'. Login blocked.");
+        return; // Prevent further processing if user is unverified
+      }
+
       // Set user data in query client
       queryClient.setQueryData(["user"], data.user);
 
@@ -83,9 +90,16 @@ export function useLogin() {
 //   const setUserMetadata = useUserStore((state) => state.setUserMetadata);
 
 //   const { mutate: login } = useMutation({
-//     mutationFn: async ({ idNumber, password }) => {
+//     mutationFn: async ({ idNumber, email, password }) => {
 //       console.log("API call initiated");
-//       const result = await loginApi({ idNumber, password });
+
+//       // Send the ID number or email, depending on which one is provided
+//       const result = await loginApi({
+//         idNumber: idNumber || undefined,
+//         email: email || undefined,
+//         password,
+//       });
+
 //       console.log("API call result:", result);
 //       return result;
 //     },
@@ -95,6 +109,13 @@ export function useLogin() {
 //       if (!data?.user) {
 //         toast.error("Login failed: Invalid user data received.");
 //         console.error("Login failed: User data is undefined.");
+//         return;
+//       }
+
+//       // Check if userRole is null
+//       if (data.user.userRole === "unverified") {
+//         toast.error("Please wait for the account to be verified.");
+//         console.warn("User role is null. Verification pending.");
 //         return;
 //       }
 
@@ -120,6 +141,8 @@ export function useLogin() {
 //         "department head": "/department_head",
 //         staff: "/staff",
 //         requestor: "/requestor",
+//         "office head": "/office_head",
+//         spme: "/spme",
 //       };
 
 //       const targetRoute = roleRoutes[data.user.userRole] || "/login";
@@ -128,7 +151,7 @@ export function useLogin() {
 //     onError: (error) => {
 //       console.log("API call failed");
 //       console.error("Error details:", error?.response || error); // Improved error logging
-//       toast.error("Provided ID number or password are incorrect");
+//       toast.error("Provided ID number/email or password are incorrect");
 //     },
 //   });
 

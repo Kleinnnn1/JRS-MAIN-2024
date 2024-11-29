@@ -1,8 +1,10 @@
 import supabase from "./supabase";
 
 export async function getDepartmentHeads() {
-  const { data, error } = await supabase.from("Department").select(
-    `
+  const { data, error } = await supabase
+    .from("Department")
+    .select(
+      `
         deptName,
         User (
           fullName,
@@ -10,7 +12,8 @@ export async function getDepartmentHeads() {
           created_at
         )
       `
-  );
+    )
+    .in("User.userRole", ["department head", "office head"]); // Filter for multiple roles
 
   if (error) {
     console.error("Error fetching department heads:", error);

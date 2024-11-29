@@ -233,7 +233,7 @@ export default function SysAdminAddNewUser({ closeModal }) {
 }
 
 SysAdminAddNewUser.propTypes = {
-  closeModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func, // Makes closeModal optional
 };
 
 // import React, { useState } from "react";

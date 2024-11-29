@@ -244,5 +244,5 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
 }
 
 SysAdminAddNewAdmin.propTypes = {
-  closeModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func,
 };

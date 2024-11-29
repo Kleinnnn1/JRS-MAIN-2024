@@ -1,48 +1,53 @@
-import React, { useState } from 'react';
-import Swal from 'sweetalert2';
+import React, { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function SysAdminAddDepartment() {
-  const [departmentName, setDepartmentName] = useState('');
-  const [departmentLocation, setDepartmentLocation] = useState('');
-  const [departmentEmail, setDepartmentEmail] = useState('');
-  const [departmentContactNo, setDepartmentContactNo] = useState('');
-  const [DeptDescription, setDeptDescription] = useState('');
+  const [departmentName, setDepartmentName] = useState("");
+  const [departmentLocation, setDepartmentLocation] = useState("");
+  const [departmentEmail, setDepartmentEmail] = useState("");
+  const [departmentContactNo, setDepartmentContactNo] = useState("");
+  const [DeptDescription, setDeptDescription] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle form submission, e.g., send data to an API or update state
-    console.log('Department Name:', departmentName);
-    console.log('Department Location:', departmentLocation);
-    console.log('Department Email:', departmentEmail);
-    console.log('Department Contact No:', departmentContactNo);
-    console.log('Description:', DeptDescription);
+    console.log("Department Name:", departmentName);
+    console.log("Department Location:", departmentLocation);
+    console.log("Department Email:", departmentEmail);
+    console.log("Department Contact No:", departmentContactNo);
+    console.log("Description:", DeptDescription);
 
     // Display success message
-    Swal.fire('Success', 'Successfully Added New Department', 'success');
+    Swal.fire("Success", "Successfully Added New Department", "success");
 
     // Clear the form after submission
-    setDepartmentName('');
-    setDepartmentLocation('');
-    setDepartmentEmail('');
-    setDepartmentContactNo('');
-    setDeptDescription('');
+    setDepartmentName("");
+    setDepartmentLocation("");
+    setDepartmentEmail("");
+    setDepartmentContactNo("");
+    setDeptDescription("");
   };
 
   const handleCancel = (event) => {
     event.preventDefault();
     // Display cancellation message
-    Swal.fire('Cancelled', 'Department addition was cancelled', 'error');
+    Swal.fire("Cancelled", "Department addition was cancelled", "error");
   };
 
   return (
     <div className="m-5 bg-white shadow-md rounded-lg">
       <div className="bg-yellow-500 p-5 rounded-t-lg">
-        <p className="text-xl font-bold text-gray-600">New Department Information</p>
+        <p className="text-xl font-bold text-gray-600">
+          New Department Information
+        </p>
       </div>
       <form className="items items-center">
-        <div className='flex'>
+        <div className="flex">
           <div className="m-5">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="departmentName">
+            <label
+              className="block text-gray-700 font-bold mb-2"
+              htmlFor="departmentName"
+            >
               Office Name
             </label>
             <input
@@ -55,11 +60,8 @@ export default function SysAdminAddDepartment() {
               required
             />
           </div>
-        
-         
-        
         </div>
-        <div className='flex justify-end mr-10'>
+        <div className="flex justify-end mr-10">
           <button
             type="submit"
             onClick={handleSubmit}
