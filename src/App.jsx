@@ -293,7 +293,7 @@ export default function App() {
             <Route path="Users" element={<SysAdminUsersPage />}>
               <Route path="reg_users" element={<UserContent />} />
               <Route path="add_user" element={<SysAdminAddNewUser />} />
-              <Route path="view_user" element={<SysAdminViewUser />} />
+              <Route path="view_user/:id" element={<SysAdminViewUser />} />
 
               <Route path="admin" element={<SysAdminContent />} />
               <Route path="add_admin" element={<SysAdminAddNewAdmin />} />
