@@ -166,15 +166,25 @@ function SignUpForm() {
 
             {/* Second Row: Birth Date and ID Number */}
             <div className="flex space-x-3">
-              <FormRow label="Birth Date" error={errors.birthDate?.message}>
-                <input
-                  type="date"
-                  {...register("birthDate", {
-                    required: "Birth Date is required",
-                  })}
-                  className="w-full p-2 border border-gray-300 rounded"
-                />
-              </FormRow>
+            <FormRow label="Birth Date" error={errors.birthDate?.message}>
+              <input
+                type="date"
+                {...register("birthDate", {
+                  required: "Birth Date is required",
+                  validate: (value) => {
+                    const today = new Date();
+                    const birthDate = new Date(value);
+                    const age = today.getFullYear() - birthDate.getFullYear();
+                    const monthDifference = today.getMonth() - birthDate.getMonth();
+                    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                      return age - 1 >= 18 || "User must be at least 18 years old.";
+                    }
+                    return age >= 18 || "User must be at least 18 years old.";
+                  },
+                })}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </FormRow>
               <FormRow label="ID Number" error={errors.idNumber?.message}>
                 <input
                   type="text"
