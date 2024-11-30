@@ -228,7 +228,7 @@ export default function StaffContent() {
         deptName: department.Department?.deptName || "Unknown",
         fullName: department.fullName || "Unknown",
         birthDate: new Date(department.created_at).toLocaleDateString(),
-        jobCategory: department.userRole || "Unknown",
+        jobCategory: department.jobCategory || "Unknown",
       }));
 
       setStaffs(formattedData); // Set formatted data

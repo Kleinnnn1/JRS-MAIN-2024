@@ -428,7 +428,7 @@ export default function App() {
             </Route>
             <Route path="employee" element={<PageEmployee />}>
               <Route path="add" element={<ViewAddEmployee />} />
-              <Route path="view" element={<ViewEmployee />} />
+              <Route path="view/:id" element={<ViewEmployee />} />
               <Route path="history" element={<TableEmployeeHistory />}>
                 <Route path="view" element={<EmployeeHistoryView />} />
               </Route>
