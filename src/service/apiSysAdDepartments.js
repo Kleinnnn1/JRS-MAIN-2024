@@ -36,7 +36,6 @@ export async function getDepartments() {
   });
 }
 
-// Insert Department
 export async function insertDepartment(newDepartment) {
   // Validate the input
   if (!newDepartment || !newDepartment.deptName) {
@@ -48,12 +47,31 @@ export async function insertDepartment(newDepartment) {
     deptName: newDepartment.deptName,
   };
 
+  // Check if a department with the same name (case-insensitive) already exists
+  const { data: existingDepartments, error: checkError } = await supabase
+    .from("Department")
+    .select("deptName")
+    .ilike("deptName", newDepartment.deptName); // Case-insensitive comparison
+
+  // Handle errors while checking for existing department
+  if (checkError) {
+    console.error("Error checking existing department:", checkError);
+    throw new Error("Could not check if department exists");
+  }
+
+  // If a department already exists (any result), throw an error
+  if (existingDepartments && existingDepartments.length > 0) {
+    throw new Error(
+      `Department with the name '${newDepartment.deptName}' already exists.`
+    );
+  }
+
   // Insert the department into the Department table
   const { data, error } = await supabase
     .from("Department")
     .insert(departmentData);
 
-  // Handle errors
+  // Handle errors while inserting the department
   if (error) {
     console.error("Error inserting department:", error);
     throw new Error("Department could not be inserted");
@@ -62,34 +80,6 @@ export async function insertDepartment(newDepartment) {
   // Return the inserted data
   return data;
 }
-
-// import supabase from "./supabase"; // Import supabase client
-// import { getCurrentUser } from "./apiAuth"; // Adjust the path to your getCurrentUser function
-
-// // Fetch Departments
-// export async function getDepartments() {
-//   // Get the current user's information
-//   const currentUser = await getCurrentUser();
-
-//   // Ensure currentUser and userRole are available
-//   if (!currentUser || !currentUser.userRole) {
-//     throw new Error(
-//       "User role not found. Please ensure the user is logged in."
-//     );
-//   }
-
-//   // Fetch departments based on the user's role
-//   const { data, error } = await supabase.from("Department").select("*");
-
-//   // Handle errors
-//   if (error) {
-//     console.error("Error fetching departments:", error);
-//     throw error;
-//   }
-
-//   // Return the data
-//   return data;
-// }
 
 // // Insert Department
 // export async function insertDepartment(newDepartment) {

@@ -7,9 +7,8 @@ import { useNavigate } from "react-router-dom";
 import ReusableViewButton from "../../../components/ReusableViewButton";
 import ButtonAddDepartment from "../Department/buttonAddDep";
 import SearchBar from "../../../components/SearchBar";
-import Swal from "sweetalert2";
-import { insertDepartment } from "../../../service/apiSysAdDepartments";
 import toast from "react-hot-toast";
+import { insertDepartment } from "../../../service/apiSysAdDepartments";
 import { getDepartments } from "../../../service/apiSysAdDepartments";
 
 const SysAdminAddDepartment = ({ closeModal }) => {
@@ -19,7 +18,7 @@ const SysAdminAddDepartment = ({ closeModal }) => {
     event.preventDefault();
 
     if (!departmentName) {
-      Swal.fire("Error", "Department name is required", "error");
+      toast.error("Department name is required");
       return;
     }
 
@@ -31,7 +30,7 @@ const SysAdminAddDepartment = ({ closeModal }) => {
       setDepartmentName("");
       closeModal();
     } catch (error) {
-      Swal.fire("Error", error.message || "An error occurred", "error");
+      toast.error(error.message || "An error occurred");
     }
   };
 
@@ -95,7 +94,7 @@ const DeptTable = () => {
         const fetchedDepartments = await getDepartments();
         setDepartments(fetchedDepartments);
       } catch (error) {
-        console.error("Error fetching departments:", error);
+        toast.error("Error fetching departments");
       }
     };
 
