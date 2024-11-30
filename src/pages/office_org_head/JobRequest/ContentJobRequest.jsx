@@ -44,8 +44,7 @@ export default function ContentJobRequest() {
     setSelectedRequest(null);
   };
 
-  // Fetch data from DeptHeadRequestData component
-  const tableContent = DeptHeadRequestData(request, openModal) || [];
+  const tableContent = DeptHeadRequestData(request, openModal) || []; // Fallback to empty array if no data
 
   // Filter the table content based on the search term
   const filteredContent = tableContent.filter((request) => {
@@ -95,16 +94,13 @@ export default function ContentJobRequest() {
         </div>
 
         {/* Table */}
-        {paginatedContent.length > 0 ? (
-          <Table
-            columns={tableHeaders.length}
-            rows={paginatedContent.length}
-            content={paginatedContent} // Use paginated content here
-            headers={tableHeaders}
-          />
-        ) : (
-          <p className="text-center text-gray-500">No job requests found</p>
-        )}
+
+        <Table
+          columns={tableHeaders.length}
+          rows={paginatedContent.length}
+          content={paginatedContent} // Use paginated content here
+          headers={tableHeaders}
+        />
 
         {/* Pagination */}
         <ReusablePagination
