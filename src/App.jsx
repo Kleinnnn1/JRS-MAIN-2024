@@ -297,7 +297,7 @@ export default function App() {
 
               <Route path="admin" element={<SysAdminContent />} />
               <Route path="add_admin" element={<SysAdminAddNewAdmin />} />
-              <Route path="view_admin" element={<SysAdminViewAdmin />} />
+              <Route path="view_admin/:id" element={<SysAdminViewAdmin />} />
 
               <Route path="staff" element={<SysAdminStaffContent />} />
               <Route path="add_staff" element={<SysAdminAddNewStaff />} />
@@ -510,7 +510,7 @@ export default function App() {
               element={<RequestorJobRequestTable />}
             />
             <Route
-              path="job_request_detail"
+              path="job_request_detail/:requestId"
               element={<RequestorJobRequestDetail />}
             />
             <Route
