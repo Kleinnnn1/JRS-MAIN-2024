@@ -14,6 +14,7 @@ export default function Profile() {
       <p className="font-semibold text-xm">
         {userMetadata.fName || "First Name"} {userMetadata.lName || "Last Name"}
       </p>
+      <p className="text-xs">{userMetadata.deptName || "No department"}</p>
       <p className="text-xs">Office Head</p>
     </div>
   );

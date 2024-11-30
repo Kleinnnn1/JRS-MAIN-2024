@@ -13,6 +13,7 @@ export default function Profile() {
       <p className="font-semibold text-xm hidden sm:block ">
         {userMetadata.fName} {userMetadata.lName}
       </p>
+
       <p className="text-xs hidden sm:block">System Admin</p>
     </div>
   );
