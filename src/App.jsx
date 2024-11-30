@@ -301,7 +301,7 @@ export default function App() {
 
               <Route path="staff" element={<SysAdminStaffContent />} />
               <Route path="add_staff" element={<SysAdminAddNewStaff />} />
-              <Route path="view_staff" element={<SysAdminViewStaff />} />
+              <Route path="view_staff/:id" element={<SysAdminViewStaff />} />
 
               <Route path="spme" element={<SysAdminSpmeContent />} />
               <Route path="add_spme" element={<SysAdminAddNewSpme />} />

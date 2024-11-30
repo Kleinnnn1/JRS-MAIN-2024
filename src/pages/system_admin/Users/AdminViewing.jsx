@@ -3,8 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import supabase from "../../../service/supabase";
 
 function SysAdminViewAdmin() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { id } = useParams(); // Get the ID from URL params
+  const navigate = useNavigate(); // Access the navigate function to redirect
   const [admin, setAdmin] = useState({
     fName: "",
     lName: "",
@@ -17,8 +17,9 @@ function SysAdminViewAdmin() {
     dateCreated: "",
   });
   const [loading, setLoading] = useState(true);
-  const [editing, setEditing] = useState(false); // Tracks if the form is in edit mode
+  const [editing, setEditing] = useState(false); // Flag to track if in editing mode
 
+  // Fetch admin details from the database
   useEffect(() => {
     const fetchAdminDetails = async () => {
       try {
@@ -41,12 +42,13 @@ function SysAdminViewAdmin() {
 
         if (error) throw error;
 
+        // Set fetched data to state
         setAdmin({
           fName: data.fName || "N/A",
           lName: data.lName || "N/A",
           idNumber: data.idNumber || "N/A",
           deptName: data.Department?.deptName || "N/A",
-          userRole: data.userRole,
+          userRole: data.userRole || "N/A",
           contactNumber: data.contactNumber || "N/A",
           email: data.email || "N/A",
           birthDate: data.birthDate || "N/A",
@@ -60,8 +62,9 @@ function SysAdminViewAdmin() {
     };
 
     fetchAdminDetails();
-  }, [id]);
+  }, [id]); // Runs once when component mounts
 
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setAdmin((prevAdmin) => ({
@@ -70,8 +73,16 @@ function SysAdminViewAdmin() {
     }));
   };
 
+  // Handle form save action
   const handleSave = async () => {
     try {
+      // Ensure that required fields are not empty
+      if (!admin.fName || !admin.lName || !admin.idNumber) {
+        alert("First Name, Last Name, and ID Number are required.");
+        return;
+      }
+
+      // Perform the update query
       const { error } = await supabase
         .from("User")
         .update({
@@ -82,24 +93,29 @@ function SysAdminViewAdmin() {
           email: admin.email,
           birthDate: admin.birthDate,
         })
-        .eq("id", id);
+        .eq("id", id); // Update only the record with the matching ID
 
-      if (error) throw error;
+      if (error) throw error; // Handle any error returned from Supabase
 
+      // Inform the user about successful update
       alert("Admin details updated successfully!");
-      setEditing(false);
+
+      // Redirect back to the table after successful update
+      navigate("/system_admin/Users/admin"); // Replace "/admin-table" with the actual route for the admin table page
+
     } catch (err) {
       console.error("Error updating admin data:", err);
       alert("Failed to update admin details.");
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>Loading...</div>; // Display loading message while data is being fetched
 
   return (
     <div className="p-6 mx-5 mt-10 bg-white rounded-lg shadow-lg">
       <h2 className="text-xl font-bold mb-4">Admin Details</h2>
       <form>
+        {/* First Name */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">First Name</label>
           <input
@@ -107,10 +123,12 @@ function SysAdminViewAdmin() {
             name="fName"
             value={admin.fName}
             onChange={handleInputChange}
-            disabled={!editing}
+            disabled={!editing} // Enable editing only if in editing mode
             className="w-full px-3 py-2 border rounded-md"
           />
         </div>
+
+        {/* Last Name */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Last Name</label>
           <input
@@ -122,6 +140,8 @@ function SysAdminViewAdmin() {
             className="w-full px-3 py-2 border rounded-md"
           />
         </div>
+
+        {/* ID Number */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">ID Number</label>
           <input
@@ -133,6 +153,8 @@ function SysAdminViewAdmin() {
             className="w-full px-3 py-2 border rounded-md"
           />
         </div>
+
+        {/* Department (Read-only) */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Department</label>
           <input
@@ -143,6 +165,8 @@ function SysAdminViewAdmin() {
             className="w-full px-3 py-2 border rounded-md bg-gray-100"
           />
         </div>
+
+        {/* User Role (Read-only) */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Role</label>
           <input
@@ -153,6 +177,8 @@ function SysAdminViewAdmin() {
             className="w-full px-3 py-2 border rounded-md bg-gray-100"
           />
         </div>
+
+        {/* Contact Number */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Contact Number</label>
           <input
@@ -164,6 +190,8 @@ function SysAdminViewAdmin() {
             className="w-full px-3 py-2 border rounded-md"
           />
         </div>
+
+        {/* Email */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Email</label>
           <input
@@ -175,6 +203,8 @@ function SysAdminViewAdmin() {
             className="w-full px-3 py-2 border rounded-md"
           />
         </div>
+
+        {/* Birth Date */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Birth Date</label>
           <input
@@ -186,6 +216,8 @@ function SysAdminViewAdmin() {
             className="w-full px-3 py-2 border rounded-md"
           />
         </div>
+
+        {/* Date Created (Read-only) */}
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Date Created</label>
           <input
@@ -196,6 +228,8 @@ function SysAdminViewAdmin() {
             className="w-full px-3 py-2 border rounded-md bg-gray-100"
           />
         </div>
+
+        {/* Buttons */}
         <div className="flex justify-end space-x-4">
           {editing ? (
             <>
