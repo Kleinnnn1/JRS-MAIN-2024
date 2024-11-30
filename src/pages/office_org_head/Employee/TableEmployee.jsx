@@ -33,20 +33,40 @@ export default function TableEmployee() {
       // Get the current user's deptId
       const currentUser = await getCurrentUser();
       setUserDeptId(currentUser?.deptId); // Set the user's deptId
-
+  
       // If the current user has a deptId, fetch employees matching that deptId
       if (currentUser?.deptId) {
         const { data, error } = await supabase
           .from("User")
-          .select("*")
-          .eq("userRole", "requestor")
+          .select(`
+            deptId,
+            id,
+            fullName,
+            jobCategory,
+            Department (deptName)
+          `)
+          .eq("userRole", "office head")
           .eq("deptId", currentUser.deptId); // Filter by deptId
-
+  
         if (error) throw error;
 
-        setEmployees(data); // Set the employees data
-      }
+        // Log the data for debugging purposes
+        console.log("Fetched Data: ", data);
 
+        // Ensure that data exists and format it correctly
+        if (data && Array.isArray(data)) {
+          const formattedData = data.map((user) => ({
+            id: user.id,
+            deptName: user.Department?.deptName || "N/A", // Handle missing deptName
+            fullName: user.fullName,
+            birthDate: user.created_at ? new Date(user.created_at).toLocaleDateString() : "No Date Available", // Use created_at for birthdate if birthDate is missing
+            jobCategory: user.jobCategory || "N/A", // Ensure jobCategory field exists
+          }));
+          
+          setEmployees(formattedData); // Set the employees data
+        }
+      }
+  
       setLoading(false);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -54,7 +74,6 @@ export default function TableEmployee() {
     }
   };
 
-  // UseEffect to fetch initial data and setup realtime subscription
   useEffect(() => {
     // Fetch initial data
     fetchEmployees();
@@ -101,16 +120,25 @@ export default function TableEmployee() {
     currentPage * rowsPerPage
   );
 
-  // Table content - removed schedule column
+  // Table content
   const tableContent =
     paginatedEmployees.length > 0
       ? paginatedEmployees.map((employee, index) => [
           employee.fullName,
-          employee.contactNumber,
-          employee.email,
-          employee.birthDate,
+          employee.jobCategory,
+          <div key={index} className="flex space-x-2">
+            <button
+      key={employee.id}
+              onClick={() => navigate(`/office_head/staff/view/${employee.id}`)}
+              className="text-white hover:text-blue-500 bg-blue-500 p-1 font-semibold rounded"
+              >
+                View
+              </button>
+          </div>,
         ])
       : [[]];
+
+  const tableHeaders = ["Staff name", "Job Position", "Action"];
 
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-md rounded-lg">

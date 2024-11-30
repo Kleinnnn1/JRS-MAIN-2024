@@ -349,7 +349,7 @@ export default function App() {
             </Route>
             <Route path="staff" element={<OfficeHeadEmployee />}>
               <Route path="add" element={<OfficeHeadViewAddStaff />} />
-              <Route path="view" element={<OfficeHeadViewEmployee />} />
+              <Route path="view/:id" element={<OfficeHeadViewEmployee />} />
               <Route
                 path="history"
                 element={<OfficeHeadTableEmployeeHistory />}
