@@ -132,7 +132,7 @@ export default function UserContent() {
     <div className="p-6 mx-5 mt-10 bg-white rounded-lg shadow-lg">
       {/* Header */}
       <header className="bg-custom-blue text-white p-4 rounded-lg flex justify-between items-center">
-        <SearchBar title="requestor" />
+        <SearchBar title="REQUESTOR" />
         <div className="flex space-x-4">
           <button
             onClick={handleAddRequestor}

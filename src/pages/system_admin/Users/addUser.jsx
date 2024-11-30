@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import supabase from "../../../service/supabase"; // Import your Supabase client
 
+
 // SysAdminAddNewAdmin Component
 export default function SysAdminAddNewUser({ closeModal }) {
   const { handleSubmit } = useForm();
