@@ -10,6 +10,7 @@ export default function UserType() {
     // State to store the list of admins (department heads)
     const [admins, setAdmins] = useState([]);
     const [usersCount, setUsersCount] = useState(0);  // State to store the number of users (requestors)
+    const [staffCount, setStaffCount] = useState(0);  // State to store the number of department staff
     const [loading, setLoading] = useState(true);
 
     // Fetch department heads from the backend
@@ -56,11 +57,29 @@ export default function UserType() {
         }
     };
 
+    // Fetch department staff (users with role "staff") from the backend
+    const fetchStaff = async () => {
+        try {
+            const { data, error } = await supabase
+                .from("User")  // Assuming the 'User' table has a userRole column for staff
+                .select("*")
+                .eq("userRole", "staff");  // Adjust this based on how staff are defined
+
+            if (error) throw error;
+
+            // Set the number of staff based on the fetched data
+            setStaffCount(data.length);  // Count the number of staff retrieved
+        } catch (error) {
+            console.error("Error fetching department staff:", error);
+        }
+    };
+
     // UseEffect to fetch initial data and setup realtime subscription
     useEffect(() => {
-        // Fetch initial data for admins and requestors
+        // Fetch initial data for admins, requestors, and staff
         fetchAdmins();
         fetchRequestors();
+        fetchStaff();
 
         // Subscribe to realtime updates from the User table, not Department
         const channel = supabase
@@ -72,6 +91,7 @@ export default function UserType() {
                     console.log("Realtime event:", payload);
                     await fetchAdmins();  // Refresh data on any change
                     await fetchRequestors();  // Refresh the number of users on any change
+                    await fetchStaff();  // Refresh the number of staff on any change
                 }
             )
             .subscribe();
@@ -99,7 +119,7 @@ export default function UserType() {
                             <i className='ri-user-star-line text-4xl mr-3'></i>
                             <p className='text-black text-xl font-bold font-sans m-3'>USER / REQUESTOR</p>
                         </div>
-                        <p className='font-thin'>No of Users: </p>
+                        <p className='font-thin'>Total Users</p>
                         <p className='text-center font-thin'>{loading ? "Loading..." : usersCount}</p>
                     </button>
 
@@ -112,7 +132,7 @@ export default function UserType() {
                             <i className='ri-user-star-line text-4xl mr-3'></i>
                             <p className='text-black text-xl font-bold font-sans m-3'>DEPARTMENT HEAD</p>
                         </div>
-                        <p className='font-thin'>No of Admin: </p>
+                        <p className='font-thin'>Total Users</p>
                         <p className='text-center font-thin'>{loading ? "Loading..." : numOfAdmins}</p>
                     </button>
 
@@ -125,11 +145,11 @@ export default function UserType() {
                             <i className='ri-user-star-line text-4xl mr-3'></i>
                             <p className='text-black text-xl font-bold font-sans m-3'>DEPARTMENT STAFF</p>
                         </div>
-                        <p className='font-thin text-black'>No of Staff: </p>
-                        <p className='text-center font-thin'>1000</p>
+                        <p className='font-thin text-black'>Total Users: </p>
+                        <p className='text-center font-thin'>{loading ? "Loading..." : staffCount}</p>
                     </button>
 
-                    {/* Button 4: SPME */}
+                    {/* Button 4: SPME (Commented out for now) */}
                     {/* <button
                         onClick={() => navigate("/system_admin/Users/spme")}
                         className='text-center bg-custom-color border shadow-md rounded-lg hover:scale-105 hover:shadow-lg hover:bg-custom-hover-color transition-all duration-300 font-bold p-10'
