@@ -21,32 +21,29 @@ export default function StaffContent() {
   // Fetch staff from the backend
   const fetchStaffs = async () => {
     try {
-      const { data, error } = await supabase
-        .from("Department")
-        .select(`
+      const { data, error } = await supabase.from("Department").select(`
           deptName,
           User (
             fullName,
             birthDate,
-            userRole,
+            jobCategory,
             created_at
           )
         `);
       if (error) throw error;
 
       // Filter departments to include only BGMS, MEWS, and CSWS
-      const filteredData = data.filter(
-        (department) =>
-          ["BGMS", "MEWS", "CSWS"].includes(department.deptName)
+      const filteredData = data.filter((department) =>
+        ["BGMS", "MEWS", "CSWS"].includes(department.deptName)
       );
 
       const formattedData = filteredData.flatMap((department) =>
-        department.User.filter((user) => user.userRole !== "department head") // Exclude department heads
+        department.User.filter((user) => user.jobCategory !== "department head") // Exclude department heads
           .map((user) => ({
             deptName: department.deptName,
             fullName: user.fullName,
             birthDate: new Date(user.birthDate).toLocaleDateString(),
-            userRole: user.userRole,
+            jobCategory: user.jobCategory,
           }))
       );
 
@@ -96,7 +93,7 @@ export default function StaffContent() {
     (staff) =>
       staff.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       staff.deptName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      staff.userRole?.toLowerCase().includes(searchTerm.toLowerCase())
+      staff.jobCategory?.toLowerCase().includes(searchTerm.toLowerCase())
   ).sort((a, b) => a.fullName.localeCompare(b.fullName));
 
   const totalPages = Math.ceil(filteredStaffs.length / rowsPerPage);
@@ -112,7 +109,7 @@ export default function StaffContent() {
           staff.fullName,
           staff.deptName,
           staff.birthDate,
-          staff.userRole,
+          staff.jobCategory,
           <button
             key={index}
             onClick={() => navigate(`/system_admin/Users/view_staff/${index}`)}
@@ -127,7 +124,7 @@ export default function StaffContent() {
     "Full Name",
     "Department",
     "Birthday",
-    "User Role",
+    "Job Position",
     "Actions",
   ];
 
