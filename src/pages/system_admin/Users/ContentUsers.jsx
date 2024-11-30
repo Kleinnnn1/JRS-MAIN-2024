@@ -5,7 +5,7 @@ import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
 import Table from "../../../components/Table";
 import SearchBar from "../../../components/SearchBar";
 import supabase from "../../../service/supabase";
-import AddNewUser from "./addUser"; // Component for adding users
+import SysAdminAddNewUser from "./addUser";
 
 export default function UserContent() {
   const navigate = useNavigate();
@@ -15,11 +15,11 @@ export default function UserContent() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [Users, se] = useState([]);
+  const [Requestors, setRequestors] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch user from the backend
-  const fetchUsers = async () => {
+  // Fetch requestors from the backend
+  const fetchRequestors = async () => {
     try {
       const { data, error } = await supabase
         .from("Department")
@@ -32,27 +32,23 @@ export default function UserContent() {
             created_at
           )
         `);
+
       if (error) throw error;
 
-      // Filter departments to include only BGMS, MEWS, and CSWS
-      const filteredData = data.filter(
-        (department) =>
-          ["BGMS", "MEWS", "CSWS"].includes(department.deptName)
+      const formattedData = data.flatMap((department) =>
+        department.User?.filter((user) => user.userRole === "requestor") // Guard for undefined `User`
+          .map((head) => ({
+            deptName: department.deptName,
+            fullName: head.fullName,
+            birthDate: new Date(head.birthDate).toLocaleDateString(),
+            userRole: head.userRole,
+          })) || []
       );
 
-      const formattedData = filteredData.flatMap((department) =>
-        department.User.map((user) => ({
-          deptName: department.deptName,
-          fullName: user.fullName,
-          birthDate: new Date(user.birthDate).toLocaleDateString(),
-          userRole: user.userRole,
-        }))
-      );
-
-      se([...formattedData]); // Ensure a new reference for re-render
+      setRequestors([...formattedData]); // Ensure a new reference for re-render
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching user:", error);
+      console.error("Error fetching requestors:", error);
       setLoading(false);
     }
   };
@@ -60,7 +56,7 @@ export default function UserContent() {
   // UseEffect to fetch initial data and setup realtime subscription
   useEffect(() => {
     // Fetch initial data
-    fetchUsers();
+    fetchRequestors();
 
     // Subscribe to realtime updates from the User table
     const channel = supabase
@@ -70,7 +66,7 @@ export default function UserContent() {
         { event: "*", schema: "public", table: "User" },
         async (payload) => {
           console.log("Realtime event:", payload);
-          await fetchUsers(); // Refresh data on any change
+          await fetchRequestors(); // Refresh data on any change
         }
       )
       .subscribe();
@@ -81,40 +77,42 @@ export default function UserContent() {
     };
   }, []);
 
-  const handleAddUser = () => setIsModalOpen(true);
+  const handleAddRequestor = () => setIsModalOpen(true);
   const closeModal = async () => {
     setIsModalOpen(false);
-    await fetchUsers(); // Ensure data is refreshed after closing the modal
+    await fetchRequestors(); // Ensure data is refreshed after closing the modal
   };
   const handleClickOutsideModal = (e) => {
     if (e.target.id === "modalBackdrop") closeModal();
   };
 
-  // Filter Users based on search term
-  const filteredUsers = Users.filter(
-    (user) =>
-      user.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.deptName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.userRole?.toLowerCase().includes(searchTerm.toLowerCase())
+  // Filter Requestors based on search term
+  const filteredRequestors = Requestors.filter(
+    (requestor) =>
+      requestor.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      requestor.deptName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      requestor.userRole?.toLowerCase().includes(searchTerm.toLowerCase())
   ).sort((a, b) => a.fullName.localeCompare(b.fullName));
 
-  const totalPages = Math.ceil(filteredUsers.length / rowsPerPage);
-  const paginatedUsers = filteredUsers.slice(
+  const totalPages = Math.ceil(filteredRequestors.length / rowsPerPage);
+  const paginatedRequestors = filteredRequestors.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
 
   // Table content
   const tableContent =
-    paginatedUsers.length > 0
-      ? paginatedUsers.map((user, index) => [
-          user.fullName,
-          user.deptName,
-          user.birthDate,
-          user.userRole,
+    paginatedRequestors.length > 0
+      ? paginatedRequestors.map((requestor, index) => [
+          requestor.fullName,
+          requestor.deptName,
+          requestor.birthDate,
+          requestor.userRole,
           <button
             key={index}
-            onClick={() => navigate(`/system_admin/Users/view_user/${index}`)}
+            onClick={() =>
+              navigate(`/system_admin/Users/view_requestor/${index}`)
+            }
             className="text-blue-600 hover:text-blue-800"
           >
             View
@@ -134,10 +132,10 @@ export default function UserContent() {
     <div className="p-6 mx-5 mt-10 bg-white rounded-lg shadow-lg">
       {/* Header */}
       <header className="bg-custom-blue text-white p-4 rounded-lg flex justify-between items-center">
-        <SearchBar title="user" />
+        <SearchBar title="requestor" />
         <div className="flex space-x-4">
           <button
-            onClick={handleAddUser}
+            onClick={handleAddRequestor}
             className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
           >
             Add New Requestor
@@ -152,7 +150,7 @@ export default function UserContent() {
       {/* Table */}
       <Table
         columns={5}
-        rows={paginatedUsers.length}
+        rows={paginatedRequestors.length}
         content={tableContent}
         headers={tableHeaders}
       />
@@ -173,12 +171,13 @@ export default function UserContent() {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
           onClick={handleClickOutsideModal}
         >
-          <SysAdminAddNewuser closeModal={closeModal} />
+          <SysAdminAddNewUser closeModal={closeModal} />
         </div>
       )}
     </div>
   );
 }
+
 
 
 // import { useEffect, useState } from "react";
@@ -190,80 +189,96 @@ export default function UserContent() {
 // import supabase from "../../../service/supabase";
 // import AddNewUser from "./addUser"; // Component for adding users
 
-// // Table headers for users
-// const tableHeaders = [
-//   "Employee ID",
-//   "Name",
-//   "Office/Department",
-//   "Date Account Created",
-//   "Actions",
-// ];
-
 // export default function UserContent() {
-//   const [users, setUsers] = useState([]); // State for users fetched from the backend
+//   const navigate = useNavigate();
+
+//   // States
 //   const [searchTerm, setSearchTerm] = useState("");
 //   const [rowsPerPage, setRowsPerPage] = useState(10);
 //   const [currentPage, setCurrentPage] = useState(1);
 //   const [isModalOpen, setIsModalOpen] = useState(false);
+//   const [Users, se] = useState([]);
+//   const [loading, setLoading] = useState(true);
 
-//   // Fetch requestors from Supabase
-//   const fetchRequestors = async () => {
+//   // Fetch user from the backend
+//   const fetchUsers = async () => {
 //     try {
 //       const { data, error } = await supabase
-//         .from("User")
-//         .select(
-//           `
-//           idNumber,
-//           fullName,
-//           created_at,
-//           Department (
-//             deptName
+//         .from("Department")
+//         .select(`
+//           deptName,
+//           User (
+//             fullName,
+//             birthDate,
+//             userRole,
+//             created_at
 //           )
-//         `
-//         )
-//         .eq("userRole", "requestor");
-
+//         `);
 //       if (error) throw error;
 
-//       // Map data to match table structure
-//       const mappedData = data.map((user) => ({
-//         id: user.idNumber,
-//         name: user.fullName,
-//         office: user.Department?.deptName || "No Department",
-//         dateJoined: new Date(user.created_at).toISOString().split("T")[0], // Format date
-//       }));
+//       // Filter departments to include only BGMS, MEWS, and CSWS
+//       const filteredData = data.filter(
+//         (department) =>
+//           ["BGMS", "MEWS", "CSWS"].includes(department.deptName)
+//       );
 
-//       setUsers(mappedData);
+//       const formattedData = filteredData.flatMap((department) =>
+//         department.User.map((user) => ({
+//           deptName: department.deptName,
+//           fullName: user.fullName,
+//           birthDate: new Date(user.birthDate).toLocaleDateString(),
+//           userRole: user.userRole,
+//         }))
+//       );
+
+//       se([...formattedData]); // Ensure a new reference for re-render
+//       setLoading(false);
 //     } catch (error) {
-//       console.error("Error fetching requestors:", error);
-//     }
+//       console.error("Error fetching user:", error);
+//       setLoading(false);
+//     } 
 //   };
 
+//   // UseEffect to fetch initial data and setup realtime subscription
 //   useEffect(() => {
-//     fetchRequestors(); // Fetch data on component mount
+//     // Fetch initial data
+//     fetchUsers();
+
+//     // Subscribe to realtime updates from the User table
+//     const channel = supabase
+//       .channel("public:User")
+//       .on(
+//         "postgres_changes",
+//         { event: "*", schema: "public", table: "User" },
+//         async (payload) => {
+//           console.log("Realtime event:", payload);
+//           await fetchUsers(); // Refresh data on any change
+//         }
+//       )
+//       .subscribe();
+
+//     // Cleanup subscription on component unmount
+//     return () => {
+//       supabase.removeChannel(channel);
+//     };
 //   }, []);
 
 //   const handleAddUser = () => setIsModalOpen(true);
-
-//   const closeModal = () => setIsModalOpen(false);
+//   const closeModal = async () => {
+//     setIsModalOpen(false);
+//     await fetchUsers(); // Ensure data is refreshed after closing the modal
+//   };
 //   const handleClickOutsideModal = (e) => {
 //     if (e.target.id === "modalBackdrop") closeModal();
 //   };
 
-//   const handleUserFormSubmit = () => {
-//     // Handle user form submission if necessary
-//     closeModal();
-//     fetchRequestors(); // Refresh the data after adding a user
-//   };
-
-//   // Filter users based on search term and sort by date joined
-//   const filteredUsers = users
-//     .filter(
-//       (user) =>
-//         user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//         user.office?.toLowerCase().includes(searchTerm.toLowerCase())
-//     )
-//     .sort((a, b) => new Date(a.dateJoined) - new Date(b.dateJoined));
+//   // Filter Users based on search term
+//   const filteredUsers = Users.filter(
+//     (user) =>
+//       user.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//       user.deptName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//       user.userRole?.toLowerCase().includes(searchTerm.toLowerCase())
+//   ).sort((a, b) => a.fullName.localeCompare(b.fullName));
 
 //   const totalPages = Math.ceil(filteredUsers.length / rowsPerPage);
 //   const paginatedUsers = filteredUsers.slice(
@@ -271,33 +286,43 @@ export default function UserContent() {
 //     currentPage * rowsPerPage
 //   );
 
-//   // Create table content or provide default empty rows
+//   // Table content
 //   const tableContent =
 //     paginatedUsers.length > 0
-//       ? paginatedUsers.map((user) => [
-//           user.id,
-//           user.name,
-//           user.office,
-//           user.dateJoined,
+//       ? paginatedUsers.map((user, index) => [
+//           user.fullName,
+//           user.deptName,
+//           user.birthDate,
+//           user.userRole,
 //           <button
-//             onClick={() => alert(`Viewing user ${user.name}`)} // Placeholder action
+//             key={index}
+//             onClick={() => navigate(`/system_admin/Users/view_user/${index}`)}
 //             className="text-blue-600 hover:text-blue-800"
 //           >
 //             View
 //           </button>,
 //         ])
-//       : [[]]; // Default empty row if no data is available
+//       : [[]];
+
+//   const tableHeaders = [
+//     "Full Name",
+//     "Department",
+//     "Birthday",
+//     "User Role",
+//     "Actions",
+//   ];
 
 //   return (
-//     <div className="p-6 mx-5 mb-10 bg-white rounded-lg shadow-lg">
+//     <div className="p-6 mx-5 mt-10 bg-white rounded-lg shadow-lg">
+//       {/* Header */}
 //       <header className="bg-custom-blue text-white p-4 rounded-lg flex justify-between items-center">
-//         <SearchBar title="Requestors" />
+//         <SearchBar title="user" />
 //         <div className="flex space-x-4">
 //           <button
 //             onClick={handleAddUser}
 //             className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
 //           >
-//             Add Requestor
+//             Add New Requestor
 //           </button>
 //           <ReusableSearchTerm
 //             searchTerm={searchTerm}
@@ -306,37 +331,35 @@ export default function UserContent() {
 //         </div>
 //       </header>
 
-//       {/* Table and No Data State */}
 //       {/* Table */}
 //       <Table
-//         columns={7}
+//         columns={5}
 //         rows={paginatedUsers.length}
 //         content={tableContent}
 //         headers={tableHeaders}
 //       />
 
 //       {/* Pagination */}
-//       {users.length > 0 && (
-//         <ReusablePagination
-//           rowsPerPage={rowsPerPage}
-//           setRowsPerPage={setRowsPerPage}
-//           currentPage={currentPage}
-//           setCurrentPage={setCurrentPage}
-//           totalPages={totalPages}
-//         />
-//       )}
+//       <ReusablePagination
+//         rowsPerPage={rowsPerPage}
+//         setRowsPerPage={setRowsPerPage}
+//         currentPage={currentPage}
+//         setCurrentPage={setCurrentPage}
+//         totalPages={totalPages}
+//       />
 
-//       {/* Modal for adding a new user */}
+//       {/* Modal */}
 //       {isModalOpen && (
 //         <div
 //           id="modalBackdrop"
 //           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
 //           onClick={handleClickOutsideModal}
 //         >
-//           <AddNewUser onSubmit={handleUserFormSubmit} closeModal={closeModal} />
+//           <SysAdminAddNewuser closeModal={closeModal} />
 //         </div>
 //       )}
 //     </div>
 //   );
 // }
+
 
