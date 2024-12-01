@@ -210,6 +210,7 @@ export default function StaffContent() {
           fullName,
           userRole,
           created_at,
+          jobCategory,
           Department (deptName)
         `
         )
