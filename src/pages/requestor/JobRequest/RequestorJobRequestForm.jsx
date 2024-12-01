@@ -50,7 +50,6 @@ export default function RequestorJobRequestForm({ closeModal }) {
   const { mutate } = useMutation({
     mutationFn: insertRequest,
     onSuccess: () => {
-      toast.success("Job Request Successfully Submitted");
       queryClient.invalidateQueries({ queryKey: ["requests"] });
     },
     onError: (err) => toast.error(err.message),
