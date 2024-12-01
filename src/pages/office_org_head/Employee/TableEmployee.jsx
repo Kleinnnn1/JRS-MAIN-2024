@@ -8,11 +8,9 @@ import Table from "../../../components/Table";
 import ButtonHistory from "./ButtonHistory";
 import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
 import ReusablePagination from "../../../components/ReusablePagination";
-import ViewAddStaff from "./ViewAddEmployee"; // Import your form component
 import supabase from "../../../service/supabase";
 import { getCurrentUser } from "../../../service/apiAuth"; // Import the getCurrentUser function
-
-const tableHeaders = ["Staff name", "Contact Number", "Email", "Birth Date"];
+import OfficeHeadViewAddStaff from "./ViewAddEmployee"; // Ensure the import is correct!
 
 export default function TableEmployee() {
   const navigate = useNavigate();
@@ -27,15 +25,12 @@ export default function TableEmployee() {
   const [userDeptId, setUserDeptId] = useState(null); // State to hold current user's deptId
 
   // Fetch employees from the User table where userRole is 'staff' and deptId matches
-  const fetchEmployees = async () => {
+  const fetchEmployees = async (deptId) => {
     try {
       setLoading(true);
-      // Get the current user's deptId
-      const currentUser = await getCurrentUser();
-      setUserDeptId(currentUser?.deptId); // Set the user's deptId
-  
-      // If the current user has a deptId, fetch employees matching that deptId
-      if (currentUser?.deptId) {
+      
+      // Fetch employees where deptId matches
+      if (deptId) {
         const { data, error } = await supabase
           .from("User")
           .select(`
@@ -45,9 +40,9 @@ export default function TableEmployee() {
             jobCategory,
             Department (deptName)
           `)
-          .eq("userRole", "office head")
-          .eq("deptId", currentUser.deptId); // Filter by deptId
-  
+          .eq("userRole", "requestor") // Change userRole to "staff"
+          .eq("deptId", deptId); // Filter by deptId
+
         if (error) throw error;
 
         // Log the data for debugging purposes
@@ -59,14 +54,18 @@ export default function TableEmployee() {
             id: user.id,
             deptName: user.Department?.deptName || "N/A", // Handle missing deptName
             fullName: user.fullName,
-            birthDate: user.created_at ? new Date(user.created_at).toLocaleDateString() : "No Date Available", // Use created_at for birthdate if birthDate is missing
+            birthDate: user.created_at
+              ? new Date(user.created_at).toLocaleDateString()
+              : "No Date Available", // Use created_at for birthdate if birthDate is missing
             jobCategory: user.jobCategory || "N/A", // Ensure jobCategory field exists
           }));
-          
+
+          console.log("Formatted Data: ", formattedData); // Log the formatted data
+
           setEmployees(formattedData); // Set the employees data
         }
       }
-  
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -75,10 +74,19 @@ export default function TableEmployee() {
   };
 
   useEffect(() => {
-    // Fetch initial data
-    fetchEmployees();
+    const getUser = async () => {
+      const currentUser = await getCurrentUser();
+      setUserDeptId(currentUser?.deptId); // Set the user's deptId
+      console.log("Current User: ", currentUser); // Log currentUser for debugging
 
-    // Subscribe to realtime updates from the User table
+      if (currentUser?.deptId) {
+        fetchEmployees(currentUser.deptId); // Fetch employees after deptId is set
+      }
+    };
+
+    getUser();
+
+    // Subscribe to realtime updates from the User table (Optional)
     const channel = supabase
       .channel("public:User")
       .on(
@@ -86,7 +94,7 @@ export default function TableEmployee() {
         { event: "*", schema: "public", table: "User" },
         async (payload) => {
           console.log("Realtime event:", payload);
-          await fetchEmployees(); // Refresh data on any change
+          await fetchEmployees(userDeptId); // Refresh data on any change
         }
       )
       .subscribe();
@@ -97,13 +105,19 @@ export default function TableEmployee() {
     };
   }, []); // Empty dependency array to fetch data only on mount
 
-  const handleAddEmployee = () => setIsModalOpen(true);
+  const handleAddEmployee = () => {
+    console.log('Add New Staff button clicked');
+    setIsModalOpen(true);
+  };
+
   const closeModal = async () => {
+    console.log('Closing modal');
     setIsModalOpen(false);
-    await fetchEmployees(); // Ensure data is refreshed after closing the modal
+    await fetchEmployees(userDeptId); // Ensure data is refreshed after closing the modal
   };
 
   const handleClickOutsideModal = (e) => {
+    console.log("Clicked outside modal");
     if (e.target.id === "modalBackdrop") closeModal();
   };
 
@@ -128,12 +142,12 @@ export default function TableEmployee() {
           employee.jobCategory,
           <div key={index} className="flex space-x-2">
             <button
-      key={employee.id}
+              key={employee.id}
               onClick={() => navigate(`/office_head/staff/view/${employee.id}`)}
               className="text-white hover:text-blue-500 bg-blue-500 p-1 font-semibold rounded"
-              >
-                View
-              </button>
+            >
+              View
+            </button>
           </div>,
         ])
       : [[]];
@@ -182,7 +196,7 @@ export default function TableEmployee() {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
           onClick={handleClickOutsideModal}
         >
-          <ViewAddStaff closeModal={closeModal} />
+          <OfficeHeadViewAddStaff closeModal={closeModal} /> {/* Pass closeModal as prop */}
         </div>
       )}
     </div>

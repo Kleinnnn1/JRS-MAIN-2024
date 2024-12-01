@@ -27,7 +27,7 @@ function ViewEmployee() {
   // Redirect if no ID is provided
   useEffect(() => {
     if (!id) {
-      navigate("/department_head/employee"); // Redirect to employee list if ID is missing
+      navigate("/office_head/employee"); // Redirect to employee list if ID is missing
       return;
     }
 
@@ -112,7 +112,7 @@ function ViewEmployee() {
       alert("Employee details updated successfully!");
 
       // Redirect back to the table after successful update
-      navigate("/department_head/employee"); // Replace "/department_head/employee" with your actual route
+      navigate("/office_head/employee"); // Replace "/department_head/employee" with your actual route
 
     } catch (err) {
       console.error("Error updating employee data:", err);

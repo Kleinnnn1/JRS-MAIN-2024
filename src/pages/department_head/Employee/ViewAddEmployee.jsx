@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useSignUp } from "../../../auth/useSignUp"; // Import useSignUp hook
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import supabase from "../../../service/supabase"; // Import Supabase client
 import { getCurrentUser } from "../../../service/apiAuth"; // Import the getCurrentUser function
 
 // SysAdminAddNewStaff Component
@@ -14,12 +13,12 @@ export default function ViewAddStaff({ closeModal }) {
   const [staffAccount, setstaffAccount] = useState([
     {
       id: 1,
-      idNumber: "44",
-      fName: "staff44",
-      lName: "maintenance44",
+      idNumber: "",
+      fName: "",
+      lName: "",
       birthDate: "",
-      email: "maintenance44@gmail.com",
-      contactNumber: "44",
+      email: "@gmail.com",
+      contactNumber: "",
       password: "12345678",
       deptId: "", // deptId is fetched from currentUser
       jobCategory: "",
