@@ -139,6 +139,7 @@ import SpmeCertificate from "./pages/spme/JobRequestDetailspme/RequestorCertific
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
+import ForgotPassword from "./auth/forgot-password.jsx";
 import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
 import PageDepartmentKeyWord from "./pages/department_head/keyword/PageDepartmentKeyword.jsx";
@@ -186,6 +187,8 @@ export default function App() {
           <Route path="signup" element={<SignUpForm />} />
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
+            {/* Routes for ForgotPassword */}
+            <Route path="/forgotPassword" element={<ForgotPassword />} />
           {/* SPME ROUTE */}
           <Route path="/spme" element={<SPMEDashboard />}>
             <Route path="make_requestSpme" element={<SpmeJobRequest />} />

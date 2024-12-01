@@ -2,6 +2,7 @@ import imageLogin from "/src/assets/images/maintenance.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLogin } from "./useLogin";
+import forgotPassword from "/src/auth/forgot-password.jsx";
 
 export default function LogIn() {
   const [idNumber, setIdNumber] = useState(""); // ID number state
@@ -98,7 +99,7 @@ export default function LogIn() {
 
           <div className="mt-5 text-xs border-b py-4 text-[#002D74]">
             <button
-              onClick={() => navigate("/forgot-password")}
+              onClick={() => navigate("/forgotPassword")}
               className="underline hover:text-blue-600"
             >
               Forgot your password?
