@@ -204,13 +204,16 @@ export default function StaffContent() {
     try {
       const { data, error } = await supabase
         .from("User")
-        .select(`
+        .select(
+          `
           id,
           fullName,
           userRole,
           created_at,
+          jobCategory,
           Department (deptName)
-        `)
+        `
+        )
         .in("userRole", ["staff"]); // Only fetch relevant roles
 
       if (error) throw error;
@@ -289,24 +292,24 @@ export default function StaffContent() {
 
   // Table content
   const tableContent = paginatedStaffs.map((staff) => [
-          staff.fullName,
-          staff.deptName,
-          staff.birthDate,
-          staff.jobCategory,
-          <button
-          key={staff.id}
-          onClick={() => navigate(`/system_admin/Users/view_staff/${staff.id}`)}
-          className="text-blue-600 hover:text-blue-800"
-        >
-          View
-        </button>,
-      ]);
+    staff.fullName,
+    staff.deptName,
+    staff.birthDate,
+    staff.jobCategory,
+    <button
+      key={staff.id}
+      onClick={() => navigate(`/system_admin/Users/view_staff/${staff.id}`)}
+      className="text-blue-600 hover:text-blue-800"
+    >
+      View
+    </button>,
+  ]);
 
   const tableHeaders = [
     "Full Name",
     "Department",
     "Birthday",
-    "Job Position",
+    "Job Category",
     "Actions",
   ];
 

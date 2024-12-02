@@ -68,13 +68,11 @@ export default function ContentJobRequest() {
     currentPage * rowsPerPage
   );
 
-  if (error) {
-    return (
-      <p className="text-center text-red-500">
-        Error fetching job requests: {error.message}
-      </p>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <p className="text-center text-red-500">Error fetching job requests</p>
+  //   );
+  // }
 
   return (
     <>

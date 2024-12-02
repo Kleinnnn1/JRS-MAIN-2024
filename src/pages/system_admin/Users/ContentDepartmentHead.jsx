@@ -23,14 +23,16 @@ export default function AdminContent() {
     try {
       const { data, error } = await supabase
         .from("User")
-        .select(`
+        .select(
+          `
           id,
           fullName,
           userRole,
           created_at,
           Department (deptName)
-        `)
-        .in("userRole", ["department head", "office head"]); // Only fetch relevant roles
+        `
+        )
+        .in("userRole", ["department head", "office head", "spme"]); // Only fetch relevant roles
 
       if (error) throw error;
 
@@ -113,11 +115,19 @@ export default function AdminContent() {
           >
             Add Department Head
           </button>
-          <ReusableSearchTerm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <ReusableSearchTerm
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+          />
         </div>
       </header>
 
-      <Table columns={4} rows={paginatedAdmins.length} content={tableContent} headers={tableHeaders} />
+      <Table
+        columns={4}
+        rows={paginatedAdmins.length}
+        content={tableContent}
+        headers={tableHeaders}
+      />
 
       <ReusablePagination
         rowsPerPage={rowsPerPage}

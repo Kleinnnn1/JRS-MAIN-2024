@@ -102,7 +102,7 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
       signup(newUser); // Call the signup API
     });
 
-    toast.success("Successfully Submitted.");
+    toast.success("Department/Office Head Account Successfully Created");
     closeModal();
   };
 

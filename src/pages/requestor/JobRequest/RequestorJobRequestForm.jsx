@@ -50,7 +50,6 @@ export default function RequestorJobRequestForm({ closeModal }) {
   const { mutate } = useMutation({
     mutationFn: insertRequest,
     onSuccess: () => {
-      toast.success("Job Request Successfully Submitted");
       queryClient.invalidateQueries({ queryKey: ["requests"] });
     },
     onError: (err) => toast.error(err.message),
@@ -106,7 +105,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
     );
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const hasEmptyFields = jobRequests.some(
       (request) =>
         !request.description ||
@@ -120,32 +119,76 @@ export default function RequestorJobRequestForm({ closeModal }) {
       return;
     }
 
-    const formattedRequests = jobRequests.map((request) => ({
-      description: request.description,
-      location: request.location,
-      jobCategory: request.category,
-      image: request.photo,
-      priority: request.priority,
-    }));
+    try {
+      const formattedRequests = await Promise.all(
+        jobRequests.map(async (request) => {
+          let imageFile = request.photo;
 
-    formattedRequests.forEach((formattedData) => {
-      mutate(formattedData);
-    });
+          // If there's an image, upload it
+          if (imageFile) {
+            const imageName = `${Date.now()}_${imageFile.name}`;
+            const { data: uploadData, error: uploadError } =
+              await supabase.storage
+                .from("request_image")
+                .upload(imageName, imageFile);
 
-    toast.success("Your job request(s) have been submitted successfully.");
-    navigate("/requestor/job_request_table");
-    closeModal();
+            if (uploadError) {
+              console.error("Error uploading image:", uploadError);
+              toast.error("Image upload failed");
+              throw uploadError;
+            }
 
-    setJobRequests([
-      {
-        id: 1,
-        description: "",
-        location: "",
-        category: "",
-        photo: null,
-        priority: "",
-      },
-    ]);
+            const { data: publicUrlData } = supabase.storage
+              .from("request_image")
+              .getPublicUrl(imageName);
+
+            imageFile = publicUrlData?.publicUrl || null;
+          }
+
+          // Log to verify the imageFile is processed correctly
+          console.log("Processed Request Data:", {
+            description: request.description,
+            location: request.location,
+            jobCategory: request.category,
+            image: imageFile, // Log the uploaded image URL
+            priority: request.priority,
+          });
+
+          return {
+            description: request.description,
+            location: request.location,
+            jobCategory: request.category,
+            image: imageFile, // Use the uploaded image URL
+            priority: request.priority,
+          };
+        })
+      );
+
+      // Log the entire formatted requests array
+      console.log("Final Formatted Requests to Submit:", formattedRequests);
+
+      formattedRequests.forEach((formattedData) => {
+        mutate(formattedData);
+      });
+
+      toast.success("Your job request(s) have been submitted successfully.");
+      navigate("/requestor/job_request_table");
+      closeModal();
+
+      setJobRequests([
+        {
+          id: 1,
+          description: "",
+          location: "",
+          category: "",
+          photo: null,
+          priority: "",
+        },
+      ]);
+    } catch (error) {
+      console.error("Error during submission:", error);
+      toast.error("Failed to submit job request(s).");
+    }
   };
 
   return (
@@ -364,24 +407,27 @@ RequestorJobRequestForm.propTypes = {
 //   const { mutate } = useMutation({
 //     mutationFn: insertRequest,
 //     onSuccess: () => {
-//       toast.success("Job Request Successfully Submitted");
 //       queryClient.invalidateQueries({ queryKey: ["requests"] });
 //     },
 //     onError: (err) => toast.error(err.message),
 //   });
 
 //   const handleAddRow = () => {
-//     setJobRequests([
-//       ...jobRequests,
-//       {
-//         id: jobRequests.length + 1,
-//         description: "",
-//         location: "",
-//         category: "",
-//         photo: null,
-//         priority: "",
-//       },
-//     ]);
+//     if (jobRequests.length < 9) {
+//       setJobRequests([
+//         ...jobRequests,
+//         {
+//           id: jobRequests.length + 1,
+//           description: "",
+//           location: "",
+//           category: "",
+//           photo: null,
+//           priority: "",
+//         },
+//       ]);
+//     } else {
+//       toast.error("You can only add up to 9 job requests.");
+//     }
 //   };
 
 //   const handleRemoveRow = (id) => {

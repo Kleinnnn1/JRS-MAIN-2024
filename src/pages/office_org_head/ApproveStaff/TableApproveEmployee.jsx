@@ -76,7 +76,22 @@ export default function TableApproveEmployee() {
 
         toast.success("Employee approved successfully!");
       } else if (action === "decline") {
-        toast.info("Decline action clicked. Implement as needed.");
+        const { error } = await supabase
+          .from("User")
+          .delete()
+          .eq("idNumber", idNumber); // Delete the user by idNumber
+
+        if (error) {
+          toast.error("Error deleting the employee.");
+          console.error("Error deleting user:", error);
+          return;
+        }
+
+        setEmployees((prevEmployees) =>
+          prevEmployees.filter((employee) => employee.idNumber !== idNumber)
+        ); // Remove the declined employee from the state
+
+        toast.success("Employee declined and deleted successfully!");
       }
     } catch (err) {
       toast.error("An unexpected error occurred.");

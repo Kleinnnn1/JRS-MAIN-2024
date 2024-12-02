@@ -136,7 +136,7 @@ export default function SysAdminAddNewStaff({ closeModal }) {
       signup(newaccount); // Call the signup API
     });
 
-    toast.success("Successfully Submitted.");
+    toast.success("Staff Account Successfully Created");
     closeModal();
   };
 

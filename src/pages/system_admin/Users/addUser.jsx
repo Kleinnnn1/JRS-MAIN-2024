@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import supabase from "../../../service/supabase"; // Import your Supabase client
 
-
 // SysAdminAddNewAdmin Component
 export default function SysAdminAddNewUser({ closeModal }) {
   const { handleSubmit } = useForm();
@@ -94,7 +93,7 @@ export default function SysAdminAddNewUser({ closeModal }) {
       signup(newUser); // Call the signup API
     });
 
-    toast.success("Successfully Submitted.");
+    toast.success("Requestor Account Successfully created");
     closeModal();
   };
 

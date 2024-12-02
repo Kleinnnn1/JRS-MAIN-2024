@@ -7,7 +7,6 @@ export function useSignUp() {
     mutationFn: signUpApi,
     onSuccess: (user) => {
       console.log(user);
-      toast.success("Account submitted!");
     },
     onError: (error) => {
       toast.error(`Sign up failed: ${error.message}`);
