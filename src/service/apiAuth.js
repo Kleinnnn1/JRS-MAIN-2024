@@ -298,10 +298,10 @@ export async function updateAvatar({ avatar }) {
 }
 
 export async function login({ idNumber, email, password }) {
-  // Determine which parameter (idNumber or email) is provided and fetch user accordingly
   let userData;
+
+  // Fetch the user data based on the provided ID number or email
   if (idNumber) {
-    // Fetch user by ID number if idNumber is provided
     const { data, error } = await supabase
       .from("User")
       .select("*")
@@ -312,7 +312,6 @@ export async function login({ idNumber, email, password }) {
       throw new Error("Provided ID number or password are incorrect");
     }
   } else if (email) {
-    // Fetch user by email if email is provided
     const { data, error } = await supabase
       .from("User")
       .select("*")
@@ -326,7 +325,12 @@ export async function login({ idNumber, email, password }) {
     throw new Error("Either ID number or email must be provided");
   }
 
-  // Authenticate with the email from fetched user data
+  // If userRole is 'unverified', fail the login attempt
+  if (userData.userRole === "unverified") {
+    throw new Error("Account verification is pending. Please contact support.");
+  }
+
+  // Proceed with authentication if userRole is valid
   const { data: authData, error: authError } =
     await supabase.auth.signInWithPassword({
       email: userData.email,
@@ -335,7 +339,7 @@ export async function login({ idNumber, email, password }) {
 
   if (authError) throw new Error(authError.message);
 
-  // Update user metadata with the additional profile information
+  // Update user metadata with additional profile information
   const { error: metadataError } = await supabase.auth.updateUser({
     data: {
       userRole: userData.userRole,
@@ -368,6 +372,78 @@ export async function login({ idNumber, email, password }) {
     },
   };
 }
+
+// export async function login({ idNumber, email, password }) {
+//   // Determine which parameter (idNumber or email) is provided and fetch user accordingly
+//   let userData;
+//   if (idNumber) {
+//     // Fetch user by ID number if idNumber is provided
+//     const { data, error } = await supabase
+//       .from("User")
+//       .select("*")
+//       .eq("idNumber", idNumber)
+//       .single();
+//     userData = data;
+//     if (error || !userData) {
+//       throw new Error("Provided ID number or password are incorrect");
+//     }
+//   } else if (email) {
+//     // Fetch user by email if email is provided
+//     const { data, error } = await supabase
+//       .from("User")
+//       .select("*")
+//       .eq("email", email)
+//       .single();
+//     userData = data;
+//     if (error || !userData) {
+//       throw new Error("Provided email or password are incorrect");
+//     }
+//   } else {
+//     throw new Error("Either ID number or email must be provided");
+//   }
+
+//   // Authenticate with the email from fetched user data
+//   const { data: authData, error: authError } =
+//     await supabase.auth.signInWithPassword({
+//       email: userData.email,
+//       password,
+//     });
+
+//   if (authError) throw new Error(authError.message);
+
+//   // Update user metadata with the additional profile information
+//   const { error: metadataError } = await supabase.auth.updateUser({
+//     data: {
+//       userRole: userData.userRole,
+//       avatar: userData.avatar,
+//       fName: userData.fName,
+//       lName: userData.lName,
+//       idNumber: userData.idNumber,
+//       contactNumber: userData.contactNumber,
+//       deptId: userData.deptId,
+//     },
+//   });
+
+//   if (metadataError) {
+//     console.error("Failed to update user metadata:", metadataError.message);
+//   }
+
+//   // Return combined user data including updated metadata
+//   return {
+//     ...authData,
+//     user: {
+//       ...authData.user,
+//       userRole: userData.userRole,
+//       avatar: userData.avatar,
+//       fName: userData.fName,
+//       lName: userData.lName,
+//       idNumber: userData.idNumber,
+//       contactNumber: userData.contactNumber,
+//       deptId: userData.deptId,
+//       birthDate: userData.birthDate,
+//     },
+//   };
+// }
 
 // export async function login({ idNumber, password }) {
 //   // Fetch user by idNumber and include all necessary fields
