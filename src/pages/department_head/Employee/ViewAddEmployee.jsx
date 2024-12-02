@@ -111,6 +111,19 @@ export default function ViewAddStaff({ closeModal }) {
     setShowPassword((prevState) => !prevState);
   };
 
+  // Validate if the user is at least 18 years old
+  const validateAge = (birthDate) => {
+    const today = new Date();
+    const userBirthDate = new Date(birthDate);
+    const age = today.getFullYear() - userBirthDate.getFullYear();
+    const isBeforeBirthday =
+      today.getMonth() < userBirthDate.getMonth() ||
+      (today.getMonth() === userBirthDate.getMonth() &&
+        today.getDate() < userBirthDate.getDate());
+
+    return age > 18 || (age === 18 && !isBeforeBirthday);
+  };
+
   const onSubmit = () => {
     const hasEmptyFields = staffAccount.some(
       (account) =>
@@ -127,6 +140,15 @@ export default function ViewAddStaff({ closeModal }) {
 
     if (hasEmptyFields) {
       toast.error("Please fill out all required fields before submitting.");
+      return;
+    }
+
+    const invalidAge = staffAccount.some(
+      (account) => !validateAge(account.birthDate)
+    );
+
+    if (invalidAge) {
+      toast.error("All staff members must be at least 18 years old.");
       return;
     }
 
@@ -257,9 +279,9 @@ export default function ViewAddStaff({ closeModal }) {
         ))}
         <button
           type="submit"
-          className="w-full p-2 mt-6 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="w-full bg-blue-500 text-white font-semibold py-2 px-4 mt-4 rounded hover:bg-blue-600"
         >
-          Add Staff
+          Submit
         </button>
       </form>
     </div>
@@ -267,8 +289,9 @@ export default function ViewAddStaff({ closeModal }) {
 }
 
 ViewAddStaff.propTypes = {
-  closeModal: PropTypes.func,
+  closeModal: PropTypes.func.isRequired,
 };
+
 
 // import React, { useState } from "react";
 // import Swal from "sweetalert2";
