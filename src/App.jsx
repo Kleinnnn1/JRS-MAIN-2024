@@ -168,6 +168,7 @@ import OfficeHeadReport from "./pages/office_org_head/SendReport/PageReport.jsx"
 import OfficeHeadReportView from "./pages/office_org_head/SendReport/ReportView.jsx";
 import OfficeHeadSendReportView from "./pages/office_org_head/SendReport/SendReportForm.jsx";
 import OfficeHeadApproveEmployee from "./pages/office_org_head/ApproveStaff/PageApproveEmployee.jsx";
+import JobRequestDetails from "./pages/department_head/JobRequest/DeptHeadRequestDetail.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -452,6 +453,7 @@ export default function App() {
               </Route>
             </Route>
             <Route path="job_request" element={<PageJobRequest />}>
+              <Route path="detail/:requestId" element={<JobRequestDetails />} />
               <Route path="view" element={<ViewJobRequest />} />
               <Route path="remarks" element={<ViewJobRequestRemarks />} />
             </Route>

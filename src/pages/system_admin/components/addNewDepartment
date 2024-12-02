@@ -1,0 +1,208 @@
+// import { useState, useEffect } from "react";
+// import ReusablePagination from "../../../components/ReusablePagination";
+// import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
+// import Table from "../../../components/Table";
+// import SearchBar from "../../../components/SearchBar";
+// import toast from "react-hot-toast";
+// import supabase from "../../../service/supabase"; // Ensure this is your configured Supabase client
+// import ButtonAddDepartment from "../Department/buttonAddDep";
+
+
+// const SysAdminAddDepartment = ({ closeModal }) => {
+//   const [departmentName, setDepartmentName] = useState("");
+
+//   const handleSubmit = async (event) => {
+//     event.preventDefault();
+
+//     if (!departmentName) {
+//       toast.error("Department name is required");
+//       return;
+//     }
+
+//     try {
+//       const newDepartment = { deptName: departmentName };
+//       const { error } = await supabase.from("Department").insert(newDepartment);
+
+//       if (error) throw error;
+
+//       toast.success("Department added successfully");
+//       setDepartmentName("");
+//       closeModal();
+//     } catch (error) {
+//       toast.error(error.message || "An error occurred");
+//     }
+//   };
+
+//   return (
+//     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+//       <div className="bg-white rounded-lg p-4 max-w-2xl relative">
+//         <button
+//           onClick={closeModal}
+//           className="absolute -top-4 -right-4 bg-yellow-300 text-black text-4xl rounded-full h-10 w-10 flex items-center justify-center border-4 border-yellow-300 hover:bg-gray-100 hover:text-red-600 shadow-lg"
+//           aria-label="Close Modal"
+//         >
+//           &times;
+//         </button>
+//         <header className="w-full text-lg p-5 font-semibold bg-custom-blue text-center text-white rounded-lg relative">
+//           Add Department
+//         </header>
+//         <form className="mt-5" onSubmit={handleSubmit}>
+//           <div>
+//             <label
+//               className="text-gray-700 font-bold mb-10"
+//               htmlFor="departmentName"
+//             >
+//               Department Name
+//             </label>
+//             <input
+//               type="text"
+//               id="departmentName"
+//               name="departmentName"
+//               className="w-full px-3 py-2 mb-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+//               value={departmentName}
+//               onChange={(e) => setDepartmentName(e.target.value)}
+//               required
+//             />
+//           </div>
+//           <div className="flex justify-end">
+//             <button
+//               type="submit"
+//               className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+//             >
+//               Submit
+//             </button>
+//           </div>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// };
+
+
+
+// //______________________________DEPARTMENT TABLE_______________________________________________
+// const DeptTable = () => {
+//   const [isModalOpen, setIsModalOpen] = useState(false);
+//   const [departments, setDepartments] = useState([]);
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [rowsPerPage, setRowsPerPage] = useState(10);
+//   const [currentPage, setCurrentPage] = useState(1);
+
+//   const tableHeaders = ["Department Name", "Department/Office Head", "Action"];
+
+//   // Fetch initial data
+//   const fetchDepartments = async () => {
+//     try {
+//       const { data, error } = await supabase
+//         .from("Department")
+//         .select(`
+//           deptName,
+//           deptId,
+//           User ( fullName )
+//         `);
+
+//       if (error) throw error;
+
+//       // Log the fetched data to inspect the structure
+//       console.log(data); // Check if User -> fullName exists in the result
+
+//       // Format data by extracting deptName and fullName (from User table)
+//       const formattedData = data.map((department) => ({
+//         deptName: department.deptName,
+//         deptHead: department.User ? department.User.fullName : "N/A", // Fallback if no department head is found
+//       }));
+
+//       setDepartments(formattedData);
+//     } catch (error) {
+//       console.error("Error fetching departments:", error);
+//       toast.error("Error fetching departments");
+//     }
+//   };
+
+//   // Set up real-time subscriptions
+//   useEffect(() => {
+//     // Fetch initial data
+//     fetchDepartments();
+
+//     // Subscribe to changes in the `Department` table and refresh data
+//     const channel = supabase
+//       .channel("public:Department")
+//       .on(
+//         "postgres_changes",
+//         { event: "*", schema: "public", table: "Department" },
+//         (payload) => {
+//           console.log("Realtime event:", payload);
+//           fetchDepartments(); // Re-fetch data on any change
+//         }
+//       )
+//       .subscribe();
+
+//     // Cleanup subscription on unmount
+//     return () => {
+//       supabase.removeChannel(channel);
+//     };
+//   }, []);
+
+//   const filteredDepartments = departments.filter(
+//     (department) =>
+//       department.deptName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//       (department.deptHead || "").toLowerCase().includes(searchTerm.toLowerCase())
+//   );
+
+//   const totalPages = Math.ceil(filteredDepartments.length / rowsPerPage);
+//   const paginatedDepartments = filteredDepartments.slice(
+//     (currentPage - 1) * rowsPerPage,
+//     currentPage * rowsPerPage
+//   );
+
+//   const tableContent =
+//     paginatedDepartments.length > 0
+//       ? paginatedDepartments.map((department, index) => [
+//           department.deptName, // From the Department table
+//           department.deptHead, // From the User table (matched by deptId)
+//           <button
+//             key={index}
+//             onClick={() => alert(`Viewing department: ${department.deptName}`)}
+//             className="text-blue-600 hover:text-blue-800"
+//           >
+//             View
+//           </button>,
+//         ])
+//       : [[]];
+
+//   const handleOpenModal = () => setIsModalOpen(true);
+//   const handleCloseModal = () => setIsModalOpen(false);
+
+//   return (
+//     <div className="p-6 mx-5 mt-10 bg-white rounded-lg shadow-lg">
+//       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
+//         <SearchBar title="Departments" />
+//         <div className="flex space-x-4">
+//           <ButtonAddDepartment onClick={handleOpenModal} />
+//           <ReusableSearchTerm
+//             searchTerm={searchTerm}
+//             setSearchTerm={setSearchTerm}
+//           />
+//         </div>
+//       </header>
+//       <Table
+//         columns={3}
+//         rows={paginatedDepartments.length}
+//         content={tableContent}
+//         headers={tableHeaders}
+//       />
+//       <ReusablePagination
+//         rowsPerPage={rowsPerPage}
+//         setRowsPerPage={setRowsPerPage}
+//         currentPage={currentPage}
+//         setCurrentPage={setCurrentPage}
+//         totalPages={totalPages}
+//       />
+//       {isModalOpen && (
+//         <SysAdminAddDepartment closeModal={handleCloseModal} />
+//       )}
+//     </div>
+//   );
+// };
+
+// export default DeptTable;

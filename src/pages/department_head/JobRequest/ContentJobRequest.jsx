@@ -16,8 +16,7 @@ const tableHeaders = [
   "Location",
   "Image",
   "Priority",
-  "Referral",
-  "Action",
+  "Action", // Removed Referral column
 ];
 
 export default function ContentJobRequest() {
@@ -76,12 +75,6 @@ export default function ContentJobRequest() {
       </p>
     );
   }
-
-  // if (error) {
-  //   return (
-  //     <p className="text-center text-red-500">Error fetching job requests</p>
-  //   );
-  // }
 
   return (
     <>
