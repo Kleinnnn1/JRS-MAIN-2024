@@ -102,6 +102,9 @@ export default function DeptHeadRequestData(requests, openModal) {
         )
       : [[]];
 
+  // Log the formatted data
+  console.log("Formatted Data:", formattedData);
+
   return formattedData;
 }
 

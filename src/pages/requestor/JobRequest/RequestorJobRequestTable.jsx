@@ -6,7 +6,6 @@ import SearchBar from "../../../components/SearchBar";
 import RequestorJobRequestForm from "./RequestorJobRequestForm";
 import { useQuery } from "@tanstack/react-query";
 import { getRequestorRequest } from "../../../service/apiRequestorRequestTable";
-import DefaultImageUser from "../../../assets/images/DefaultImageUser.jpg";
 
 // Define table headers
 const tableHeaders = [

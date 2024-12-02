@@ -24,6 +24,7 @@ export async function getDeptHeadJobRequest() {
         requestDate,
         status,
         priority,
+        image,
         User(fullName)
       )
       `
@@ -62,6 +63,7 @@ export async function getDeptHeadJobRequest() {
     requestDate: item.Request?.requestDate || "Unknown date",
     status: item.Request?.status || "Unknown status",
     priority: item.Request?.priority || "No priority",
+    image: item.Request?.image || "No priority",
   }));
 
   return formattedData;
