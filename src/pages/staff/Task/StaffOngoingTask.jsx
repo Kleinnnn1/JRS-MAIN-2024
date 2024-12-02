@@ -7,8 +7,8 @@ import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
 import SetDate from "./SetDate";
 import { useQuery } from "@tanstack/react-query";
 import { getJobAssign } from "../../../service/apiStaffTable";
-import StaffAssignJobData from "./StaffAssignJobData";
 
+// Define table headers
 const tableHeaders = [
   "Requestor",
   "Job Description",
@@ -16,10 +16,24 @@ const tableHeaders = [
   "Image",
   "Date Assigned",
   "Date Started",
-  "Set Assesment",
+  "Set Assessment",
   "Priority",
   "Action",
 ];
+
+// Helper function to get priority class
+const getPriorityClass = (level) => {
+  switch (level) {
+    case "High":
+      return "bg-red-500 text-white py-1 px-2 rounded";
+    case "Medium":
+      return "bg-yellow-500 text-black py-1 px-2 rounded";
+    case "Low":
+      return "bg-green-500 text-white py-1 px-2 rounded";
+    default:
+      return "";
+  }
+};
 
 export default function TableCertificate() {
   const { data: request = [], error } = useQuery({
@@ -32,17 +46,19 @@ export default function TableCertificate() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Filter job requests based on search term and sort by Date Requested
+  if (error) {
+    return <div>Error loading data: {error.message}</div>;
+  }
+
+  // Filter and sort job requests
   const filteredRequests = request
     .filter(
-      (request) =>
-        request.requestor?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        request.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        request.status?.toLowerCase().includes(searchTerm.toLowerCase())
+      (req) =>
+        req.User.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        req.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        req.location?.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
-
-  // Sort by Date Requested in descending order
+    .sort((a, b) => new Date(a.dateCompleted) - new Date(b.dateCompleted));
 
   const totalPages = Math.ceil(filteredRequests.length / rowsPerPage);
   const paginatedRequests = filteredRequests.slice(
@@ -50,7 +66,44 @@ export default function TableCertificate() {
     currentPage * rowsPerPage
   );
 
-  const tableContent = StaffAssignJobData(paginatedRequests) || [];
+  // Format the job assignment data for the table
+  const tableContent =
+    paginatedRequests.length > 0
+      ? paginatedRequests.map(
+          (
+            { User, description, location, image, dateCompleted, priority },
+            index
+          ) => [
+            `${index + 1}. ${String(User.fullName)}`, // Sequential number + fullName
+            description,
+            location,
+            image ? (
+              <img src={image} alt="Request" className="w-16 h-16" />
+            ) : (
+              "No Image"
+            ),
+            dateCompleted
+              ? new Date(dateCompleted).toLocaleString(undefined, {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "N/A", // Format dateCompleted
+            <SetDate />, // Set assessment (can be customized further)
+            <SetDate />, // Set completion date
+            priority ? (
+              <span className={getPriorityClass(priority)}>{priority}</span>
+            ) : (
+              "N/A"
+            ), // Apply priority class styling
+            <button className="bg-blue-500 text-white px-4 py-1 rounded-md">
+              Job Complete
+            </button>,
+          ]
+        )
+      : [[]];
 
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
