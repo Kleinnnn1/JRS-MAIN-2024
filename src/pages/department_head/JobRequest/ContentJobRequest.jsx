@@ -18,8 +18,7 @@ const tableHeaders = [
   "Location",
   "Image",
   "Priority",
-  "Referral",
-  "Action",
+  "Action", // Removed Referral column
 ];
 
 const getPriorityClass = (level) => {
