@@ -60,18 +60,18 @@ export default function DeptHeadRequestData(requests) {
         onClick={() => {
           // Navigate to the job request details page
           navigate(`/department_head/job_request/detail/${requestId}`, {
-            state: {
-              fullName,
-              description,
-              location,
-              jobCategory,
-              requestDate,
-              image,
-              priority,
-              requestId,
-              idNumber,
-            },
-          });
+      state: {
+        fullName,
+        description,
+        location,
+        jobCategory,
+        requestDate,
+        image,
+        priority,
+        requestId,
+        idNumber,
+      },
+    });
         }}
       >
         View
