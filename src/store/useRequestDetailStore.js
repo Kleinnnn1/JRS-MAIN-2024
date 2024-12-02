@@ -1,36 +1,41 @@
 import { create } from "zustand";
 
 export const useRequestDetailStore = create((set) => ({
-    description: "", // Add description to the state
-    jobPosition: "",
-    location: "",
-    deptReqAssId: "",
-    requestId: "",
-    idNumber: "",
+   
+    fullName: "", 
+    description: "", 
+    jobCategory: "", 
+    requestDate: "", 
+    location: "", 
+    image: "", 
+    priority: "", 
+    
     setAssignmentData: (
-      description, // Include description
-      jobPosition,
-      location,
-      deptReqAssId,
-      requestId,
-      idNumber
+        fullName, // Include description
+        description,
+        jobCategory,
+        requestDate,
+        image,
+        priority,
     ) =>
       set({
+        fullName, // Include description
         description,
-        jobPosition,
-        location,
-        deptReqAssId,
-        requestId,
-        idNumber,
+        jobCategory,
+        requestDate,
+        image,
+        priority,
       }),
     clearAssignmentData: () =>
       set({
-        description: "", // Clear description
-        jobPosition: "",
-        location: "",
-        deptReqAssId: "",
-        requestId: "",
-        idNumber: "",
+        
+    fullName: "", 
+    description: "", 
+    jobCategory: "", 
+    requestDate: "", 
+    location: "", 
+    image: "", 
+    priority: "", 
       }),
   }));
   

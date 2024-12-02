@@ -123,49 +123,77 @@
 // );
 
 //     }
-
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import ModalForm from "./ModalForm";
 
 export default function JobRequestDetails() {
   const location = useLocation();
-  const navigate = useNavigate();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRequest, setSelectedRequest] = useState(location.state || {});
 
-  // Function to open the modal with selected request
-  const openModal = () => {
-    setIsModalOpen(true);
+  // Initialize selected request or fallback to default values
+  const selectedRequest = location.state || {
+    fullName: "",
+    description: "",
+    jobCategory: "",
+    location: "",
+    requestDate: "",
+    image: "", // This should hold the image URL if available
+    priority: "",
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
-  // Handle staff assignment submission
   const handleAssignStaff = () => {
-    // You can handle assignment logic here
     console.log("Assigning staff to:", selectedRequest);
     closeModal();
   };
 
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
-      {/* Job Request Details */}
       <h2 className="text-2xl font-semibold mb-4">Job Request Details</h2>
-      <p><strong>Requestor: </strong>{selectedRequest.fullName}</p>
-      <p><strong>Description: </strong>{selectedRequest.description}</p>
-      <p><strong>Job Category: </strong>{selectedRequest.jobCategory}</p>
-      <p><strong>Location: </strong>{selectedRequest.location}</p>
-      <p><strong>Date Submitted: </strong>{new Date(selectedRequest.requestDate).toLocaleDateString()}</p>
-      <p><strong>Priority: </strong><span className="text-xl">{selectedRequest.priority}</span></p>
-      {selectedRequest.image && <img src={selectedRequest.image} alt="Job Request" className="my-4" />}
-      
-      {/* Assign Staff Button */}
+
+      <div className="mb-4">
+        <p>
+          <strong>Requestor:</strong> {selectedRequest.fullName}
+        </p>
+        <p>
+          <strong>Description:</strong> {selectedRequest.description}
+        </p>
+        <p>
+          <strong>Job Category:</strong> {selectedRequest.jobCategory}
+        </p>
+        <p>
+          <strong>Location:</strong> {selectedRequest.location}
+        </p>
+        <p>
+          <strong>Date Submitted:</strong>{" "}
+          {selectedRequest.requestDate &&
+            new Date(selectedRequest.requestDate).toLocaleDateString()}
+        </p>
+        <p>
+          <strong>Priority:</strong>{" "}
+          <span className="text-xl">{selectedRequest.priority}</span>
+        </p>
+      </div>
+
+      {/* Display image if available */}
+      {selectedRequest.image ? (
+        <div className="mb-4">
+          <h3 className="text-lg font-medium">Attached Image:</h3>
+          <img
+            src={selectedRequest.image}
+            alt="Job Request"
+            className="my-4 max-w-full h-auto border border-gray-300 rounded-lg"
+          />
+        </div>
+      ) : (
+        <p className="text-gray-500 italic">No image attached for this request.</p>
+      )}
+
       <button
-        className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2"
+        className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white"
         onClick={openModal}
       >
         Assign Staff

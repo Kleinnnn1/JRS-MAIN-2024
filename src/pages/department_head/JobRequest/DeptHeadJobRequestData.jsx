@@ -35,7 +35,7 @@ export default function DeptHeadRequestData(requests) {
         requestDate,
         image,
         priority,
-        deptReqAssId,
+        // deptReqAssId,
         requestId,
         idNumber,
       },
@@ -59,7 +59,19 @@ export default function DeptHeadRequestData(requests) {
         className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2"
         onClick={() => {
           // Navigate to the job request details page
-          navigate(`/department_head/job_request/detail/${requestId}`);
+          navigate(`/department_head/job_request/detail/${requestId}`, {
+      state: {
+        fullName,
+        description,
+        location,
+        jobCategory,
+        requestDate,
+        image,
+        priority,
+        requestId,
+        idNumber,
+      },
+    });
         }}
       >
         View
