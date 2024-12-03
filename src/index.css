@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes floatIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px); /* Start slightly below */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0); /* End at the original position */
+    }
+  }
+  
+  .animate-float {
+    animation: floatIn 0.5s ease-out; /* Duration and easing */
+  }
+  
