@@ -236,10 +236,11 @@ export default function RequestDetailPage() {
           placeholder="Add your remarks here..."
         />
       </div>
-        {/* Save Remarks Button */}
-        <div className="flex justify-end mt-4">
+
+      {/* Save Remarks Button */}
+      <div className="flex justify-end mt-4">
         <button
-          className="px-2 py-1 bg-blue-600 mb-5 text-white rounded hover:bg-blue-700"
+          className="px-4 py-2 bg-blue-600 mb-5 text-white rounded hover:bg-blue-700"
           onClick={handleSaveRemarks}
         >
           Save Remarks
@@ -277,8 +278,6 @@ export default function RequestDetailPage() {
       )}
 
       
-
-    
 
       <button
         className="px-4 py-2 bg-blue-600 font-bold text-white rounded hover:bg-blue-700"
