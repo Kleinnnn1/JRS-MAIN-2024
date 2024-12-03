@@ -289,9 +289,8 @@ export default function ViewAddStaff({ closeModal }) {
 }
 
 ViewAddStaff.propTypes = {
-  closeModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func,
 };
-
 
 // import React, { useState } from "react";
 // import Swal from "sweetalert2";
