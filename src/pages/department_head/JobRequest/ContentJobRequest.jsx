@@ -65,9 +65,7 @@ export default function ContentJobRequest() {
       `${index + 1}. ${fullName || "N/A"}`,
       description || "No description provided",
       jobCategory || "Unknown Category",
-      requestDate
-        ? new Date(requestDate).toLocaleDateString()
-        : "Invalid Date",
+      requestDate ? new Date(requestDate).toLocaleDateString() : "Invalid Date",
       location || "Unknown Location",
       image ? (
         <img
@@ -99,7 +97,7 @@ export default function ContentJobRequest() {
               deptReqAssId,
               requestId,
               idNumber,
-              remarks
+              remarks,
             },
           })
         }

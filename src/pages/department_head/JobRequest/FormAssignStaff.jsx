@@ -30,17 +30,32 @@ export default function FormAssignStaff({ onClose }) {
   ]);
 
   // Fetch staff names from Supabase
+
   const fetchStaffNames = async () => {
     try {
-      const { data, error } = await supabase
+      // Fetch assigned staff names
+      const { data: assignedStaff, error: assignedError } = await supabase
+        .from("Department_request_assignment")
+        .select("staffName");
+
+      if (assignedError) throw assignedError;
+
+      const assignedStaffNames = assignedStaff.map((item) => item.staffName);
+
+      // Fetch all staff names and filter out assigned ones
+      const { data: allStaff, error: staffError } = await supabase
         .from("User")
         .select("jobCategory, fullName");
 
-      if (error) throw error;
+      if (staffError) throw staffError;
 
-      const groupedStaff = data.reduce((acc, user) => {
-        if (!acc[user.jobCategory]) acc[user.jobCategory] = [];
-        acc[user.jobCategory].push(user.fullName);
+      const groupedStaff = allStaff.reduce((acc, user) => {
+        if (
+          !assignedStaffNames.includes(user.fullName) // Exclude already assigned staff
+        ) {
+          if (!acc[user.jobCategory]) acc[user.jobCategory] = [];
+          acc[user.jobCategory].push(user.fullName);
+        }
         return acc;
       }, {});
 
@@ -50,6 +65,27 @@ export default function FormAssignStaff({ onClose }) {
       toast.error("Failed to load staff names.");
     }
   };
+
+  // const fetchStaffNames = async () => {
+  //   try {
+  //     const { data, error } = await supabase
+  //       .from("User")
+  //       .select("jobCategory, fullName");
+
+  //     if (error) throw error;
+
+  //     const groupedStaff = data.reduce((acc, user) => {
+  //       if (!acc[user.jobCategory]) acc[user.jobCategory] = [];
+  //       acc[user.jobCategory].push(user.fullName);
+  //       return acc;
+  //     }, {});
+
+  //     setStaffNameOptions(groupedStaff);
+  //   } catch (error) {
+  //     console.error("Error fetching staff names:", error);
+  //     toast.error("Failed to load staff names.");
+  //   }
+  // };
 
   useEffect(() => {
     fetchStaffNames();
@@ -98,6 +134,7 @@ export default function FormAssignStaff({ onClose }) {
   };
 
   const onSubmit = async () => {
+    // Check for any empty fields
     const hasEmptyFields = assignments.some(
       (assignment) =>
         !assignment.jobPosition || !assignment.location || !assignment.staffName
@@ -108,16 +145,22 @@ export default function FormAssignStaff({ onClose }) {
       return;
     }
 
-    try {
-      await Promise.all(
-        assignments.map((assignment) =>
-          insertStaff({
-            staffName: assignment.staffName,
-            jobPosition: assignment.jobPosition,
-            location: assignment.location,
-          })
-        )
+    // Check if the same staffName is assigned to multiple requests
+    const staffNames = assignments.map((assignment) => assignment.staffName);
+    const duplicateStaffNames = staffNames.filter(
+      (staffName, index) => staffNames.indexOf(staffName) !== index
+    );
+
+    if (duplicateStaffNames.length > 0) {
+      toast.error(
+        "One staff member cannot be assigned to multiple job requests."
       );
+      return;
+    }
+
+    try {
+      // Insert staff assignments
+      await insertStaff(assignments);
 
       toast.success("Staff assignment(s) successfully submitted.");
       reset();
@@ -136,6 +179,46 @@ export default function FormAssignStaff({ onClose }) {
       toast.error("An error occurred while assigning staff. Please try again.");
     }
   };
+
+  // const onSubmit = async () => {
+  //   const hasEmptyFields = assignments.some(
+  //     (assignment) =>
+  //       !assignment.jobPosition || !assignment.location || !assignment.staffName
+  //   );
+
+  //   if (hasEmptyFields) {
+  //     toast.error("Please fill out all required fields before submitting.");
+  //     return;
+  //   }
+
+  //   try {
+  //     await Promise.all(
+  //       assignments.map((assignment) =>
+  //         insertStaff({
+  //           staffName: assignment.staffName,
+  //           jobPosition: assignment.jobPosition,
+  //           location: assignment.location,
+  //         })
+  //       )
+  //     );
+
+  //     toast.success("Staff assignment(s) successfully submitted.");
+  //     reset();
+  //     onClose();
+  //     setAssignments([
+  //       {
+  //         id: Date.now(),
+  //         description: description || "",
+  //         jobPosition: jobPosition || "",
+  //         location: location || "",
+  //         staffName: "",
+  //       },
+  //     ]);
+  //   } catch (error) {
+  //     console.error("Failed to assign staff:", error);
+  //     toast.error("An error occurred while assigning staff. Please try again.");
+  //   }
+  // };
 
   return (
     <div className="rounded-lg">
