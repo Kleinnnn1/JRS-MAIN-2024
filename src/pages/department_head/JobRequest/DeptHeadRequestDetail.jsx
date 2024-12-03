@@ -136,6 +136,7 @@ export default function RequestDetailPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown
   const [remarks, setRemarks] = useState(""); // State for remarks input
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false); // State for image modal
 
   const {
     fullName,
@@ -152,6 +153,8 @@ export default function RequestDetailPage() {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const openImageModal = () => setIsImageModalOpen(true);
+  const closeImageModal = () => setIsImageModalOpen(false);
 
   const handleAssign = () => {
     useAssignmentStore
@@ -179,13 +182,14 @@ export default function RequestDetailPage() {
   };
 
   const handleSaveRemarks = () => {
-    // Here, you could save remarks to a backend or handle it as needed
-    console.log("Remarks saved:", remarks);
+    console.log("Remarks saved:", remarks); // Replace this with actual saving logic
   };
 
   return (
-    <div className="p-6 bg-white shadow-lg rounded-lg max-w-3xl mx-auto mt-10">
-      <h2 className="text-2xl font-bold text-center p-2 rounded bg-yellow-500 mb-6">Job Request Details</h2>
+    <div className="p-6 bg-white shadow-lg rounded-lg m-10 mt-10">
+      <h2 className="text-2xl font-bold text-center p-2 rounded bg-yellow-500 mb-6">
+        Job Request Details
+      </h2>
       <div className="flex justify-between items-start">
         {/* Left side: Job Request Details */}
         <div className="flex-1 pr-6">
@@ -218,23 +222,7 @@ export default function RequestDetailPage() {
               {priority || "No Priority"}
             </span>
           </div>
-          
-        </div>
-
-        {/* Right side: Image */}
-        {image && (
-          <div className="w-1/3">
-            <strong>Image:</strong>
-            <img
-              src={image}
-              alt="Job Request"
-              className="w-full h-auto mt-2 rounded-lg border"
-            />
-          </div>
-        )}
-      </div>
-
-      {/* Remarks Input Field */}
+          {/* Remarks Input Field */}
       <div className="mt-6">
         <label htmlFor="remarks" className="block font-bold mb-2">
           Remarks:
@@ -248,22 +236,57 @@ export default function RequestDetailPage() {
           placeholder="Add your remarks here..."
         />
       </div>
-
-      {/* Save Remarks Button */}
-      <div className="flex justify-end mt-4">
+        {/* Save Remarks Button */}
+        <div className="flex justify-end mt-4">
         <button
-          className="px-4 py-2 bg-blue-600 mb-5 text-white rounded hover:bg-blue-700"
+          className="px-2 py-1 bg-blue-600 mb-5 text-white rounded hover:bg-blue-700"
           onClick={handleSaveRemarks}
         >
           Save Remarks
         </button>
       </div>
+        </div>
+
+        {/* Right side: Image */}
+        {image && (
+          <div className="w-1/2">
+            <strong>Image:</strong>
+            <img
+              src={image}
+              alt="Job Request"
+              className="w-full h-auto mt-2 rounded-lg border cursor-pointer"
+              onClick={openImageModal}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Image Modal */}
+      {isImageModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md">
+            <img src={image} alt="Job Request" className="w-full h-auto rounded-lg" />
+            <button
+              className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              onClick={closeImageModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      
+
+    
+
       <button
-            className="px-4 py-2  bg-blue-600 font-bold text-white rounded hover:bg-blue-700"
-            onClick={handleAssign}
-          >
-            Assign
-          </button>
+        className="px-4 py-2 bg-blue-600 font-bold text-white rounded hover:bg-blue-700"
+        onClick={handleAssign}
+      >
+        Assign
+      </button>
+
       {/* Refer Button with Dropdown */}
       <div className="mt-3">
         <button
@@ -272,7 +295,6 @@ export default function RequestDetailPage() {
         >
           Refer
         </button>
-
         {isDropdownOpen && (
           <div className="mt-2 bg-white shadow-lg rounded-lg w-48 absolute z-10 border">
             <button
@@ -291,11 +313,14 @@ export default function RequestDetailPage() {
         )}
       </div>
 
+      {/* Modal Form */}
       <ModalForm
         isOpen={isModalOpen}
         onClose={closeModal}
         onSubmit={() => console.log("Modal submitted")}
       />
+
+      {/* Go Back Button */}
       <button
         className="ml-2 mt-4 text-blue-500 font-bold underline"
         onClick={() => navigate(-1)}
