@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import ReusablePagination from "../../../components/ReusablePagination";
 import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
 import Table from "../../../components/Table";
@@ -22,6 +23,7 @@ const tableHeaders = [
 ];
 
 export default function RequestorJobRequestTable() {
+  const navigate = useNavigate(); // Initialize useNavigate
   const { data: request = [], error } = useQuery({
     queryKey: ["requests"],
     queryFn: getRequestorRequest,
@@ -56,6 +58,15 @@ export default function RequestorJobRequestTable() {
     setImageSrc(""); // Reset the image source
   };
 
+  // Function to handle navigation to job request detail page
+  const handleDetailsClick = (request) => {
+    navigate(`/requestor/job_request_detail/${request.requestId}`, {
+      state: {
+        ...request, // Pass the entire request object to the detail page
+      },
+    });
+  };
+
   // Filter job requests based on search term and sort by Date Requested
   const filteredRequests = request
     .filter(
@@ -74,7 +85,7 @@ export default function RequestorJobRequestTable() {
   );
 
   // Create table content using paginated data
-  const tableContent = mapRequestData(paginatedRequests, openImageModal) || []; // Use paginated requests
+  const tableContent = mapRequestData(paginatedRequests, openImageModal, handleDetailsClick) || []; // Use paginated requests
 
   // UI Layout
   return (
@@ -160,7 +171,7 @@ export default function RequestorJobRequestTable() {
 }
 
 // Rename the function to avoid conflict
-const mapRequestData = (requests, openImageModal) => {
+const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
   const getPriorityClass = (level) => {
     switch (level) {
       case "High":
@@ -231,8 +242,23 @@ const mapRequestData = (requests, openImageModal) => {
         ) : (
           "N/A"
         ), // Apply styling to priority
-        <button className="bg-blue-500 text-white px-4 py-1 rounded-md">
-          details
+        <button
+          onClick={() =>
+            handleDetailsClick({
+              requestId,
+              description,
+              jobCategory,
+              deptName,
+              staffName,
+              image,
+              status,
+              requestDate,
+              priority,
+            })
+          }
+          className="bg-blue-500 text-white px-4 py-1 rounded-md"
+        >
+          Details
         </button>,
       ];
 

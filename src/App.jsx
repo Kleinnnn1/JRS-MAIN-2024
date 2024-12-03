@@ -189,8 +189,8 @@ export default function App() {
           <Route path="signup" element={<SignUpForm />} />
           {/* Routes for Login */}
           <Route path="/login" element={<LogIn />} />
-            {/* Routes for ForgotPassword */}
-            <Route path="/forgotPassword" element={<ForgotPassword />} />
+          {/* Routes for ForgotPassword */}
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
           {/* SPME ROUTE */}
           <Route path="/spme" element={<SPMEDashboard />}>
             <Route path="make_requestSpme" element={<SpmeJobRequest />} />
@@ -453,6 +453,7 @@ export default function App() {
                 <Route path="information" element={<ViewHistory />} />
               </Route>
             </Route>
+            {/* HERE */}
             <Route path="job_request" element={<PageJobRequest />}>
               <Route path="detail/:requestId" element={<JobRequestDetails />} />
               <Route path="view/:requestId" element={<RequestDetailPage />} />
@@ -499,6 +500,9 @@ export default function App() {
             </Route>
             <Route path="content" element={<ContentAprrovingCertificate />} />
           </Route>
+
+
+
           {/* Protected Routes for Requestor */}
           <Route
             path="/requestor/*"
@@ -511,30 +515,14 @@ export default function App() {
             <Route path="home" element={<RequestorContentDashboard />} />
             {/* JOB REQUEST */}
             <Route path="job_request" element={<RequestorJobRequest />} />
-            <Route
-              path="job_request_table"
-              element={<RequestorJobRequestTable />}
-            />
-            <Route
-              path="job_request_detail/:requestId"
-              element={<RequestorJobRequestDetail />}
-            />
-            <Route
-              path="job_request_approved"
-              element={<RequestorJobRequestApproved />}
-            />
-            <Route
-              path="job_request_completed"
-              element={<RequestorJobRequestCompleted />}
-            />
-            <Route
-              path="job_request_certificate"
-              element={<RequestorCertificate />}
-            />
-            <Route
-              path="job_request_form"
-              element={<RequestorJobRequestForm />}
-            />
+          <Route path="job_request_table" element={<RequestorJobRequestTable />} />
+          <Route path="job_request_detail/:requestId" element={<RequestorJobRequestDetail />} />
+          <Route path="job_request_approved" element={<RequestorJobRequestApproved />} />
+          <Route path="job_request_completed" element={<RequestorJobRequestCompleted />} />
+          <Route path="job_request_certificate" element={<RequestorCertificate />} />
+          <Route path="job_request_form" element={<RequestorJobRequestForm />} />
+
+
 
             {/* REQUESTOR'S PROFILE */}
             <Route path="requestor_profile" element={<RequestorPageProfile />}>
