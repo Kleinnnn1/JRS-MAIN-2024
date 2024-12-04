@@ -25,7 +25,34 @@ export async function insertRequest(newRequest) {
     throw new Error("User not authenticated or idNumber is missing");
   }
 
-  // Prepare the data to insert into the "Request" table
+  // Fetch the latest deptReqAssId
+  const { data: deptReqAssData, error: deptReqAssError } = await supabase
+    .from("Department_request_assignment")
+    .select("deptReqAssId")
+    .order("deptReqAssId", { ascending: false })
+    .limit(1);
+
+  if (deptReqAssError) {
+    console.error("Error fetching latest deptReqAssId:", deptReqAssError);
+    throw new Error("Failed to fetch the latest deptReqAssId");
+  }
+
+  const latestDeptReqAssId = deptReqAssData[0]?.deptReqAssId || null;
+
+  if (!latestDeptReqAssId) {
+    console.error("No existing deptReqAssId found.");
+    throw new Error("Cannot proceed without a valid deptReqAssId");
+  }
+
+  const newDeptReqAssId = latestDeptReqAssId + 1;
+  console.log(
+    "Latest deptReqAssId:",
+    latestDeptReqAssId,
+    "New deptReqAssId:",
+    newDeptReqAssId
+  );
+
+  // Insert into the Request table
   const requestData = {
     idNumber: currentUser.idNumber,
     location: newRequest.location,
@@ -35,42 +62,68 @@ export async function insertRequest(newRequest) {
     image: newRequest.image,
   };
 
-  // Log the request data to verify
-  console.log("Request Data to Insert:", requestData);
-
-  // Start a Supabase transaction to insert data into both tables
-  const { data, error } = await supabase
+  const { data: requestInsertData, error: requestInsertError } = await supabase
     .from("Request")
-    .upsert(requestData) // Using upsert for higher-level insertion (insert or update)
-    .select(); // Get the data after insertion
+    .insert(requestData)
+    .select();
 
-  if (error) {
-    console.error("Error inserting request:", error);
+  if (requestInsertError) {
+    console.error("Error inserting request:", requestInsertError);
     throw new Error("Request could not be inserted");
   }
 
-  // Proceed with inserting data into the "Department_request_assignment" table
-  // The requestId is returned from the previous insert
-  const deptRequestData = {
-    requestId: data[0].requestId, // Get requestId from the inserted request
-    deptId: newRequest.deptId, // Ensure deptId is provided in newRequest
-    staffName: newRequest.staffName, // Ensure staffName is provided
-  };
+  const newRequestId = requestInsertData[0]?.requestId;
 
-  // Insert into the "Department_request_assignment" table
-  const { data: deptData, error: deptError } = await supabase
-    .from("Department_request_assignment")
-    .upsert(deptRequestData) // Using upsert to ensure the assignment is inserted or updated
-    .select(); // Get the inserted assignment data
-
-  if (deptError) {
-    console.error("Error inserting department assignment:", deptError);
-    throw new Error("Department assignment could not be inserted");
+  if (!newRequestId) {
+    console.error("Failed to retrieve new requestId after insert.");
+    throw new Error("Request insert did not return a valid requestId");
   }
 
+  // Insert into Department_request_assignment
+  if (!newRequestId || !newDeptReqAssId) {
+    console.error("Invalid data for Department_request_assignment:", {
+      newRequestId,
+      newDeptReqAssId,
+    });
+    throw new Error(
+      "Missing required fields for Department_request_assignment"
+    );
+  }
+
+  const deptReqAssignData = {
+    deptReqAssId: newDeptReqAssId,
+    requestId: newRequestId,
+  };
+
+  console.log(
+    "Prepared data for Department_request_assignment:",
+    deptReqAssignData
+  );
+
+  const { data: deptAssignInsertData, error: deptAssignInsertError } =
+    await supabase
+      .from("Department_request_assignment")
+      .insert(deptReqAssignData)
+      .select();
+
+  if (deptAssignInsertError) {
+    console.error(
+      "Error inserting into Department_request_assignment:",
+      deptAssignInsertError
+    );
+    throw new Error("Failed to insert into Department_request_assignment");
+  }
+
+  console.log("Successfully inserted request and department assignment:", {
+    request: requestInsertData,
+    assignment: deptAssignInsertData,
+    insertedDeptReqAssId: newDeptReqAssId,
+  });
+
   return {
-    request: data, // Return the inserted request data
-    departmentAssignment: deptData, // Return the department assignment data
+    request: requestInsertData,
+    assignment: deptAssignInsertData,
+    insertedDeptReqAssId: newDeptReqAssId,
   };
 }
 
