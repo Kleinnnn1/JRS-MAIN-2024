@@ -126,17 +126,20 @@
 
 //RequestDetailPage
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalForm from "./ModalForm";
 import { useAssignmentStore } from "../../../store/useAssignmentStore";
+import supabase from "../../../service/supabase";
 
 export default function RequestDetailPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown
-  const [remarks, setRemarks] = useState(""); // State for remarks input
-  const [isImageModalOpen, setIsImageModalOpen] = useState(false); // State for image modal
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [remarks, setRemarks] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [assignedStaffName, setAssignedStaffName] = useState("");  // New state for staff names
 
   const {
     fullName,
@@ -149,7 +152,32 @@ export default function RequestDetailPage() {
     deptReqAssId,
     requestId,
     idNumber,
-  } = location.state || {}; // Destructure data passed via navigation
+    staffName,
+  } = location.state || {};
+
+  // Fetch assigned staff and set up real-time subscription
+  useEffect(() => {
+    fetchAssignedStaff();  // Initial fetch of assigned staff
+
+    // Subscribe to the real-time changes in the Department_request_assignment table
+    const channel = supabase
+      .channel(`request-${requestId}`)  // Create a unique channel per requestId
+      .on('postgres_changes', { 
+        event: 'UPDATE', 
+        schema: 'public',
+        table: 'Department_request_assignment',
+        filter: `requestId=eq.${requestId}`
+      }, payload => {
+        console.log('Real-time update:', payload);
+        fetchAssignedStaff();  // Re-fetch assigned staff data when an update occurs
+      })
+      .subscribe();
+
+    // Cleanup the subscription when the component is unmounted
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [requestId]); // Re-run when requestId changes
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -164,25 +192,69 @@ export default function RequestDetailPage() {
   };
 
   const handleReferClick = () => {
-    setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown visibility
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   const navigateToCurrentJobRequest = () => {
-    navigate("/current-job-request"); // Adjust this path based on your route
-    setIsDropdownOpen(false); // Close the dropdown
+    navigate("/current-job-request");
+    setIsDropdownOpen(false);
   };
 
   const navigateToNewJobRequest = () => {
-    navigate("/department_head/make_requestDeptHead"); // Adjust this path based on your route
-    setIsDropdownOpen(false); // Close the dropdown
+    navigate("/department_head/make_requestDeptHead");
+    setIsDropdownOpen(false);
   };
 
   const handleRemarksChange = (e) => {
-    setRemarks(e.target.value); // Update remarks state when the input changes
+    setRemarks(e.target.value);
   };
 
-  const handleSaveRemarks = () => {
-    console.log("Remarks saved:", remarks); // Replace this with actual saving logic
+  const handleSaveRemarks = async () => {
+    if (!remarks.trim()) {
+      alert("Remarks cannot be empty.");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const { data, error } = await supabase
+        .from("Request")
+        .update({ remarks })
+        .eq("requestId", requestId);
+
+      if (error) {
+        console.error("Error saving remarks:", error.message);
+        alert("Failed to save remarks. Please try again.");
+      } else {
+        console.log("Remarks saved successfully:", data);
+        alert("Remarks saved successfully.");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      alert("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const fetchAssignedStaff = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("Department_request_assignment")  // Correct table name
+        .select("staffName")  // Select staffName
+        .eq("requestId", requestId);  // Filter by requestId
+
+      if (error) {
+        console.error("Error fetching staff names:", error.message);
+        setAssignedStaffName("No Assigned Staff");
+      } else {
+        const staffNames = data.map(item => item.staffName).join(", ");
+        setAssignedStaffName(staffNames || "No Assigned Staff");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      setAssignedStaffName("No Assigned Staff");
+    }
   };
 
   return (
@@ -191,7 +263,6 @@ export default function RequestDetailPage() {
         Job Request Details
       </h2>
       <div className="flex justify-between items-start">
-        {/* Left side: Job Request Details */}
         <div className="flex-1 pr-6">
           <div className="mb-4">
             <strong>Requestor:</strong> {fullName || "N/A"}
@@ -209,6 +280,12 @@ export default function RequestDetailPage() {
             <strong>Location:</strong> {requestLocation || "Unknown Location"}
           </div>
           <div className="mb-4">
+            <strong>RequestId:</strong> {requestId || "Unknown Location"}
+          </div>
+          <div className="mb-4">
+            <strong>Assigned:</strong> {assignedStaffName || "No Assigned Staff"}  {/* Display assigned staff names */}
+          </div>
+          <div className="mb-4">
             <strong>Priority:</strong>{" "}
             <span
               className={`px-2 py-1 rounded ${
@@ -222,33 +299,34 @@ export default function RequestDetailPage() {
               {priority || "No Priority"}
             </span>
           </div>
-          {/* Remarks Input Field */}
-      <div className="mt-6">
-        <label htmlFor="remarks" className="block font-bold mb-2">
-          Remarks:
-        </label>
-        <textarea
-          id="remarks"
-          value={remarks}
-          onChange={handleRemarksChange}
-          rows="4"
-          className="w-full p-2 border rounded-lg"
-          placeholder="Add your remarks here..."
-        />
-      </div>
 
-      {/* Save Remarks Button */}
-      <div className="flex justify-end mt-4">
-        <button
-          className="px-4 py-2 bg-blue-600 mb-5 text-white rounded hover:bg-blue-700"
-          onClick={handleSaveRemarks}
-        >
-          Save Remarks
-        </button>
-      </div>
+          <div className="mt-6">
+            <label htmlFor="remarks" className="block font-bold mb-2">
+              Remarks:
+            </label>
+            <textarea
+              id="remarks"
+              value={remarks}
+              onChange={handleRemarksChange}
+              rows="4"
+              className="w-full p-2 border rounded-lg"
+              placeholder="Add your remarks here..."
+            />
+          </div>
+
+          <div className="flex justify-start mt-3">
+            <button
+              className={`p-1 bg-yellow-600 mb-10 text-white rounded hover:bg-blue-700 ${
+                isSaving ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              onClick={handleSaveRemarks}
+              disabled={isSaving}
+            >
+              {isSaving ? "Saving..." : "Save Remarks"}
+            </button>
+          </div>
         </div>
 
-        {/* Right side: Image */}
         {image && (
           <div className="w-1/2">
             <strong>Image:</strong>
@@ -262,7 +340,6 @@ export default function RequestDetailPage() {
         )}
       </div>
 
-      {/* Image Modal */}
       {isImageModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md">
@@ -277,49 +354,42 @@ export default function RequestDetailPage() {
         </div>
       )}
 
-      
-
-      <button
-        className="px-4 py-2 bg-blue-600 font-bold text-white rounded hover:bg-blue-700"
-        onClick={handleAssign}
-      >
-        Assign
-      </button>
-
-      {/* Refer Button with Dropdown */}
-      <div className="mt-3">
+      <div className="flex justify-between">
         <button
-          className="px-4 py-2 bg-green-600 font-bold text-white rounded hover:bg-green-700"
-          onClick={handleReferClick}
+          className="p-2 bg-blue-600 font-bold text-white rounded hover:bg-blue-700"
+          onClick={handleAssign}
         >
-          Refer
+          Assign
         </button>
-        {isDropdownOpen && (
-          <div className="mt-2 bg-white shadow-lg rounded-lg w-48 absolute z-10 border">
-            <button
-              className="block px-4 py-2 text-left text-blue-600 hover:bg-gray-200 w-full"
-              onClick={navigateToCurrentJobRequest}
-            >
-              Current Job Request
-            </button>
-            <button
-              className="block px-4 py-2 text-left text-blue-600 hover:bg-gray-200 w-full"
-              onClick={navigateToNewJobRequest}
-            >
-              New Job Request
-            </button>
-          </div>
-        )}
+
+        <div>
+          <button
+            className="p-2 bg-green-600 font-bold text-white rounded hover:bg-green-700"
+            onClick={handleReferClick}
+          >
+            Transfer
+          </button>
+          {isDropdownOpen && (
+            <div className="mt-2 bg-white shadow-lg rounded-lg w-48 absolute z-10 border">
+              <button
+                className="block px-4 py-2 text-left text-blue-600 hover:bg-gray-200 w-full"
+                onClick={navigateToCurrentJobRequest}
+              >
+                Current Job Request
+              </button>
+              <button
+                className="block px-4 py-2 text-left text-blue-600 hover:bg-gray-200 w-full"
+                onClick={navigateToNewJobRequest}
+              >
+                New Job Request
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Modal Form */}
-      <ModalForm
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onSubmit={() => console.log("Modal submitted")}
-      />
+      <ModalForm isOpen={isModalOpen} onClose={closeModal} onSubmit={() => console.log("Modal submitted")} />
 
-      {/* Go Back Button */}
       <button
         className="ml-2 mt-4 text-blue-500 font-bold underline"
         onClick={() => navigate(-1)}
