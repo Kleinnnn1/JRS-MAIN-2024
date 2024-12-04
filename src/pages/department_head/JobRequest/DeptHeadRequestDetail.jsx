@@ -126,11 +126,10 @@
 
 //RequestDetailPage
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalForm from "./ModalForm";
 import { useAssignmentStore } from "../../../store/useAssignmentStore";
 import supabase from "../../../service/supabase";
-
 
 export default function RequestDetailPage() {
   const location = useLocation();
@@ -140,6 +139,7 @@ export default function RequestDetailPage() {
   const [remarks, setRemarks] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [assignedStaffName, setAssignedStaffName] = useState("");  // New state for staff names
 
   const {
     fullName,
@@ -154,6 +154,30 @@ export default function RequestDetailPage() {
     idNumber,
     staffName,
   } = location.state || {};
+
+  // Fetch assigned staff and set up real-time subscription
+  useEffect(() => {
+    fetchAssignedStaff();  // Initial fetch of assigned staff
+
+    // Subscribe to the real-time changes in the Department_request_assignment table
+    const channel = supabase
+      .channel(`request-${requestId}`)  // Create a unique channel per requestId
+      .on('postgres_changes', { 
+        event: 'UPDATE', 
+        schema: 'public',
+        table: 'Department_request_assignment',
+        filter: `requestId=eq.${requestId}`
+      }, payload => {
+        console.log('Real-time update:', payload);
+        fetchAssignedStaff();  // Re-fetch assigned staff data when an update occurs
+      })
+      .subscribe();
+
+    // Cleanup the subscription when the component is unmounted
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [requestId]); // Re-run when requestId changes
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -200,7 +224,6 @@ export default function RequestDetailPage() {
 
       if (error) {
         console.error("Error saving remarks:", error.message);
-        
         alert("Failed to save remarks. Please try again.");
       } else {
         console.log("Remarks saved successfully:", data);
@@ -211,6 +234,26 @@ export default function RequestDetailPage() {
       alert("An unexpected error occurred. Please try again.");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const fetchAssignedStaff = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("Department_request_assignment")  // Correct table name
+        .select("staffName")  // Select staffName
+        .eq("requestId", requestId);  // Filter by requestId
+
+      if (error) {
+        console.error("Error fetching staff names:", error.message);
+        setAssignedStaffName("No Assigned Staff");
+      } else {
+        const staffNames = data.map(item => item.staffName).join(", ");
+        setAssignedStaffName(staffNames || "No Assigned Staff");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      setAssignedStaffName("No Assigned Staff");
     }
   };
 
@@ -240,7 +283,7 @@ export default function RequestDetailPage() {
             <strong>RequestId:</strong> {requestId || "Unknown Location"}
           </div>
           <div className="mb-4">
-            <strong>Assigned:</strong> {staffName || "No Assigned Staff"}
+            <strong>Assigned:</strong> {assignedStaffName || "No Assigned Staff"}  {/* Display assigned staff names */}
           </div>
           <div className="mb-4">
             <strong>Priority:</strong>{" "}
@@ -273,7 +316,7 @@ export default function RequestDetailPage() {
 
           <div className="flex justify-start mt-3">
             <button
-              className={`p-1 bg-blue-600 mb-10 text-white rounded hover:bg-blue-700 ${
+              className={`p-1 bg-yellow-600 mb-10 text-white rounded hover:bg-blue-700 ${
                 isSaving ? "opacity-50 cursor-not-allowed" : ""
               }`}
               onClick={handleSaveRemarks}
