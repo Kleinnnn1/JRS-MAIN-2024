@@ -53,14 +53,23 @@ export default function Table({
 }
 
 Table.propTypes = {
+  headers: PropTypes.arrayOf(PropTypes.string).isRequired,
   content: PropTypes.arrayOf(
-    PropTypes.arrayOf(
-      PropTypes.oneOfType([PropTypes.string, PropTypes.element]) // Each cell can be a string or a React element
-    )
-  ),
-  headers: PropTypes.arrayOf(PropTypes.string), // headers should be an array of strings
-  loading: PropTypes.bool, // Optional loading prop
+    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.node]))
+  ).isRequired,
+  columns: PropTypes.number.isRequired,
+  rows: PropTypes.number.isRequired,
 };
+
+// Table.propTypes = {
+//   content: PropTypes.arrayOf(
+//     PropTypes.arrayOf(
+//       PropTypes.oneOfType([PropTypes.string, PropTypes.element]) // Each cell can be a string or a React element
+//     )
+//   ),
+//   headers: PropTypes.arrayOf(PropTypes.string), // headers should be an array of strings
+//   loading: PropTypes.bool, // Optional loading prop
+// };
 
 // import PropTypes from "prop-types";
 
