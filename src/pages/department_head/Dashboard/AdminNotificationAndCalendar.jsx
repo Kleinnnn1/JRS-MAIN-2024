@@ -92,7 +92,7 @@ export default function AdminNotification() {
               // If the deptId matches and userRole is "department head", create a notification
               const newNotification = {
                 notificationid: Date.now(), // Use a unique value for notificationid
-                message: `[NEW] You received a new job request, Request No: ${newRequest.requestId}, [Click to view]`,
+                message: `[NEW] You received a new job request, Request No: ${newRequest.requestId}`,
                 timestamp: new Date().toISOString(), // Save as ISO timestamp
                 idNumber: userIdNumber,
               };
@@ -135,6 +135,46 @@ export default function AdminNotification() {
     }
   }, [userIdNumber, userDeptId, userRole]);
 
+  // Handle navigation when "Click to view" is clicked
+  const handleNotificationClick = async (message) => {
+    const match = message.match(/Request No: (\d+)/); // Extract the requestId
+    if (match && match[1]) {
+      const requestId = match[1];
+
+      // Fetch request details along with user fullName
+      const { data: requestDetails, error } = await supabase
+        .from("Request")
+        .select(`
+          requestId,
+          description,
+          location,
+          jobCategory,
+          requestDate,
+          image,
+          priority,
+          idNumber,
+          User(fullName) -- Assuming 'User' is the related table for fullName
+        `)
+        .eq("requestId", requestId)
+        .single();
+
+      if (error) {
+        console.error("Error fetching request details:", error);
+        return;
+      }
+
+      // Navigate to the details page with all required data
+      navigate(`/department_head/job_request/detail/${requestId}`, {
+        state: {
+          ...requestDetails,
+          fullName: requestDetails.User?.fullName || "Unknown", // Handle null or undefined fullName
+        },
+      });
+    } else {
+      console.error("Invalid message format or missing requestId");
+    }
+  };
+
   return (
     <div className="p-2">
       <div className="grid lg:grid-cols-3 gap-10 h-[50vh]">
@@ -153,6 +193,12 @@ export default function AdminNotification() {
                     <b>{notification.message}</b>
                   </p>
                   <p className="text-xs">{new Date(notification.timestamp).toLocaleString()}</p>
+                  <button
+                      className="text-blue-500 underline"
+                      onClick={() => handleNotificationClick(notification.message)}
+                    >
+                      Click to view
+                    </button>
                 </div>
               ))
             ) : (
