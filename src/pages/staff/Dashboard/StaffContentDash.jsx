@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import SearchBar from "../../../components/SearchBar";
 import StatusCard from "../../../components/StatusCard";
 import ReusableCalendar from "../../../components/ReusableCalendar";
-import ReusableNotification from "../../../components/ReusableNotification";
+import StaffReusableNotification from "./StaffNotification";
 
 export default function StaffContentDash() {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ export default function StaffContentDash() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-2 rounded-lg">
         {/* Left Side (Notifications) */}
         <div className="col-span-2">
-          <ReusableNotification />
+          <StaffReusableNotification />
         </div>
 
         {/* Right Side (Calendar) */}

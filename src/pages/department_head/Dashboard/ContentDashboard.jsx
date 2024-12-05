@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../../components/SearchBar";
 import StatusCard from "../../../components/StatusCard";
-import AdminStatusCardAndCalendar from "./AdminNotificationAndCalendar";
+import AdminNotification from "./AdminNotificationAndCalendar";
 import { FaClipboard, FaHourglassStart, FaCheckCircle, FaRegHandPointer } from 'react-icons/fa'; 
 
 
@@ -65,7 +65,7 @@ export default function ContentDashboard() {
       </div>
       
       <div className="p-6">
-        <AdminStatusCardAndCalendar />
+        <AdminNotification />
       </div>
     </>
   );
