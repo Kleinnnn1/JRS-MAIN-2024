@@ -10,26 +10,21 @@ export async function getDeptHeadJobRequest() {
     throw new Error("Invalid user or department");
   }
 
-  // Fetch data with nested relationships and filter by department
+  // Fetch data directly from the Request table and filter by department and Pending status
   const { data, error } = await supabase
-    .from("Department_request_assignment")
+    .from("Request")
     .select(
-      `
-      deptReqAssId,
-      requestId,
-      Request(
-        description,
-        location,
-        jobCategory,
-        requestDate,
-        status,
-        priority,
-        image,
-        User(fullName)
-      )
-      `
+      `requestId,
+      description,
+      location,
+      jobCategory,
+      requestDate,
+      status,
+      priority,
+      image,
+      User(fullName)`
     )
-    .eq("deptId", currentUser.deptId); // Filter by department ID
+    .eq("status", "Pending"); // Filter by status = 'Pending'
 
   // Handle Supabase query error
   if (error) {
@@ -41,33 +36,103 @@ export async function getDeptHeadJobRequest() {
     throw new Error("No job requests found");
   }
 
-  // Filter and validate data for pending requests
+  // Filter and validate data for Pending requests
   const filteredData = data.filter(
     (item) =>
-      item.Request && // Ensure the Request relationship exists
-      item.Request.status === "Pending" // Filter by pending status
+      item.User && // Ensure the User relationship exists
+      item.status === "Pending" // Filter by Pending status
   );
 
   if (filteredData.length === 0) {
-    throw new Error("No pending job requests found");
+    throw new Error("No Pending job requests found");
   }
 
   // Format the filtered data
   const formattedData = filteredData.map((item) => ({
-    deptReqAssId: item.deptReqAssId,
     requestId: item.requestId,
-    fullName: item.Request?.User?.fullName || "Unknown", // Access nested fullName
-    description: item.Request?.description || "No description",
-    location: item.Request?.location || "Unknown location",
-    jobCategory: item.Request?.jobCategory || "Unspecified",
-    requestDate: item.Request?.requestDate || "Unknown date",
-    status: item.Request?.status || "Unknown status",
-    priority: item.Request?.priority || "No priority",
-    image: item.Request?.image || "No priority",
+    fullName: item.User?.fullName || "Unknown", // Access nested fullName
+    description: item.description || "No description",
+    location: item.location || "Unknown location",
+    jobCategory: item.jobCategory || "Unspecified",
+    requestDate: item.requestDate || "Unknown date",
+    status: item.status || "Unknown status",
+    priority: item.priority || "No priority",
+    image: item.image || "No image",
   }));
 
   return formattedData;
 }
+
+// import supabase from "./supabase";
+// import { getCurrentUser } from "./apiAuth";
+
+// export async function getDeptHeadJobRequest() {
+//   // Get the current user
+//   const currentUser = await getCurrentUser();
+
+//   // Validate current user
+//   if (!currentUser || !currentUser.deptId) {
+//     throw new Error("Invalid user or department");
+//   }
+
+//   // Fetch data with nested relationships and filter by department
+
+//   const { data, error } = await supabase
+//     .from("Department_request_assignment")
+//     .select(
+//       `deptReqAssId,
+//   requestId,
+//   Request(
+//     description,
+//     location,
+//     jobCategory,
+//     requestDate,
+//     status,
+//     priority,
+//     image,
+//     User(fullName)
+//   )`
+//     )
+//     .eq("deptId", currentUser.deptId) // Filter by department ID
+//     .eq("Request.status", "Pending"); // Filter by status = 'Pending'
+
+//   // Handle Supabase query error
+//   if (error) {
+//     console.error("Error fetching data: ", error);
+//     throw new Error("Data could not be loaded");
+//   }
+
+//   if (!data || data.length === 0) {
+//     throw new Error("No job requests found");
+//   }
+
+//   // Filter and validate data for pending requests
+//   const filteredData = data.filter(
+//     (item) =>
+//       item.Request && // Ensure the Request relationship exists
+//       item.Request.status === "Pending" // Filter by pending status
+//   );
+
+//   if (filteredData.length === 0) {
+//     throw new Error("No pending job requests found");
+//   }
+
+//   // Format the filtered data
+//   const formattedData = filteredData.map((item) => ({
+//     deptReqAssId: item.deptReqAssId,
+//     requestId: item.requestId,
+//     fullName: item.Request?.User?.fullName || "Unknown", // Access nested fullName
+//     description: item.Request?.description || "No description",
+//     location: item.Request?.location || "Unknown location",
+//     jobCategory: item.Request?.jobCategory || "Unspecified",
+//     requestDate: item.Request?.requestDate || "Unknown date",
+//     status: item.Request?.status || "Unknown status",
+//     priority: item.Request?.priority || "No priority",
+//     image: item.Request?.image || "No priority",
+//   }));
+
+//   return formattedData;
+// }
 
 // import supabase from "./supabase";
 // import { getCurrentUser } from "./apiAuth";

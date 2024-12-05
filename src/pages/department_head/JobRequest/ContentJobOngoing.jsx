@@ -4,22 +4,31 @@ import ReusablePagination from "../../../components/ReusablePagination";
 import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
 import SearchBar from "../../../components/SearchBar";
 import Table from "../../../components/Table";
-import ReusableViewButton from "../../../components/ReusableViewButton";
 import { useQuery } from "@tanstack/react-query";
 import { getDeptHeadOngoingJobRequest } from "../../../service/apiDeptHeadOngoingRequestTable";
-import DeptHeadOngoingRequestData from "./DeptHeadOngoingJobRequestData";
 
+// Define priority styling
+const getPriorityClass = (level) => {
+  switch (level) {
+    case "High":
+      return "bg-red-500 text-white py-1 px-2 rounded";
+    case "Medium":
+      return "bg-yellow-500 text-black py-1 px-2 rounded";
+    case "Low":
+      return "bg-green-500 text-white py-1 px-2 rounded";
+    default:
+      return "";
+  }
+};
+
+// Table headers
 const tableHeaders = [
   "Requestor",
   "Job Description",
   "Job Position",
-  "Assigned Staff",
   "Location",
   "Image",
   "Priority",
-  "Date Assigned",
-  "Start Date",
-  "Due Date",
   "Action",
 ];
 
@@ -36,15 +45,44 @@ export default function ContentJobOngoing() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Sample data for table content
-  const tableContent = DeptHeadOngoingRequestData(request) || [];
+  // Format the fetched data into table content
+  const tableContent =
+    request.length > 0
+      ? request.map(
+          (
+            { fullName, description, jobCategory, location, image, priority },
+            index
+          ) => [
+            `${index + 1}. ${String(fullName || "N/A")}`, // Display "N/A" if requestor is missing
+            description || "N/A",
+            jobCategory || "N/A",
+            location || "N/A",
+            image ? (
+              <img src={image} alt="Request" className="h-12 w-12" />
+            ) : (
+              "No Image"
+            ),
+            priority ? (
+              <span className={getPriorityClass(priority)}>{priority}</span>
+            ) : (
+              "N/A"
+            ), // Apply styling to priority
+            <button
+              className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2"
+              onClick={() => navigate(`/requests/view/${index}`)}
+            >
+              View
+            </button>,
+          ]
+        )
+      : [[]];
 
   // Filter the table content based on the search term
-  const filteredContent = tableContent.filter((request) => {
-    const requestor = request[0] ? request[0].toLowerCase() : "";
-    const jobDescription = request[1] ? request[1].toLowerCase() : "";
-    const jobType = request[2] ? request[2].toLowerCase() : "";
-    const location = request[4] ? request[4].toLowerCase() : "";
+  const filteredContent = tableContent.filter((row) => {
+    const requestor = row[0] ? row[0].toLowerCase() : "";
+    const jobDescription = row[1] ? row[1].toLowerCase() : "";
+    const jobType = row[2] ? row[2].toLowerCase() : "";
+    const location = row[3] ? row[3].toLowerCase() : "";
 
     return (
       requestor.includes(searchTerm.toLowerCase()) ||
@@ -62,46 +100,42 @@ export default function ContentJobOngoing() {
   );
 
   if (error) {
-    return (
-      <p className="text-center text-red-500">Error fetching job requests</p>
-    );
+    console.log(error);
   }
 
   return (
-    <>
-      <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
-        <div className="my-4 mx-3 py-4 px-6 bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
-          <SearchBar title="Job Ongoing" showInput={true} />
+    <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
+      <div className="my-4 mx-3 py-4 px-6 bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
+        <SearchBar title="Job Ongoing" showInput={true} />
 
-          {/* Use ReusableSearchTerm for the search functionality */}
-          <ReusableSearchTerm
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-          />
-        </div>
-
-        {/* Table */}
-        {paginatedContent.length > 0 ? (
-          <Table
-            columns={tableHeaders.length}
-            rows={paginatedContent.length}
-            content={paginatedContent} // Pass paginatedContent, not paginatedContent.length
-            headers={tableHeaders}
-          />
-        ) : (
-          <p className="text-center text-gray-500">No ongoing jobs found</p>
-        )}
-
-        {/* ReusablePagination component */}
-        <ReusablePagination
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalPages={totalPages}
+        {/* Search Term Component */}
+        <ReusableSearchTerm
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
         />
       </div>
-    </>
+
+      {/* Table */}
+      {paginatedContent.length > 0 ? (
+        <Table
+          columns={tableHeaders.length}
+          rows={paginatedContent.length}
+          content={paginatedContent}
+          headers={tableHeaders}
+        />
+      ) : (
+        <p className="text-center text-gray-500">No ongoing jobs found</p>
+      )}
+
+      {/* Pagination */}
+      <ReusablePagination
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+      />
+    </div>
   );
 }
 

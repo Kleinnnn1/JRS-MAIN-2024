@@ -18,24 +18,12 @@ export default function DeptHeadOngoingRequestData(requests) {
     requests.length > 0
       ? requests.map(
           (
-            {
-              requestor,
-              description,
-              jobPosition,
-              staffName,
-              location,
-              image,
-              priority,
-              dateAssign,
-              dateStarted,
-              dateCompleted,
-            },
+            { fullName, description, jobCategory, location, image, priority },
             index
           ) => [
-            `${index + 1}. ${String(requestor)}`, // Display "N/A" if requestor is missing
+            `${index + 1}. ${String(fullName)}`, // Display "N/A" if requestor is missing
             description || "N/A",
-            jobPosition || "N/A",
-            staffName || "N/A",
+            jobCategory || "N/A",
             location || "N/A",
             image ? <img src={image} alt="Request" /> : "No Image",
             priority ? (
@@ -43,13 +31,8 @@ export default function DeptHeadOngoingRequestData(requests) {
             ) : (
               "N/A"
             ), // Apply styling to priority
-            dateAssign ? new Date(dateCompleted).toLocaleDateString() : "N/A",
-            dateStarted ? new Date(dateStarted).toLocaleDateString() : "N/A",
-            dateCompleted
-              ? new Date(dateCompleted).toLocaleDateString()
-              : "N/A",
             <button className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2">
-              update
+              view
             </button>,
           ]
         )
