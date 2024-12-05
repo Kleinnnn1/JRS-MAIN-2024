@@ -35,11 +35,26 @@ export default function AdminNotification() {
     fetchCurrentUser();
   }, []);
 
-  // Fetch notifications from localStorage (if any)
+  // Fetch notifications from the Notification table
   useEffect(() => {
-    const storedNotifications = JSON.parse(localStorage.getItem("notifications")) || [];
-    setNotifications(storedNotifications);
-  }, []);
+    const fetchNotifications = async () => {
+      if (userIdNumber) {
+        const { data: notificationData, error } = await supabase
+          .from("Notification")
+          .select("*")
+          .eq("idNumber", userIdNumber) // Fetch notifications for the logged-in user
+          .order("timestamp", { ascending: false }); // Order by timestamp (most recent first)
+
+        if (error) {
+          console.error("Error fetching notifications:", error);
+        } else {
+          setNotifications(notificationData);
+        }
+      }
+    };
+
+    fetchNotifications();
+  }, [userIdNumber]);
 
   // Set up real-time listener for new Request inserts
   useEffect(() => {
@@ -52,11 +67,9 @@ export default function AdminNotification() {
           async (payload) => {
             console.log("Payload received:", payload); // Log the full payload
 
-            // Ensure we have the correct structure in 'payload.new'
             const newRequest = payload.new;
             console.log("New Request:", newRequest); // Log the newly inserted request
 
-            // Check for missing or incorrect fields
             if (!newRequest || !newRequest.requestId) {
               console.error("Missing requestId in new request:", newRequest);
               return;
@@ -66,7 +79,7 @@ export default function AdminNotification() {
             const { data: deptData, error: deptError } = await supabase
               .from("Department_request_assignment")
               .select("deptId")
-              .eq("requestId", newRequest.requestId) // Assuming requestId is present in the Department_request_assignment table
+              .eq("requestId", newRequest.requestId)
               .single();
 
             if (deptError) {
@@ -78,16 +91,34 @@ export default function AdminNotification() {
             if (deptData.deptId === userDeptId) {
               // If the deptId matches and userRole is "department head", create a notification
               const newNotification = {
-                message: `New request added: ${newRequest.requestId}`, // Customize the message as needed
-                timestamp: new Date().toLocaleString(),
+                notificationid: Date.now(), // Use a unique value for notificationid
+                message: `[NEW] You received a new job request, Request No: ${newRequest.requestId}, [Click to view]`,
+                timestamp: new Date().toISOString(), // Save as ISO timestamp
+                idNumber: userIdNumber,
               };
 
-              // Persist the notifications in the state by appending the new one
-              setNotifications((prevNotifications) => {
-                const updatedNotifications = [...prevNotifications, newNotification];
-                localStorage.setItem("notifications", JSON.stringify(updatedNotifications)); // Store notifications in localStorage
-                return updatedNotifications;
-              });
+              // Insert the notification into the Supabase Notification table
+              const { error: insertError } = await supabase
+                .from("Notification")
+                .insert(newNotification);
+
+              if (insertError) {
+                console.error("Error inserting notification:", insertError);
+                return;
+              }
+
+              // Refresh notifications after insertion
+              const { data: notificationData, error: fetchError } = await supabase
+                .from("Notification")
+                .select("*")
+                .eq("idNumber", userIdNumber)
+                .order("timestamp", { ascending: false });
+
+              if (fetchError) {
+                console.error("Error fetching updated notifications:", fetchError);
+              } else {
+                setNotifications(notificationData);
+              }
             } else {
               console.log("DeptId mismatch or user is not a department head, no notification");
             }
@@ -121,7 +152,7 @@ export default function AdminNotification() {
                   <p>
                     <b>{notification.message}</b>
                   </p>
-                  <p className="text-xs">{notification.timestamp}</p>
+                  <p className="text-xs">{new Date(notification.timestamp).toLocaleString()}</p>
                 </div>
               ))
             ) : (
