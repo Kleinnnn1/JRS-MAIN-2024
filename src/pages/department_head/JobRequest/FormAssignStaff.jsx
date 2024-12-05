@@ -30,19 +30,9 @@ export default function FormAssignStaff({ onClose }) {
   ]);
 
   // Fetch staff names from Supabase
-
   const fetchStaffNames = async () => {
     try {
-      // Fetch assigned staff names
-      const { data: assignedStaff, error: assignedError } = await supabase
-        .from("Department_request_assignment")
-        .select("staffName");
-
-      if (assignedError) throw assignedError;
-
-      const assignedStaffNames = assignedStaff.map((item) => item.staffName);
-
-      // Fetch all staff names and filter out assigned ones
+      // Fetch all staff names without filtering
       const { data: allStaff, error: staffError } = await supabase
         .from("User")
         .select("jobCategory, fullName");
@@ -50,12 +40,8 @@ export default function FormAssignStaff({ onClose }) {
       if (staffError) throw staffError;
 
       const groupedStaff = allStaff.reduce((acc, user) => {
-        if (
-          !assignedStaffNames.includes(user.fullName) // Exclude already assigned staff
-        ) {
-          if (!acc[user.jobCategory]) acc[user.jobCategory] = [];
-          acc[user.jobCategory].push(user.fullName);
-        }
+        if (!acc[user.jobCategory]) acc[user.jobCategory] = [];
+        acc[user.jobCategory].push(user.fullName);
         return acc;
       }, {});
 
