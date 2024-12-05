@@ -1,10 +1,16 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
+import { BsChevronDoubleLeft } from "react-icons/bs";
 
 export default function SideBar({ children }) {
+  const [open, setOpen] = useState(true);
+
   return (
-    <nav className="fixed left-0 top-0 w-20 sm:w-64 h-full bg-custom-blue p-4 z-50 sidebar-menu transition-transform">
+    <div className="flex relative">
+
       {children}
-    </nav>
+
+    </div>
   );
 }
 

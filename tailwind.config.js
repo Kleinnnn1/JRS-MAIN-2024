@@ -13,6 +13,7 @@ export default {
         "custom-orange": "#FCB217",
         "custom-blue": "#0D0745",
         "custom-color": "#FFFBEB",
+        "dark-purple": "#0D0745",
       },
     },
   },

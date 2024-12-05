@@ -92,6 +92,7 @@ import RequestorCertificate from "./pages/requestor/JobRequestDetail/RequestorCe
 // Components for system admin
 import SystemAdDashboard from "./pages/system_admin/Dashboard/PageDashboard.jsx";
 import SysAdminUsersPage from "./pages/system_admin/Users/SysAdminUsersPage.jsx";
+import SystemAdHomeDashboard from "./pages/system_admin/Dashboard/SysadminDashboard.jsx"
 import SysAdminJob_requests from "./pages/system_admin/JobRequest/jobRequests.jsx";
 import SysAdminDepartmentPage from "./pages/system_admin/Department/PageDepartment.jsx";
 
@@ -129,6 +130,7 @@ import ContentDashboard from "./pages/office_org_head/Dashboard/ContentDashboard
 import SignUpForm from "./auth/SignUpForm.jsx";
 // SPME
 import SPMEDashboard from "./pages/spme/Dashboard/SpmsPageDashboard.jsx";
+import SPMEMainBody from "./pages/spme/Dashboard/SPMSContentDashboard.jsx"
 import SpmeJobRequest from "./pages/spme/JobRequestspme/RequestorPageJobRequest.jsx";
 import SpmeJobRequestForm from "./pages/spme/JobRequestspme/RequestorJobRequestForm.jsx";
 import SpmeJobRequestTable from "./pages/spme/JobRequestspme/RequestorJobRequestTable.jsx";
@@ -191,8 +193,12 @@ export default function App() {
           <Route path="/login" element={<LogIn />} />
           {/* Routes for ForgotPassword */}
           <Route path="/forgotPassword" element={<ForgotPassword />} />
+
           {/* SPME ROUTE */}
           <Route path="/spme" element={<SPMEDashboard />}>
+
+          <Route path="home" element={<SPMEMainBody />} />
+
             <Route path="make_requestSpme" element={<SpmeJobRequest />} />
             <Route
               path="make_request_tableSpme"
@@ -284,6 +290,7 @@ export default function App() {
               </ProtectedRoute>
             }
           >
+                  <Route path="dashboard" element={<SystemAdHomeDashboard />} />
             <Route path="myprofile" element={<SysAdminPageProfile />}>
               <Route
                 path="user_account"

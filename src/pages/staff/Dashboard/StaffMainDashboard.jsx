@@ -1,34 +1,136 @@
+import React, { useEffect, useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../../components/Logo";
-import Profile from "./StaffProfile";
-import profilePic from "../../../assets/images/raphael.jpg";
 import ReusableHeader from "../../../components/ReusableHeader";
-import SideBar from "../../../components/SideBar";
-import StaffScreen from "./StaffScreen";
-import { useOutlet, Outlet } from "react-router-dom";
-import StaffContentDash from "./StaffContentDash";
-import StaffSideBar from "./StaffSidebar";
-import HorizontalNavBar from "../../../components/HorizontalNavBar";
+import useUserStore from "../../../store/useUserStore";
+import DefaultImageUser from "/src/assets/images/DefaultImageUser.jpg";
+import {
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+  FaHome,
+  FaCheckCircle,
+
+  FaSyncAlt,
+
+  FaTasks,
+  FaChartPie,
+} from "react-icons/fa";
 
 export default function StaffMainDashboard() {
-  const otherContent = useOutlet();
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { userMetadata } = useUserStore();
+  const currentPath = location.pathname;
+
+  useEffect(() => {
+    if (currentPath === "/staff") {
+      navigate("/staff/home", { replace: true });
+    }
+  }, [currentPath, navigate]);
+
+  const toggleSidebar = () => {
+    setSidebarCollapsed(!isSidebarCollapsed);
+  };
 
   return (
-    <div className="text-gray-800 font-inter">
-      <SideBar>
-        <Logo />
-        <Profile />
-        <StaffSideBar />
-      </SideBar>
+    <div className="flex h-screen text-gray-800 font-inter">
+      {/* Sidebar */}
+      <div
+        className={`${
+          isSidebarCollapsed ? "w-16" : "w-64"
+        } bg-custom-blue text-white flex flex-col transition-all duration-300 overflow-auto no-scrollbar`}
+      >
+        {/* Logo and Collapse Button */}
+        <div className="flex justify-between items-center p-4">
+          {!isSidebarCollapsed && <Logo className="-left-10" />}
+          <button
+            className="text-white focus:outline-none"
+            onClick={toggleSidebar}
+          >
+            {isSidebarCollapsed ? (
+              <FaAngleDoubleRight size={24} />
+            ) : (
+              <FaAngleDoubleLeft size={24} />
+            )}
+          </button>
+        </div>
 
-      <StaffScreen>
-        <HorizontalNavBar profileRoute="/Staff/Staffprofile" />
-        {/* <ReusableHeader
-          profilePicture={profilePic}
-          username="Raphael"
+        {/* Profile Section */}
+        <div
+          className={`flex flex-col m-2 items-center transition-all duration-300 ${
+            isSidebarCollapsed ? "space-y-0" : "space-y-1"
+          }`}
+        >
+          <div></div>
+          <img
+            src={userMetadata.avatar || DefaultImageUser}
+            alt="Profile"
+            className={`rounded-full transition-all duration-300 ${
+              isSidebarCollapsed ? "w-12 h-12" : "w-16 h-16"
+            }`}
+          />
+          {!isSidebarCollapsed && (
+            <div className="text-center">
+              <h2 className="text-sm font-medium">
+                {userMetadata.fName} {userMetadata.lName}
+              </h2>
+              <p className="text-xs text-gray-300">
+                {userMetadata.deptName || "No department"}
+              </p>
+              <p className="text-xs text-gray-300">Department Head</p>
+            </div>
+          )}
+        </div>
+
+        {/* Menu Items */}
+        <SidebarMenu
+          isSidebarCollapsed={isSidebarCollapsed}
+          navigate={navigate}
+        />
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-auto">
+        {/* Header */}
+        <ReusableHeader
+          username={userMetadata.fName}
           profileLink="/Staff/Staffprofile"
-        /> */}
-        {otherContent ? <Outlet /> : <StaffContentDash />}
-      </StaffScreen>
+        />
+        {/* Main Content */}
+        <div className="flex-1">
+          <Outlet />
+        </div>
+      </div>
     </div>
   );
 }
+
+const SidebarMenu = ({ isSidebarCollapsed, navigate }) => {
+  const menuItems = [
+    { icon: <FaHome />, label: "Home", path: "/staff/home" },
+    { icon: <FaTasks />, label: "Assigned Job", path: "/staff/StaffImagePage" },
+    { icon: <FaSyncAlt  />, label: "Send Certificate", path: "/staff/StaffSendCert" },
+    { icon: <FaCheckCircle />, label: "History", path: "/staff/History" },
+    { icon: <FaChartPie />, label: "My Request", path: "/staff/make_requestStaff" },
+    { icon: <FaChartPie />, label: "Add Keyword", path: "/staff/add_keyword" },
+  ];
+
+  return (
+    <ul className="mb-20 space-y-4 p-4">
+      <div className="mb-5"></div>
+      {menuItems.map((item, index) => (
+        <li
+          key={index}
+          className={`flex items-center space-x-4 hover:bg-blue-700 p-2 rounded cursor-pointer ${
+            isSidebarCollapsed ? "justify-center" : ""
+          }`}
+          onClick={() => navigate(item.path)}
+        >
+          <span className="text-2xl">{item.icon}</span>
+          {!isSidebarCollapsed && <span className="text-sm">{item.label}</span>}
+        </li>
+      ))}
+    </ul>
+  );
+};

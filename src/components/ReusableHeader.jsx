@@ -17,12 +17,9 @@ export default function ReusableHeader({
   };
 
   return (
-    <div className="py-3 px-6 bg-yellow-400 flex items-center justify-between min-h-10 shadow-md shadow-black/5 sticky top-0 left-0 z-30">
-      {/* Hamburger Icon and Email */}
+    <div className="py-6 px-10 bg-yellow-200 rounded-b-2xl flex items-center justify-between min-h-2 shadow-md shadow-black/5 sticky top-0 left-0 z-30">
       <div className="flex items-center">
-        <button type="button" className="text-gray-800 focus:outline-none mr-3">
-          <HiMenu className="w-6 h-6" /> {/* Hamburger Icon */}
-        </button>
+
         <a href="#" className="text-xs">
           jrs@ustp.edu.ph +384-3478-984
         </a>
@@ -39,15 +36,14 @@ export default function ReusableHeader({
           <img
             src={iconDropdown}
             alt="Dropdown Icon"
-            className={`ml-2 h-3 w-3 transform ${
-              isDropdownOpen ? "rotate-180" : ""
-            }`}
+            className={`ml-2 h-3 w-3 transform ${isDropdownOpen ? "rotate-180" : ""
+              }`}
           />
         </button>
 
         {/* Dropdown Menu */}
         {isDropdownOpen && (
-          <div className="absolute right-0 mt-2 w-32 bg-yellow-500 rounded-md shadow-lg py-2 z-10">
+          <div className="absolute right-0 mt-2 w-32 bg-yellow-200 rounded-md shadow-lg py-2 z-10">
             <Link
               to={profileLink} // Use the profileLink prop
               className="block px-4 py-2 text-sm text-gray-900 hover:bg-yellow-600 hover:text-white"
@@ -55,10 +51,10 @@ export default function ReusableHeader({
               Profile
             </Link>
             <Link
-              to="/logout"
+              to="/login"
               className="block px-3 py-2 text-sm text-gray-900 hover:bg-yellow-600 hover:text-white"
             >
-              Logouteyyoyo
+              Logout
             </Link>
           </div>
         )}

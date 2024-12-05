@@ -17,3 +17,13 @@
     animation: floatIn 0.5s ease-out; /* Duration and easing */
   }
   
+
+  /* Hide the scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  scrollbar-width: none; /* For Firefox */
+}
