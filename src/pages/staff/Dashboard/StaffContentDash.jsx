@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import SearchBar from "../../../components/SearchBar";
 import StatusCard from "../../../components/StatusCard";
 import ReusableCalendar from "../../../components/ReusableCalendar";
-import StaffReusableNotification from "./StaffNotification";
+import StaffNotification from "./StaffNotificationAndCalendar";
 import supabase from "../../../service/supabase";
 
 export default function StaffContentDash() {
@@ -70,7 +70,7 @@ export default function StaffContentDash() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-2 rounded-lg">
         {/* Left Side (Notifications) */}
         <div className="col-span-2">
-          <StaffReusableNotification />
+          <StaffNotification />
         </div>
 
         {/* Right Side (Calendar) */}
