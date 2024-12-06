@@ -1,29 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { FaAngleDoubleLeft, FaAngleDoubleRight, FaHome, FaUsers, FaBuilding, FaHistory, FaFileAlt } from "react-icons/fa"; // Import icons here
 import Logo from "../../../components/Logo";
 import ReusableHeader from "../../../components/ReusableHeader";
 import useUserStore from "../../../store/useUserStore";
 import DefaultImageUser from "/src/assets/images/DefaultImageUser.jpg";
-import {
-  FaAngleDoubleLeft,
-  FaAngleDoubleRight,
-  FaHome,
-  FaCheckCircle,
-  FaSyncAlt,
-  FaTasks,
-  FaChartPie,
-} from "react-icons/fa";
 
 export default function SystemAdDashboard() {
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate(); ``
+  const navigate = useNavigate();
   const { userMetadata } = useUserStore();
   const currentPath = location.pathname;
 
   useEffect(() => {
     if (currentPath === "/system_admin") {
-      navigate("/system_admin/dashboard", { replace: true });
+      navigate("/system_admin/home", { replace: true });
     }
   }, [currentPath, navigate]);
 
@@ -39,18 +31,27 @@ export default function SystemAdDashboard() {
           } bg-custom-blue text-white flex flex-col transition-all duration-300 overflow-auto no-scrollbar`}
       >
         {/* Logo and Collapse Button */}
-        <div className="flex justify-between items-center p-4">
-          {!isSidebarCollapsed && <Logo className="-left-10" />}
-          <button
-            className="text-white focus:outline-none"
-            onClick={toggleSidebar}
-          >
-            {isSidebarCollapsed ? (
-              <FaAngleDoubleRight size={24} />
-            ) : (
+        <div
+          className={`flex items-center justify-center p-4 transition-all duration-300 ${isSidebarCollapsed ? "flex-col" : "flex-row justify-between"
+            }`}
+        >
+          <Logo className={isSidebarCollapsed ? "block" : "-left-10"} />
+          {!isSidebarCollapsed && (
+            <button
+              className="text-white focus:outline-none"
+              onClick={toggleSidebar}
+            >
               <FaAngleDoubleLeft size={24} />
-            )}
-          </button>
+            </button>
+          )}
+          {isSidebarCollapsed && (
+            <button
+              className="text-white focus:outline-none mt-2"
+              onClick={toggleSidebar}
+            >
+              <FaAngleDoubleRight size={24} />
+            </button>
+          )}
         </div>
 
         {/* Profile Section */}
@@ -58,22 +59,22 @@ export default function SystemAdDashboard() {
           className={`flex flex-col m-2 items-center transition-all duration-300 ${isSidebarCollapsed ? "space-y-0" : "space-y-1"
             }`}
         >
-          <div></div>
-          <img
-            src={userMetadata.avatar || DefaultImageUser}
-            alt="Profile"
-            className={`rounded-full transition-all duration-300 ${isSidebarCollapsed ? "w-12 h-12" : "w-16 h-16"
-              }`}
-          />
+          {!isSidebarCollapsed && (
+            <img
+              src={userMetadata.avatar || DefaultImageUser}
+              alt="Profile"
+              className={`rounded-full transition-all duration-300 ${isSidebarCollapsed ? "hidden" : "w-16 h-16"
+                }`}
+            />
+          )}
           {!isSidebarCollapsed && (
             <div className="text-center">
               <h2 className="text-sm font-medium">
                 {userMetadata.fName} {userMetadata.lName}
               </h2>
               <p className="text-xs text-gray-300">
-                {/* {userMetadata.deptName || "No department"} */}
+                {userMetadata.role || "No Role"}
               </p>
-              <p className="text-xs text-gray-300">{userMetadata.role || "No Role"}</p>
             </div>
           )}
         </div>
@@ -87,12 +88,10 @@ export default function SystemAdDashboard() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-auto">
-        {/* Header */}
         <ReusableHeader
           username={userMetadata.fName}
           profileLink="/system_admin/myprofile"
         />
-        {/* Main Content */}
         <div className="flex-1">
           <Outlet />
         </div>
@@ -103,16 +102,15 @@ export default function SystemAdDashboard() {
 
 const SidebarMenu = ({ isSidebarCollapsed, navigate }) => {
   const menuItems = [
-    { icon: <FaHome />, label: "Home", path: "/system_admin/dashboard" },
-    { icon: <FaTasks />, label: "Users", path: "/system_admin/Users" },
-    { icon: <FaSyncAlt />, label: "Department", path: "/system_admin/Departments" },
-    { icon: <FaCheckCircle />, label: "History", path: "/system_admin/History" },
-    { icon: <FaChartPie />, label: "Report", path: "/system_admin/Reports" },
+    { icon: <FaHome />, label: "Home", path: "/system_admin/home" },
+    { icon: <FaUsers />, label: "Users", path: "/system_admin/Users" },
+    { icon: <FaBuilding />, label: "Department", path: "/system_admin/Departments" },
+    { icon: <FaHistory />, label: "History", path: "/system_admin/History" },
+    { icon: <FaFileAlt />, label: "Report", path: "/system_admin/Reports" },
   ];
 
   return (
     <ul className="mb-20 space-y-4 p-4">
-      <div className="mb-5"></div>
       {menuItems.map((item, index) => (
         <li
           key={index}

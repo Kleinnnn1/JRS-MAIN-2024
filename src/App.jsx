@@ -294,7 +294,7 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="dashboard" element={<SystemAdHomeDashboard />} />
+            <Route path="home" element={<SystemAdHomeDashboard />} />
             <Route path="myprofile" element={<SysAdminPageProfile />}>
               <Route
                 path="user_account"

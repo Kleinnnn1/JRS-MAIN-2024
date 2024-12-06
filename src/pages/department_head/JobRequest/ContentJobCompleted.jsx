@@ -68,7 +68,7 @@ export default function JobCompletedContent() {
     <>
       <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
         <div className="my-4 mx-3 py-4 px-6 bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
-          <SearchBar title="Job Completed" showInput={true} />
+          <SearchBar title="Completed" showInput={true} />
 
           {/* ReusableSearchTerm for search functionality */}
           <ReusableSearchTerm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
