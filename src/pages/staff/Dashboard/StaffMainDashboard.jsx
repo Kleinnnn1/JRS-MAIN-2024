@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import Logo from "../../../components/Logo";
-import ReusableHeader from "../../../components/ReusableHeader";
-import useUserStore from "../../../store/useUserStore";
-import DefaultImageUser from "/src/assets/images/DefaultImageUser.jpg";
 import {
   FaAngleDoubleLeft,
   FaAngleDoubleRight,
   FaHome,
-  FaCheckCircle,
-
-  FaSyncAlt,
-
   FaTasks,
+  FaFileAlt, 
+  FaSyncAlt,
+  FaCheckCircle,
   FaChartPie,
 } from "react-icons/fa";
+import Logo from "../../../components/Logo";
+import ReusableHeader from "../../../components/ReusableHeader";
+import useUserStore from "../../../store/useUserStore";
+import DefaultImageUser from "/src/assets/images/DefaultImageUser.jpg";
 
 export default function StaffMainDashboard() {
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -23,6 +22,7 @@ export default function StaffMainDashboard() {
   const { userMetadata } = useUserStore();
   const currentPath = location.pathname;
 
+  // Redirect to /staff/home when mounted at /staff
   useEffect(() => {
     if (currentPath === "/staff") {
       navigate("/staff/home", { replace: true });
@@ -34,16 +34,20 @@ export default function StaffMainDashboard() {
   };
 
   return (
-    <div className="flex h-screen text-gray-800 font-inter">
+    <div className="flex h-screen bg-slate-200 text-gray-800 font-inter">
       {/* Sidebar */}
       <div
         className={`${
-          isSidebarCollapsed ? "w-16" : "w-64"
-        } bg-custom-blue text-white flex flex-col transition-all duration-300 overflow-auto no-scrollbar`}
+          isSidebarCollapsed ? "w-20" : "w-64"
+        } bg-custom-blue rounded-br-xl text-white flex flex-col transition-all duration-300 overflow-auto no-scrollbar`}
       >
         {/* Logo and Collapse Button */}
-        <div className="flex justify-between items-center p-4">
-          {!isSidebarCollapsed && <Logo className="-left-10" />}
+        <div
+          className={`flex mb-2 items-center ${
+            isSidebarCollapsed ? "justify-center" : "justify-between"
+          } p-4`}
+        >
+          {!isSidebarCollapsed && <Logo />}
           <button
             className="text-white focus:outline-none"
             onClick={toggleSidebar}
@@ -58,47 +62,50 @@ export default function StaffMainDashboard() {
 
         {/* Profile Section */}
         <div
-          className={`flex flex-col m-2 items-center transition-all duration-300 ${
-            isSidebarCollapsed ? "space-y-0" : "space-y-1"
+          className={`flex flex-col -mt-5 items-center m-4 ${
+            isSidebarCollapsed ? "hidden" : "block"
           }`}
         >
-          <div></div>
           <img
             src={userMetadata.avatar || DefaultImageUser}
             alt="Profile"
-            className={`rounded-full transition-all duration-300 ${
-              isSidebarCollapsed ? "w-12 h-12" : "w-16 h-16"
-            }`}
+            className="rounded-full w-16 h-16"
           />
-          {!isSidebarCollapsed && (
-            <div className="text-center">
-              <h2 className="text-sm font-medium">
-                {userMetadata.fName} {userMetadata.lName}
-              </h2>
-              <p className="text-xs text-gray-300">
-                {userMetadata.deptName || "No department"}
-              </p>
-              <p className="text-xs text-gray-300">{userMetadata.role || "No Role"}</p>
-            </div>
-          )}
+          <div className="text-center mt-2">
+            <h2 className="text-sm font-medium">
+              {userMetadata.fName} {userMetadata.lName}
+            </h2>
+            <p className="text-xs text-gray-300">
+              {userMetadata.deptName || "No department"}
+            </p>
+            <p className="text-xs text-gray-300">
+              {userMetadata.role || "No Role"}
+            </p>
+          </div>
         </div>
+
+        {/* Divider Below Profile */}
+        <div
+          className={`border-t border-gray-300 my-4 mx-2 ${
+            isSidebarCollapsed ? "hidden" : ""
+          }`}
+        ></div>
 
         {/* Menu Items */}
         <SidebarMenu
           isSidebarCollapsed={isSidebarCollapsed}
+          currentPath={currentPath}
           navigate={navigate}
         />
       </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-auto">
-        {/* Header */}
         <ReusableHeader
           username={userMetadata.fName}
-          profileLink="/Staff/Staffprofile"
+          profileLink="/staff/staff_profile"
         />
-        {/* Main Content */}
-        <div className="flex-1">
+        <div className="flex-1 p-4">
           <Outlet />
         </div>
       </div>
@@ -106,29 +113,38 @@ export default function StaffMainDashboard() {
   );
 }
 
-const SidebarMenu = ({ isSidebarCollapsed, navigate }) => {
+const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/staff/home" },
     { icon: <FaTasks />, label: "Assigned Job", path: "/staff/StaffImagePage" },
-    { icon: <FaSyncAlt  />, label: "Send Certificate", path: "/staff/StaffSendCert" },
+    { icon: <FaSyncAlt />, label: "Send Certificate", path: "/staff/StaffSendCert" },
     { icon: <FaCheckCircle />, label: "History", path: "/staff/History" },
-    { icon: <FaChartPie />, label: "My Request", path: "/staff/make_requestStaff" },
+    { icon: <FaFileAlt />, label: "My Request", path: "/staff/make_requestStaff" },
     { icon: <FaChartPie />, label: "Add Keyword", path: "/staff/add_keyword" },
   ];
 
   return (
-    <ul className="mb-20 space-y-4 p-4">
-      <div className="mb-5"></div>
+    <ul className="space-y-4 p-4">
       {menuItems.map((item, index) => (
         <li
           key={index}
-          className={`flex items-center space-x-4 hover:bg-blue-700 p-2 rounded cursor-pointer ${
-            isSidebarCollapsed ? "justify-center" : ""
+          className={`flex m-1 items-center space-x-4 p-2 rounded cursor-pointer ${
+            currentPath === item.path ? "bg-yellow-400 m-1 text-black" : "hover:bg-gray-700"
           }`}
           onClick={() => navigate(item.path)}
         >
-          <span className="text-2xl">{item.icon}</span>
-          {!isSidebarCollapsed && <span className="text-sm">{item.label}</span>}
+          <span className={`text-2xl ${currentPath === item.path ? "text-black" : "text-white"}`}>
+            {item.icon}
+          </span>
+          <span
+            className={`text-sm transition-all duration-300 ${
+              isSidebarCollapsed
+                ? "opacity-0 translate-x-[-10px] pointer-events-none"
+                : "opacity-100 translate-x-0"
+            } ${currentPath === item.path ? "text-black" : "text-white"}`}
+          >
+            {item.label}
+          </span>
         </li>
       ))}
     </ul>

@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { FaAngleDoubleLeft, FaAngleDoubleRight, FaHome, FaUsers, FaBuilding, FaHistory, FaFileAlt } from "react-icons/fa"; // Import icons here
+import {
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+  FaHome,
+  FaUsers,
+  FaBuilding,
+  FaHistory,
+  FaFileAlt,
+} from "react-icons/fa"; // Import icons here
 import Logo from "../../../components/Logo";
 import ReusableHeader from "../../../components/ReusableHeader";
 import useUserStore from "../../../store/useUserStore";
@@ -27,36 +35,31 @@ export default function SystemAdDashboard() {
     <div className="flex h-screen text-gray-800 font-inter">
       {/* Sidebar */}
       <div
-        className={`${isSidebarCollapsed ? "w-16" : "w-64"
-          } bg-custom-blue text-white flex flex-col transition-all duration-300 overflow-auto no-scrollbar`}
+        className={`${isSidebarCollapsed ? "w-20" : "w-64"
+          } bg-custom-blue rounded-br-xl text-white flex flex-col transition-all duration-300 overflow-auto no-scrollbar`}
       >
+        
         {/* Logo and Collapse Button */}
         <div
-          className={`flex items-center justify-center p-4 transition-all duration-300 ${isSidebarCollapsed ? "flex-col" : "flex-row justify-between"
-            }`}
+          className={`flex items-center ${isSidebarCollapsed ? "justify-center" : "justify-between"
+            } p-4`}
         >
-          <Logo className={isSidebarCollapsed ? "block" : "-left-10"} />
-          {!isSidebarCollapsed && (
-            <button
-              className="text-white focus:outline-none"
-              onClick={toggleSidebar}
-            >
-              <FaAngleDoubleLeft size={24} />
-            </button>
-          )}
-          {isSidebarCollapsed && (
-            <button
-              className="text-white focus:outline-none mt-2"
-              onClick={toggleSidebar}
-            >
+          {!isSidebarCollapsed && <Logo />}
+          <button
+            className="text-white focus:outline-none"
+            onClick={toggleSidebar}
+          >
+            {isSidebarCollapsed ? (
               <FaAngleDoubleRight size={24} />
-            </button>
-          )}
+            ) : (
+              <FaAngleDoubleLeft size={24} />
+            )}
+          </button>
         </div>
 
         {/* Profile Section */}
         <div
-          className={`flex flex-col m-2 items-center transition-all duration-300 ${isSidebarCollapsed ? "space-y-0" : "space-y-1"
+          className={`flex flex-col -mt-5 items-center m-4 duration-300 ${isSidebarCollapsed ? "space-y-0" : "space-y-1"
             }`}
         >
           {!isSidebarCollapsed && (
@@ -79,9 +82,16 @@ export default function SystemAdDashboard() {
           )}
         </div>
 
+        {/* Divider Below Profile */}
+        <div
+          className={`border-t border-gray-300 my-4 mx-2 ${isSidebarCollapsed ? "hidden" : ""
+            }`}
+        ></div>
+
         {/* Menu Items */}
         <SidebarMenu
           isSidebarCollapsed={isSidebarCollapsed}
+          currentPath={currentPath}
           navigate={navigate}
         />
       </div>
@@ -92,7 +102,7 @@ export default function SystemAdDashboard() {
           username={userMetadata.fName}
           profileLink="/system_admin/myprofile"
         />
-        <div className="flex-1">
+        <div className="flex-1 p-4">
           <Outlet />
         </div>
       </div>
@@ -100,7 +110,7 @@ export default function SystemAdDashboard() {
   );
 }
 
-const SidebarMenu = ({ isSidebarCollapsed, navigate }) => {
+const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/system_admin/home" },
     { icon: <FaUsers />, label: "Users", path: "/system_admin/Users" },
@@ -110,16 +120,31 @@ const SidebarMenu = ({ isSidebarCollapsed, navigate }) => {
   ];
 
   return (
-    <ul className="mb-20 space-y-4 p-4">
+    <ul className="space-y-4 p-4">
       {menuItems.map((item, index) => (
         <li
           key={index}
-          className={`flex items-center space-x-4 hover:bg-blue-700 p-2 rounded cursor-pointer ${isSidebarCollapsed ? "justify-center" : ""
+          className={`flex m-1 items-center space-x-4 p-2 rounded cursor-pointer ${currentPath === item.path
+              ? "bg-yellow-400 m-1 text-black"
+              : "hover:bg-gray-700"
             }`}
           onClick={() => navigate(item.path)}
         >
-          <span className="text-2xl">{item.icon}</span>
-          {!isSidebarCollapsed && <span className="text-sm">{item.label}</span>}
+          <span
+            className={`text-2xl ${currentPath === item.path ? "text-black" : "text-white"
+              }`}
+          >
+            {item.icon}
+          </span>
+          <span
+            className={`text-sm transition-all duration-300 ${isSidebarCollapsed
+                ? "opacity-0 translate-x-[-10px] pointer-events-none"
+                : "opacity-100 translate-x-0"
+              } ${currentPath === item.path ? "text-black" : "text-white"
+              }`}
+          >
+            {item.label}
+          </span>
         </li>
       ))}
     </ul>

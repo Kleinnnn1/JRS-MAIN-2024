@@ -74,7 +74,7 @@ export default function JobRequestHistory() {
     }
   };
   return (
-    <div className="my-4 mx-3 py-2 px-4 bg-white shadow-md rounded-lg">
+    <div className="my-4 mx-3 p-2 bg-white shadow-md rounded-lg">
       <div className="bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
         <SearchBar title="Job Request History" />
 

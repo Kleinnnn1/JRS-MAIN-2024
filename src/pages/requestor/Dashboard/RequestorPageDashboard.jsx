@@ -14,7 +14,7 @@ import useUserStore from "../../../store/useUserStore";
 import DefaultImageUser from "/src/assets/images/DefaultImageUser.jpg";
 
 export default function RequestorDashboard() {
-  const [isSidebarCollapsed, setSidebarCollapsed] = useState(true); // Sidebar starts collapsed
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false); // Sidebar starts expanded
   const location = useLocation();
   const navigate = useNavigate();
   const { userMetadata } = useUserStore();
@@ -32,7 +32,7 @@ export default function RequestorDashboard() {
   };
 
   return (
-    <div className="flex h-screen text-gray-800 font-inter">
+    <div className="flex h-screen bg-slate-200 text-gray-800 font-inter">
       {/* Sidebar */}
       <div
         className={`${
@@ -60,7 +60,7 @@ export default function RequestorDashboard() {
 
         {/* Profile Section */}
         <div
-          className={`flex flex-col items-center m-4 ${
+          className={`flex flex-col -mt-5 items-center m-4 ${
             isSidebarCollapsed ? "hidden" : "block"
           }`}
         >
@@ -81,7 +81,11 @@ export default function RequestorDashboard() {
             </p>
           </div>
         </div>
-
+        {/* Divider Below Profile */}
+        <div
+          className={`border-t border-gray-300 my-4 mx-2 ${isSidebarCollapsed ? "hidden" : ""
+            }`}
+        ></div>
         {/* Menu Items */}
         <SidebarMenu
           isSidebarCollapsed={isSidebarCollapsed}
@@ -103,6 +107,7 @@ export default function RequestorDashboard() {
     </div>
   );
 }
+
 const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/requestor/home" },
@@ -116,8 +121,8 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
       {menuItems.map((item, index) => (
         <li
           key={index}
-          className={`flex items-center space-x-4 p-2 rounded cursor-pointer ${
-            currentPath === item.path ? "bg-yellow-400 text-black" : "hover:bg-gray-700"
+          className={`flex m-1 items-center space-x-4 p-2 rounded cursor-pointer ${
+            currentPath === item.path ? "bg-yellow-400 m-1 text-black" : "hover:bg-gray-700"
           }`}
           onClick={() => navigate(item.path)}
         >

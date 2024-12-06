@@ -72,7 +72,7 @@ export default function ContentDashboard() {
       </div>
 
       {/* Status Cards Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         <StatusCard
           title="Pending"
           count={counts.pending} // Display the count of pending requests
@@ -100,15 +100,7 @@ export default function ContentDashboard() {
           bgColor={statusCardColor}
           onClick={() => navigate("/requestor/job_completed")}
         />
-        <StatusCard
-          title="Referral"
-          count={counts.referral} // Display the count of referral requests
-          icon={<FaRegHandPointer />}
-          iconColor="text-purple-500"
-          titleColor="text-purple-500"
-          bgColor={statusCardColor}
-          onClick={() => navigate("/requestor/job_referral")}
-        />
+
       </div>
 
       {/* Main Content Section */}

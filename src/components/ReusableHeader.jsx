@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { useNavigate, Link } from "react-router-dom";
 import iconDropdown from "../assets/images/iconDropdown.png";
-import { HiMenu } from "react-icons/hi"; // Import a hamburger icon from react-icons (using Heroicons)
 
 export default function ReusableHeader({
   profilePicture,
   username,
   profileLink,
 }) {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -17,10 +15,10 @@ export default function ReusableHeader({
   };
 
   return (
-    <div className="py-5 px-10 bg-yellow-200 flex items-center justify-between min-h-2 shadow-md shadow-black/5 sticky top-0 left-0 z-30">
+    <div className="py-4 px-6 bg-yellow-200 flex items-center justify-between shadow-md shadow-black/5 sticky top-0 left-0 z-50">
+      {/* Left Section */}
       <div className="flex items-center">
-
-        <a href="#" className="text-xs">
+        <a href="#" className="text-xs text-gray-700 font-medium">
           jrs@ustp.edu.ph +384-3478-984
         </a>
       </div>
@@ -30,29 +28,28 @@ export default function ReusableHeader({
         <button
           type="button"
           onClick={toggleDropdown}
-          className="text-md font-semibold text-gray-800 hover:text-gray-900 focus:outline-none flex items-center"
+          className="flex items-center text-sm font-semibold text-gray-800 hover:text-gray-900 focus:outline-none"
         >
           {username}
           <img
             src={iconDropdown}
             alt="Dropdown Icon"
-            className={`ml-2 h-3 w-3 transform ${isDropdownOpen ? "rotate-180" : ""
-              }`}
+            className={`ml-2 h-3 w-3 transform transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}
           />
         </button>
 
         {/* Dropdown Menu */}
         {isDropdownOpen && (
-          <div className="absolute right-0 mt-2 w-32 bg-yellow-200 rounded-md shadow-lg py-2 z-10">
+          <div className="absolute right-0 mt-2 w-32 bg-yellow-200 rounded-md shadow-lg py-2 z-50">
             <Link
-              to={profileLink} // Use the profileLink prop
+              to={profileLink}
               className="block px-4 py-2 text-sm text-gray-900 hover:bg-yellow-600 hover:text-white"
             >
               Profile
             </Link>
             <Link
               to="/login"
-              className="block px-3 py-2 text-sm text-gray-900 hover:bg-yellow-600 hover:text-white"
+              className="block px-4 py-2 text-sm text-gray-900 hover:bg-yellow-600 hover:text-white"
             >
               Logout
             </Link>

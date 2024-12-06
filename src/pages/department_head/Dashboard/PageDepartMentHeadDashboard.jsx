@@ -20,8 +20,7 @@ import {
 } from "react-icons/fa";
 
 export default function DepartmentHeadDashboard() {
-  const [isSidebarCollapsed, setSidebarCollapsed] = useState(true); // Sidebar starts collapsed
-  const location = useLocation();
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false); 
   const navigate = useNavigate();
   const { userMetadata } = useUserStore();
   const currentPath = location.pathname;
@@ -65,7 +64,7 @@ export default function DepartmentHeadDashboard() {
 
         {/* Profile Section */}
         <div
-          className={`flex flex-col m-2 items-center ${
+          className={`flex flex-col mb-10 items-center ${
             isSidebarCollapsed ? "hidden" : "block"
           }`}
         >
@@ -86,6 +85,14 @@ export default function DepartmentHeadDashboard() {
             </p>
           </div>
         </div>
+
+        
+        {/* Divider Below Profile */}
+        <div
+          className={`border-t border-gray-300 my-2 mx-2 ${
+            isSidebarCollapsed ? "hidden" : ""
+          }`}
+        ></div>
 
         {/* Menu Items */}
         <SidebarMenu
@@ -125,6 +132,7 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
 
   return (
     <ul className="space-y-4 p-4">
+      
       <div></div>
       {menuItems.map((item, index) => (
         <li
