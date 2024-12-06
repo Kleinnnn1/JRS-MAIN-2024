@@ -6,6 +6,7 @@ import Table from "../../../components/Table";
 import SearchBar from "../../../components/SearchBar";
 import RequestorJobRequestForm from "./RequestorJobRequestForm";
 import supabase from "../../../service/supabase"; // Ensure you have this setup
+import { getCurrentUser } from "../../../service/apiAuth";
 
 const tableHeaders = [
   "Request ID",
@@ -43,11 +44,20 @@ export default function RequestorJobRequestTable() {
   const fetchRequests = async () => {
     try {
       setLoading(true);
+
+      // Get the current user
+      const currentUser = await getCurrentUser();
+      if (!currentUser || !currentUser.idNumber) {
+        throw new Error("Unable to fetch current user information.");
+      }
+
+      // Fetch requests where the currentUser.idNumber matches the requestor
       const { data: requests, error } = await supabase
         .from("Request")
         .select(
-          "requestId, description, jobCategory, image, status, requestDate, priority"
+          "requestId, description, jobCategory, image, status, requestDate, priority, idNumber"
         )
+        .eq("idNumber", currentUser.idNumber) // Filter requests by the user's ID
         .order("requestDate", { ascending: true });
 
       if (error) throw error;
@@ -70,7 +80,6 @@ export default function RequestorJobRequestTable() {
           (assignment) => assignment.requestId === request.requestId
         );
 
-        // Create a Set to eliminate duplicate department names
         const departmentNames = [
           ...new Set(
             assignmentsForRequest.map((assignment) => {
@@ -80,7 +89,7 @@ export default function RequestorJobRequestTable() {
               return department ? department.deptName : "Unknown Department";
             })
           ),
-        ].join(", "); // Join the unique department names with a comma
+        ].join(", ");
 
         return {
           ...request,
@@ -92,7 +101,7 @@ export default function RequestorJobRequestTable() {
       });
 
       console.log(
-        "Fetched requests with unique departments:",
+        "Fetched requests with unique departments for current user:",
         requestsWithDepartments
       );
       setRequests(requestsWithDepartments);
@@ -102,6 +111,69 @@ export default function RequestorJobRequestTable() {
       setLoading(false);
     }
   };
+
+  // const fetchRequests = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const { data: requests, error } = await supabase
+  //       .from("Request")
+  //       .select(
+  //         "requestId, description, jobCategory, image, status, requestDate, priority"
+  //       )
+  //       .order("requestDate", { ascending: true });
+
+  //     if (error) throw error;
+
+  //     const { data: assignments, error: assignmentError } = await supabase
+  //       .from("Department_request_assignment")
+  //       .select("requestId, staffName, deptId");
+
+  //     if (assignmentError) throw assignmentError;
+
+  //     const { data: departments, error: departmentError } = await supabase
+  //       .from("Department")
+  //       .select("deptId, deptName");
+
+  //     if (departmentError) throw departmentError;
+
+  //     // Combine the data from all queries manually
+  //     const requestsWithDepartments = requests.map((request) => {
+  //       const assignmentsForRequest = assignments.filter(
+  //         (assignment) => assignment.requestId === request.requestId
+  //       );
+
+  //       // Create a Set to eliminate duplicate department names
+  //       const departmentNames = [
+  //         ...new Set(
+  //           assignmentsForRequest.map((assignment) => {
+  //             const department = departments.find(
+  //               (dept) => dept.deptId === assignment.deptId
+  //             );
+  //             return department ? department.deptName : "Unknown Department";
+  //           })
+  //         ),
+  //       ].join(", "); // Join the unique department names with a comma
+
+  //       return {
+  //         ...request,
+  //         departmentNames,
+  //         staffNames: assignmentsForRequest
+  //           .map((assignment) => assignment.staffName)
+  //           .join(", "),
+  //       };
+  //     });
+
+  //     console.log(
+  //       "Fetched requests with unique departments:",
+  //       requestsWithDepartments
+  //     );
+  //     setRequests(requestsWithDepartments);
+  //   } catch (err) {
+  //     setError(err.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   // Real-time subscription setup
   useEffect(() => {
