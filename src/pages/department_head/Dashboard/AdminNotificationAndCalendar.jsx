@@ -92,7 +92,7 @@ export default function AdminNotification() {
               // If the deptId matches and userRole is "department head", create a notification
               const newNotification = {
                 notificationid: Date.now(), // Use a unique value for notificationid
-                message: `[NEW] You received a new job request, Request No: ${newRequest.requestId}`,
+                message: `[NEW] You received a new job request, Request ID: ${newRequest.requestId}`,
                 timestamp: new Date().toISOString(), // Save as ISO timestamp
                 idNumber: userIdNumber,
               };
