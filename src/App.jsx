@@ -194,7 +194,8 @@ export default function App() {
           {/* Routes for ForgotPassword */}
           <Route path="/forgotPassword" element={<ForgotPassword />} />
 
-          {/* SPME ROUTE */}
+{/* ===========================================SPME ==================================================================== */}
+       
           <Route path="/spme" element={<SPMEDashboard />}>
 
           <Route path="home" element={<SPMEMainBody />} />
@@ -226,6 +227,7 @@ export default function App() {
             />
           </Route>
 
+{/* ===========================================STAFF==================================================================== */}
           {/* Protected Routes for Staff */}
           <Route
             path="/staff/*"
@@ -281,6 +283,8 @@ export default function App() {
             <Route path="StaffSendCert" element={<StaffPageCertificate />} />
             <Route path="StaffCert" element={<StaffSendCert />} />
           </Route>
+
+{/* ===========================================SYSTEM ADMIN ==================================================================== */}
           {/* Protected Routes for System Admin */}
           <Route
             path="/system_admin/*"
@@ -290,7 +294,7 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-                  <Route path="dashboard" element={<SystemAdHomeDashboard />} />
+            <Route path="dashboard" element={<SystemAdHomeDashboard />} />
             <Route path="myprofile" element={<SysAdminPageProfile />}>
               <Route
                 path="user_account"
@@ -318,7 +322,7 @@ export default function App() {
               <Route path="spme" element={<SysAdminSpmeContent />} />
               <Route path="add_spme" element={<SysAdminAddNewSpme />} />
               <Route path="view_spme" element={<SysAdminViewSpme />} />
-              {/* WALAY OFFICE HEAD */}
+      
               <Route path="sysadmin" element={<SystemAdminContentPage />} />
               <Route path="add_sysadmin" element={<SysAdminAddNewSysAdmin />} />
               <Route path="view_sysadmin" element={<SysAdminViewSysAdmin />} />
@@ -334,8 +338,8 @@ export default function App() {
             <Route path="Reports" element={<PageReportSystemAdmin />} />
           </Route>
 
+{/* ===========================================OFFICE HEAD==================================================================== */}
           {/* Protected Routes for Office Head */}
-
           <Route
             path="/office_head/*"
             element={
@@ -405,6 +409,7 @@ export default function App() {
            <Route path='register' element={<RegisterMe/>}/> */}
           </Route>
 
+{/* ===========================================DEPARTMENT HEAD ==================================================================== */}
           {/* Protected Routes for Department Head */}
           <Route
             path="/department_head/*"
@@ -508,8 +513,7 @@ export default function App() {
             <Route path="content" element={<ContentAprrovingCertificate />} />
           </Route>
 
-
-
+{/* ===========================================REQUESTOR ==================================================================== */}
           {/* Protected Routes for Requestor */}
           <Route
             path="/requestor/*"

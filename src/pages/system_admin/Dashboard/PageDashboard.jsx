@@ -9,9 +9,7 @@ import {
   FaAngleDoubleRight,
   FaHome,
   FaCheckCircle,
-
   FaSyncAlt,
-
   FaTasks,
   FaChartPie,
 } from "react-icons/fa";
@@ -19,13 +17,13 @@ import {
 export default function SystemAdDashboard() {
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); ``
   const { userMetadata } = useUserStore();
   const currentPath = location.pathname;
 
   useEffect(() => {
     if (currentPath === "/system_admin") {
-      navigate("/system_admin/home", { replace: true });
+      navigate("/system_admin/dashboard", { replace: true });
     }
   }, [currentPath, navigate]);
 
@@ -37,9 +35,8 @@ export default function SystemAdDashboard() {
     <div className="flex h-screen text-gray-800 font-inter">
       {/* Sidebar */}
       <div
-        className={`${
-          isSidebarCollapsed ? "w-16" : "w-64"
-        } bg-custom-blue text-white flex flex-col transition-all duration-300 overflow-auto no-scrollbar`}
+        className={`${isSidebarCollapsed ? "w-16" : "w-64"
+          } bg-custom-blue text-white flex flex-col transition-all duration-300 overflow-auto no-scrollbar`}
       >
         {/* Logo and Collapse Button */}
         <div className="flex justify-between items-center p-4">
@@ -58,17 +55,15 @@ export default function SystemAdDashboard() {
 
         {/* Profile Section */}
         <div
-          className={`flex flex-col m-2 items-center transition-all duration-300 ${
-            isSidebarCollapsed ? "space-y-0" : "space-y-1"
-          }`}
+          className={`flex flex-col m-2 items-center transition-all duration-300 ${isSidebarCollapsed ? "space-y-0" : "space-y-1"
+            }`}
         >
           <div></div>
           <img
             src={userMetadata.avatar || DefaultImageUser}
             alt="Profile"
-            className={`rounded-full transition-all duration-300 ${
-              isSidebarCollapsed ? "w-12 h-12" : "w-16 h-16"
-            }`}
+            className={`rounded-full transition-all duration-300 ${isSidebarCollapsed ? "w-12 h-12" : "w-16 h-16"
+              }`}
           />
           {!isSidebarCollapsed && (
             <div className="text-center">
@@ -108,9 +103,9 @@ export default function SystemAdDashboard() {
 
 const SidebarMenu = ({ isSidebarCollapsed, navigate }) => {
   const menuItems = [
-    { icon: <FaHome />, label: "Home", path: "/system_admin/home" },
+    { icon: <FaHome />, label: "Home", path: "/system_admin/dashboard" },
     { icon: <FaTasks />, label: "Users", path: "/system_admin/Users" },
-    { icon: <FaSyncAlt  />, label: "Department", path: "/system_admin/Departments" },
+    { icon: <FaSyncAlt />, label: "Department", path: "/system_admin/Departments" },
     { icon: <FaCheckCircle />, label: "History", path: "/system_admin/History" },
     { icon: <FaChartPie />, label: "Report", path: "/system_admin/Reports" },
   ];
@@ -121,9 +116,8 @@ const SidebarMenu = ({ isSidebarCollapsed, navigate }) => {
       {menuItems.map((item, index) => (
         <li
           key={index}
-          className={`flex items-center space-x-4 hover:bg-blue-700 p-2 rounded cursor-pointer ${
-            isSidebarCollapsed ? "justify-center" : ""
-          }`}
+          className={`flex items-center space-x-4 hover:bg-blue-700 p-2 rounded cursor-pointer ${isSidebarCollapsed ? "justify-center" : ""
+            }`}
           onClick={() => navigate(item.path)}
         >
           <span className="text-2xl">{item.icon}</span>
