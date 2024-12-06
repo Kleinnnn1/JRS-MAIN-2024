@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -92,7 +97,7 @@ import RequestorCertificate from "./pages/requestor/JobRequestDetail/RequestorCe
 // Components for system admin
 import SystemAdDashboard from "./pages/system_admin/Dashboard/PageDashboard.jsx";
 import SysAdminUsersPage from "./pages/system_admin/Users/SysAdminUsersPage.jsx";
-import SystemAdHomeDashboard from "./pages/system_admin/Dashboard/SysadminDashboard.jsx"
+import SystemAdHomeDashboard from "./pages/system_admin/Dashboard/SysadminDashboard.jsx";
 import SysAdminJob_requests from "./pages/system_admin/JobRequest/jobRequests.jsx";
 import SysAdminDepartmentPage from "./pages/system_admin/Department/PageDepartment.jsx";
 
@@ -130,7 +135,7 @@ import ContentDashboard from "./pages/office_org_head/Dashboard/ContentDashboard
 import SignUpForm from "./auth/SignUpForm.jsx";
 // SPME
 import SPMEDashboard from "./pages/spme/Dashboard/SpmsPageDashboard.jsx";
-import SPMEMainBody from "./pages/spme/Dashboard/SPMSContentDashboard.jsx"
+import SPMEMainBody from "./pages/spme/Dashboard/SPMSContentDashboard.jsx";
 import SpmeJobRequest from "./pages/spme/JobRequestspme/RequestorPageJobRequest.jsx";
 import SpmeJobRequestForm from "./pages/spme/JobRequestspme/RequestorJobRequestForm.jsx";
 import SpmeJobRequestTable from "./pages/spme/JobRequestspme/RequestorJobRequestTable.jsx";
@@ -186,6 +191,8 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
+          {/* Default route redirects to /login */}
+          <Route path="/" element={<Navigate to="/login" />} />
           {/* Routes for Unauthorized page */}
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
           <Route path="signup" element={<SignUpForm />} />
@@ -194,11 +201,10 @@ export default function App() {
           {/* Routes for ForgotPassword */}
           <Route path="/forgotPassword" element={<ForgotPassword />} />
 
-{/* ===========================================SPME ==================================================================== */}
-       
-          <Route path="/spme" element={<SPMEDashboard />}>
+          {/* ===========================================SPME ==================================================================== */}
 
-          <Route path="home" element={<SPMEMainBody />} />
+          <Route path="/spme" element={<SPMEDashboard />}>
+            <Route path="home" element={<SPMEMainBody />} />
 
             <Route path="make_requestSpme" element={<SpmeJobRequest />} />
             <Route
@@ -227,7 +233,7 @@ export default function App() {
             />
           </Route>
 
-{/* ===========================================STAFF==================================================================== */}
+          {/* ===========================================STAFF==================================================================== */}
           {/* Protected Routes for Staff */}
           <Route
             path="/staff/*"
@@ -284,7 +290,7 @@ export default function App() {
             <Route path="StaffCert" element={<StaffSendCert />} />
           </Route>
 
-{/* ===========================================SYSTEM ADMIN ==================================================================== */}
+          {/* ===========================================SYSTEM ADMIN ==================================================================== */}
           {/* Protected Routes for System Admin */}
           <Route
             path="/system_admin/*"
@@ -322,7 +328,7 @@ export default function App() {
               <Route path="spme" element={<SysAdminSpmeContent />} />
               <Route path="add_spme" element={<SysAdminAddNewSpme />} />
               <Route path="view_spme" element={<SysAdminViewSpme />} />
-      
+
               <Route path="sysadmin" element={<SystemAdminContentPage />} />
               <Route path="add_sysadmin" element={<SysAdminAddNewSysAdmin />} />
               <Route path="view_sysadmin" element={<SysAdminViewSysAdmin />} />
@@ -338,7 +344,7 @@ export default function App() {
             <Route path="Reports" element={<PageReportSystemAdmin />} />
           </Route>
 
-{/* ===========================================OFFICE HEAD==================================================================== */}
+          {/* ===========================================OFFICE HEAD==================================================================== */}
           {/* Protected Routes for Office Head */}
           <Route
             path="/office_head/*"
@@ -409,7 +415,7 @@ export default function App() {
            <Route path='register' element={<RegisterMe/>}/> */}
           </Route>
 
-{/* ===========================================DEPARTMENT HEAD ==================================================================== */}
+          {/* ===========================================DEPARTMENT HEAD ==================================================================== */}
           {/* Protected Routes for Department Head */}
           <Route
             path="/department_head/*"
@@ -513,7 +519,7 @@ export default function App() {
             <Route path="content" element={<ContentAprrovingCertificate />} />
           </Route>
 
-{/* ===========================================REQUESTOR ==================================================================== */}
+          {/* ===========================================REQUESTOR ==================================================================== */}
           {/* Protected Routes for Requestor */}
           <Route
             path="/requestor/*"
@@ -526,14 +532,30 @@ export default function App() {
             <Route path="home" element={<RequestorContentDashboard />} />
             {/* JOB REQUEST */}
             <Route path="job_request" element={<RequestorJobRequest />} />
-          <Route path="job_request_table" element={<RequestorJobRequestTable />} />
-          <Route path="job_request_detail/:requestId" element={<RequestorJobRequestDetail />} />
-          <Route path="job_request_approved" element={<RequestorJobRequestApproved />} />
-          <Route path="job_request_completed" element={<RequestorJobRequestCompleted />} />
-          <Route path="job_request_certificate" element={<RequestorCertificate />} />
-          <Route path="job_request_form" element={<RequestorJobRequestForm />} />
-
-
+            <Route
+              path="job_request_table"
+              element={<RequestorJobRequestTable />}
+            />
+            <Route
+              path="job_request_detail/:requestId"
+              element={<RequestorJobRequestDetail />}
+            />
+            <Route
+              path="job_request_approved"
+              element={<RequestorJobRequestApproved />}
+            />
+            <Route
+              path="job_request_completed"
+              element={<RequestorJobRequestCompleted />}
+            />
+            <Route
+              path="job_request_certificate"
+              element={<RequestorCertificate />}
+            />
+            <Route
+              path="job_request_form"
+              element={<RequestorJobRequestForm />}
+            />
 
             {/* REQUESTOR'S PROFILE */}
             <Route path="requestor_profile" element={<RequestorPageProfile />}>
