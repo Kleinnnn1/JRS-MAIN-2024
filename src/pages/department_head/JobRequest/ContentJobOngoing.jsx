@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ReusablePagination from "../../../components/ReusablePagination";
 import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
 import SearchBar from "../../../components/SearchBar";
 import Table from "../../../components/Table";
-import { useQuery } from "@tanstack/react-query";
+import supabase from "../../../service/supabase"; // Import Supabase client
 import { getDeptHeadOngoingJobRequest } from "../../../service/apiDeptHeadOngoingRequestTable";
 
 // Define priority styling
@@ -33,24 +33,72 @@ const tableHeaders = [
 ];
 
 export default function ContentJobOngoing() {
-  const { data: request = [], error } = useQuery({
-    queryKey: ["request"],
-    queryFn: getDeptHeadOngoingJobRequest,
-  });
-
   const navigate = useNavigate();
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // State for pagination, search, and data
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Fetch initial data from Supabase
+  useEffect(() => {
+    async function fetchRequests() {
+      try {
+        setLoading(true);
+        const data = await getDeptHeadOngoingJobRequest();
+        setRequests(data);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching ongoing job requests:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchRequests();
+
+    // Set up a subscription for real-time updates
+    const subscription = supabase
+      .channel("public:Request")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "Request" },
+        (payload) => {
+          console.log("Change received:", payload);
+          if (
+            payload.eventType === "INSERT" ||
+            payload.eventType === "UPDATE"
+          ) {
+            fetchRequests(); // Re-fetch data on insert or update
+          }
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      supabase.removeChannel(subscription);
+    };
+  }, []);
+
   // Format the fetched data into table content
   const tableContent =
-    request.length > 0
-      ? request.map(
+    requests.length > 0
+      ? requests.map(
           (
-            { fullName, description, jobCategory, location, image, priority },
+            {
+              requestId,
+              fullName,
+              description,
+              jobCategory,
+              location,
+              image,
+              priority,
+            },
             index
           ) => [
             `${index + 1}. ${String(fullName || "N/A")}`, // Display "N/A" if requestor is missing
@@ -69,7 +117,7 @@ export default function ContentJobOngoing() {
             ), // Apply styling to priority
             <button
               className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2"
-              onClick={() => navigate(`/requests/view/${index}`)}
+              onClick={() => navigate(`/requests/view/${requestId}`)}
             >
               View
             </button>,
@@ -99,9 +147,13 @@ export default function ContentJobOngoing() {
     currentPage * rowsPerPage
   );
 
-  if (error) {
-    console.log(error);
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (error) {
+  //   return <div className="text-center text-red-500">Error: {error}</div>;
+  // }
 
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
