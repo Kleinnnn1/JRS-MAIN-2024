@@ -78,7 +78,7 @@ export default function SPMSDashboard() {
               <p className="text-xs text-gray-300">
                 {userMetadata.deptName || "No department"}
               </p>
-              <p className="text-xs text-gray-300">Department Head</p>
+              {/* <p className="text-xs text-gray-300">Department Head</p> */}
             </div>
           )}
         </div>

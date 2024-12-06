@@ -78,7 +78,7 @@ export default function StaffMainDashboard() {
               <p className="text-xs text-gray-300">
                 {userMetadata.deptName || "No department"}
               </p>
-              <p className="text-xs text-gray-300">Maintenance Staff</p>
+              <p className="text-xs text-gray-300">{userMetadata.role || "No Role"}</p>
             </div>
           )}
         </div>
