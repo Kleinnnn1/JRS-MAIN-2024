@@ -91,7 +91,7 @@ export default function StaffTableCertificate() {
             <span key={`duration-${index}`}>{request.duration}</span>,
             <ReusableViewButton
               key={`view-btn-${index}`}
-              onClick={() => navigate("/staff/StaffSendCert/StaffCert")}
+              onClick={() => navigate("/staff/StaffCert")}
             />,
           ])}
           headers={tableHeaders}

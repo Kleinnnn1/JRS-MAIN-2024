@@ -3,75 +3,86 @@ import ReusableContent from "../../../components/ReusableContent";
 import SearchBar from "../../../components/SearchBar";
 import ReusableBackButton from "../../../components/ReusableBackButton";
 import ButtonApproveCertificate from "./StaffButtonApproveCertificate";
-import ImageCertificate from "./StaffImageCert";
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2"; // Import SweetAlert
+import { useNavigate, useLocation } from "react-router-dom";
+import Swal from "sweetalert2";
 
-export default function ContentApprovingCertificate() {
+export default function StaffJobDetails() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Extract job details from navigation state
+  const jobDetails = location.state || {
+    requestorName: "N/A",
+    jobDescription: "N/A",
+    jobType: "N/A",
+    location: "N/A",
+    dateRequested: "N/A",
+    dateStarted: "N/A",
+    dateFinished: "N/A",
+    priorityLevel: "N/A",
+    duration: "N/A",
+  };
 
   const handleSendCertificateClick = () => {
     Swal.fire({
       title: "Are you sure?",
-      text: "Are you sure you want to send the certificate?",
+      text: "Do you want to send the certificate?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, send it!",
       cancelButtonText: "No, cancel",
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate("/staff/StaffSendCert/StaffCert");
+        Swal.fire({
+          title: "Success!",
+          text: "Certificate has been sent successfully.",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        }).then(() => {
+          navigate("/staff/StaffSendCert");
+        });
       }
     });
   };
 
   return (
     <>
-      <SearchBar title={`Send Certificate`} />
+      <SearchBar title="Job Details" />
       <ReusableContent className="p-6 bg-white shadow-md rounded-lg">
         <span className="text-2xl font-bold mb-4 block">Job Details</span>
 
         <span className="block mb-2">
-          <b>Requestor Name:</b> Ms. Charlanees Vallar
+          <b>Requestor Name:</b> {jobDetails.requestorName}
         </span>
         <span className="block mb-2">
-          <b>Job Description:</b> Broken Door Knob
+          <b>Job Description:</b> {jobDetails.jobDescription}
         </span>
         <span className="block mb-2">
-          <b>Job Type:</b> Carpentry
+          <b>Job Type:</b> {jobDetails.jobType}
         </span>
         <span className="block mb-2">
-          <b>Location:</b> 3rd floor ICT Building Room 309
+          <b>Location:</b> {jobDetails.location}
         </span>
         <span className="block mb-2">
-          <b>Date Requested:</b> 01/08/2024
+          <b>Date Requested:</b> {jobDetails.dateRequested}
         </span>
         <span className="block mb-2">
-          <b>Date Started:</b> 28 - 07 - 2024
+          <b>Date Started:</b> {jobDetails.dateStarted}
         </span>
         <span className="block mb-2">
-          <b>Date Finished:</b> 29 - 07 - 2024
+          <b>Date Finished:</b> {jobDetails.dateFinished}
         </span>
         <span className="block mb-2">
-          <b>Prioritization:</b> High
+          <b>Priority Level:</b> {jobDetails.priorityLevel}
         </span>
-
-        <div className="block mb-2">
-          <b>Duration: </b>
-          <input
-            type="text"
-            placeholder="1-2 Hours"
-            className="border border-gray-300 rounded-md p-2"
-          />
-        </div>
+        <span className="block mb-2">
+          <b>Duration:</b> {jobDetails.duration}
+        </span>
 
         <div className="absolute bottom-5 right-4 flex">
           <ReusableBackButton marginRight="mr-4" />
           <ButtonApproveCertificate onClick={handleSendCertificateClick} />
-        </div>
-
-        <div className="absolute top-3 right-4 border border-black">
-          <ImageCertificate />
         </div>
       </ReusableContent>
     </>
