@@ -83,7 +83,7 @@ export default function RequestorDashboard() {
               <p className="text-xs text-gray-300">
                 {userMetadata.deptName || "No department"}
               </p>
-              <p className="text-xs text-gray-300">Requestor</p>
+              <p className="text-xs text-gray-300">{userMetadata.role || "No Role"}</p>
             </div>
           )}
         </div>
