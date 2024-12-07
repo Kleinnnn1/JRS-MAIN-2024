@@ -315,6 +315,7 @@ export default function App() {
                 element={<SysAdminChangePassword />}
               />
             </Route>
+            
             <Route path="Users" element={<SysAdminUsersPage />}>
               <Route path="reg_users" element={<UserContent />} />
               <Route path="add_user" element={<SysAdminAddNewUser />} />

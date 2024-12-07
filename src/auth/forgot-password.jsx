@@ -16,7 +16,7 @@ export default function ForgotPassword() {
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: "https://yourdomain.com/update-password", // Replace with your actual update password page URL
+        redirectTo: "https://ustpjrsystem.xyz/updatePassword", // Replace with your actual update password page URL
       });
 
       if (error) {
