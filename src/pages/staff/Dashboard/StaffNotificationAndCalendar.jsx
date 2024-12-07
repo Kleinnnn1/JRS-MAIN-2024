@@ -75,7 +75,7 @@ export default function StaffNotification() {
             // Check if the staffName matches the fullName of the logged-in user
             if (staffName && staffName.trim() === userFullName.trim()) {
               // Create a notification message when the staff member is assigned
-              const message = `You have been assigned to department request ID: ${deptReqAssId}`;
+              const message = `ASSIGNED: You have been assigned to a new job, request ID: ${deptReqAssId}`;
 
               // Create a notification object
               const newNotification = {
@@ -125,8 +125,8 @@ export default function StaffNotification() {
 
   return (
     <div className="p-2">
-      <div className="bg-white border shadow-md">
-        <div className="bg-blue-500 rounded-t-lg p-2 text-white font-bold">
+      <div className="bg-white border rounded shadow-md">
+        <div className="bg-custom-blue rounded-t-lg p-2 text-white font-bold">
           Notifications
         </div>
         <div className="p-6">
