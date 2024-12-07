@@ -248,7 +248,7 @@ export default function RequestorJobRequestTable() {
       : [[]];
 
   return (
-    <div className="max-w-full mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
+    <div className="max-w-full -mt-14 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
         <SearchBar title="Job Requests" />
         <div className="flex space-x-4">

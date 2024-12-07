@@ -15,7 +15,7 @@ export default function ReusableHeader({
   };
 
   return (
-    <div className="py-4 px-6 bg-yellow-200 flex items-center justify-between shadow-md shadow-black/5 sticky top-0 left-0 z-50">
+    <div className="py-4 px-6 bg-yellow-100 flex items-center justify-between shadow-md shadow-black/5 sticky top-0 left-0 z-50">
       {/* Left Section */}
       <div className="flex items-center">
         <a href="#" className="text-xs text-gray-700 font-medium">

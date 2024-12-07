@@ -14,6 +14,7 @@ export default {
         "custom-blue": "#0D0745",
         "custom-color": "#FFFBEB",
         "dark-purple": "#0D0745",
+        "custom-yellow": "#fef08a",
       },
     },
   },

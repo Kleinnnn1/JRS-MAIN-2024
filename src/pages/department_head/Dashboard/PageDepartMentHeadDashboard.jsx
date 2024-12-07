@@ -138,7 +138,7 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
         <li
           key={index}
           className={`flex items-center space-x-4 p-2 rounded cursor-pointer ${
-            currentPath === item.path ? "bg-yellow-400 text-black" : "hover:bg-gray-700"
+            currentPath === item.path ? "bg-yellow-100 text-black" : "hover:bg-gray-700"
           }`}
           onClick={() => navigate(item.path)}
         >
