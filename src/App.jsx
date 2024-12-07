@@ -151,6 +151,7 @@ import ProtectedRoute from "./auth/ProtectedRoute.jsx";
 import UnauthorizedPage from "./auth/UnauthorizePage.jsx";
 import PageDepartmentKeyWord from "./pages/department_head/keyword/PageDepartmentKeyword.jsx";
 import PageStaffKeyWord from "./pages/staff/keyword/PageStaffKeyword.jsx";
+import UpdatePassword from "./auth/update-password.jsx";
 
 //office Head
 import OfficeHeadDashboard from "./pages/office_org_head/Dashboard/PageOfficeHeadDashboard.jsx";
@@ -200,7 +201,9 @@ export default function App() {
           <Route path="/login" element={<LogIn />} />
           {/* Routes for ForgotPassword */}
           <Route path="/forgotPassword" element={<ForgotPassword />} />
-
+          UpdatePassword
+          {/* Routes for UpdatePassword */}
+          <Route path="/updatePassword" element={<UpdatePassword />} />
           {/* ===========================================SPME ==================================================================== */}
 
           <Route path="/spme" element={<SPMEDashboard />}>

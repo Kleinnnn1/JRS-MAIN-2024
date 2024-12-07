@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import supabase from "../service/supabase"; // Adjust the path as per your project structure
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState(""); // State to hold email input
@@ -13,14 +14,18 @@ export default function ForgotPassword() {
       return;
     }
 
-    // Simulate sending reset instructions (replace with API call)
     try {
-      // Replace this with actual API logic
-      setTimeout(() => {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: "https://yourdomain.com/update-password", // Replace with your actual update password page URL
+      });
+
+      if (error) {
+        setMessage(`Error: ${error.message}`);
+      } else {
         setMessage("Reset instructions have been sent to your email.");
-      }, 1000);
-    } catch (error) {
-      setMessage("An error occurred. Please try again later.");
+      }
+    } catch (err) {
+      setMessage("An unexpected error occurred. Please try again later.");
     }
   };
 
@@ -51,7 +56,9 @@ export default function ForgotPassword() {
         </form>
 
         {message && (
-          <p className="text-sm text-center mt-4 text-green-600">{message}</p>
+          <p className={`text-sm text-center mt-4 ${message.includes("Error") ? "text-red-600" : "text-green-600"}`}>
+            {message}
+          </p>
         )}
 
         <div className="mt-4 text-xs flex justify-between items-center text-[#002D74]">
