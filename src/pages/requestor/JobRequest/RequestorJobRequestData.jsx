@@ -1,4 +1,4 @@
-// Import or define getPriorityClass
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 const getPriorityClass = (level) => {
   switch (level) {
     case "High":
@@ -13,7 +13,8 @@ const getPriorityClass = (level) => {
 };
 
 export default function RequestorJobRequestData(requests) {
-  // Define status color based on request status
+  const navigate = useNavigate(); // Initialize navigate
+  
   const statusColors = {
     Pending: "bg-yellow-200 text-yellow-800", // Yellow for Pending
     Approved: "bg-green-200 text-green-800", // Green for Approved
@@ -22,12 +23,15 @@ export default function RequestorJobRequestData(requests) {
     Completed: "bg-gray-200 text-gray-800", // Gray for Completed
   };
 
+  // Ensure requests is always an array
+  if (!Array.isArray(requests)) {
+    return [];
+  }
+
   // Format the fetched data
-  const formattedData =
-    requests.length > 0
-      ? requests.map(
-          (
-            {
+  return requests.map(
+    (
+      {
               requestId,
               description,
               jobCategory,
@@ -39,11 +43,7 @@ export default function RequestorJobRequestData(requests) {
               priority,
             },
             index
-          ) => {
-            // Get status color class
-            const statusClass = statusColors[status] || "bg-white text-black"; // Default class if status not found
-
-            return [
+          ) =>[
               `${index + 1}. ${String(requestId)}`, // Sequential number + requestId
               description,
               jobCategory || "N/A",
@@ -68,14 +68,28 @@ export default function RequestorJobRequestData(requests) {
               ) : (
                 "N/A"
               ), // Apply styling to priority
-              <button className="bg-blue-500 text-white px-4 py-1 rounded-md">
-                details
-                
-              </button>,
-            ];
-          }
-        )
-      : [[]]; // Return an empty array if no requests
-
-  return formattedData;
-}
+              <button
+              key={`view-btn-${index}`}
+              className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2"
+              onClick={() => {
+                // Navigate to the job request details page
+                navigate(`/job_request_detail/${requestId}`, {
+            state: {
+              requestId,
+              description,
+              jobCategory,
+              deptName,
+              staffName,
+              image,
+              status,
+              requestDate,
+              priority,
+            },
+          });
+              }}
+            >
+              View
+            </button>,
+          ]
+        );
+      }

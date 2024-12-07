@@ -177,6 +177,7 @@ import OfficeHeadSendReportView from "./pages/office_org_head/SendReport/SendRep
 import OfficeHeadApproveEmployee from "./pages/office_org_head/ApproveStaff/PageApproveEmployee.jsx";
 import JobRequestDetails from "./pages/department_head/JobRequest/DeptHeadRequestDetail.jsx";
 import RequestDetailPage from "./pages/department_head/JobRequest/DeptHeadRequestDetail.jsx";
+import RequestorJobRequestDetailPage from "./pages/requestor/JobRequest/RequestorJobRequestDetail.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -531,14 +532,14 @@ export default function App() {
           >
             <Route path="home" element={<RequestorContentDashboard />} />
             {/* JOB REQUEST */}
-            <Route path="job_request" element={<RequestorJobRequest />} />
+            <Route path="job_request" element={<RequestorJobRequestTable />} />
             <Route
               path="job_request_table"
               element={<RequestorJobRequestTable />}
             />
             <Route
               path="job_request_detail/:requestId"
-              element={<RequestorJobRequestDetail />}
+              element={<RequestorJobRequestDetailPage />}
             />
             <Route
               path="job_request_approved"

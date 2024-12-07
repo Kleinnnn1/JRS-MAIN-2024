@@ -6,6 +6,7 @@ import ReusableCalendar from "../../../components/ReusableCalendar";
 import SearchBar from "../../../components/SearchBar";
 import { FaHourglassStart, FaClock, FaCheckCircle, FaRegHandPointer } from "react-icons/fa";
 import supabase from "../../../service/supabase"; // Adjust the path as necessary
+import RequestorNotification from "./RequestorNotificationAndCalendar";
 
 export default function ContentDashboard() {
   const navigate = useNavigate();
@@ -107,7 +108,7 @@ export default function ContentDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
         {/* Left Side (Notifications) */}
         <div className="col-span-2">
-          <ReusableNotification />
+          <RequestorNotification />
         </div>
 
         {/* Right Side (Calendar) */}
