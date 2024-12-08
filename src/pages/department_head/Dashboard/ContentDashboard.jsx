@@ -5,6 +5,7 @@ import StatusCard from "../../../components/StatusCard";
 import AdminNotification from "./AdminNotificationAndCalendar";
 import { FaClipboard, FaHourglassStart, FaCheckCircle, FaRegHandPointer } from "react-icons/fa";
 import supabase from "../../../service/supabase"; // Adjust the import path if necessary
+import ReusableCalendar from "../../../components/ReusableCalendar";
 
 export default function ContentDashboard() {
   const navigate = useNavigate();
@@ -122,6 +123,10 @@ export default function ContentDashboard() {
       <div className="p-6">
         <AdminNotification />
       </div>
+         {/* Right Side (Calendar) */}
+         <div className="lg:col-span-1 rounded-lg">
+          <ReusableCalendar />
+        </div>
     </>
   );
 }

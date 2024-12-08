@@ -35,7 +35,7 @@ export default function StaffNotification() {
           .from("Notification")
           .select("*")
           .eq("idNumber", userIdNumber)
-          .order("timestamp", { ascending: false }); // Order by timestamp (most recent first)
+          .order("timestamp", { descending: false }); // Order by timestamp (most recent first)
 
         if (error) {
           console.error("Error fetching notifications:", error);
@@ -117,8 +117,9 @@ export default function StaffNotification() {
 
   return (
     <div className="p-2">
+       {/* NOTIFICATION */}
       <div className="bg-white border shadow-md">
-        <div className="bg-blue-500 rounded-t-lg p-2 text-white font-bold">
+        <div className="bg-custom-blue rounded-t-lg p-2 text-white font-bold">
           Notifications
         </div>
         <div className="p-6">
