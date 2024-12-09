@@ -123,7 +123,7 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/spme/home" },
     { icon: <FaTasks />, label: "My Requests", path: "/spme/make_requestSpme" },
-    { icon: <FaCheckCircle />, label: "Download", path: "/spme/download" },
+    // { icon: <FaCheckCircle />, label: "Download", path: "/spme/download" },
   ];
 
   return (

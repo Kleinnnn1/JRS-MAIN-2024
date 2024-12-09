@@ -5,11 +5,10 @@ import Table from "./SPMSContentTable";
 import ReusableCalendar from "../../../components/ReusableCalendar";
 import SearchBar from "../../../components/SearchBar";
 import DonutChart from "../../../components/DonutChart";
-import SPMETable from "../Dashboard/SPMSContentTable";
 import BarPage from "../Reports/CSSBarPage";
 import { FaClipboardList, FaUsers, FaShoppingCart, FaChartLine } from "react-icons/fa";
 import PieChart from "../Reports/CSSPieChart";
-
+import SPMETable from "../Dashboard/SPMSContentTable";
 export default function CSSContentDashboard() {
   const navigate = useNavigate();
 
@@ -79,8 +78,9 @@ export default function CSSContentDashboard() {
 
       
           <PieChart />
-        
+       
       </div>
+      <SPMETable />
     </>
   );
 }
