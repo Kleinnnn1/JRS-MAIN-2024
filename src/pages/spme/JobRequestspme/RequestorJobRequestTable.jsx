@@ -1,11 +1,11 @@
-import { useNavigate } from "react-router-dom"; // Import navigate hook
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ReusablePagination from "../../../components/ReusablePagination";
 import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
 import Table from "../../../components/Table";
 import SearchBar from "../../../components/SearchBar";
 import RequestorJobRequestForm from "./RequestorJobRequestForm";
-import supabase from "../../../service/supabase"; // Ensure you have this setup
+import supabase from "../../../service/supabase";
 import { getCurrentUser } from "../../../service/apiAuth";
 
 const tableHeaders = [
@@ -22,7 +22,7 @@ const tableHeaders = [
 ];
 
 export default function RequestorJobRequestTable() {
-  const navigate = useNavigate(); // Initialize navigate hook
+  const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -105,33 +105,38 @@ export default function RequestorJobRequestTable() {
     }
   };
 
+  const fetchAndSetRequests = async () => {
+    try {
+      setLoading(true);
+      await fetchRequests(); // Re-fetch all data
+    } catch (err) {
+      console.error("Error fetching updated requests:", err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const channel = supabase
       .channel("public:Request")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "Request" },
-        (payload) => {
-          const { eventType, new: newData, old } = payload;
+        async (payload) => {
+          const { eventType } = payload;
 
-          if (eventType === "INSERT") {
-            setRequests((prev) => [newData, ...prev]);
-          } else if (eventType === "UPDATE") {
-            setRequests((prev) =>
-              prev.map((request) =>
-                request.requestId === newData.requestId ? newData : request
-              )
-            );
-          } else if (eventType === "DELETE") {
-            setRequests((prev) =>
-              prev.filter((request) => request.requestId !== old.requestId)
-            );
+          if (
+            eventType === "INSERT" ||
+            eventType === "UPDATE" ||
+            eventType === "DELETE"
+          ) {
+            await fetchAndSetRequests(); // Re-fetch all data on changes
           }
         }
       )
       .subscribe();
 
-    fetchRequests();
+    fetchRequests(); // Initial fetch
 
     return () => {
       supabase.removeChannel(channel);
@@ -161,7 +166,6 @@ export default function RequestorJobRequestTable() {
   );
 
   const handleDetailsClick = (request) => {
-    // Navigate to the job request detail page and pass request data
     navigate(`/spme/job_request_detail/${request.requestId}`, {
       state: { requestData: request },
     });
@@ -263,7 +267,6 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
   };
 
   return requests.map((request) => {
-    // Format the requestDate
     const formattedDate = new Date(request.requestDate)
       .toLocaleString("en-US", {
         year: "numeric",
@@ -272,14 +275,14 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
         hour: "2-digit",
         minute: "2-digit",
       })
-      .replace(",", ""); // Remove the comma
+      .replace(",", "");
 
     return [
       request.requestId,
       request.description,
       request.jobCategory,
       request.departmentNames || "N/A",
-      request.staffNames,
+      request.staffNames || "N/A",
       <button
         onClick={() => openImageModal(request.image)}
         className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md"
@@ -294,7 +297,7 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
         {request.priority}
       </span>,
       <span
-        onClick={() => handleDetailsClick(request)} // Pass the entire request object
+        onClick={() => handleDetailsClick(request)}
         className="cursor-pointer text-blue-500 hover:text-blue-700"
       >
         Details
