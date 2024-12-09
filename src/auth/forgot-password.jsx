@@ -6,7 +6,6 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState(""); // State to hold email input
   const [message, setMessage] = useState(""); // State to hold feedback message
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email) {
@@ -16,7 +15,7 @@ export default function ForgotPassword() {
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: "https://ustpjrsystem.xyz/updatePassword", // Replace with your actual update password page URL
+        redirectTo: "http://localhost:5173/updatePassword", // Replace with your actual update password page URL
       });
 
       if (error) {
