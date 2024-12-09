@@ -74,6 +74,7 @@ import RequestorJobRequestDetailDeptHead from "./pages/department_head/JobReques
 import RequestorJobRequestApprovedDeptHead from "./pages/department_head/JobRequestDetailDeptHead/RequestorContentJobRequestApproved.jsx";
 import RequestorJobRequestCompletedDeptHead from "./pages/department_head/JobRequestDetailDeptHead/RequestorContentJobRequestCompleted.jsx";
 import RequestorCertificateDeptHead from "./pages/department_head/JobRequestDetailDeptHead/RequestorCertificate.jsx";
+import DeptHeadJobRequestDetails from "./pages/department_head/JobRequestDeptHead/RequestorJobRequestDetail.jsx";
 
 // Components for requestor
 import PageRequestorDashboard from "./pages/requestor/Dashboard/RequestorPageDashboard.jsx";
@@ -517,7 +518,7 @@ export default function App() {
             />
             <Route
               path="my_request/detail/:requestId"
-              element={<JobRequestDetails />}
+              element={<DeptHeadJobRequestDetails />}
             />
             <Route
               path="make_request_formDeptHead"
