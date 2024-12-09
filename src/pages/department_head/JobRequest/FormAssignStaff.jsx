@@ -5,80 +5,75 @@ import supabase from "../../../service/supabase"; // Ensure this is configured
 import SearchBar from "../../../components/SearchBar";
 import { useAssignmentStore } from "../../../store/useAssignmentStore";
 import { insertStaff } from "../../../service/apiAssignStaff";
+import { getCurrentUser } from "../../../service/apiAuth";
 
 export default function FormAssignStaff({ onClose }) {
   const { handleSubmit, reset } = useForm();
 
-  // Fetch jobPosition and location from Zustand store
-  const { jobPosition, location, description } = useAssignmentStore(
-    (state) => ({
-      description: state.description,
-      jobPosition: state.jobPosition,
-      location: state.location,
-    })
-  );
+  // Fetch jobPosition from Zustand store
+  const { jobPosition } = useAssignmentStore((state) => ({
+    jobPosition: state.jobPosition,
+  }));
 
-  const [staffNameOptions, setStaffNameOptions] = useState({});
+  const [jobCategories, setJobCategories] = useState([]); // Unique job categories
+  const [staffNameOptions, setStaffNameOptions] = useState({}); // Staff names grouped by jobCategory
   const [assignments, setAssignments] = useState([
     {
       id: Date.now(),
-      description: description || "",
       jobPosition: jobPosition || "",
-      location: location || "",
       staffName: "",
     },
   ]);
 
-  // Fetch staff names from Supabase
-  const fetchStaffNames = async () => {
+  // Fetch job categories and staff names
+  const fetchJobCategoriesAndStaff = async () => {
     try {
-      // Fetch all staff names without filtering
-      const { data: allStaff, error: staffError } = await supabase
+      // Fetch current user's deptId
+      const currentUser = await getCurrentUser();
+
+      if (!currentUser || !currentUser.deptId) {
+        toast.error("Failed to fetch current user's department.");
+        return;
+      }
+
+      // Fetch job categories and staff names matching current user's deptId
+      const { data: staffData, error: staffError } = await supabase
         .from("User")
-        .select("jobCategory, fullName");
+        .select("jobCategory, fullName, deptId")
+        .eq("deptId", currentUser.deptId);
 
       if (staffError) throw staffError;
 
-      const groupedStaff = allStaff.reduce((acc, user) => {
+      // Extract unique job categories
+      const uniqueJobCategories = [
+        ...new Set(staffData.map((user) => user.jobCategory)),
+      ];
+
+      // Group staff names by jobCategory
+      const groupedStaff = staffData.reduce((acc, user) => {
         if (!acc[user.jobCategory]) acc[user.jobCategory] = [];
         acc[user.jobCategory].push(user.fullName);
         return acc;
       }, {});
 
+      setJobCategories(uniqueJobCategories);
       setStaffNameOptions(groupedStaff);
     } catch (error) {
-      console.error("Error fetching staff names:", error);
-      toast.error("Failed to load staff names.");
+      console.error("Error fetching job categories and staff:", error);
+      toast.error("Failed to load job categories or staff names.");
     }
   };
 
   useEffect(() => {
-    fetchStaffNames();
+    fetchJobCategoriesAndStaff();
   }, []);
-
-  useEffect(() => {
-    setAssignments((currentAssignments) =>
-      currentAssignments.map((assignment, index) =>
-        index === 0 // Only modify the first row or adapt as needed
-          ? {
-              ...assignment,
-              description: description || assignment.description,
-              jobPosition: jobPosition || assignment.jobPosition,
-              location: location || assignment.location,
-            }
-          : assignment
-      )
-    );
-  }, [jobPosition, location, description]);
 
   const handleAddRow = () => {
     setAssignments([
       ...assignments,
       {
         id: Date.now(),
-        description: description || "",
         jobPosition: jobPosition || "",
-        location: location || "",
         staffName: "",
       },
     ]);
@@ -101,8 +96,7 @@ export default function FormAssignStaff({ onClose }) {
   const onSubmit = async () => {
     // Check for any empty fields
     const hasEmptyFields = assignments.some(
-      (assignment) =>
-        !assignment.jobPosition || !assignment.location || !assignment.staffName
+      (assignment) => !assignment.jobPosition || !assignment.staffName
     );
 
     if (hasEmptyFields) {
@@ -133,9 +127,7 @@ export default function FormAssignStaff({ onClose }) {
       setAssignments([
         {
           id: Date.now(),
-          description: description || "",
           jobPosition: jobPosition || "",
-          location: location || "",
           staffName: "",
         },
       ]);
@@ -156,9 +148,7 @@ export default function FormAssignStaff({ onClose }) {
           <table className="min-w-full bg-white">
             <thead>
               <tr>
-                <th className="px-4 py-2 border text-center">Description</th>
                 <th className="px-4 py-2 border">Job Position</th>
-                <th className="px-4 py-2 border">Location</th>
                 <th className="px-4 py-2 border">Staff Name</th>
                 <th className="px-4 py-2 border text-center">Actions</th>
               </tr>
@@ -167,28 +157,27 @@ export default function FormAssignStaff({ onClose }) {
               {assignments.map((assignment) => (
                 <tr key={assignment.id}>
                   <td className="px-4 py-2 border">
-                    <input
-                      type="text"
-                      value={assignment.description}
-                      disabled
-                      className="w-full px-2 py-1 border rounded focus:outline-none"
-                    />
-                  </td>
-                  <td className="px-4 py-2 border">
-                    <input
-                      type="text"
+                    <select
                       value={assignment.jobPosition}
-                      disabled
+                      onChange={(e) =>
+                        handleInputChange(
+                          assignment.id,
+                          "jobPosition",
+                          e.target.value
+                        )
+                      }
                       className="w-full px-2 py-1 border rounded focus:outline-none"
-                    />
-                  </td>
-                  <td className="px-4 py-2 border">
-                    <input
-                      type="text"
-                      value={assignment.location}
-                      disabled
-                      className="w-full px-2 py-1 border rounded focus:outline-none"
-                    />
+                      required
+                    >
+                      <option value="" disabled className="hidden">
+                        Select Job Category
+                      </option>
+                      {jobCategories.map((jobCategory, idx) => (
+                        <option key={idx} value={jobCategory}>
+                          {jobCategory}
+                        </option>
+                      ))}
+                    </select>
                   </td>
                   <td className="px-4 py-2 border">
                     <select
