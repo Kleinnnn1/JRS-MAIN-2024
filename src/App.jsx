@@ -499,10 +499,6 @@ export default function App() {
               element={<RequestorJobRequestDeptHead />}
             >
               <Route
-                path="make_request_tableDeptHead"
-                element={<RequestorJobRequestTableDeptHead />}
-              />
-              <Route
                 path="make_request_formDeptHead"
                 element={<RequestorJobRequestFormDeptHead />}
               />
