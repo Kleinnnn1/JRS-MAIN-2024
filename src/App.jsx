@@ -501,28 +501,35 @@ export default function App() {
               path="approving_of_job_completion"
               element={<PageCertificate />}
             ></Route>
-            <Route path="my_request" element={<RequestorJobRequestDeptHead />}>
-              <Route
-                path="make_request_formDeptHead"
-                element={<RequestorJobRequestFormDeptHead />}
-              />
-              <Route
-                path="job_request_detailDeptHead"
-                element={<RequestorJobRequestDetailDeptHead />}
-              />
-              <Route
-                path="job_request_approvedDeptHead"
-                element={<RequestorJobRequestApprovedDeptHead />}
-              />
-              <Route
-                path="job_request_completedDeptHead"
-                element={<RequestorJobRequestCompletedDeptHead />}
-              />
-              <Route
-                path="job_request_certificateDeptHead"
-                element={<RequestorCertificateDeptHead />}
-              />
-            </Route>
+            <Route
+              path="my_request"
+              element={<RequestorJobRequestDeptHead />}
+            />
+            <Route
+              path="my_request/detail/:requestId"
+              element={<JobRequestDetails />}
+            />
+            <Route
+              path="make_request_formDeptHead"
+              element={<RequestorJobRequestFormDeptHead />}
+            />
+            <Route
+              path="job_request_detailDeptHead"
+              element={<RequestorJobRequestDetailDeptHead />}
+            />
+            <Route
+              path="job_request_approvedDeptHead"
+              element={<RequestorJobRequestApprovedDeptHead />}
+            />
+            <Route
+              path="job_request_completedDeptHead"
+              element={<RequestorJobRequestCompletedDeptHead />}
+            />
+            <Route
+              path="job_request_certificateDeptHead"
+              element={<RequestorCertificateDeptHead />}
+            />
+
             <Route path="content" element={<ContentAprrovingCertificate />} />
           </Route>
           {/* ===========================================REQUESTOR ==================================================================== */}
