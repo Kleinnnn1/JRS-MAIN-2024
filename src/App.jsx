@@ -210,14 +210,14 @@ export default function App() {
           <Route path="/spme" element={<SPMEDashboard />}>
             <Route path="home" element={<SPMEMainBody />} />
 
-            <Route path="make_requestSpme" element={<SpmeJobRequest />} />
+            <Route path="my_request" element={<SpmeJobRequest />} />
             <Route
               path="make_request_tableSpme"
               element={<SpmeJobRequestTable />}
             />
 
             <Route
-              path="job_request_detail/:requestId"
+              path="my_request/detail/:requestId"
               element={<SpmeRequestorJobRequestDetailPage />}
             />
 
@@ -494,10 +494,7 @@ export default function App() {
               path="approving_of_job_completion"
               element={<PageCertificate />}
             ></Route>
-            <Route
-              path="make_requestDeptHead"
-              element={<RequestorJobRequestDeptHead />}
-            >
+            <Route path="my_request" element={<RequestorJobRequestDeptHead />}>
               <Route
                 path="make_request_formDeptHead"
                 element={<RequestorJobRequestFormDeptHead />}

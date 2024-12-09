@@ -20,7 +20,7 @@ import {
 } from "react-icons/fa";
 
 export default function DepartmentHeadDashboard() {
-  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false); 
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
   const navigate = useNavigate();
   const { userMetadata } = useUserStore();
   const currentPath = location.pathname;
@@ -86,7 +86,6 @@ export default function DepartmentHeadDashboard() {
           </div>
         </div>
 
-        
         {/* Divider Below Profile */}
         <div
           className={`border-t border-gray-300 my-2 mx-2 ${
@@ -119,26 +118,51 @@ export default function DepartmentHeadDashboard() {
 const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/department_head/dashboard" },
-    { icon: <FaTasks />, label: "Job Request", path: "/department_head/job_request" },
-    { icon: <FaSyncAlt />, label: "Job Ongoing", path: "/department_head/job_ongoing" },
-    { icon: <FaCheckCircle />, label: "Job Completed", path: "/department_head/job_completed" },
+    {
+      icon: <FaTasks />,
+      label: "Job Request",
+      path: "/department_head/job_request",
+    },
+    {
+      icon: <FaSyncAlt />,
+      label: "Job Ongoing",
+      path: "/department_head/job_ongoing",
+    },
+    {
+      icon: <FaCheckCircle />,
+      label: "Job Completed",
+      path: "/department_head/job_completed",
+    },
     { icon: <FaUsers />, label: "Staff", path: "/department_head/employee" },
     { icon: <FaChartPie />, label: "Report", path: "/department_head/report" },
     { icon: <FaHistory />, label: "History", path: "/department_head/history" },
-    { icon: <FaAward />, label: "Certificate of Job Completion", path: "/department_head/approving_of_job_completion" },
-    { icon: <FaFileAlt />, label: "My Request", path: "/department_head/make_requestDeptHead" },
-    { icon: <FaLightbulb />, label: "Add Keyword", path: "/department_head/add_keyword" },
+    {
+      icon: <FaAward />,
+      label: "Certificate of Job Completion",
+      path: "/department_head/approving_of_job_completion",
+    },
+    {
+      icon: <FaFileAlt />,
+      label: "My Request",
+      path: "/department_head/my_request",
+    },
+    {
+      icon: <FaLightbulb />,
+      label: "Add Keyword",
+      path: "/department_head/add_keyword",
+    },
   ];
 
   return (
     <ul className="space-y-4 p-4">
-      
       <div></div>
       {menuItems.map((item, index) => (
         <li
           key={index}
           className={`flex items-center space-x-4 p-2 rounded cursor-pointer ${
-            currentPath === item.path ? "bg-yellow-100 text-black" : "hover:bg-gray-700"
+            currentPath === item.path
+              ? "bg-yellow-100 text-black"
+              : "hover:bg-gray-700"
           }`}
           onClick={() => navigate(item.path)}
         >
