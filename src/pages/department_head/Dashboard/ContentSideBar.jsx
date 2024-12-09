@@ -24,7 +24,7 @@ export default function ContentSideBar() {
   };
 
   return (
-    <div style={{ maxHeight: '100vh', overflowY: 'auto' }}>
+    <div style={{ maxHeight: "100vh", overflowY: "auto" }}>
       <SidebarItem
         name="Home"
         image={iconHome}

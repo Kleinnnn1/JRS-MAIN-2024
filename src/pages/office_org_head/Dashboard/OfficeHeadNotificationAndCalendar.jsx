@@ -7,11 +7,12 @@ export default function OfficeHeadStatusCardAndCalendar() {
 
   return (
     <div className="p-2">
-      <div className="grid lg:grid-cols-3 gap-10 h-[50vh]">
+      {/* <div className="grid lg:grid-cols-3 gap-10 h-[50vh]"> */}
+      <div className=" h-[50vh]">
         {/* NOTIFICATION */}
-        <div className="bg-white  border lg:col-span-2 shadow-md shadow-black/5 flex flex-col justify-between  h-full">
-          <div className="bg-yellow-400">
-            <div className="text-2xl p-2 ml-2 text-black font-bold">
+        <div className="bg-white border lg:col-span-2 shadow-md shadow-black/5 flex flex-col justify-between  h-full">
+          <div className="bg-custom-blue">
+            <div className="text-2xl p-2 text-white sml-2 text- font-bold">
               Notifications
             </div>
           </div>
@@ -44,7 +45,7 @@ export default function OfficeHeadStatusCardAndCalendar() {
 
         {/* CALENDAR */}
 
-        <Calendar className="h-full w-full text-xl" />
+        {/* <Calendar className="h-full w-full text-xl" /> */}
       </div>
     </div>
   );

@@ -64,7 +64,7 @@ export default function JobRequestDetail() {
           .select("details, timestamp")
           .eq("requestId", requestId)
           .order("timestamp", { ascending: false })
-          .limit(1); // Only fetch the latest tracking entry
+          .limit(1);
 
         if (trackingFetchError) throw new Error(trackingFetchError.message);
 
@@ -75,7 +75,6 @@ export default function JobRequestDetail() {
           trackingData.length > 0 &&
           trackingData[0].details.includes(data.status)
         ) {
-          // If the last status is the same as the current status, skip the insert
           return;
         }
 
@@ -91,7 +90,6 @@ export default function JobRequestDetail() {
           trackingDetails = `Job request is already Completed by ${departmentName}.`;
         }
 
-        // Insert the new tracking entry if there's a status change
         if (trackingDetails) {
           const { error: trackingError } = await supabase
             .from("Tracking")
@@ -131,7 +129,23 @@ export default function JobRequestDetail() {
         </h2>
         <button
           className="bg-gray-700 p-5 text-white py-2 px-4 rounded mt-4"
-          onClick={() => navigate("/department_head/my_request")}
+          onClick={() => navigate("/requestor/home")}
+        >
+          Back to Dashboard
+        </button>
+      </div>
+    );
+  }
+
+  if (!jobRequest) {
+    return (
+      <div className="p-6">
+        <h2 className="text-xl font-bold text-red-500">
+          Error: Job request not found
+        </h2>
+        <button
+          className="bg-gray-700 p-5 text-white py-2 px-4 rounded mt-4"
+          onClick={() => navigate("/requestor/home")}
         >
           Back to Dashboard
         </button>
@@ -142,7 +156,7 @@ export default function JobRequestDetail() {
     <div className="p-6">
       <button
         className="bg-gray-700 p-5 text-white py-2 px-4 rounded"
-        onClick={() => navigate("/department_head/my_request")}
+        onClick={() => navigate("/requestor/home")}
       >
         Back to Dashboard
       </button>
@@ -265,9 +279,17 @@ export default function JobRequestDetail() {
               </div>
             </div>
           </div>
-          <div className="p-4 flex justify-end space-x-4">
-            <button className="bg-blue-500 text-white py-2 px-4 rounded">
-              Update
+           <div className="p-4 flex justify-end space-x-4">
+            <button
+              onClick={() => navigate("/requestor/select")}
+              className={`py-2 px-4 rounded ${
+                jobRequest.status === "Completed"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+              disabled={jobRequest.status !== "Completed"}
+            >
+              Client Satisfaction Survey
             </button>
           </div>
         </div>

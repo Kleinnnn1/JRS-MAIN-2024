@@ -5,10 +5,11 @@ import Table from "./SPMSContentTable";
 import ReusableCalendar from "../../../components/ReusableCalendar";
 import SearchBar from "../../../components/SearchBar";
 import DonutChart from "../../../components/DonutChart";
-import SPMETable from "../Dashboard/SPMSContentTable";
 import BarPage from "../Reports/CSSBarPage";
 import { FaClipboardList, FaUsers, FaShoppingCart, FaChartLine } from "react-icons/fa";
 import PieChart from "../Reports/CSSPieChart";
+import SPMETable from "../Dashboard/SPMSContentTable";
+import SPMENotification from "./SPMENotification";
 
 export default function CSSContentDashboard() {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ export default function CSSContentDashboard() {
           bgColor={statusCardColor}
           titleColor="text-grey"
           icon={icons.week}
-           subText="+1 since last week"
+          subText="+1 since last week"
         />
         <StatusCard
           title="This Month"
@@ -58,7 +59,7 @@ export default function CSSContentDashboard() {
           bgColor={statusCardColor}
           titleColor="text-grey"
           icon={icons.month}
-           subText="+1 since last month"
+          subText="+1 since last month"
         />
         <StatusCard
           title="This Year"
@@ -66,21 +67,28 @@ export default function CSSContentDashboard() {
           bgColor={statusCardColor}
           titleColor="text-grey"
           icon={icons.year}
-           subText="+1 since last year"
+          subText="+1 since last year"
         />
       </div>
 
-      {/* Main Content Section */}
+      {/* 2 GRID GRAPH AND NOTIFICATION */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
-        {/* Left Side (Notifications) */}
         <div className="col-span-2">
+          {/* BAR GRAPH */}
           <BarPage />
         </div>
-
-      
-          <PieChart />
-        
+        {/* NOTIFICATION */}
+        <SPMENotification />
+        {/* <PieChart /> */}
       </div>
+
+      {/* CSS Responses Heading */}
+      <div className="flex justify-center items-center mt-6">
+        <h2 className="text-2xl font-semibold text-center">SURVEY RESPONSES</h2>
+      </div>
+
+      {/* Table Component */}
+      <SPMETable />
     </>
   );
 }

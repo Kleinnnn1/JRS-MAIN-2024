@@ -1,130 +1,3 @@
-// import { useNavigate } from "react-router-dom";
-
-
-// export default function RequestFormDetail() {
-//     const { requestId } = useParams();
-//     const navigate = useNavigate(); // Access the navigate function to redirect
-
-//     const [request, setRequests] = useState({
-//         requestId:  "",
-//         description:  "",
-//         jobCategory:  "",
-//         deptName:  "",
-//         image:  "",
-//         status:  "",
-//         requestDate:  "",
-//         priority:  "",
-//       });
-// const [loading, setLoading] = useState(true);
-// const [editing, setEditing] = useState(false); // Flag to track if in editing mode
-// useEffect(() => {
-//     const fetchRequestDetails = async () => {
-//       try {
-//         const { data, error } = await supabase
-//           .from("Request")
-//           .select(`
-//         requestId,
-//         description,
-//         jobCategory,
-//         deptName,
-//         image,
-//         status,
-//         requestDate,
-//         priority
-// `)
-//           .eq("requestId", requestId)
-//           .single();
-
-
-//           if (error) throw error;
-
-//           setRequests({
-//             requestId:  data.requestId || "N/A",
-//             description:  data.description || "N/A",
-//             jobCategory: data.jobCategory || "N/A",
-//             deptName: data.deptName || "N/A",
-//             image:  data.image || "N/A",
-//             status:  data.status || "N/A",
-//             priority: data.priority || "N/A",
-//             requestDate: data.requestDate || "N/A",
-//             dateCreated: new Date(data.created_at).toLocaleDateString(),
-//           });
-
-//         } catch (err) {
-//             console.error("Error fetching request data:", err);
-            
-//           } finally {
-//             setLoading(false);
-//           }
-//         };
-    
-        
-//     fetchRequestDetails();
-// }, [requestId]); // Runs once when component mounts
-// // Handle input changes
-// const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setrequest((prevRequest) => ({
-//       ...prevRequest,
-//       [name]: value,
-//     }));
-//   };
-
-//  // Handle form save action
-//  const handleSave = async () => {
-//     try {
-//       // Ensure that required fields are not empty
-//       if (!request.requestId || !request.description || !request.priority) {
-//         alert("requestId, description, and priority are required.");
-//         return;
-//       }
-
-//         // Perform the update query
-//         const { error } = await supabase
-//         .from("User")
-//         .update({
-//             requestId: request.requestId,
-//             description: request.description,
-//             jobCategory: request.jobCategory,
-//             deptName: request.contactNumber,
-//             image: request.image,
-//             status: request.status,
-//             requestDate: request.requestDate,
-//             priority: request,priority
-//         })
-//         .eq("requestId", requestId); // Update only the record with the matching ID
-
-//         if (error) throw error; // Handle any error returned from Supabase
-//             // Inform the user about successful update
-//             alert("request updated successfully!");
-
-//             // Redirect back to the table after successful update
-//             navigate("/department_head/job_request"); 
-
-//         } catch (err) {
-//             console.error("Error updating admin da ta:", err);
-//             alert("Failed to update staff details.");
-//           }
-//         };
-//         if (loading) return <div>Loading...</div>; // Display loading message while data is being fetched
-
-// return (
-// <div className="flex flex-wrap">
-//     {/* Column 1 */}
-//     <div className="w-full md:w-1/2 p-4">
-//       <p>Content for the first column</p>
-//     </div>
-
-//     {/* Column 2 */}
-//     <div className="w-full md:w-1/2 p-4">
-//       <p>Content for the second column</p>
-//     </div>
-//   </div>        
-// );
-
-//     }
-
-//RequestDetailPage
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ModalForm from "./ModalForm";
@@ -139,7 +12,7 @@ export default function RequestDetailPage() {
   const [remarks, setRemarks] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
-  const [assignedStaffName, setAssignedStaffName] = useState("");  // New state for staff names
+  const [assignedStaffName, setAssignedStaffName] = useState(""); // New state for staff names
 
   const {
     fullName,
@@ -157,20 +30,24 @@ export default function RequestDetailPage() {
 
   // Fetch assigned staff and set up real-time subscription
   useEffect(() => {
-    fetchAssignedStaff();  // Initial fetch of assigned staff
+    fetchAssignedStaff(); // Initial fetch of assigned staff
 
     // Subscribe to the real-time changes in the Department_request_assignment table
     const channel = supabase
-      .channel(`request-${requestId}`)  // Create a unique channel per requestId
-      .on('postgres_changes', { 
-        event: 'UPDATE', 
-        schema: 'public',
-        table: 'Department_request_assignment',
-        filter: `requestId=eq.${requestId}`
-      }, payload => {
-        console.log('Real-time update:', payload);
-        fetchAssignedStaff();  // Re-fetch assigned staff data when an update occurs
-      })
+      .channel(`request-${requestId}`) // Create a unique channel per requestId
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "Department_request_assignment",
+          filter: `requestId=eq.${requestId}`,
+        },
+        (payload) => {
+          console.log("Real-time update:", payload);
+          fetchAssignedStaff(); // Re-fetch assigned staff data when an update occurs
+        }
+      )
       .subscribe();
 
     // Cleanup the subscription when the component is unmounted
@@ -187,7 +64,14 @@ export default function RequestDetailPage() {
   const handleAssign = () => {
     useAssignmentStore
       .getState()
-      .setAssignmentData(description, jobCategory, requestLocation, deptReqAssId, requestId, idNumber);
+      .setAssignmentData(
+        description,
+        jobCategory,
+        requestLocation,
+        deptReqAssId,
+        requestId,
+        idNumber
+      );
     openModal();
   };
 
@@ -240,15 +124,15 @@ export default function RequestDetailPage() {
   const fetchAssignedStaff = async () => {
     try {
       const { data, error } = await supabase
-        .from("Department_request_assignment")  // Correct table name
-        .select("staffName")  // Select staffName
-        .eq("requestId", requestId);  // Filter by requestId
+        .from("Department_request_assignment") // Correct table name
+        .select("staffName") // Select staffName
+        .eq("requestId", requestId); // Filter by requestId
 
       if (error) {
         console.error("Error fetching staff names:", error.message);
         setAssignedStaffName("No Assigned Staff");
       } else {
-        const staffNames = data.map(item => item.staffName).join(", ");
+        const staffNames = data.map((item) => item.staffName).join(", ");
         setAssignedStaffName(staffNames || "No Assigned Staff");
       }
     } catch (err) {
@@ -268,7 +152,8 @@ export default function RequestDetailPage() {
             <strong>Requestor:</strong> {fullName || "N/A"}
           </div>
           <div className="mb-4">
-            <strong>Description:</strong> {description || "No description provided"}
+            <strong>Description:</strong>{" "}
+            {description || "No description provided"}
           </div>
           <div className="mb-4">
             <strong>Job Category:</strong> {jobCategory || "Unknown Category"}
@@ -283,7 +168,9 @@ export default function RequestDetailPage() {
             <strong>RequestId:</strong> {requestId || "Unknown Location"}
           </div>
           <div className="mb-4">
-            <strong>Assigned:</strong> {assignedStaffName || "No Assigned Staff"}  {/* Display assigned staff names */}
+            <strong>Assigned:</strong>{" "}
+            {assignedStaffName || "No Assigned Staff"}{" "}
+            {/* Display assigned staff names */}
           </div>
           <div className="mb-4">
             <strong>Priority:</strong>{" "}
@@ -343,7 +230,11 @@ export default function RequestDetailPage() {
       {isImageModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md">
-            <img src={image} alt="Job Request" className="w-full h-auto rounded-lg" />
+            <img
+              src={image}
+              alt="Job Request"
+              className="w-full h-auto rounded-lg"
+            />
             <button
               className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
               onClick={closeImageModal}
@@ -388,7 +279,11 @@ export default function RequestDetailPage() {
         </div>
       </div>
 
-      <ModalForm isOpen={isModalOpen} onClose={closeModal} onSubmit={() => console.log("Modal submitted")} />
+      <ModalForm
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onSubmit={() => console.log("Modal submitted")}
+      />
 
       <button
         className="ml-2 mt-4 text-blue-500 font-bold underline"

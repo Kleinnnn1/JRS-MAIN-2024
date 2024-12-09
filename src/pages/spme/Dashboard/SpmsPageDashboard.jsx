@@ -54,19 +54,30 @@ export default function SPMSDashboard() {
   );
 }
 
-const Sidebar = ({ isSidebarCollapsed, toggleSidebar, userMetadata, currentPath, navigate }) => {
+const Sidebar = ({
+  isSidebarCollapsed,
+  toggleSidebar,
+  userMetadata,
+  currentPath,
+  navigate,
+}) => {
   return (
     <div
-      className={`${isSidebarCollapsed ? "w-20" : "w-64"
-        } bg-custom-blue rounded-br-xl text-white flex flex-col transition-all duration-300 overflow-auto no-scrollbar`}
+      className={`${
+        isSidebarCollapsed ? "w-20" : "w-64"
+      } bg-custom-blue rounded-br-xl text-white flex flex-col transition-all duration-300 overflow-auto no-scrollbar`}
     >
       {/* Logo and Collapse Button */}
       <div
-        className={`flex mb-2 items-center ${isSidebarCollapsed ? "justify-center" : "justify-between"
-          } p-4`}
+        className={`flex mb-2 items-center ${
+          isSidebarCollapsed ? "justify-center" : "justify-between"
+        } p-4`}
       >
         {!isSidebarCollapsed && <Logo />}
-        <button className="text-white focus:outline-none" onClick={toggleSidebar}>
+        <button
+          className="text-white focus:outline-none"
+          onClick={toggleSidebar}
+        >
           {isSidebarCollapsed ? (
             <FaAngleDoubleRight size={24} />
           ) : (
@@ -76,13 +87,16 @@ const Sidebar = ({ isSidebarCollapsed, toggleSidebar, userMetadata, currentPath,
       </div>
 
       {/* Profile Section */}
-      <ProfileSection isSidebarCollapsed={isSidebarCollapsed} userMetadata={userMetadata} />
-
+      <ProfileSection
+        isSidebarCollapsed={isSidebarCollapsed}
+        userMetadata={userMetadata}
+      />
 
       {/* Divider Below Profile */}
       <div
-        className={`border-t border-gray-300 my-2 mx-2 ${isSidebarCollapsed ? "hidden" : ""
-          }`}
+        className={`border-t border-gray-300 my-2 mx-2 ${
+          isSidebarCollapsed ? "hidden" : ""
+        }`}
       ></div>
 
       {/* Menu Items */}
@@ -97,8 +111,9 @@ const Sidebar = ({ isSidebarCollapsed, toggleSidebar, userMetadata, currentPath,
 
 const ProfileSection = ({ isSidebarCollapsed, userMetadata }) => (
   <div
-    className={`flex flex-col -mt-5 items-center m-4 ${isSidebarCollapsed ? "hidden" : "block"
-      }`}
+    className={`flex flex-col -mt-5 items-center m-4 ${
+      isSidebarCollapsed ? "hidden" : "block"
+    }`}
   >
     <img
       src={userMetadata.avatar || DefaultImageUser}
@@ -112,9 +127,7 @@ const ProfileSection = ({ isSidebarCollapsed, userMetadata }) => (
       <p className="text-xs text-gray-300">
         {userMetadata.deptName || "No department"}
       </p>
-      <p className="text-xs text-gray-300">
-        {userMetadata.role || "No Role"}
-      </p>
+      <p className="text-xs text-gray-300">{userMetadata.role || "No Role"}</p>
     </div>
   </div>
 );
@@ -122,8 +135,8 @@ const ProfileSection = ({ isSidebarCollapsed, userMetadata }) => (
 const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/spme/home" },
-    { icon: <FaTasks />, label: "My Requests", path: "/spme/make_requestSpme" },
-    { icon: <FaCheckCircle />, label: "Download", path: "/spme/download" },
+    { icon: <FaTasks />, label: "My Requests", path: "/spme/my_request" },
+    // { icon: <FaCheckCircle />, label: "Download", path: "/spme/download" },
   ];
 
   return (
@@ -131,18 +144,26 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
       {menuItems.map((item, index) => (
         <li
           key={index}
-          className={`flex m-1 items-center space-x-4 p-2 rounded cursor-pointer ${currentPath === item.path ? "bg-yellow-100 text-black" : "hover:bg-gray-700"
-            }`}
+          className={`flex m-1 items-center space-x-4 p-2 rounded cursor-pointer ${
+            currentPath === item.path
+              ? "bg-yellow-100 text-black"
+              : "hover:bg-gray-700"
+          }`}
           onClick={() => navigate(item.path)}
         >
-          <span className={`text-2xl ${currentPath === item.path ? "text-black" : "text-white"}`}>
+          <span
+            className={`text-2xl ${
+              currentPath === item.path ? "text-black" : "text-white"
+            }`}
+          >
             {item.icon}
           </span>
           <span
-            className={`text-sm transition-all duration-300 ${isSidebarCollapsed
+            className={`text-sm transition-all duration-300 ${
+              isSidebarCollapsed
                 ? "opacity-0 translate-x-[-10px] pointer-events-none"
                 : "opacity-100 translate-x-0"
-              } ${currentPath === item.path ? "text-black" : "text-white"}`}
+            } ${currentPath === item.path ? "text-black" : "text-white"}`}
           >
             {item.label}
           </span>

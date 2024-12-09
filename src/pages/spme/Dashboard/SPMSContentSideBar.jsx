@@ -26,8 +26,8 @@ export default function SPMSContentSideBar() {
         image={iconHome}
         isActive={isActive("/spme")}
       />
-       {/* Make request ICON*/}
-       <SidebarItem
+      {/* Make request ICON*/}
+      <SidebarItem
         name="Make Request"
         onClick={() => navigate("/spme/make_requestSpme")}
         image={iconProfile}
@@ -40,7 +40,7 @@ export default function SPMSContentSideBar() {
         image={iconProfile}
         isActive={isActive("/requestor/requestor_profile")}
       />
-      
+
       {/* SCHEDULES */}
       {/* <SidebarItem
         name="Schedules"
@@ -49,7 +49,7 @@ export default function SPMSContentSideBar() {
         isActive={isActive("/requestor/requestor_schedule")}
       /> */}
       {/* HISTORY */}
-   {/* <SidebarItem
+      {/* <SidebarItem
         name="Reports"
         onClick={() => navigate("/requestor/job_request_history")}
         image={iconHistory}

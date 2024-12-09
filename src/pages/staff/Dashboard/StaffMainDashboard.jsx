@@ -5,7 +5,7 @@ import {
   FaAngleDoubleRight,
   FaHome,
   FaTasks,
-  FaFileAlt, 
+  FaFileAlt,
   FaSyncAlt,
   FaCheckCircle,
   FaChartPie,
@@ -116,10 +116,14 @@ export default function StaffMainDashboard() {
 const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/staff/home" },
-    { icon: <FaTasks />, label: "Assigned Job", path: "/staff/StaffImagePage" },
-    { icon: <FaSyncAlt />, label: "Send Certificate", path: "/staff/StaffSendCert" },
+    { icon: <FaTasks />, label: "Assigned Job", path: "/staff/job_assigned" },
+    {
+      icon: <FaSyncAlt />,
+      label: "Send Certificate",
+      path: "/staff/StaffSendCert",
+    },
     { icon: <FaCheckCircle />, label: "History", path: "/staff/History" },
-    { icon: <FaFileAlt />, label: "My Request", path: "/staff/make_requestStaff" },
+    { icon: <FaFileAlt />, label: "My Request", path: "/staff/my_request" },
     { icon: <FaChartPie />, label: "Add Keyword", path: "/staff/add_keyword" },
   ];
 
@@ -129,11 +133,17 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
         <li
           key={index}
           className={`flex m-1 items-center space-x-4 p-2 rounded cursor-pointer ${
-            currentPath === item.path ? "bg-yellow-100 m-1 text-black" : "hover:bg-gray-700"
+            currentPath === item.path
+              ? "bg-yellow-100 m-1 text-black"
+              : "hover:bg-gray-700"
           }`}
           onClick={() => navigate(item.path)}
         >
-          <span className={`text-2xl ${currentPath === item.path ? "text-black" : "text-white"}`}>
+          <span
+            className={`text-2xl ${
+              currentPath === item.path ? "text-black" : "text-white"
+            }`}
+          >
             {item.icon}
           </span>
           <span
