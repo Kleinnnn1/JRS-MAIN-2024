@@ -116,7 +116,7 @@ export default function StaffMainDashboard() {
 const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/staff/home" },
-    { icon: <FaTasks />, label: "Assigned Job", path: "/staff/StaffImagePage" },
+    { icon: <FaTasks />, label: "Assigned Job", path: "/staff/job_assigned" },
     {
       icon: <FaSyncAlt />,
       label: "Send Certificate",

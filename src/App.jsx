@@ -261,7 +261,7 @@ export default function App() {
           >
             <Route path="home" element={<ContentDashStaff />} />
             <Route path="add_keyword" element={<PageStaffKeyWord />} />
-            <Route path="StaffImagePage" element={<StaffImagePage />}>
+            <Route path="job_assigned" element={<StaffImagePage />}>
               <Route path="StaffImageContent" element={<StaffImageContent />} />
             </Route>
             <Route path="History" element={<StaffHistoryPage />} />

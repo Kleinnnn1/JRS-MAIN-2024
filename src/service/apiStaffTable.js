@@ -6,6 +6,7 @@ export async function getJobAssign() {
 
   // Fetch only relevant fields from the Request table
   const { data, error } = await supabase.from("Request").select(`
+    requestId,
     User(fullName),
     description,
     location,
