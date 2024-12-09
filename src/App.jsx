@@ -207,7 +207,14 @@ export default function App() {
           {/* Routes for UpdatePassword */}
           <Route path="/updatePassword" element={<UpdatePassword />} />
           {/* ===========================================SPME ==================================================================== */}
-          <Route path="/spme" element={<SPMEDashboard />}>
+          <Route
+            path="/spme/*"
+            element={
+              <ProtectedRoute requiredRole="spme">
+                <SPMEDashboard />
+              </ProtectedRoute>
+            }
+          >
             <Route path="home" element={<SPMEMainBody />} />
 
             <Route path="my_request" element={<SpmeJobRequest />} />
