@@ -11,13 +11,7 @@ export default function JobRequestDetail() {
   const [trackingData, setTrackingData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const stages = [
-    "Pending",
-    "Ongoing",
-    "In Progress",
-    "Completed",
-    "Satisfaction Survey",
-  ];
+  const stages = ["Pending", "Ongoing", "In Progress", "Completed", "Satisfaction Survey"];
 
   useEffect(() => {
     const fetchJobRequest = async () => {
@@ -27,9 +21,7 @@ export default function JobRequestDetail() {
         // Fetch job request details
         const { data, error } = await supabase
           .from("Request")
-          .select(
-            "requestId, requestDate, location, jobCategory, priority, description, image, remarks, status"
-          )
+          .select("requestId, requestDate, location, jobCategory, priority, description, image, remarks, status")
           .eq("requestId", requestId)
           .single();
 
@@ -50,11 +42,8 @@ export default function JobRequestDetail() {
         if (departmentError) throw departmentError;
 
         // Find the department name associated with the request
-        const departmentName =
-          assignments.length > 0
-            ? departments.find((dept) => dept.deptId === assignments[0].deptId)
-                ?.deptName
-            : "Unknown Department";
+        const departmentName = assignments.length > 0 ? 
+          departments.find(dept => dept.deptId === assignments[0].deptId)?.deptName : "Unknown Department";
 
         setJobRequest({ ...data, departmentName });
 
@@ -64,17 +53,15 @@ export default function JobRequestDetail() {
           .select("details, timestamp")
           .eq("requestId", requestId)
           .order("timestamp", { ascending: false })
-          .limit(1);
+          .limit(1); // Only fetch the latest tracking entry
 
         if (trackingFetchError) throw new Error(trackingFetchError.message);
 
         setTrackingData(trackingData);
 
         // Insert into Tracking table if status has changed
-        if (
-          trackingData.length > 0 &&
-          trackingData[0].details.includes(data.status)
-        ) {
+        if (trackingData.length > 0 && trackingData[0].details.includes(data.status)) {
+          // If the last status is the same as the current status, skip the insert
           return;
         }
 
@@ -90,6 +77,7 @@ export default function JobRequestDetail() {
           trackingDetails = `Job request is already Completed by ${departmentName}.`;
         }
 
+        // Insert the new tracking entry if there's a status change
         if (trackingDetails) {
           const { error: trackingError } = await supabase
             .from("Tracking")
@@ -103,6 +91,7 @@ export default function JobRequestDetail() {
 
           if (trackingError) throw new Error(trackingError.message);
         }
+        
       } catch (err) {
         console.error("Error:", err.message);
       } finally {
@@ -124,25 +113,7 @@ export default function JobRequestDetail() {
   if (!jobRequest) {
     return (
       <div className="p-6">
-        <h2 className="text-xl font-bold text-red-500">
-          Error: Job request not found
-        </h2>
-        <button
-          className="bg-gray-700 p-5 text-white py-2 px-4 rounded mt-4"
-          onClick={() => navigate("/requestor/home")}
-        >
-          Back to Dashboard
-        </button>
-      </div>
-    );
-  }
-
-  if (!jobRequest) {
-    return (
-      <div className="p-6">
-        <h2 className="text-xl font-bold text-red-500">
-          Error: Job request not found
-        </h2>
+        <h2 className="text-xl font-bold text-red-500">Error: Job request not found</h2>
         <button
           className="bg-gray-700 p-5 text-white py-2 px-4 rounded mt-4"
           onClick={() => navigate("/requestor/home")}
@@ -164,14 +135,10 @@ export default function JobRequestDetail() {
         {/* Job Request Details Card */}
         <div className="bg-white rounded-r-xl border shadow-xl shadow-black/5 h-full flex flex-col">
           <div className="p-4 flex-grow">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Job Request Details
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Job Request Details</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
               <div>
-                <label className="block text-xl font-medium text-gray-700">
-                  Request ID
-                </label>
+                <label className="block text-xl font-medium text-gray-700">Request ID</label>
                 <input
                   type="text"
                   className="mt-2 block w-full border border-gray-300 p-2"
@@ -180,9 +147,7 @@ export default function JobRequestDetail() {
                 />
               </div>
               <div>
-                <label className="block text-xl font-medium text-gray-700">
-                  Location
-                </label>
+                <label className="block text-xl font-medium text-gray-700">Location</label>
                 <input
                   type="text"
                   className="mt-1 block w-full border border-gray-300 p-2"
@@ -191,9 +156,7 @@ export default function JobRequestDetail() {
                 />
               </div>
               <div>
-                <label className="block text-xl font-medium text-gray-700">
-                  Request Date
-                </label>
+                <label className="block text-xl font-medium text-gray-700">Request Date</label>
                 <input
                   type="text"
                   className="mt-1 block w-full border border-gray-300 p-2"
@@ -202,9 +165,7 @@ export default function JobRequestDetail() {
                 />
               </div>
               <div>
-                <label className="block text-xl font-medium text-gray-700">
-                  Priority Level
-                </label>
+                <label className="block text-xl font-medium text-gray-700">Priority Level</label>
                 <input
                   type="text"
                   className="mt-1 block w-full border border-gray-300 p-2"
@@ -213,9 +174,7 @@ export default function JobRequestDetail() {
                 />
               </div>
               <div>
-                <label className="block text-xl font-medium text-gray-700">
-                  Job Category
-                </label>
+                <label className="block text-xl font-medium text-gray-700">Job Category</label>
                 <input
                   type="text"
                   className="mt-1 block w-full border border-gray-300 p-2"
@@ -224,9 +183,7 @@ export default function JobRequestDetail() {
                 />
               </div>
               <div>
-                <label className="block text-xl font-medium text-gray-700">
-                  Assigned Department
-                </label>
+                <label className="block text-xl font-medium text-gray-700">Assigned Department</label>
                 <input
                   type="text"
                   className="mt-1 block w-full border border-gray-300 p-2"
@@ -235,9 +192,7 @@ export default function JobRequestDetail() {
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-xl font-medium text-gray-700">
-                  Job Description
-                </label>
+                <label className="block text-xl font-medium text-gray-700">Job Description</label>
                 <textarea
                   className="mt-1 block w-full border border-gray-300 p-2"
                   rows="3"
@@ -246,9 +201,7 @@ export default function JobRequestDetail() {
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-xl font-medium text-gray-700">
-                  Assigned Staff
-                </label>
+                <label className="block text-xl font-medium text-gray-700">Assigned Staff</label>
                 <textarea
                   className="mt-1 block w-full border border-gray-300 p-2"
                   rows="3"
@@ -257,9 +210,7 @@ export default function JobRequestDetail() {
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-xl font-medium text-gray-700">
-                  Remarks
-                </label>
+                <label className="block text-xl font-medium text-gray-700">Remarks</label>
                 <textarea
                   className="mt-1 block w-full border border-gray-300 p-2"
                   rows="3"
@@ -268,9 +219,7 @@ export default function JobRequestDetail() {
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-xl font-medium text-gray-700">
-                  Image
-                </label>
+                <label className="block text-xl font-medium text-gray-700">Image</label>
                 <img
                   src={jobRequest.image}
                   alt="Job Request Attachment"
@@ -279,27 +228,15 @@ export default function JobRequestDetail() {
               </div>
             </div>
           </div>
-           <div className="p-4 flex justify-end space-x-4">
-            <button
-              onClick={() => navigate("/requestor/select")}
-              className={`py-2 px-4 rounded ${
-                jobRequest.status === "Completed"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
-              disabled={jobRequest.status !== "Completed"}
-            >
-              Client Satisfaction Survey
-            </button>
+          <div className="p-4 flex justify-end space-x-4">
+            <button className="bg-blue-500 text-white py-2 px-4 rounded">Update</button>
           </div>
         </div>
 
         {/* Job Request Tracking Card */}
         <div className="bg-white border shadow-md shadow-black/5 rounded-md h-full flex flex-col">
           <div className="p-4 flex-grow">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Job Request Tracking
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Job Request Tracking</h2>
             <div className="flex items-center justify-between">
               {stages.map((stage, index) => (
                 <React.Fragment key={index}>
@@ -345,9 +282,7 @@ export default function JobRequestDetail() {
               ))}
             </div>
             <div className="mt-6 overflow-x-auto">
-              <div className="text-lg font-semibold text-black">
-                Tracking Information
-              </div>
+              <div className="text-lg font-semibold text-black">Tracking Information</div>
               <table className="min-w-full divide-y divide-gray-200 mt-4">
                 <thead className="bg-gray-50">
                   <tr>
@@ -362,20 +297,13 @@ export default function JobRequestDetail() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {trackingData.map((track, index) => (
                     <tr key={index}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {track.details}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {new Date(track.timestamp).toLocaleString()}
-                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">{track.details}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{new Date(track.timestamp).toLocaleString()}</td>
                     </tr>
                   ))}
                   {trackingData.length === 0 && (
                     <tr>
-                      <td
-                        className="px-6 py-4 text-gray-500 text-center"
-                        colSpan={2}
-                      >
+                      <td className="px-6 py-4 text-gray-500 text-center" colSpan={2}>
                         No tracking data available.
                       </td>
                     </tr>
