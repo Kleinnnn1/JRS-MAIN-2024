@@ -28,6 +28,7 @@ import StaffJobRequestApproved from "./pages/staff/JobRequestDetailStaff/Request
 import StaffJobRequestCompleted from "./pages/staff/JobRequestDetailStaff/RequestorContentJobRequestCompleted.jsx";
 import StaffCertificate from "./pages/staff/JobRequestDetailStaff/RequestorCertificate.jsx";
 import StaffRequestorJobRequestDetailPage from "./pages/staff/JobRequestStaff/RequestorJobRequestDetail.jsx";
+import StaffAssignedDetails from "./pages/staff/Task/StaffAssignedDetails.jsx";
 
 // Components for department head
 import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
@@ -264,9 +265,14 @@ export default function App() {
           >
             <Route path="home" element={<ContentDashStaff />} />
             <Route path="add_keyword" element={<PageStaffKeyWord />} />
-            <Route path="job_assigned" element={<StaffImagePage />}>
-              <Route path="StaffImageContent" element={<StaffImageContent />} />
-            </Route>
+            <Route path="job_assigned" element={<StaffImagePage />} />
+            <Route
+              path="job_assigned/details/:requestId"
+              element={<StaffAssignedDetails />}
+            />
+
+            <Route path="StaffImageContent" element={<StaffImageContent />} />
+
             <Route path="History" element={<StaffHistoryPage />} />
             <Route path="Staffprofile" element={<StaffProfile />}>
               <Route path="user_account" element={<StaffUserInfo />} />

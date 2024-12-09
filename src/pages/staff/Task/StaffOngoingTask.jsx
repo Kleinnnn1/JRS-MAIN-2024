@@ -86,9 +86,19 @@ export default function TableAssigned() {
             ), // Apply priority class styling
             <button
               className="bg-blue-500 text-white px-4 py-1 rounded-md"
-              onClick={() =>
-                navigate(`/staff/job_assigned/details/${requestId}`)
-              }
+              onClick={() => {
+                console.log("Navigating with requestId:", requestId); // Log the requestId
+                navigate(`/staff/job_assigned/details/${requestId}`, {
+                  state: {
+                    requestId,
+                    fullName: User.fullName,
+                    description,
+                    location,
+                    priority,
+                    image,
+                  },
+                });
+              }}
             >
               View
             </button>,
