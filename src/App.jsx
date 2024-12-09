@@ -27,6 +27,7 @@ import StaffJobRequestDetail from "./pages/staff/JobRequestDetailStaff/Requestor
 import StaffJobRequestApproved from "./pages/staff/JobRequestDetailStaff/RequestorContentJobRequestApproved.jsx";
 import StaffJobRequestCompleted from "./pages/staff/JobRequestDetailStaff/RequestorContentJobRequestCompleted.jsx";
 import StaffCertificate from "./pages/staff/JobRequestDetailStaff/RequestorCertificate.jsx";
+import StaffRequestorJobRequestDetailPage from "./pages/staff/JobRequestStaff/RequestorJobRequestDetail.jsx";
 
 // Components for department head
 import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
@@ -276,32 +277,36 @@ export default function App() {
                 element={<StaffChangePassword />}
               />
             </Route>
-            <Route path="my_request" element={<StaffJobRequest />}>
-              <Route
-                path="make_request_tableStaff"
-                element={<StaffJobRequestTable />}
-              />
-              <Route
-                path="make_request_formStaff"
-                element={<StaffJobRequestForm />}
-              />
-              <Route
-                path="job_request_detailStaff"
-                element={<StaffJobRequestDetail />}
-              />
-              <Route
-                path="job_request_approvedStaff"
-                element={<StaffJobRequestApproved />}
-              />
-              <Route
-                path="job_request_completedStaff"
-                element={<StaffJobRequestCompleted />}
-              />
-              <Route
-                path="job_request_certificateStaff"
-                element={<StaffCertificate />}
-              />
-            </Route>
+            <Route path="my_request" element={<StaffJobRequest />} />
+            <Route
+              path="my_request/detail/:requestId"
+              element={<StaffRequestorJobRequestDetailPage />}
+            />
+            <Route
+              path="make_request_tableStaff"
+              element={<StaffJobRequestTable />}
+            />
+            <Route
+              path="make_request_formStaff"
+              element={<StaffJobRequestForm />}
+            />
+            <Route
+              path="job_request_detailStaff"
+              element={<StaffJobRequestDetail />}
+            />
+            <Route
+              path="job_request_approvedStaff"
+              element={<StaffJobRequestApproved />}
+            />
+            <Route
+              path="job_request_completedStaff"
+              element={<StaffJobRequestCompleted />}
+            />
+            <Route
+              path="job_request_certificateStaff"
+              element={<StaffCertificate />}
+            />
+
             <Route path="StaffSendCert" element={<StaffPageCertificate />} />
             <Route path="StaffCert" element={<StaffSendCert />} />
           </Route>
