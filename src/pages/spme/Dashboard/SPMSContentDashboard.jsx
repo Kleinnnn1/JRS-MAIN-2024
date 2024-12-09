@@ -9,6 +9,7 @@ import BarPage from "../Reports/CSSBarPage";
 import { FaClipboardList, FaUsers, FaShoppingCart, FaChartLine } from "react-icons/fa";
 import PieChart from "../Reports/CSSPieChart";
 import SPMETable from "../Dashboard/SPMSContentTable";
+import SPMENotification from "./SPMENotification";
 
 export default function CSSContentDashboard() {
   const navigate = useNavigate();
@@ -70,13 +71,15 @@ export default function CSSContentDashboard() {
         />
       </div>
 
-      {/* Main Content Section */}
+      {/* 2 GRID GRAPH AND NOTIFICATION */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
-        {/* Left Side (Notifications) */}
         <div className="col-span-2">
+          {/* BAR GRAPH */}
           <BarPage />
         </div>
-        <PieChart />
+        {/* NOTIFICATION */}
+        <SPMENotification />
+        {/* <PieChart /> */}
       </div>
 
       {/* CSS Responses Heading */}
