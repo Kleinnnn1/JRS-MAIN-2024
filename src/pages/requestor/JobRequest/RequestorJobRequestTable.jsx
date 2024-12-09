@@ -275,10 +275,13 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       >
         View
       </button>,
-      <span className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}>
+      request.status,
+      request.requestDate,
+      <span
+        className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
+      >
         {request.priority}
       </span>,
-      request.requestDate,
       <span
         onClick={() => handleDetailsClick(request)} // Pass the entire request object
         className="cursor-pointer text-blue-500 hover:text-blue-700"
