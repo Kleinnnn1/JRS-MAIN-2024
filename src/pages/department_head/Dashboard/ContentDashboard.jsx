@@ -123,10 +123,7 @@ export default function ContentDashboard() {
       <div className="p-6">
         <AdminNotification />
       </div>
-         {/* Right Side (Calendar) */}
-         <div className="lg:col-span-1 rounded-lg">
-          <ReusableCalendar />
-        </div>
+  
     </>
   );
 }
