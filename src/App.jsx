@@ -181,6 +181,7 @@ import OfficeHeadApproveEmployee from "./pages/office_org_head/ApproveStaff/Page
 import JobRequestDetails from "./pages/department_head/JobRequest/DeptHeadRequestDetail.jsx";
 import RequestDetailPage from "./pages/department_head/JobRequest/DeptHeadRequestDetail.jsx";
 import RequestorJobRequestDetailPage from "./pages/requestor/JobRequest/RequestorJobRequestDetail.jsx";
+import OfficeHeadRequestorJobRequestDetailPage from "./pages/office_org_head/JobRequestOfficeHead/RequestorJobRequestDetail.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -410,16 +411,20 @@ export default function App() {
               />
               <Route path="employee" element={<ViewAddEmployee />} />
             </Route>
-            <Route path="my_requests" element={<JobRequestPage />}>
-              <Route
-                path="my_request_table"
-                element={<OfficeHeadJobRequestTable />}
-              />
-              <Route
-                path="my_request_form"
-                element={<OfficeHeadJobRequestForm />}
-              />
-            </Route>
+            <Route path="my_requests" element={<JobRequestPage />} />
+            <Route
+              path="my_request/detail/:requestId"
+              element={<OfficeHeadRequestorJobRequestDetailPage />}
+            />
+            <Route
+              path="my_request_table"
+              element={<OfficeHeadJobRequestTable />}
+            />
+            <Route
+              path="my_request_form"
+              element={<OfficeHeadJobRequestForm />}
+            />
+
             <Route
               path="approve_staff"
               element={<OfficeHeadApproveEmployee />}

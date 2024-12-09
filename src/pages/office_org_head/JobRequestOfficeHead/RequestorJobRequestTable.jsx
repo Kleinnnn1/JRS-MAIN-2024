@@ -166,7 +166,7 @@ export default function RequestorJobRequestTable() {
   );
 
   const handleDetailsClick = (request) => {
-    navigate(`/spme/my_request/detail/${request.requestId}`, {
+    navigate(`/office_head/my_request/detail/${request.requestId}`, {
       state: { requestData: request },
     });
   };
