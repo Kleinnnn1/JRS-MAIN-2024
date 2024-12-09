@@ -172,7 +172,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
       });
 
       toast.success("Your job request(s) have been submitted successfully.");
-      navigate("/requestor/job_request_table");
+      // navigate("/requestor/job_request_table");
       closeModal();
 
       setJobRequests([

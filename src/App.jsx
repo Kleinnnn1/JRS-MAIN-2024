@@ -143,6 +143,7 @@ import SpmeJobRequestDetail from "./pages/spme/JobRequestDetailspme/RequestorPag
 import SpmeJobRequestApproved from "./pages/spme/JobRequestDetailspme/RequestorContentJobRequestApproved.jsx";
 import SpmeJobRequestCompleted from "./pages/spme/JobRequestDetailspme/RequestorContentJobRequestCompleted.jsx";
 import SpmeCertificate from "./pages/spme/JobRequestDetailspme/RequestorCertificate.jsx";
+import SpmeRequestorJobRequestDetailPage from "./pages/spme/JobRequestspme/RequestorJobRequestDetail.jsx";
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
@@ -206,7 +207,6 @@ export default function App() {
           {/* Routes for UpdatePassword */}
           <Route path="/updatePassword" element={<UpdatePassword />} />
           {/* ===========================================SPME ==================================================================== */}
-
           <Route path="/spme" element={<SPMEDashboard />}>
             <Route path="home" element={<SPMEMainBody />} />
 
@@ -215,6 +215,12 @@ export default function App() {
               path="make_request_tableSpme"
               element={<SpmeJobRequestTable />}
             />
+
+            <Route
+              path="job_request_detail/:requestId"
+              element={<SpmeRequestorJobRequestDetailPage />}
+            />
+
             <Route
               path="make_request_formSpme"
               element={<SpmeJobRequestForm />}
@@ -236,7 +242,6 @@ export default function App() {
               element={<SpmeCertificate />}
             />
           </Route>
-
           {/* ===========================================STAFF==================================================================== */}
           {/* Protected Routes for Staff */}
           <Route
@@ -293,7 +298,6 @@ export default function App() {
             <Route path="StaffSendCert" element={<StaffPageCertificate />} />
             <Route path="StaffCert" element={<StaffSendCert />} />
           </Route>
-
           {/* ===========================================SYSTEM ADMIN ==================================================================== */}
           {/* Protected Routes for System Admin */}
           <Route
@@ -316,7 +320,7 @@ export default function App() {
                 element={<SysAdminChangePassword />}
               />
             </Route>
-            
+
             <Route path="Users" element={<SysAdminUsersPage />}>
               <Route path="reg_users" element={<UserContent />} />
               <Route path="add_user" element={<SysAdminAddNewUser />} />
@@ -348,7 +352,6 @@ export default function App() {
             <Route path="History" element={<PageHistorySystemAdmin />} />
             <Route path="Reports" element={<PageReportSystemAdmin />} />
           </Route>
-
           {/* ===========================================OFFICE HEAD==================================================================== */}
           {/* Protected Routes for Office Head */}
           <Route
@@ -419,7 +422,6 @@ export default function App() {
           <Route path='Reports' element={<PageReport/>}/>
            <Route path='register' element={<RegisterMe/>}/> */}
           </Route>
-
           {/* ===========================================DEPARTMENT HEAD ==================================================================== */}
           {/* Protected Routes for Department Head */}
           <Route
@@ -523,7 +525,6 @@ export default function App() {
             </Route>
             <Route path="content" element={<ContentAprrovingCertificate />} />
           </Route>
-
           {/* ===========================================REQUESTOR ==================================================================== */}
           {/* Protected Routes for Requestor */}
           <Route

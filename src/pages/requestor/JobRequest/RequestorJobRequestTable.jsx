@@ -263,11 +263,22 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
   };
 
   return requests.map((request) => {
+    // Format the requestDate
+    const formattedDate = new Date(request.requestDate)
+      .toLocaleString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+      .replace(",", ""); // Remove the comma
+
     return [
       request.requestId,
       request.description,
       request.jobCategory,
-      request.departmentNames,
+      request.departmentNames || "N/A",
       request.staffNames,
       <button
         onClick={() => openImageModal(request.image)}
@@ -276,7 +287,7 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
         View
       </button>,
       request.status,
-      request.requestDate,
+      formattedDate,
       <span
         className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
       >
