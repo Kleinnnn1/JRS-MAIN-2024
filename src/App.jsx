@@ -276,7 +276,7 @@ export default function App() {
                 element={<StaffChangePassword />}
               />
             </Route>
-            <Route path="make_requestStaff" element={<StaffJobRequest />}>
+            <Route path="my_request" element={<StaffJobRequest />}>
               <Route
                 path="make_request_tableStaff"
                 element={<StaffJobRequestTable />}
