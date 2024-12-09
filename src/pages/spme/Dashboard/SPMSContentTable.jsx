@@ -40,7 +40,7 @@ export default function SPMSContentTable() {
   const [jobRequests, setJobRequests] = useState([
     {
       CSSID: "CSS-001",
-      Date: "2023-12-01",
+      Date: "2023-01-01",
       Name: "A",
       email: "johndoe@example.com",
       clientType: "Student",
@@ -67,7 +67,7 @@ export default function SPMSContentTable() {
     },
     {
       CSSID: "CSS-001",
-      Date: "2023-12-02",
+      Date: "2023-01-02",
       Name: "B",
       email: "johndoe@example.com",
       clientType: "Student",
@@ -209,7 +209,9 @@ export default function SPMSContentTable() {
   const handleDownload = () => {
     const headers = tableHeaders.join(",");
     const rows = filteredRequests.map((job) =>
-      tableHeaders.map((header) => job[header] || "").join(",")
+      tableHeaders.map((header) =>
+        header === "Date" ? `"${job[header]}"` : job[header] || ""
+      ).join(",")
     );
     const csvContent = [headers, ...rows].join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -217,9 +219,12 @@ export default function SPMSContentTable() {
   };
 
   return (
+    
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-md rounded-lg">
+      
       <div className="bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
         <div className="flex text-white items-center space-x-2">
+         
         <button
           onClick={handleDownload}
           className="bg-green-500 text-white p-2 rounded-lg"

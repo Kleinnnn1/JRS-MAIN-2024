@@ -9,6 +9,7 @@ import BarPage from "../Reports/CSSBarPage";
 import { FaClipboardList, FaUsers, FaShoppingCart, FaChartLine } from "react-icons/fa";
 import PieChart from "../Reports/CSSPieChart";
 import SPMETable from "../Dashboard/SPMSContentTable";
+
 export default function CSSContentDashboard() {
   const navigate = useNavigate();
 
@@ -49,7 +50,7 @@ export default function CSSContentDashboard() {
           bgColor={statusCardColor}
           titleColor="text-grey"
           icon={icons.week}
-           subText="+1 since last week"
+          subText="+1 since last week"
         />
         <StatusCard
           title="This Month"
@@ -57,7 +58,7 @@ export default function CSSContentDashboard() {
           bgColor={statusCardColor}
           titleColor="text-grey"
           icon={icons.month}
-           subText="+1 since last month"
+          subText="+1 since last month"
         />
         <StatusCard
           title="This Year"
@@ -65,7 +66,7 @@ export default function CSSContentDashboard() {
           bgColor={statusCardColor}
           titleColor="text-grey"
           icon={icons.year}
-           subText="+1 since last year"
+          subText="+1 since last year"
         />
       </div>
 
@@ -75,11 +76,15 @@ export default function CSSContentDashboard() {
         <div className="col-span-2">
           <BarPage />
         </div>
-
-      
-          <PieChart />
-       
+        <PieChart />
       </div>
+
+      {/* CSS Responses Heading */}
+      <div className="flex justify-center items-center mt-6">
+        <h2 className="text-2xl font-semibold text-center">SURVEY RESPONSES</h2>
+      </div>
+
+      {/* Table Component */}
       <SPMETable />
     </>
   );
