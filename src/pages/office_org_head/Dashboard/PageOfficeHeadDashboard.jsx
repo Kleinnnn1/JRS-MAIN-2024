@@ -5,15 +5,14 @@ import ReusableHeader from "../../../components/ReusableHeader";
 import useUserStore from "../../../store/useUserStore";
 import DefaultImageUser from "/src/assets/images/DefaultImageUser.jpg";
 import {
-  FaAngleDoubleLeft,
-  FaAngleDoubleRight,
   FaHome,
-  FaCheckCircle,
-
-  FaSyncAlt,
-
-  FaTasks,
-  FaChartPie,
+  FaUserCircle,
+  FaUsers,
+  FaFileAlt,
+  FaClipboardList,
+  FaUserCheck,
+  FaAngleDoubleRight,
+  FaAngleDoubleLeft,
 } from "react-icons/fa";
 
 export default function OfficeHeadDashboard() {
@@ -62,7 +61,6 @@ export default function OfficeHeadDashboard() {
             isSidebarCollapsed ? "space-y-0" : "space-y-1"
           }`}
         >
-          <div></div>
           <img
             src={userMetadata.avatar || DefaultImageUser}
             alt="Profile"
@@ -109,11 +107,11 @@ export default function OfficeHeadDashboard() {
 const SidebarMenu = ({ isSidebarCollapsed, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/office_head/dashboard" },
-    { icon: <FaTasks />, label: "My Profile", path: "/office_head/myprofile" },
-    { icon: <FaSyncAlt  />, label: "Staff", path: "/office_head/staff" },
-    { icon: <FaCheckCircle />, label: "Report", path: "/office_head/report" },
-    { icon: <FaChartPie />, label: "My Request", path: "/office_head/my_requests" },
-    { icon: <FaChartPie />, label: "Approve Staff", path: "/office_head/approve_staff" },
+    { icon: <FaUserCircle />, label: "My Profile", path: "/office_head/myprofile" },
+    { icon: <FaUsers />, label: "Staff", path: "/office_head/staff" },
+    { icon: <FaFileAlt />, label: "Report", path: "/office_head/report" },
+    { icon: <FaClipboardList />, label: "My Request", path: "/office_head/my_requests" },
+    { icon: <FaUserCheck />, label: "Approve Staff", path: "/office_head/approve_staff" },
   ];
 
   return (
@@ -134,3 +132,4 @@ const SidebarMenu = ({ isSidebarCollapsed, navigate }) => {
     </ul>
   );
 };
+  
