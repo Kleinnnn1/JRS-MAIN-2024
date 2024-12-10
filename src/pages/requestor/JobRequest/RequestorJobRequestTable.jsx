@@ -177,7 +177,7 @@ export default function RequestorJobRequestTable() {
       : [[]];
 
   return (
-    <div className="max-w-full -mt-14 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
+    <div className="max-w-full -mt-1 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
         <SearchBar title="Job Requests" />
         <div className="flex space-x-4">
@@ -253,13 +253,26 @@ export default function RequestorJobRequestTable() {
 }
 
 const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
-  const getPriorityClass = (level) => {
-    switch (level) {
-      case "High":
-        return "bg-red-400";
-      case "Medium":
+  // const getPriorityClass = (level) => {
+  //   switch (level) {
+  //     case "High":
+  //       return "bg-red-400";
+  //     case "Medium":
+  //       return "bg-yellow-300";
+  //     case "Low":
+  //       return "bg-green-300";
+  //     default:
+  //       return "bg-gray-300";
+  //   }
+  // };
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "Pending":
         return "bg-yellow-300";
-      case "Low":
+      case "Ongoing":
+        return "bg-blue-300";
+      case "Completed":
         return "bg-green-300";
       default:
         return "bg-gray-300";
@@ -289,13 +302,18 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       >
         View
       </button>,
-      request.status,
+       <span
+       className={`px-2 py-1 rounded-md ${getStatusClass(request.status)}`}
+     >
+       {request.status}
+     </span>,
       formattedDate,
-      <span
-        className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
-      >
-        {request.priority}
-      </span>,
+      request.priority,
+      // <span
+      //   className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
+      // >
+      //   {request.priority}
+      // </span>,
       <span
         onClick={() => handleDetailsClick(request)}
         className="cursor-pointer text-blue-500 hover:text-blue-700"

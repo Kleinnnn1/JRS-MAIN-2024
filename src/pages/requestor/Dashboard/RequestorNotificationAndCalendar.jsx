@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import supabase from "../../../service/supabase";
 import { useNavigate } from "react-router-dom";
 import 'react-calendar/dist/Calendar.css';
+import ReusablePagination from '../../../components/ReusablePagination'
 
 export default function RequestorNotification() {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [userIdNumber, setUserIdNumber] = useState(null);
   const [existingRequestIds, setExistingRequestIds] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   // Fetch the logged-in user's idNumber and notifications when the component mounts
   useEffect(() => {
@@ -203,64 +206,64 @@ export default function RequestorNotification() {
     return () => clearInterval(interval);
   }, [userIdNumber, existingRequestIds]);
 
+  const paginatedNotifications = notifications.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
+
+  const totalPages = Math.ceil(notifications.length / rowsPerPage);
+
   return (
     <div className="p-2">
-      {/* NOTIFICATION */}
-      <div className="bg-white border shadow-md">
-        <div className="bg-custom-blue rounded-t-lg p-2 text-white font-bold">
+      <div className="bg-white border rounded-t-lg shadow-md">
+        <div className="bg-custom-blue rounded-t-lg p-3 text-white font-bold">
           Notifications
         </div>
         <div className="p-6">
           {notifications.length > 0 ? (
-            <table className="min-w-full table-auto">
-              <tbody>
-                {notifications.map((notification, index) => (
-                  <tr key={index} className="border-t">
-                    <td className="px-4 py-2">{notification.message}</td>
-                    <td className="px-4 py-2">
-                      {new Date(notification.timestamp).toLocaleString()}
-                    </td>
-                    <td className="px-4 py-2">
-                      {notification.message.includes("Request ID #") && (
-                        <button
-                          className="text-blue-700"
-                          onClick={async () => {
-                            const requestId = notification.message.match(/Request ID #(\d+)/)?.[1];
-                            if (requestId) {
-                              try {
-                                // Fetch the request details from the database
-                                const { data: request, error } = await supabase
+            <>
+              <table className="min-w-full table-auto">
+                <tbody>
+                  {paginatedNotifications.map((notification, index) => (
+                    <tr key={index} className="border-t">
+                      <td className="px-4 py-2">{notification.message}</td>
+                      <td className="px-4 py-2">
+                        {new Date(notification.timestamp).toLocaleString()}
+                      </td>
+                      <td className="px-4 py-2">
+                        {notification.message.includes("Request ID #") && (
+                          <button
+                            className="text-blue-700"
+                            onClick={async () => {
+                              const requestId = notification.message.match(/Request ID #(\d+)/)?.[1];
+                              if (requestId) {
+                                const { data: request } = await supabase
                                   .from("Request")
                                   .select("*")
                                   .eq("requestId", requestId)
                                   .single();
-                              
-                                if (error) {
-                                  console.error("Error fetching request details:", error);
-                                  alert("Unable to fetch request details. Please try again later.");
-                                  return;
-                                }
-                                
-                                // Navigate to the job request detail page and pass the fetched data
                                 navigate(`/requestor/job_request_detail/${requestId}`, {
                                   state: { requestData: request },
                                 });
-                              } catch (err) {
-                                console.error("Error handling navigation to request details:", err);
                               }
-                            } else {
-                              console.error("Request ID not found in the notification message.");
-                            }
-                          }}
-                        >
-                          [View Request]
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                            }}
+                          >
+                            [View Request]
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <ReusablePagination
+                rowsPerPage={rowsPerPage}
+                setRowsPerPage={setRowsPerPage}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                totalPages={totalPages}
+              />
+            </>
           ) : (
             <p>No new notifications</p>
           )}
