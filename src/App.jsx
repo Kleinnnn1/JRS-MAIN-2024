@@ -207,7 +207,7 @@ export default function App() {
           <Route path="/login" element={<LogIn />} />
           {/* Routes for ForgotPassword */}
           <Route path="/forgotPassword" element={<ForgotPassword />} />
-          UpdatePassword
+         
           {/* Routes for UpdatePassword */}
           <Route path="/updatePassword" element={<UpdatePassword />} />
           {/* ===========================================SPME ==================================================================== */}

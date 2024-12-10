@@ -5,7 +5,7 @@ import ReusableNotification from "../../../components/ReusableNotification";
 import ReusableCalendar from "../../../components/ReusableCalendar";
 import SearchBar from "../../../components/SearchBar";
 import { FaHourglassStart, FaClock, FaCheckCircle, FaRegHandPointer } from "react-icons/fa";
-import supabase from "../../../service/supabase"; // Adjust the path as necessary
+import supabase from "../../../service/supabase"; 
 import RequestorNotification from "./RequestorNotificationAndCalendar";
 
 export default function ContentDashboard() {
