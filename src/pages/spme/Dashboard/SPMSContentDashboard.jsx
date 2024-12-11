@@ -78,7 +78,7 @@ export default function CSSContentDashboard() {
           <BarPage />
         </div>
         {/* NOTIFICATION */}
-        <SPMENotification />
+        {/* <SPMENotification /> */}
         {/* <PieChart /> */}
       </div>
 

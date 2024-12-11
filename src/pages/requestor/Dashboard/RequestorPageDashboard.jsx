@@ -111,8 +111,8 @@ export default function RequestorDashboard() {
 const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/requestor/home" },
-    { icon: <FaCalendarAlt />, label: "Schedules", path: "/requestor/requestor_schedule" },
-    { icon: <FaHistory />, label: "History", path: "/requestor/job_request_history" },
+    // { icon: <FaCalendarAlt />, label: "Schedules", path: "/requestor/requestor_schedule" },
+    { icon: <FaHistory />, label: "Completed Request", path: "/requestor/job_request_history" },
     { icon: <FaFileAlt />, label: "My Requests", path: "/requestor/job_request" },
   ];
 

@@ -5,7 +5,7 @@ import ReusableNotification from "../../../components/ReusableNotification";
 import ReusableCalendar from "../../../components/ReusableCalendar";
 import SearchBar from "../../../components/SearchBar";
 import { FaHourglassStart, FaClock, FaCheckCircle, FaRegHandPointer } from "react-icons/fa";
-import supabase from "../../../service/supabase"; // Adjust the path as necessary
+import supabase from "../../../service/supabase"; 
 import RequestorNotification from "./RequestorNotificationAndCalendar";
 
 export default function ContentDashboard() {
@@ -16,7 +16,6 @@ export default function ContentDashboard() {
     pending: 0,
     ongoing: 0,
     completed: 0,
-    referral: 0,
   });
 
   useEffect(() => {
@@ -31,31 +30,26 @@ export default function ContentDashboard() {
         const { data: ongoingData, error: ongoingError } = await supabase
           .from("Request")
           .select("*", { count: "exact" })
-          .eq("status", "InProgress");
+          .eq("status", "Ongoing");
   
         const { data: completedData, error: completedError } = await supabase
           .from("Request")
           .select("*", { count: "exact" })
           .eq("status", "Completed");
   
-        const { data: referralData, error: referralError } = await supabase
-          .from("Request")
-          .select("*", { count: "exact" })
-          .eq("status", "Referral");
-  
+
         // Log errors explicitly if they occur
         if (pendingError) console.error("Pending Error:", pendingError);
         if (ongoingError) console.error("Ongoing Error:", ongoingError);
         if (completedError) console.error("Completed Error:", completedError);
-        if (referralError) console.error("Referral Error:", referralError);
+
   
         // Check if data is fetched correctly before updating state
-        if (!pendingError && !ongoingError && !completedError && !referralError) {
+        if (!pendingError && !ongoingError && !completedError ) {
           setCounts({
             pending: pendingData?.length || 0,
             ongoing: ongoingData?.length || 0,
             completed: completedData?.length || 0,
-            referral: referralData?.length || 0,
           });
         }
       } catch (error) {

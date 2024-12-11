@@ -135,7 +135,7 @@ const ProfileSection = ({ isSidebarCollapsed, userMetadata }) => (
 const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/spme/home" },
-    { icon: <FaTasks />, label: "My Requests", path: "/spme/my_request" },
+    // { icon: <FaTasks />, label: "My Requests", path: "/spme/my_request" },
     // { icon: <FaCheckCircle />, label: "Download", path: "/spme/download" },
   ];
 
