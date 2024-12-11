@@ -122,7 +122,7 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
       label: "Send Certificate",
       path: "/staff/StaffSendCert",
     },
-    { icon: <FaCheckCircle />, label: "History", path: "/staff/History" },
+    { icon: <FaCheckCircle />, label: "Completed", path: "/staff/Completed" },
     { icon: <FaFileAlt />, label: "My Request", path: "/staff/my_request" },
     { icon: <FaChartPie />, label: "Add Keyword", path: "/staff/add_keyword" },
   ];

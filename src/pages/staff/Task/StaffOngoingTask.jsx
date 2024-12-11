@@ -1,19 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../../components/SearchBar";
 import Table from "../../../components/Table";
 import ReusablePagination from "../../../components/ReusablePagination";
 import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
-import SetDate from "./SetDate";
-import { useQuery } from "@tanstack/react-query";
-import { getJobAssign } from "../../../service/apiStaffTable";
+import supabase from "../../../service/supabase";
+import { getCurrentUser } from "../../../service/apiAuth";
 
 // Define table headers
 const tableHeaders = [
   "Requestor",
   "Job Description",
   "Location",
-  "Image",
   "Priority",
   "Action",
 ];
@@ -33,22 +31,74 @@ const getPriorityClass = (level) => {
 };
 
 export default function TableAssigned() {
-  const { data: request = [], error } = useQuery({
-    queryKey: ["request"],
-    queryFn: getJobAssign,
-  });
   const navigate = useNavigate();
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const currentUser = await getCurrentUser();
+
+        // Fetch only relevant fields from the Request table
+        const { data, error } = await supabase
+          .from("Request")
+          .select(
+            `
+          requestId,
+          User(fullName),
+          description,
+          location,
+          image,
+          dateCompleted,
+          dateStarted,
+          expectedDueDate,
+          extensionDate,
+          priority,
+          remarks,
+          Department_request_assignment (
+            staffName
+          )
+        `
+          )
+          .neq("status", "Completed");
+
+        if (error) {
+          throw new Error("Data could not be loaded");
+        }
+
+        // Filter the data where staffName matches currentUser.fullName
+        const filteredData = data.filter((item) => {
+          const staffNames = item.Department_request_assignment.map(
+            (assign) => assign.staffName
+          );
+          return staffNames.includes(currentUser.fullName);
+        });
+
+        setRequests(filteredData);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching data: ", err.message);
+        setError("Failed to load job assignments.");
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   if (error) {
-    return <div>Error loading data: {error.message}</div>;
+    return <div className="text-red-500 font-bold">{error}</div>;
   }
 
   // Filter and sort job requests
-  const filteredRequests = request
+  const filteredRequests = requests
     .filter(
       (req) =>
         req.User.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -68,17 +118,24 @@ export default function TableAssigned() {
     paginatedRequests.length > 0
       ? paginatedRequests.map(
           (
-            { requestId, User, description, location, image, priority },
+            {
+              requestId,
+              User,
+              description,
+              location,
+              image,
+              priority,
+              dateStarted,
+              expectedDueDate,
+              extensionDate,
+              dateCompleted,
+              remarks,
+            },
             index
           ) => [
             `${index + 1}. ${String(User.fullName)}`, // Sequential number + fullName
             description,
             location,
-            image ? (
-              <img src={image} alt="Request" className="w-16 h-16" />
-            ) : (
-              "No Image"
-            ),
             priority ? (
               <span className={getPriorityClass(priority)}>{priority}</span>
             ) : (
@@ -87,7 +144,6 @@ export default function TableAssigned() {
             <button
               className="bg-blue-500 text-white px-4 py-1 rounded-md"
               onClick={() => {
-                console.log("Navigating with requestId:", requestId); // Log the requestId
                 navigate(`/staff/job_assigned/details/${requestId}`, {
                   state: {
                     requestId,
@@ -96,6 +152,11 @@ export default function TableAssigned() {
                     location,
                     priority,
                     image,
+                    dateStarted,
+                    expectedDueDate,
+                    extensionDate,
+                    dateCompleted,
+                    remarks,
                   },
                 });
               }}
