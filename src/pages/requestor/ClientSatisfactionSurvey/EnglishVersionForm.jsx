@@ -103,8 +103,8 @@ const EnglishVersionForm = () => {
                             </p>
                         </div>
                         <hr />
-                        <div className="font-bold mt-6 mb-4 text-2xl">I am a <span className="text-red-500">{attemptedSubmit && !formData.role ? "*" : ""}</span></div>
-                        {["Faculty", "Non-Teaching Staff", "Student", "Guardian/Parent of Student", "Alumna", "Others"].map((role) => (
+                            <div className="font-bold mt-6 mb-4 text-2xl">I am a <span className="text-red-500">{attemptedSubmit && !formData.role ? "*" : ""}</span></div>
+                            {["Faculty", "Non-Teaching Staff", "Student", "Guardian/Parent of Student", "Alumna", "Others"].map((role) => (
                             <div key={role} className="flex text-2xl items-center mt-4 mb-4">
                                 <input
                                     type="radio"
@@ -247,13 +247,23 @@ const EnglishVersionForm = () => {
                     </div>
 
                     <div className="text-center mt-10">
-                        <button
-                            type="button"
-                            onClick={handleDownload} // Trigger Excel download
-                            className="bg-blue-500 text-white py-2 px-4 rounded-lg text-xl"
-                        >
-                            Download Survey Data as Excel
-                        </button>
+                        <div className="flex justify-center gap-4">
+                            <button
+                                type="button"
+                                onClick={handleDownload} // Trigger Excel download
+                                className="bg-blue-500 text-white py-2 px-4 rounded-lg text-xl"
+                            >
+                                Download Survey Data as Excel
+                            </button>
+                            <button
+                                type="submit"
+                                className="bg-blue-500 text-white py-2 px-4 rounded-lg text-xl"
+                            >
+                                Submit Survey
+                            </button>
+                        </div>
+
+
                     </div>
                 </div>
             </form>

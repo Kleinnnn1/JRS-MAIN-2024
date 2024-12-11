@@ -25,9 +25,7 @@ export default function SelectSurveyForm() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {/* ENGLISH VERSION FORM */}
                         <div className="p-4 bg-indigo-50 rounded-lg shadow-md">
-                            <p className="text-gray-700 font-semibold">
-                                (Your preferred language to use in answering this survey:)
-                            </p>
+                          
                             <br />
                             <b>Dear Valuable Client,</b>
                             <p>
@@ -39,11 +37,11 @@ export default function SelectSurveyForm() {
                                 onClick={() => handleLanguageSelection('/requestor/english_version')}
                                 className="w-full mt-12 p-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none"
                             >
-                                English
+                                Start
                             </button>
                         </div>
 
-                        {/* TAGALOG VERSION */}
+                        {/* TAGALOG VERSION
                         <div className="p-4 bg-indigo-50 rounded-lg shadow-md">
                             <p className="text-gray-700 font-semibold mb-8">
                                 (Ang iyong gustong wikang gagamitin sa pagsagot sa surbey na ito:)
@@ -59,7 +57,7 @@ export default function SelectSurveyForm() {
                             >
                                 Filipino or Tagalogs
                             </button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </form>
