@@ -281,7 +281,19 @@ export default function JobRequestDetail() {
           </div>
            <div className="p-4 flex justify-end space-x-4">
             <button
-              onClick={() => navigate("/requestor/select")}
+              onClick={() => navigate("/requestor/english_version")}
+              className={`py-2 px-4 rounded ${
+                jobRequest.status === "Completed"
+                  ? "bg-green-500 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+              disabled={jobRequest.status !== "Completed"}
+            >
+              Client Satisfaction Survey
+            </button>
+
+            <button
+              // onClick={() => navigate("/requestor/english_version")}
               className={`py-2 px-4 rounded ${
                 jobRequest.status === "Completed"
                   ? "bg-blue-500 text-white"
@@ -289,7 +301,7 @@ export default function JobRequestDetail() {
               }`}
               disabled={jobRequest.status !== "Completed"}
             >
-              Client Satisfaction Survey
+              View Certificate
             </button>
           </div>
         </div>
