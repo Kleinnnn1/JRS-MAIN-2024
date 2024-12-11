@@ -12,6 +12,9 @@ export async function getJobAssign() {
     location,
     image,
     dateCompleted,
+    dateStarted,
+    expectedDueDate,
+    extensionDate,
     priority,
     Department_request_assignment (
       staffName

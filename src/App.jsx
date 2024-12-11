@@ -184,6 +184,7 @@ import JobRequestDetails from "./pages/department_head/JobRequest/DeptHeadReques
 import RequestDetailPage from "./pages/department_head/JobRequest/DeptHeadRequestDetail.jsx";
 import RequestorJobRequestDetailPage from "./pages/requestor/JobRequest/RequestorJobRequestDetail.jsx";
 import OfficeHeadRequestorJobRequestDetailPage from "./pages/office_org_head/JobRequestOfficeHead/RequestorJobRequestDetail.jsx";
+import CompletedRequestDetailPage from "./pages/staff/History/CompletedTaskDetails.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -207,7 +208,7 @@ export default function App() {
           <Route path="/login" element={<LogIn />} />
           {/* Routes for ForgotPassword */}
           <Route path="/forgotPassword" element={<ForgotPassword />} />
-         
+
           {/* Routes for UpdatePassword */}
           <Route path="/updatePassword" element={<UpdatePassword />} />
           {/* ===========================================SPME ==================================================================== */}
@@ -270,10 +271,14 @@ export default function App() {
               path="job_assigned/details/:requestId"
               element={<StaffAssignedDetails />}
             />
+            <Route
+              path="Completed/details/:requestId"
+              element={<CompletedRequestDetailPage />}
+            />
 
             <Route path="StaffImageContent" element={<StaffImageContent />} />
 
-            <Route path="History" element={<StaffHistoryPage />} />
+            <Route path="Completed" element={<StaffHistoryPage />} />
             <Route path="Staffprofile" element={<StaffProfile />}>
               <Route path="user_account" element={<StaffUserInfo />} />
               <Route

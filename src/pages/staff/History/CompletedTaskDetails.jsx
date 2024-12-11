@@ -2,9 +2,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import supabase from "../../../service/supabase"; // Adjust the import path based on your setup
 
-export default function RequestDetailPage() {
+export default function CompletedRequestDetailPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -21,73 +20,16 @@ export default function RequestDetailPage() {
     remarks: initialRemarks,
   } = location.state || {}; // Use optional chaining to avoid errors if state is undefined
 
-  const [startDate, setStartDate] = useState(
+  const [startDate] = useState(
     initialStartDate ? new Date(initialStartDate) : null
   );
-  const [extensionDate, setExtensionDate] = useState(
+  const [extensionDate] = useState(
     initialExtensionDate ? new Date(initialExtensionDate) : null
   );
-  const [expectedDueDate, setExpectedDueDate] = useState(
+  const [expectedDueDate] = useState(
     initialExpectedDueDate ? new Date(initialExpectedDueDate) : null
   );
-  const [remarks, setRemarks] = useState(initialRemarks || ""); // Initialize remarks
-  const [error, setError] = useState("");
-
-  const handleSetComplete = async () => {
-    if (!requestId) {
-      setError("Invalid request. Request ID is missing.");
-      return;
-    }
-
-    try {
-      const { data, error } = await supabase
-        .from("Request")
-        .update({
-          dateStarted: startDate ? startDate.toISOString() : null,
-          extensionDate: extensionDate ? extensionDate.toISOString() : null,
-          expectedDueDate: expectedDueDate
-            ? expectedDueDate.toISOString()
-            : null,
-          remarks,
-        })
-        .eq("requestId", requestId);
-
-      if (error) {
-        console.error("Error updating request:", error.message);
-        setError("Failed to update the request.");
-      } else {
-        console.log("Request updated successfully:", data);
-        alert("Job request updated successfully!");
-        navigate(-1); // Go back after submission
-      }
-    } catch (err) {
-      console.error("Unexpected error:", err);
-      setError("An unexpected error occurred. Please try again.");
-    }
-  };
-
-  const handleJobComplete = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("Request")
-        .update({
-          status: "Completed",
-        })
-        .eq("requestId", requestId);
-
-      if (error) {
-        console.error("Error updating job status:", error.message);
-        setError("Failed to mark the job as completed.");
-      } else {
-        console.log("Job status updated to completed:", data);
-        alert("Job marked as completed successfully!");
-        navigate(-1); // Go back after submission
-      }
-    } catch (err) {
-      console.error("Unexpected error:", err);
-      setError("An unexpected error occurred. Please try again.");
-    }
-  };
+  const [remarks] = useState(initialRemarks || ""); // Initialize remarks
 
   return (
     <div className="p-6 bg-white shadow-lg rounded-lg m-10 mt-10">
@@ -141,11 +83,10 @@ export default function RequestDetailPage() {
             <strong>Set Start Date:</strong>
             <DatePicker
               selected={startDate}
-              onChange={(date) => setStartDate(date)}
               className="border rounded p-2 w-full placeholder:text-black"
               placeholderText="MM/DD/YYYY"
               dateFormat="MM/dd/yyyy"
-              disabled={!!initialStartDate}
+              disabled
             />
           </div>
 
@@ -154,11 +95,10 @@ export default function RequestDetailPage() {
             <strong>Set Expected Due Date:</strong>
             <DatePicker
               selected={expectedDueDate}
-              onChange={(date) => setExpectedDueDate(date)}
               className="border rounded p-2 w-full placeholder:text-black"
               placeholderText="MM/DD/YYYY"
               dateFormat="MM/dd/yyyy"
-              disabled={!!initialExpectedDueDate}
+              disabled
             />
           </div>
 
@@ -167,11 +107,10 @@ export default function RequestDetailPage() {
             <strong>Set Extension Date:</strong>
             <DatePicker
               selected={extensionDate}
-              onChange={(date) => setExtensionDate(date)}
               className="border rounded p-2 w-full placeholder:text-black"
               placeholderText="MM/DD/YYYY"
               dateFormat="MM/dd/yyyy"
-              disabled={!!initialExtensionDate}
+              disabled
             />
           </div>
 
@@ -183,34 +122,15 @@ export default function RequestDetailPage() {
             <textarea
               id="remarks"
               value={remarks}
-              onChange={(e) => setRemarks(e.target.value)}
               rows="4"
               className="w-full p-2 border rounded-lg"
               placeholder="Add your remarks here..."
-              disabled={!!initialRemarks} // Disable if there are initial remarks
+              disabled
             />
           </div>
 
-          {/* Display Validation Error */}
-          {error && (
-            <div className="text-red-500 font-bold text-sm mb-4">{error}</div>
-          )}
-
-          {/* Action Buttons */}
           <button
-            className="mt-4 text-white bg-green-400 font-bold px-4 py-2 rounded"
-            onClick={handleSetComplete}
-          >
-            Update
-          </button>
-          <button
-            className="ml-4 text-black-500 bg-blue-400 font-bold px-4 py-2 rounded"
-            onClick={handleJobComplete}
-          >
-            Mark Job as Completed
-          </button>
-          <button
-            className="ml-4 text-blue-500 font-bold underline"
+            className="mt-4 text-blue-500 font-bold underline"
             onClick={() => navigate(-1)}
           >
             Go Back
