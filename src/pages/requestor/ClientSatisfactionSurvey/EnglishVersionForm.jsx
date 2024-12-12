@@ -1,23 +1,35 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import logoUSTP from "../../../assets/images/logoUSTP.png";
+import supabase from "../../../service/supabase"; // Import your supabase client
+import useUserStore from "../../../store/useUserStore";
+import { id } from "date-fns/locale";
 
 
 const EnglishVersionForm = () => {
+    const { userMetadata } = useUserStore();
     const navigate = useNavigate();
+    const location = useLocation();
+    const [loading, setLoading] = useState(false);
     const [currentSection, setCurrentSection] = useState(1);
     const [attemptedSubmit, setAttemptedSubmit] = useState(false);
+
+    const { requestData = {} } = location.state || {};
+    
+    const [jobRequest, setJobRequest] = useState(null);
+    const [requestId, setRequestId] = useState(location.state?.requestId || null);
+
     const [formData, setFormData] = useState({
-        name: "",   //GIVEN: REQUESTOR'S FULL NAME
-        email: "",  //GIVEN: Requestor's Email
-        clientType: "Citizen", 
-        role: "",   //I am a 
-        sex: "",  
-        age: "",  //GIVEN Current Year - BirthDate
+        name: `${userMetadata.fName || ""} ${userMetadata.lName || ""}`,
+        email: userMetadata.email || "",
+        clientType: "Citizen",
+        role: "",
+        sex: "",
+        age: "",
         region: "Region X",
         campus: "Cagayan de Oro",
-        transactedOffice: "", //GIVEN:Assigned Department Name
-        serviceAvailed: "",  //GIVEN: JOB DESCRIPTION
+        transactedOffice: "",
+        serviceAvailed: "",
         ccAwareness: "",
         ccVisibility: "",
         ccHelp: "",
@@ -31,49 +43,107 @@ const EnglishVersionForm = () => {
         SQD7: "",
         SQD8: "",
         comments: "",
+        idNumber: userMetadata.idNumber, // Directly assign requestId value here
     });
+
+    useEffect(() => {
+        const fetchJobRequestData = async () => {
+            try {
+                setLoading(true);
+
+                // Fetch assigned department and job description
+                const { data: jobRequest, error: jobRequestError } = await supabase
+                    .from("Request")
+                    .select("description, requestId")
+                    .eq("requestId", location.state?.requestId || null)
+                    .single();
+
+                if (jobRequestError) throw jobRequestError;
+
+                const { data: assignments, error: assignmentsError } = await supabase
+                    .from("Department_request_assignment")
+                    .select("deptId")
+                    .eq("requestId", jobRequest.requestId);
+
+                if (assignmentsError) throw assignmentsError;
+
+                const { data: department, error: departmentError } = await supabase
+                    .from("Department")
+                    .select("deptName")
+                    .eq("deptId", assignments[0]?.deptId || null)
+                    .single();
+
+                if (departmentError) throw departmentError;
+
+                // Update formData with department name and job description
+                setFormData((prev) => ({
+                    ...prev,
+                    departmentName: department?.deptName || "Unknown Department",
+                    jobDescription: jobRequest.description || "No description available.",
+                }));
+
+                // Log department name and job description
+                console.log("Assigned Department:", department?.deptName);
+                console.log("Job Description:", jobRequest.description);
+            } catch (error) {
+                console.error("Error fetching job request data:", error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (location.state?.requestId) {
+            fetchJobRequestData();
+        }
+    }, [location.state?.requestId]);
+    
+
+  
+
+      
+    //BIRTHDATE
+    useEffect(() => {
+        // Age Calculation
+        if (userMetadata.birthDate) {
+            const birthYear = new Date(userMetadata.birthDate).getFullYear();
+            const currentYear = new Date().getFullYear();
+            const calculatedAge = currentYear - birthYear;
+            setFormData((prevData) => ({ ...prevData, age: calculatedAge.toString() }));
+        }
+    }, [userMetadata.birthDate]);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    // Function to generate Excel file
-    const handleDownload = () => {
-        const sheetData = [
-            ["Timestamp", "Name", "Email", "Client Type", "Role", "Sex", "Age", "Region", "Campus", "Transacted Office", "Service Availed", "CC Awareness", "CC Visibility", "CC Help", "SQD0", "SQD1", "SQD2", "SQD3", "SQD4", "SQD5", "SQD6", "SQD7", "SQD8", "Comments"],
-            [
-                new Date().toLocaleString(), 
-                formData.name, 
-                formData.email, 
-                formData.clientType, 
-                formData.role, 
-                formData.sex, 
-                formData.age, 
-                formData.region, 
-                formData.campus, 
-                formData.transactedOffice, 
-                formData.serviceAvailed, 
-                formData.ccAwareness, 
-                formData.ccVisibility, 
-                formData.ccHelp, 
-                formData.SQD0, 
-                formData.SQD1, 
-                formData.SQD2, 
-                formData.SQD3, 
-                formData.SQD4, 
-                formData.SQD5, 
-                formData.SQD6, 
-                formData.SQD7, 
-                formData.SQD8, 
-                formData.comments,
-            ]
-        ];
+    const handleSubmit = async () => {
+        setAttemptedSubmit(true);
+        if (!formData.name || !formData.email || !formData.role) {
+            alert("Please fill in all required fields.");
+            return;
+        }
 
+        try {
+            const { data, error } = await supabase
+                .from("Client_satisfaction_survey")
+                .insert([formData]);
+
+            if (error) {
+                console.error("Error submitting form:", error.message);
+                alert("Failed to submit the form. Please try again.");
+            } else {
+                alert("Form submitted successfully!");
+        
+            }
+        } catch (error) {
+            console.error("Unexpected error:", error);
+            alert("An unexpected error occurred. Please try again.");
+        }
     };
 
     return (
-        
         <div className="flex justify-center items-center ">
             <form className="w-11/12 bg-white shadow-lg rounded-lg p-6">
                 <div className="mt-4 bg-transparent p-6">
@@ -91,9 +161,10 @@ const EnglishVersionForm = () => {
                     <div>
                         <div className="mt-8 mb-4 text-2xl">
                             <p>
-                             This Client Satisfaction Measurement (CSM) tracks the customer experience of government offices. Your feedback on your recently concluded transaction will help this office provide a better service. Personal information shared will be kept confidential.
+                                This Client Satisfaction Measurement (CSM) tracks the customer experience of government offices. Your feedback on your recently concluded transaction will help this office provide a better service. Personal information shared will be kept confidential.
                             </p>
                         </div>
+                        
                         <hr />
                         <div className="font-bold mt-6 mb-4 text-2xl">I am a <span className="text-red-500">{attemptedSubmit && !formData.role ? "*" : ""}</span></div>
                         {["Faculty", "Non-Teaching Staff", "Student", "Guardian/Parent of Student", "Alumna", "Others"].map((role) => (
@@ -222,10 +293,10 @@ const EnglishVersionForm = () => {
                     <div className="text-center mt-10">
                         <button
                             type="button"
-                            onClick={handleDownload} // Trigger Excel download
+                            onClick={handleSubmit} // Trigger form submission
                             className="bg-green-500 text-white py-2 px-4 rounded-lg text-xl"
                         >
-                            Insert sa supabase then collect fetch sa SPME table
+                            Submit Form
                         </button>
                     </div>
                 </div>
