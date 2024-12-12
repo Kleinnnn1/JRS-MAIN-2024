@@ -49,9 +49,11 @@ export default function RequestDetailPage() {
   const [modalState, setModalState] = useState({
     isAssignModalOpen: false,
     isImageModalOpen: false,
+    isTransferModalOpen: false, // New state for transfer modal
   });
   const [isSaving, setIsSaving] = useState(false);
   const [assignedStaffName, setAssignedStaffName] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
 
   const {
     fullName,
@@ -132,6 +134,29 @@ export default function RequestDetailPage() {
       alert("An unexpected error occurred.");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleTransfer = async () => {
+    if (!selectedDepartment) {
+      alert("Please select a department.");
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("Department_request_assignment")
+        .update({ deptId: selectedDepartment })
+        .eq("requestId", requestId);
+
+      if (error) {
+        alert("Failed to transfer the request. Please try again.");
+      } else {
+        alert("Request successfully transferred.");
+        closeModal("isTransferModalOpen");
+      }
+    } catch (err) {
+      alert("An unexpected error occurred.");
     }
   };
 
@@ -256,6 +281,13 @@ export default function RequestDetailPage() {
                   {isSaving ? "Saving..." : "Save Remarks"}
                 </button>
               )}
+              {/* Transfer Request */}
+              <button
+                onClick={() => openModal("isTransferModalOpen")}
+                className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 w-40 mt-4"
+              >
+                Transfer Request
+              </button>
             </div>
           </div>
 
@@ -280,20 +312,43 @@ export default function RequestDetailPage() {
         </div>
 
         {/* Modals */}
-        {modalState.isImageModalOpen && (
+        {modalState.isTransferModalOpen && (
           <div
             className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
             role="dialog"
             aria-modal="true"
           >
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg">
-              <img src={image} alt="Job Request" className="rounded" />
-              <button
-                onClick={() => closeModal("isImageModalOpen")}
-                className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              <h2 className="text-xl font-bold mb-4">Transfer Request</h2>
+              <p className="text-gray-700 mb-4">
+                Choose a department to transfer:
+              </p>
+              <select
+                value={selectedDepartment}
+                onChange={(e) => setSelectedDepartment(e.target.value)}
+                className="w-full p-2 border rounded"
               >
-                Close
-              </button>
+                <option value="" className="hidden">
+                  Select Department
+                </option>
+                <option value="1">BGMS</option>
+                <option value="2">CSWS</option>
+                <option value="3">MEWS</option>
+              </select>
+              <div className="flex justify-end mt-4">
+                <button
+                  onClick={handleTransfer}
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  Transfer
+                </button>
+                <button
+                  onClick={() => closeModal("isTransferModalOpen")}
+                  className="ml-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         )}
