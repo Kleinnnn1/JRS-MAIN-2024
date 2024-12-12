@@ -25,6 +25,7 @@ export async function getDeptHeadJobRequest() {
         status,
         priority,
         image,
+        remarks,
         User(fullName),
         Department_request_assignment!inner(deptId)`
       )
@@ -52,6 +53,7 @@ export async function getDeptHeadJobRequest() {
       priority: item.priority || "No priority",
       image: item.image || "No image",
       deptId: item.Department_request_assignment[0]?.deptId || "Unknown deptId", // Access deptId from the assignment
+      remarks: item.remarks,
     }));
 
     console.log(formattedData);

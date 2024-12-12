@@ -16,16 +16,26 @@ const formatDate = (dateString) => {
 
   const date = new Date(dateString);
   const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
   const month = months[date.getMonth()];
   const day = date.getDate();
   const year = date.getFullYear();
   let hours = date.getHours();
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const ampm = hours >= 12 ? "PM" : "AM";
 
   hours = hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
@@ -40,7 +50,6 @@ export default function RequestDetailPage() {
     isAssignModalOpen: false,
     isImageModalOpen: false,
   });
-  const [remarks, setRemarks] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [assignedStaffName, setAssignedStaffName] = useState("");
 
@@ -55,7 +64,10 @@ export default function RequestDetailPage() {
     deptReqAssId,
     requestId,
     idNumber,
+    remarks: initialRemarks,
   } = location.state || {};
+
+  const [remarks, setRemarks] = useState(initialRemarks || ""); // Initialize remarks
 
   useEffect(() => {
     fetchAssignedStaff();
@@ -79,8 +91,10 @@ export default function RequestDetailPage() {
     };
   }, [requestId]);
 
-  const openModal = (key) => setModalState((prev) => ({ ...prev, [key]: true }));
-  const closeModal = (key) => setModalState((prev) => ({ ...prev, [key]: false }));
+  const openModal = (key) =>
+    setModalState((prev) => ({ ...prev, [key]: true }));
+  const closeModal = (key) =>
+    setModalState((prev) => ({ ...prev, [key]: false }));
 
   const handleAssign = () => {
     useAssignmentStore
@@ -152,42 +166,56 @@ export default function RequestDetailPage() {
             <div className="space-y-4 m-4 text-xl">
               <p>
                 <span className="font-semibold mt-12">
-                  Requestor:<br />
+                  Requestor:
+                  <br />
                 </span>
                 {fullName || "N/A"}
               </p>
               <p>
                 <span className="font-semibold">
-                  Description:<br />
+                  Description:
+                  <br />
                 </span>
                 {description || "No description provided"}
               </p>
               <p>
                 <span className="font-semibold">
-                  Job Category:<br />
-                  </span> {jobCategory || "Unknown Category"}
+                  Job Category:
+                  <br />
+                </span>{" "}
+                {jobCategory || "Unknown Category"}
               </p>
               <p>
                 <span className="font-semibold">
-                  Date Submitted:<br />
-                  </span> {formatDate(requestDate)}
+                  Date Submitted:
+                  <br />
+                </span>{" "}
+                {formatDate(requestDate)}
               </p>
               <p>
-                <span className="font-semibold">Location: <br /></span> {requestLocation || "Unknown Location"}
+                <span className="font-semibold">
+                  Location: <br />
+                </span>{" "}
+                {requestLocation || "Unknown Location"}
               </p>
 
               <p>
-                <span className="font-semibold mb-10">Priority:<br /></span>
+                <span className="font-semibold mb-10">
+                  Priority:
+                  <br />
+                </span>
                 <span
-                  className={` px-1 py-1 rounded ${PRIORITY_COLORS[priority] || "bg-gray-300 text-black"
-                    }`}
+                  className={` px-1 py-1 rounded ${
+                    PRIORITY_COLORS[priority] || "bg-gray-300 text-black"
+                  }`}
                 >
                   {priority || "No Priority"}
                 </span>
               </p>
             </div>
             <p>
-              <span className="font-semibold text-xl m-4">Assigned Staff:</span> {assignedStaffName}
+              <span className="font-semibold text-xl m-4">Assigned Staff:</span>{" "}
+              {assignedStaffName}
             </p>
             <div className="mt-2 m-4">
               {/* Assign Button */}
@@ -197,9 +225,11 @@ export default function RequestDetailPage() {
               >
                 Assign
               </button>
-
               {/* Remarks Section */}
-              <label htmlFor="remarks" className="block font-semibold mb-2 mt-4">
+              <label
+                htmlFor="remarks"
+                className="block font-semibold mb-2 mt-4"
+              >
                 Remarks:
               </label>
               <textarea
@@ -209,17 +239,23 @@ export default function RequestDetailPage() {
                 rows="4"
                 className="w-full border rounded p-2"
                 placeholder="Add your remarks here..."
+                disabled={!!initialRemarks} // Disable if there's an initial remark
               />
 
-              {/* Save Remarks Button */}
-              <button
-                onClick={handleSaveRemarks}
-                className={`mt-4 bg-green-600 text-white px-4 py-2 rounded ${isSaving ? "opacity-50 cursor-not-allowed" : "hover:bg-green-700"
+              {/* Conditionally Render Save Remarks Button */}
+              {!initialRemarks && (
+                <button
+                  onClick={handleSaveRemarks}
+                  className={`mt-4 bg-green-600 text-white px-4 py-2 rounded ${
+                    isSaving
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-green-700"
                   }`}
-                disabled={isSaving}
-              >
-                {isSaving ? "Saving..." : "Save Remarks"}
-              </button>
+                  disabled={isSaving} // Disable if saving
+                >
+                  {isSaving ? "Saving..." : "Save Remarks"}
+                </button>
+              )}
             </div>
           </div>
 
@@ -231,12 +267,14 @@ export default function RequestDetailPage() {
             {image ? (
               <img
                 src={image}
-                alt="Image" // Always add alt text for accessibility
+                alt="Image"
                 className="rounded-lg border mt-2 cursor-pointer transition-transform duration-200 hover:scale-105"
                 onClick={() => openModal("isImageModalOpen")}
               />
             ) : (
-              <p className="text-gray-500 italic text-center mt-4">No image available</p>
+              <p className="text-gray-500 italic text-center mt-4">
+                No image available
+              </p>
             )}
           </div>
         </div>
@@ -261,7 +299,10 @@ export default function RequestDetailPage() {
         )}
 
         {/* Assignment Modal */}
-        <ModalForm isOpen={modalState.isAssignModalOpen} onClose={() => closeModal("isAssignModalOpen")} />
+        <ModalForm
+          isOpen={modalState.isAssignModalOpen}
+          onClose={() => closeModal("isAssignModalOpen")}
+        />
         <button
           className="m-4 -mt-16 text-blue-500 font-bold underline"
           onClick={() => navigate(-1)}
