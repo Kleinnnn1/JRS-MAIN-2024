@@ -604,7 +604,7 @@ export default function App() {
 
             {/* REQUESTOR'S JOB REQUEST HISTORY */}
             <Route
-              path="job_request_history"
+              path="request_completed"
               element={<RequestorPageHistory />}
             />
 

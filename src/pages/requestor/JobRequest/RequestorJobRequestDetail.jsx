@@ -11,13 +11,7 @@ export default function JobRequestDetail() {
   const [trackingData, setTrackingData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
-  const stages = [
-    "Pending",
-    "Ongoing",
-    "Completed",
-    "Satisfaction Survey",
-  ];
+  const stages = ["Pending", "Ongoing", "Completed", "Satisfaction Survey"];
 
   useEffect(() => {
     const fetchJobRequest = async () => {
@@ -34,12 +28,12 @@ export default function JobRequestDetail() {
           .single();
 
         if (error) throw new Error(error.message);
-        
-        const { data: assignments, error: assignmentError } = await supabase
-        .from("Department_request_assignment")
-        .select("requestId, staffName, deptId");
 
-      if (assignmentError) throw assignmentError;
+        const { data: assignments, error: assignmentError } = await supabase
+          .from("Department_request_assignment")
+          .select("requestId, staffName, deptId");
+
+        if (assignmentError) throw assignmentError;
 
         const { data: departments, error: departmentError } = await supabase
           .from("Department")
@@ -277,7 +271,7 @@ export default function JobRequestDetail() {
               </div>
             </div>
           </div>
-           <div className="p-4 flex justify-end space-x-4">
+          <div className="p-4 flex justify-end space-x-4">
             <button
               onClick={() => navigate("/requestor/english_version")}
               className={`py-2 px-4 rounded ${
@@ -305,54 +299,54 @@ export default function JobRequestDetail() {
         </div>
 
         {/* Job Request Tracking Card */}
-  <div className="bg-white border shadow-md shadow-black/5 rounded-md h-full flex flex-col">
-        <div className="p-4 flex-grow">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            Job Request Tracking
-          </h2>
-          <div className="flex items-center justify-between">
-            {stages.map((stage, index) => (
-              <React.Fragment key={index}>
-                <div className="flex flex-col items-center">
-                  <div
-                    className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${
-                      index <= currentStage
-                        ? "border-green-500 bg-green-100"
-                        : "border-gray-300 bg-white"
-                    }`}
-                  >
+        <div className="bg-white border shadow-md shadow-black/5 rounded-md h-full flex flex-col">
+          <div className="p-4 flex-grow">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              Job Request Tracking
+            </h2>
+            <div className="flex items-center justify-between">
+              {stages.map((stage, index) => (
+                <React.Fragment key={index}>
+                  <div className="flex flex-col items-center">
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                        index <= currentStage ? "bg-green-500" : "bg-gray-300"
+                      className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${
+                        index <= currentStage
+                          ? "border-green-500 bg-green-100"
+                          : "border-gray-300 bg-white"
                       }`}
                     >
-                      {index <= currentStage ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-white"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 00-1.414 0L9 11.586 5.707 8.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l7-7a1 1 0 000-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      ) : null}
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                          index <= currentStage ? "bg-green-500" : "bg-gray-300"
+                        }`}
+                      >
+                        {index <= currentStage ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 text-white"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 00-1.414 0L9 11.586 5.707 8.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l7-7a1 1 0 000-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        ) : null}
+                      </div>
                     </div>
+                    <span className="text-sm text-gray-700 mt-2">{stage}</span>
                   </div>
-                  <span className="text-sm text-gray-700 mt-2">{stage}</span>
-                </div>
-                {index < stages.length - 1 && (
-                  <div
-                    className={`flex-1 h-1 ${
-                      index < currentStage ? "bg-green-500" : "bg-gray-300"
-                    }`}
-                  />
-                )}
-              </React.Fragment>
-            ))}
+                  {index < stages.length - 1 && (
+                    <div
+                      className={`flex-1 h-1 ${
+                        index < currentStage ? "bg-green-500" : "bg-gray-300"
+                      }`}
+                    />
+                  )}
+                </React.Fragment>
+              ))}
             </div>
             <div className="mt-6 overflow-x-auto">
               <div className="text-lg font-semibold text-black">

@@ -56,6 +56,7 @@ export default function RequestorJobRequestTable() {
           "requestId, description, jobCategory, image, status, requestDate, priority, idNumber"
         )
         .eq("idNumber", currentUser.idNumber)
+        .neq("status", "Completed") // Exclude requests with status = "Completed"
         .order("requestDate", { ascending: true });
 
       if (error) throw error;
@@ -302,11 +303,11 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       >
         View
       </button>,
-       <span
-       className={`px-2 py-1 rounded-md ${getStatusClass(request.status)}`}
-     >
-       {request.status}
-     </span>,
+      <span
+        className={`px-2 py-1 rounded-md ${getStatusClass(request.status)}`}
+      >
+        {request.status}
+      </span>,
       formattedDate,
       request.priority,
       // <span
