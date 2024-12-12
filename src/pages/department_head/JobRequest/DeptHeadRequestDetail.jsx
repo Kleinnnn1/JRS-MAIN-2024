@@ -66,6 +66,7 @@ export default function RequestDetailPage() {
     deptReqAssId,
     requestId,
     idNumber,
+    status,
     remarks: initialRemarks,
   } = location.state || {};
 
@@ -244,12 +245,14 @@ export default function RequestDetailPage() {
             </p>
             <div className="mt-2 m-4">
               {/* Assign Button */}
-              <button
-                onClick={handleAssign}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-32"
-              >
-                Assign
-              </button>
+              {status !== "Ongoing" && status !== "Completed" && (
+                <button
+                  onClick={handleAssign}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-32"
+                >
+                  Assign
+                </button>
+              )}
               {/* Remarks Section */}
               <label
                 htmlFor="remarks"
@@ -266,28 +269,34 @@ export default function RequestDetailPage() {
                 placeholder="Add your remarks here..."
                 disabled={!!initialRemarks} // Disable if there's an initial remark
               />
+              {status !== "Completed" && (
+                <>
+                  {/* Conditionally Render Save Remarks Button */}
+                  {!initialRemarks && (
+                    <button
+                      onClick={handleSaveRemarks}
+                      className={`mt-4 bg-green-600 text-white px-4 py-2 rounded ${
+                        isSaving
+                          ? "opacity-50 cursor-not-allowed"
+                          : "hover:bg-green-700"
+                      }`}
+                      disabled={isSaving} // Disable if saving
+                    >
+                      Save Remarks
+                    </button>
+                  )}
+                </>
+              )}
 
-              {/* Conditionally Render Save Remarks Button */}
-              {!initialRemarks && (
+              {/* Transfer Request */}
+              {status !== "Ongoing" && status !== "Completed" && (
                 <button
-                  onClick={handleSaveRemarks}
-                  className={`mt-4 bg-green-600 text-white px-4 py-2 rounded ${
-                    isSaving
-                      ? "opacity-50 cursor-not-allowed"
-                      : "hover:bg-green-700"
-                  }`}
-                  disabled={isSaving} // Disable if saving
+                  onClick={() => openModal("isTransferModalOpen")}
+                  className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 w-40 mt-4"
                 >
-                  {isSaving ? "Saving..." : "Save Remarks"}
+                  Transfer Request
                 </button>
               )}
-              {/* Transfer Request */}
-              <button
-                onClick={() => openModal("isTransferModalOpen")}
-                className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 w-40 mt-4"
-              >
-                Transfer Request
-              </button>
             </div>
           </div>
 

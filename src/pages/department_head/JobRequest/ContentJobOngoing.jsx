@@ -90,13 +90,18 @@ export default function ContentJobOngoing() {
       ? requests.map(
           (
             {
-              requestId,
               fullName,
               description,
-              jobCategory,
               location,
+              jobCategory,
+              requestDate,
               image,
               priority,
+              deptReqAssId,
+              requestId,
+              idNumber,
+              remarks,
+              status,
             },
             index
           ) => [
@@ -106,8 +111,40 @@ export default function ContentJobOngoing() {
             location || "N/A",
             priority,
             <button
-              className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2"
-              onClick={() => navigate(`/requests/view/${requestId}`)}
+              className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white"
+              onClick={() => {
+                console.log({
+                  fullName,
+                  description,
+                  location,
+                  jobCategory,
+                  requestDate,
+                  image,
+                  priority,
+                  deptReqAssId,
+                  requestId,
+                  idNumber,
+                  remarks,
+                  status,
+                }); // Log the state object
+
+                navigate(`/department_head/job_request/detail/${requestId}`, {
+                  state: {
+                    fullName,
+                    description,
+                    location,
+                    jobCategory,
+                    requestDate,
+                    image,
+                    priority,
+                    deptReqAssId,
+                    requestId,
+                    idNumber,
+                    remarks,
+                    status,
+                  },
+                });
+              }}
             >
               View
             </button>,
