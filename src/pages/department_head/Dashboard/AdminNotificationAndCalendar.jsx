@@ -1,203 +1,193 @@
-import { useEffect, useState } from "react";
+// AdminNotification Component
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import ReusableCalendar from "../../../components/ReusableCalendar";
-import 'react-calendar/dist/Calendar.css';
+import ReusablePagination from "../../../components/ReusablePagination";
+import Table from "../../../components/Table";
 import supabase from "../../../service/supabase";
+import { getDeptHeadNotification } from "../../../service/apiDeptHeadNotificationTable";
+import { getCurrentUser } from "../../../service/apiAuth";
+
+const tableHeaders = ["Message", "Date", "Action"];
 
 export default function AdminNotification() {
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState([]);
-  const [userIdNumber, setUserIdNumber] = useState(null);
-  const [userDeptId, setUserDeptId] = useState(null);
-  const [userRole, setUserRole] = useState(null);
+  const [notifs, setNotifs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // Fetch the logged-in user's idNumber, deptId, and userRole when the component mounts
+  // Fetch initial data
   useEffect(() => {
-    const fetchCurrentUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        const { data: userData, error } = await supabase
-          .from("User")
-          .select("idNumber, deptId, userRole")
-          .eq("id", session.user.id)
-          .single();
-        if (!error) {
-          setUserIdNumber(userData.idNumber);
-          setUserDeptId(userData.deptId);
-          setUserRole(userData.userRole);
-        } else {
-          console.error("Error fetching user data:", error);
-        }
+    async function fetchNotifs() {
+      try {
+        setLoading(true);
+        const data = await getDeptHeadNotification();
+        setNotifs(data);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching notifications:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    };
-    fetchCurrentUser();
+    }
+    fetchNotifs();
   }, []);
 
-  // Fetch notifications from the Notification table
+  // Set up real-time listener
   useEffect(() => {
-    const fetchNotifications = async () => {
-      if (userIdNumber) {
-        const { data: notificationData, error } = await supabase
-          .from("Notification")
-          .select("*")
-          .eq("idNumber", userIdNumber) // Fetch notifications for the logged-in user
-          .order("timestamp", { ascending: false }); // Order by timestamp (most recent first)
-        if (error) {
-          console.error("Error fetching notifications:", error);
-        } else {
-          setNotifications(notificationData);
-        }
-      }
-    };
-    fetchNotifications();
-  }, [userIdNumber]);
-
-  // Set up real-time listener for new Request inserts
-  useEffect(() => {
-    if (userIdNumber && userDeptId && userRole === "department head") {
-      const channel = supabase
-        .channel("realtime:Request")
+    async function setupListener() {
+      const currentUser = await getCurrentUser();
+  
+      const subscription = supabase
+        .channel("table-changes")
         .on(
           "postgres_changes",
-          { event: "INSERT", schema: "public", table: "Request" },
-          async (payload) => {
-            console.log("Payload received:", payload); // Log the full payload
-            const newRequest = payload.new;
-            console.log("New Request:", newRequest); // Log the newly inserted request
-            
-            // Check if the requestId exists
-            if (!newRequest || !newRequest.requestId) {
-              console.error("Missing requestId in new request:", newRequest);
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "Request",
+          },
+          (payload) => {
+            const { idNumber, Department_request_assignment, requestId, ...newNotifs } = payload.new;
+  
+            if (!requestId) {
+              console.warn("Skipping notification due to missing requestId:", payload);
               return;
             }
-
-            // Fetch the deptId from the Department_request_assignment table
-            const { data: deptData, error: deptError } = await supabase
-              .from("Department_request_assignment")
-              .select("deptId")
-              .eq("requestId", newRequest.requestId)
-              .single();
-            if (deptError) {
-              console.error("Error fetching department data:", deptError);
-              return;
-            }
-
-            // Check if the deptId matches the logged-in user's deptId
-            if (deptData.deptId === userDeptId) {
-              // If the deptId matches and userRole is "department head", create a notification
-              const newNotification = {
-                notificationid: Date.now(), // Use a unique value for notificationid
-                message: `[NEW] You received a new job request, Request No: ${newRequest.requestId}`,
-                timestamp: new Date().toISOString(), // Save as ISO timestamp
-                idNumber: userIdNumber,
-              };
-              // Insert the notification into the Supabase Notification table
-              const { error: insertError } = await supabase
-                .from("Notification")
-                .insert(newNotification);
-              if (insertError) {
-                console.error("Error inserting notification:", insertError);
-                return;
-              }
-              // Refresh notifications after insertion
-              const { data: notificationData, error: fetchError } = await supabase
-                .from("Notification")
-                .select("*")
-                .eq("idNumber", userIdNumber)
-                .order("timestamp", { ascending: false });
-              if (fetchError) {
-                console.error("Error fetching updated notifications:", fetchError);
-              } else {
-                setNotifications(notificationData);
-              }
-            } else {
-              console.log("DeptId mismatch or user is not a department head, no notification");
+  
+            if (
+              idNumber === currentUser.idNumber &&
+              Department_request_assignment?.deptId === currentUser.deptId
+            ) {
+              setNotifs((prev) => [...prev, { requestId, ...newNotifs }]);
             }
           }
         )
         .subscribe();
-      console.log("Channel subscription:", channel); // Log the subscription status
-      // Cleanup the subscription when the component unmounts or userIdNumber changes
+  
       return () => {
-        channel.unsubscribe(); // Correct cleanup code here
+        subscription.unsubscribe();
       };
     }
-  }, [userIdNumber, userDeptId, userRole]);
+  
+    setupListener();
+  }, []);
 
-  // Handle navigation when "Click to view" is clicked
-  const handleNotificationClick = async (message) => {
-    const match = message.match(/Request No: (\d+)/); // Extract the requestId
-    if (match && match[1]) {
-      const requestId = match[1];
-
-      // Fetch request details along with user fullName
-      const { data: requestDetails, error } = await supabase
-        .from("Request")
-        .select(`
-          requestId,
+  const formattedData = useMemo(() => {
+    return notifs.map(({
+      notificationid,
+      message,
+      timestamp,
+      requestId,
+      fullName,
+      description,
+      location,
+      jobCategory,
+      requestDate,
+      image,
+      priority,
+      deptReqAssId,
+      idNumber,
+      remarks,
+      
+    }) => [
+      message || "No description provided",
+      timestamp ? new Date(timestamp).toLocaleDateString() : "Invalid Date",
+      <button
+      key={requestId}
+      className="text-blue-500"
+      onClick={() => {
+        if (!requestId) {
+          console.error("Invalid requestId for navigation:", requestId);
+          return;
+        }
+        // Log the data to the console
+        console.log({
+          notificationid,
+          message,
+          timestamp,
+          fullName,
           description,
           location,
           jobCategory,
           requestDate,
           image,
           priority,
+          deptReqAssId,
+          requestId,
           idNumber,
-          User(fullName) -- Assuming 'User' is the related table for fullName
-        `)
-        .eq("requestId", requestId)
-        .single();
+          remarks,
+        });
+        
+        navigate(`/department_head/job_request/detail/${requestId}`, {
+          state: {
+            
+            fullName,
+            description,
+            location,
+            jobCategory,
+            requestDate,
+            image,
+            priority,
+            deptReqAssId,
+            requestId,
+            idNumber,
+            remarks,
+          },
+        });
+      }}
+    >
+      Click to View
+    </button>
+    
+    ]);
+  }, [notifs, navigate]);
 
-      if (error) {
-        console.error("Error fetching request details:", error);
-        return;
-      }
+  const filteredContent = useMemo(() => {
+    return formattedData.filter((request) =>
+      request.some((item) =>
+        String(item).toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [formattedData, searchTerm]);
 
-      // Navigate to the details page with all required data
-      navigate(`/department_head/job_request/detail/${requestId}`, {
-        state: {
-          ...requestDetails,
-          fullName: requestDetails.User?.fullName || "Unknown", // Handle null or undefined fullName
-        },
-      });
-    } else {
-      console.error("Invalid message format or missing requestId");
-    }
-  };
+  const paginatedContent = useMemo(() => {
+    return filteredContent.slice(
+      (currentPage - 1) * rowsPerPage,
+      currentPage * rowsPerPage
+    );
+  }, [filteredContent, currentPage, rowsPerPage]);
+
+  const totalPages = Math.ceil(filteredContent.length / rowsPerPage);
+
+  if (loading) {
+    return <div className="text-center">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500 text-center">Error: {error}</div>;
+  }
 
   return (
-    <div className="p-2">
-      <div className="grid lg:grid-cols-3 gap-10 h-[50vh]">
-        {/* NOTIFICATION */}
-        <div className="bg-white border lg:col-span-2 shadow-md shadow-black/5 flex flex-col justify-between h-full">
-          <div className="bg-custom-blue rounded-t-lg">
-            <div className="text-2xl text-white p-2 ml-2 text-black font-bold">
-              Notifications
-            </div>
-          </div>
-          <div className="p-6 flex-grow">
-            {notifications.length > 0 ? (
-              notifications.map((notification, index) => (
-                <div key={index} className="mb-4">
-                  <p>
-                    <b>{notification.message}</b>
-                  </p>
-                  <p className="text-xs">{new Date(notification.timestamp).toLocaleString()}</p>
-                  <button
-                    className="text-blue-500 underline"
-                    onClick={() => handleNotificationClick(notification.message)}
-                  >
-                    Click to view
-                  </button>
-                </div>
-              ))
-            ) : (
-              <p>No new notifications</p>
-            )}
-          </div>
-        </div>
-        {/* CALENDAR */}
-        <ReusableCalendar />
+    <div className="-mb-20 py-2 px-4 bg-white shadow-lg rounded-lg">
+      <div className="my-4 mx-3 py-4 px-6 bg-custom-blue text-white flex justify-between items-center rounded-t-lg">
+        NOTIFICATION
       </div>
+      <Table
+        rows={paginatedContent.length}
+        content={paginatedContent}
+        headers={tableHeaders}
+      />
+      <ReusablePagination
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+      />
     </div>
   );
 }

@@ -108,7 +108,73 @@ export default function RequestorNotification() {
           }
         }
       }
-
+      for (const requestId of newRequests) {
+        const message = `[NEW]: You received a new job request [Request ID #${requestId}].`;
+    
+        try {
+            // Step 1: Fetch deptId from Department_request_assignment based on requestId
+            const { data: deptAssignment, error: deptError } = await supabase
+                .from("Department_request_assignment")
+                .select("deptId")
+                .eq("requestId", requestId)
+                .single();
+    
+            if (deptError || !deptAssignment) {
+                console.error("Error fetching department assignment:", deptError || "No data found");
+                continue; // Skip this iteration if there's an error
+            }
+    
+            const deptId = deptAssignment.deptId;
+    
+            // Step 2: Fetch idNumber of the department head for the retrieved deptId
+            const { data: departmentHead, error: userError } = await supabase
+                .from("User")
+                .select("idNumber")
+                .eq("deptId", deptId)
+                .eq("userRole", "department head")
+                .single();
+    
+            if (userError || !departmentHead) {
+                console.error("Error fetching department head:", userError || "No data found");
+                continue; // Skip this iteration if there's an error
+            }
+    
+            const headIdNumber = departmentHead.idNumber;
+    
+            // Step 3: Check if the notification already exists
+            const { data: existingNotifications, error: notificationCheckError } = await supabase
+                .from("Notification")
+                .select("*")
+                .eq("message", message)
+                .eq("idNumber", headIdNumber)
+                .single();
+    
+            if (notificationCheckError) {
+                console.error("Error checking for duplicate notification:", notificationCheckError);
+            }
+    
+            // Step 4: If no existing notification with the same message, insert a new one
+            if (!existingNotifications) {
+                const newNotification = {
+                    message: message,
+                    timestamp: new Date().toISOString(),
+                    idNumber: headIdNumber, // Use the department head's idNumber
+                    requestId: requestId,
+                };
+    
+                const { error: insertError } = await supabase
+                    .from("Notification")
+                    .insert(newNotification);
+    
+                if (insertError) {
+                    console.error("Error inserting notification:", insertError);
+                }
+            }
+        } catch (error) {
+            console.error("Unexpected error:", error);
+        }
+    }
+    
       // Update the list of existing request IDs to prevent duplicate notifications
       setExistingRequestIds(newRequestIds);
     }
