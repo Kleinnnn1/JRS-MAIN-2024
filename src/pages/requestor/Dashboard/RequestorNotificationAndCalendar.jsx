@@ -215,7 +215,7 @@ export default function RequestorNotification() {
 
   return (
     <div className="p-2">
-      <div className="bg-white border rounded-t-lg shadow-md">
+      <div className="bg-white border -mx-4 rounded-t-lg shadow-md">
         <div className="bg-custom-blue rounded-t-lg p-3 text-white font-bold">
           Notifications
         </div>

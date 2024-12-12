@@ -34,14 +34,12 @@ export default function JobRequestDetail() {
           .single();
 
         if (error) throw new Error(error.message);
-
-        // Fetch assignments to get the department names
+        
         const { data: assignments, error: assignmentError } = await supabase
-          .from("Department_request_assignment")
-          .select("staffName, deptId")
-          .eq("requestId", requestId);
+        .from("Department_request_assignment")
+        .select("requestId, staffName, deptId");
 
-        if (assignmentError) throw assignmentError;
+      if (assignmentError) throw assignmentError;
 
         const { data: departments, error: departmentError } = await supabase
           .from("Department")
@@ -230,7 +228,7 @@ export default function JobRequestDetail() {
                 <input
                   type="text"
                   className="mt-1 block w-full border border-gray-300 p-2"
-                  value={jobRequest.departmentNames || "Not Available"}
+                  value={jobRequest.departmentName || "Not Available"}
                   readOnly
                 />
               </div>
@@ -252,7 +250,7 @@ export default function JobRequestDetail() {
                 <textarea
                   className="mt-1 block w-full border border-gray-300 p-2"
                   rows="3"
-                  value={jobRequest.staffNames || "No staff available."}
+                  value={jobRequest.staffName || "No staff available."}
                   readOnly
                 />
               </div>

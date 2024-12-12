@@ -10,7 +10,7 @@ import RequestorNotification from "./RequestorNotificationAndCalendar";
 
 export default function ContentDashboard() {
   const navigate = useNavigate();
-  const statusCardColor = "bg-blue-50";
+  const statusCardColor = "bg-white";
   
   const [counts, setCounts] = useState({
     pending: 0,
@@ -101,12 +101,12 @@ export default function ContentDashboard() {
       {/* Main Content Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
         {/* Left Side (Notifications) */}
-        <div className="col-span-2">
+        <div className="col-span-2 -mt-5">
           <RequestorNotification />
         </div>
 
         {/* Right Side (Calendar) */}
-        <div className="lg:col-span-1 rounded-lg">
+        <div className="lg:col-span-1 -mt-5 rounded-lg">
           <ReusableCalendar />
         </div>
       </div>

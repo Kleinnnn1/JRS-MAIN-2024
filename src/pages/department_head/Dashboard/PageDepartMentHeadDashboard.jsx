@@ -36,7 +36,7 @@ export default function DepartmentHeadDashboard() {
   };
 
   return (
-    <div className="flex h-screen text-gray-800 font-inter">
+    <div className="flex bg-slate-200 h-screen text-gray-800 font-inter">
       {/* Sidebar */}
       <div
         className={`${
