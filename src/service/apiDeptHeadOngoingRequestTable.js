@@ -26,6 +26,7 @@ export async function getDeptHeadOngoingJobRequest() {
         priority,
         image,
         User(fullName),
+        remarks,
         Department_request_assignment!inner(deptId)`
       )
       .eq("status", "Ongoing") // Filter by status = 'Ongoing'
@@ -52,6 +53,7 @@ export async function getDeptHeadOngoingJobRequest() {
       priority: item.priority || "No priority",
       image: item.image || "No image",
       deptId: item.Department_request_assignment[0]?.deptId || "Unknown deptId", // Access deptId from the assignment
+      remarks: item.remarks,
     }));
 
     console.log(formattedData);

@@ -117,7 +117,11 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/staff/home" },
     { icon: <FaTasks />, label: "Assigned Job", path: "/staff/job_assigned" },
- 
+    {
+      icon: <FaCheckCircle />,
+      label: "Compeleted Job Assigned",
+      path: "/staff/job_completed",
+    },
     { icon: <FaFileAlt />, label: "My Request", path: "/staff/my_request" },
     { icon: <FaChartPie />, label: "Add Keyword", path: "/staff/add_keyword" },
   ];

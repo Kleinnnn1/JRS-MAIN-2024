@@ -83,8 +83,9 @@ export default function RequestorDashboard() {
         </div>
         {/* Divider Below Profile */}
         <div
-          className={`border-t border-gray-300 my-4 mx-2 ${isSidebarCollapsed ? "hidden" : ""
-            }`}
+          className={`border-t border-gray-300 my-4 mx-2 ${
+            isSidebarCollapsed ? "hidden" : ""
+          }`}
         ></div>
         {/* Menu Items */}
         <SidebarMenu
@@ -112,8 +113,16 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/requestor/home" },
     // { icon: <FaCalendarAlt />, label: "Schedules", path: "/requestor/requestor_schedule" },
-    { icon: <FaHistory />, label: "Completed Request", path: "/requestor/job_request_history" },
-    { icon: <FaFileAlt />, label: "My Requests", path: "/requestor/job_request" },
+    {
+      icon: <FaFileAlt />,
+      label: "My Requests",
+      path: "/requestor/job_request",
+    },
+    {
+      icon: <FaHistory />,
+      label: "Completed Request",
+      path: "/requestor/request_completed",
+    },
   ];
 
   return (
@@ -122,11 +131,17 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
         <li
           key={index}
           className={`flex m-1 items-center space-x-4 p-2 rounded cursor-pointer ${
-            currentPath === item.path ? "bg-yellow-100 m-1 text-black" : "hover:bg-gray-700"
+            currentPath === item.path
+              ? "bg-yellow-100 m-1 text-black"
+              : "hover:bg-gray-700"
           }`}
           onClick={() => navigate(item.path)}
         >
-          <span className={`text-2xl ${currentPath === item.path ? "text-black" : "text-white"}`}>
+          <span
+            className={`text-2xl ${
+              currentPath === item.path ? "text-black" : "text-white"
+            }`}
+          >
             {item.icon}
           </span>
           <span

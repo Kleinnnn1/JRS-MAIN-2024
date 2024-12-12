@@ -6,7 +6,6 @@ import Table from "../../../components/Table";
 import SearchBar from "../../../components/SearchBar";
 import supabase from "../../../service/supabase";
 import { getDeptHeadJobRequest } from "../../../service/apiDeptHeadRequestTable";
-import { getCurrentUser } from "../../../service/apiAuth";
 
 const tableHeaders = [
   "Requestor",
@@ -14,6 +13,7 @@ const tableHeaders = [
   "Job Category",
   "Date Submitted",
   "Location",
+  "Image",
   "Priority",
   "Action",
 ];
@@ -36,7 +36,7 @@ export default function ContentJobRequest() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -94,6 +94,7 @@ export default function ContentJobRequest() {
     };
   }, []);
 
+
   const formattedData = requests.map(
     (
       {
@@ -116,6 +117,16 @@ export default function ContentJobRequest() {
       jobCategory || "Unknown Category",
       requestDate ? new Date(requestDate).toLocaleDateString() : "Invalid Date",
       location || "Unknown Location",
+      image ? (
+        <img
+          src={image}
+          alt="Request"
+          className="w-12 h-12 cursor-pointer"
+          onClick={() => console.log("Image clicked:", image)}
+        />
+      ) : (
+        "No Image"
+      ),
       priority ? (
         <span className={getPriorityClass(priority)}>{priority}</span>
       ) : (
@@ -123,21 +134,7 @@ export default function ContentJobRequest() {
       ),
       <button
         className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white"
-        onClick={() => {
-          console.log({
-            fullName,
-            description,
-            location,
-            jobCategory,
-            requestDate,
-            image,
-            priority,
-            deptReqAssId,
-            requestId,
-            idNumber,
-            remarks,
-          }); // Log the state object
-
+        onClick={() =>
           navigate(`/department_head/job_request/detail/${requestId}`, {
             state: {
               fullName,
@@ -152,8 +149,8 @@ export default function ContentJobRequest() {
               idNumber,
               remarks,
             },
-          });
-        }}
+          })
+        }
       >
         View
       </button>,
@@ -172,18 +169,11 @@ export default function ContentJobRequest() {
     currentPage * rowsPerPage
   );
 
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (error) {
-  //   return <div className="text-center text-red-500">Error: {error}</div>;
-  // }
 
   return (
     <div className="-mb-20 py-2 px-4 bg-white shadow-lg rounded-lg">
-      <div className="my-4 mx-3 py-4 px-6 bg-custom-blue flex justify-between items-center rounded-t-lg">
-        <SearchBar title="Pending" showInput={true} />
+      <div className=" flex justify-between items-center rounded-t-lg">
+        <SearchBar title="Pendingsss" showInput={true} />
         <ReusableSearchTerm
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}

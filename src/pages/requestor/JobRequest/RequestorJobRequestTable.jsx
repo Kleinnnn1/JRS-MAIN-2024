@@ -10,11 +10,9 @@ import { getCurrentUser } from "../../../service/apiAuth";
 
 const tableHeaders = [
   "Request ID",
-  "Job Description",
   "Job Category",
   "Office",
   "Assigned Staff",
-  "Image",
   "Status",
   "Date Requested",
   "Priority",
@@ -56,7 +54,8 @@ export default function RequestorJobRequestTable() {
           "requestId, description, jobCategory, image, status, requestDate, priority, idNumber"
         )
         .eq("idNumber", currentUser.idNumber)
-        .order("requestDate", { ascending: true });
+        .neq("status", "Completed") // Exclude requests with status = "Completed"
+        .order("requestDate", { ascending: false });
 
       if (error) throw error;
 
@@ -296,17 +295,11 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       request.jobCategory,
       request.departmentNames || "N/A",
       request.staffNames || "N/A",
-      <button
-        onClick={() => openImageModal(request.image)}
-        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md"
+      <span
+        className={`px-2 py-1 rounded-md ${getStatusClass(request.status)}`}
       >
-        View
-      </button>,
-       <span
-       className={`px-2 py-1 rounded-md ${getStatusClass(request.status)}`}
-     >
-       {request.status}
-     </span>,
+        {request.status}
+      </span>,
       formattedDate,
       request.priority,
       // <span
@@ -318,7 +311,7 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
         onClick={() => handleDetailsClick(request)}
         className="cursor-pointer text-blue-500 hover:text-blue-700"
       >
-        Details
+        View
       </span>,
     ];
   });

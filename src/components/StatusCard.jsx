@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 export default function StatusCard({
   title,
   count,
-  bgColor = "bg-blue-50",
+  bgColor = "bg-white",
   subText,
   onClick,
   icon,
