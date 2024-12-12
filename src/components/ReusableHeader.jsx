@@ -19,7 +19,7 @@ export default function ReusableHeader({
       {/* Left Section */}
       <div className="flex items-center">
         <a href="#" className="text-xs text-gray-700 font-medium">
-          jrs@ustp.edu.ph +384-3478-984
+          {/* jrs@ustp.edu.ph +384-3478-984 */}
         </a>
       </div>
 

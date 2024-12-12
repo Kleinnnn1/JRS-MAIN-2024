@@ -10,7 +10,6 @@ import { getCurrentUser } from "../../../service/apiAuth";
 
 const tableHeaders = [
   "Request ID",
-  "Job Description",
   "Job Category",
   "Office",
   "Assigned Staff",
@@ -56,7 +55,7 @@ export default function RequestorJobRequestTable() {
         )
         .eq("idNumber", currentUser.idNumber)
         .neq("status", "Completed") // Exclude requests with status = "Completed"
-        .order("requestDate", { ascending: true });
+        .order("requestDate", { ascending: false });
 
       if (error) throw error;
 
@@ -312,7 +311,7 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
         onClick={() => handleDetailsClick(request)}
         className="cursor-pointer text-blue-500 hover:text-blue-700"
       >
-        Details
+        View
       </span>,
     ];
   });
