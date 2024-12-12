@@ -114,14 +114,14 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
     { icon: <FaHome />, label: "Home", path: "/requestor/home" },
     // { icon: <FaCalendarAlt />, label: "Schedules", path: "/requestor/requestor_schedule" },
     {
-      icon: <FaHistory />,
-      label: "Completed Request",
-      path: "/requestor/request_completed",
-    },
-    {
       icon: <FaFileAlt />,
       label: "My Requests",
       path: "/requestor/job_request",
+    },
+    {
+      icon: <FaHistory />,
+      label: "Completed Request",
+      path: "/requestor/request_completed",
     },
   ];
 
