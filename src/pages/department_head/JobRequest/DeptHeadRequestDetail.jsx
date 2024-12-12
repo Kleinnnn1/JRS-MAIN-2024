@@ -149,27 +149,37 @@ export default function RequestDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-6 mt-6">
           {/* Left Section */}
           <div>
-            <div className="space-y-4 m-4">
+            <div className="space-y-4 m-4 text-xl">
               <p>
-                <span className="font-semibold">Requestor:</span> {fullName || "N/A"}
+                <span className="font-semibold mt-12">
+                  Requestor:<br />
+                </span>
+                {fullName || "N/A"}
               </p>
               <p>
-                <span className="font-semibold">Description:</span> {description || "No description provided"}
+                <span className="font-semibold">
+                  Description:<br />
+                </span>
+                {description || "No description provided"}
               </p>
               <p>
-                <span className="font-semibold">Job Category:</span> {jobCategory || "Unknown Category"}
+                <span className="font-semibold">
+                  Job Category:<br />
+                  </span> {jobCategory || "Unknown Category"}
               </p>
               <p>
-                <span className="font-semibold">Date Submitted:</span> {formatDate(requestDate)}
+                <span className="font-semibold">
+                  Date Submitted:<br />
+                  </span> {formatDate(requestDate)}
               </p>
               <p>
-                <span className="font-semibold">Location:</span> {requestLocation || "Unknown Location"}
+                <span className="font-semibold">Location: <br /></span> {requestLocation || "Unknown Location"}
               </p>
 
               <p>
-                <span className="font-semibold">Priority:</span>
+                <span className="font-semibold mb-10">Priority:<br /></span>
                 <span
-                  className={`ml-2 px-2 py-1 rounded ${PRIORITY_COLORS[priority] || "bg-gray-300 text-black"
+                  className={` px-1 py-1 rounded ${PRIORITY_COLORS[priority] || "bg-gray-300 text-black"
                     }`}
                 >
                   {priority || "No Priority"}
@@ -177,9 +187,9 @@ export default function RequestDetailPage() {
               </p>
             </div>
             <p>
-              <span className="font-semibold m-4">Assigned Staff:</span> {assignedStaffName}
+              <span className="font-semibold text-xl m-4">Assigned Staff:</span> {assignedStaffName}
             </p>
-            <div className="mt-6 m-4">
+            <div className="mt-2 m-4">
               {/* Assign Button */}
               <button
                 onClick={handleAssign}
