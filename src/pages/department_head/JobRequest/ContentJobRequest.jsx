@@ -14,7 +14,6 @@ const tableHeaders = [
   "Job Category",
   "Date Submitted",
   "Location",
-  "Image",
   "Priority",
   "Action",
 ];
@@ -117,16 +116,6 @@ export default function ContentJobRequest() {
       jobCategory || "Unknown Category",
       requestDate ? new Date(requestDate).toLocaleDateString() : "Invalid Date",
       location || "Unknown Location",
-      image ? (
-        <img
-          src={image}
-          alt="Request"
-          className="w-12 h-12 cursor-pointer"
-          onClick={() => console.log("Image clicked:", image)}
-        />
-      ) : (
-        "No Image"
-      ),
       priority ? (
         <span className={getPriorityClass(priority)}>{priority}</span>
       ) : (

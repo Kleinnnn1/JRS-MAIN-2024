@@ -27,7 +27,6 @@ const tableHeaders = [
   "Job Description",
   "Job Position",
   "Location",
-  "Image",
   "Priority",
   "Action",
 ];
@@ -105,16 +104,6 @@ export default function ContentJobOngoing() {
             description || "N/A",
             jobCategory || "N/A",
             location || "N/A",
-            image ? (
-              <img src={image} alt="Request" className="h-12 w-12" />
-            ) : (
-              "No Image"
-            ),
-            priority ? (
-              <span className={getPriorityClass(priority)}>{priority}</span>
-            ) : (
-              "N/A"
-            ), // Apply styling to priority
             <button
               className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white mr-2"
               onClick={() => navigate(`/requests/view/${requestId}`)}
