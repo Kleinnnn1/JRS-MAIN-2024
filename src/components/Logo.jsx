@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import LogoJRS from "/src/assets/images/logo_jrs_.svg";
+import LogoJRS from "/src/assets/images/logo_jrs_.gif";
 
 export default function Logo() {
   return (
@@ -12,7 +12,7 @@ export default function Logo() {
       transition={{ type: "spring", stiffness: 150, damping: 8 }}
       whileHover={{
         scale: 1.2, // Slightly increase size
-        filter: "brightness(1.5)", // Increase brightness
+        filter: "brightness(1.0)", // Increase brightness
         transition: { duration: 0.3, ease: "easeInOut" },
       }}
     />

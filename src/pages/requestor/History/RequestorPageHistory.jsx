@@ -178,14 +178,14 @@ export default function JobRequestHistory() {
   return (
     <div className="max-w-full -mt-1 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
-        <SearchBar title="Job Requests" />
+        <SearchBar title="Completed" />
         <div className="flex space-x-4">
-          <button
+          {/* <button
             onClick={handleMakeRequest}
             className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
           >
             Make Request
-          </button>
+          </button> */}
           <ReusableSearchTerm
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
