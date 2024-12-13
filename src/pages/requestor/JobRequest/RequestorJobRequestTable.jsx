@@ -10,6 +10,7 @@ import { getCurrentUser } from "../../../service/apiAuth";
 
 const tableHeaders = [
   "Request ID",
+  "Job Description",
   "Job Category",
   "Office",
   "Assigned Staff",
@@ -54,7 +55,7 @@ export default function RequestorJobRequestTable() {
           "requestId, description, jobCategory, image, status, requestDate, priority, idNumber"
         )
         .eq("idNumber", currentUser.idNumber)
-        .neq("status", "Completed") // Exclude requests with status = "Completed"
+        .neq("status", "Completed")
         .order("requestDate", { ascending: false });
 
       if (error) throw error;
@@ -107,7 +108,7 @@ export default function RequestorJobRequestTable() {
   const fetchAndSetRequests = async () => {
     try {
       setLoading(true);
-      await fetchRequests(); // Re-fetch all data
+      await fetchRequests();
     } catch (err) {
       console.error("Error fetching updated requests:", err.message);
     } finally {
@@ -129,13 +130,13 @@ export default function RequestorJobRequestTable() {
             eventType === "UPDATE" ||
             eventType === "DELETE"
           ) {
-            await fetchAndSetRequests(); // Re-fetch all data on changes
+            await fetchAndSetRequests();
           }
         }
       )
       .subscribe();
 
-    fetchRequests(); // Initial fetch
+    fetchRequests();
 
     return () => {
       supabase.removeChannel(channel);
@@ -182,7 +183,7 @@ export default function RequestorJobRequestTable() {
         <div className="flex space-x-4">
           <button
             onClick={handleMakeRequest}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md"
           >
             Make Request
           </button>
@@ -252,29 +253,29 @@ export default function RequestorJobRequestTable() {
 }
 
 const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
-  // const getPriorityClass = (level) => {
-  //   switch (level) {
-  //     case "High":
-  //       return "bg-red-400";
-  //     case "Medium":
-  //       return "bg-yellow-300";
-  //     case "Low":
-  //       return "bg-green-300";
-  //     default:
-  //       return "bg-gray-300";
-  //   }
-  // };
+  const getPriorityClass = (level) => {
+    switch (level) {
+      case "High":
+        return "bg-red-300 text-white";
+      case "Medium":
+        return "bg-yellow-200 text-black";
+      case "Low":
+        return "bg-cyan-100 text-black";
+      default:
+        return "bg-gray-200 text-black";
+    }
+  };
 
   const getStatusClass = (status) => {
     switch (status) {
       case "Pending":
-        return "bg-yellow-300";
+        return "bg-gray-200";
       case "Ongoing":
-        return "bg-blue-300";
+        return "bg-green-200";
       case "Completed":
-        return "bg-green-300";
+        return "bg-green-200";
       default:
-        return "bg-gray-300";
+        return "bg-gray-200";
     }
   };
 
@@ -301,12 +302,11 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
         {request.status}
       </span>,
       formattedDate,
-      request.priority,
-      // <span
-      //   className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
-      // >
-      //   {request.priority}
-      // </span>,
+      <span
+        className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
+      >
+        {request.priority}
+      </span>,
       <span
         onClick={() => handleDetailsClick(request)}
         className="cursor-pointer text-blue-500 hover:text-blue-700"
