@@ -20,7 +20,7 @@ const tableHeaders = [
   "Actions",
 ];
 
-export default function RequestorJobRequestTable() {
+export default function CompletedDeptGHeadRequestorJobRequestTable() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ export default function RequestorJobRequestTable() {
           "requestId, description, jobCategory, image, status, requestDate, priority, idNumber"
         )
         .eq("idNumber", currentUser.idNumber)
-        .neq("status", "Completed")
+        .eq("status", "Completed")
         .order("requestDate", { ascending: true });
 
       if (error) throw error;
@@ -179,7 +179,7 @@ export default function RequestorJobRequestTable() {
   return (
     <div className="max-w-full -mt-14 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
-        <SearchBar title="My Requests" />
+        <SearchBar title="My Completed Requests" />
         <div className="flex space-x-4">
           <button
             onClick={handleMakeRequest}

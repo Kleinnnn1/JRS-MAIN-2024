@@ -187,6 +187,7 @@ import RequestDetailPage from "./pages/department_head/JobRequest/DeptHeadReques
 import RequestorJobRequestDetailPage from "./pages/requestor/JobRequest/RequestorJobRequestDetail.jsx";
 import OfficeHeadRequestorJobRequestDetailPage from "./pages/office_org_head/JobRequestOfficeHead/RequestorJobRequestDetail.jsx";
 import CompletedRequestDetailPage from "./pages/staff/History/CompletedTaskDetails.jsx";
+import CompletedDeptGHeadRequestorJobRequestTable from "./pages/department_head/JobRequestDeptHead/CompletedRequestorJobRequestTable.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -536,6 +537,10 @@ export default function App() {
             <Route
               path="my_request"
               element={<RequestorJobRequestDeptHead />}
+            />
+            <Route
+              path="my_request/completed"
+              element={<CompletedDeptGHeadRequestorJobRequestTable />}
             />
             <Route
               path="my_request/detail/:requestId"
