@@ -179,7 +179,7 @@ function AddKeyword() {
 
         {/* Display Keywords for the Selected Category */}
         {showKeywords && category && keywordsList.length > 0 && (
-          <div className="mt-6">
+          <div className="mt-6 max-h-40 overflow-y-auto border border-gray-300 rounded-md p-2">
             <div className="flex flex-wrap gap-4">
               {keywordsList.map((item) => (
                 <div
