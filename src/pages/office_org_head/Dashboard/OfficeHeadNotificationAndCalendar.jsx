@@ -108,72 +108,6 @@
             }
           }
         }
-        for (const requestId of newRequests) {
-          const message = `[NEW]: You received a new job request [Request ID #${requestId}].`;
-      
-          try {
-              // Step 1: Fetch deptId from Department_request_assignment based on requestId
-              const { data: deptAssignment, error: deptError } = await supabase
-                  .from("Department_request_assignment")
-                  .select("deptId")
-                  .eq("requestId", requestId)
-                  .single();
-      
-              if (deptError || !deptAssignment) {
-                  console.error("Error fetching department assignment:", deptError || "No data found");
-                  continue; // Skip this iteration if there's an error
-              }
-      
-              const deptId = deptAssignment.deptId;
-      
-              // Step 2: Fetch idNumber of the department head for the retrieved deptId
-              const { data: departmentHead, error: userError } = await supabase
-                  .from("User")
-                  .select("idNumber")
-                  .eq("deptId", deptId)
-                  .eq("userRole", "department head")
-                  .single();
-      
-              if (userError || !departmentHead) {
-                  console.error("Error fetching department head:", userError || "No data found");
-                  continue; // Skip this iteration if there's an error
-              }
-      
-              const headIdNumber = departmentHead.idNumber;
-      
-              // Step 3: Check if the notification already exists
-              const { data: existingNotifications, error: notificationCheckError } = await supabase
-                  .from("Notification")
-                  .select("*")
-                  .eq("message", message)
-                  .eq("idNumber", headIdNumber)
-                  .single();
-      
-              if (notificationCheckError) {
-                  console.error("Error checking for duplicate notification:", notificationCheckError);
-              }
-      
-              // Step 4: If no existing notification with the same message, insert a new one
-              if (!existingNotifications) {
-                  const newNotification = {
-                      message: message,
-                      timestamp: new Date().toISOString(),
-                      idNumber: headIdNumber, // Use the department head's idNumber
-                      requestId: requestId,
-                  };
-      
-                  const { error: insertError } = await supabase
-                      .from("Notification")
-                      .insert(newNotification);
-      
-                  if (insertError) {
-                      console.error("Error inserting notification:", insertError);
-                  }
-              }
-          } catch (error) {
-              console.error("Unexpected error:", error);
-          }
-      }
       
         // Update the list of existing request IDs to prevent duplicate notifications
         setExistingRequestIds(newRequestIds);
@@ -206,6 +140,11 @@
         // If status is "Completed"
         if (request.status === "Completed") {
           message = `COMPLETED: Your request [Request ID #${request.requestId}] has been completed.`;
+        }
+
+        // If extensionDate is updated
+        if (request.extensionDate) {
+          message = `EXTENDED: Your job request is extended. Request ID No. ${request.requestId}`;
         }
 
         if (message) {
@@ -242,11 +181,81 @@
       });
     };
 
+const checkNewUsers = async () => {
+    if (!userIdNumber) return;
+
+    try {
+        // Step 1: Fetch current user's department ID
+        const { data: currentUser, error: currentUserError } = await supabase
+            .from("User")
+            .select("deptId")
+            .eq("idNumber", userIdNumber)
+            .single();
+
+        if (currentUserError || !currentUser) {
+            console.error("Error fetching current user department:", currentUserError || "No data found");
+            return;
+        }
+
+        const currentDeptId = currentUser.deptId;
+
+        // Step 2: Fetch unverified users in the same department
+        const { data: unverifiedUsers, error: unverifiedUsersError } = await supabase
+            .from("User")
+            .select("idNumber")
+            .eq("userRole", "unverified")
+            .eq("deptId", currentDeptId);
+
+        if (unverifiedUsersError) {
+            console.error("Error fetching unverified users:", unverifiedUsersError);
+            return;
+        }
+
+        for (const user of unverifiedUsers) {
+            const message = "APPROVAL : A staff wants your approval as part of your office/department.";
+
+            // Step 3: Check if the notification already exists
+            const { data: existingNotification, error: notificationCheckError } = await supabase
+                .from("Notification")
+                .select("*")
+                .eq("message", message)
+                .eq("idNumber", userIdNumber)
+                .single();
+
+            if (notificationCheckError) {
+                console.error("Error checking for duplicate notification:", notificationCheckError);
+            }
+
+            // Step 4: If no existing notification, insert a new one
+            if (!existingNotification) {
+                const newNotification = {
+                    message: message,
+                    timestamp: new Date().toISOString(),
+                    idNumber: userIdNumber, // Current user ID
+                    requestId: null, // No involvement with the Request table
+                };
+
+                const { error: insertError } = await supabase
+                    .from("Notification")
+                    .insert(newNotification);
+
+                if (insertError) {
+                    console.error("Error inserting notification:", insertError);
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Unexpected error:", error);
+    }
+};
+
+
     // Poll every 5 seconds to check for new job requests, update status, and refresh notifications
     useEffect(() => {
       const interval = setInterval(() => {
         checkNewRequests();  // Check for new requests and insert new notifications
         checkRequestStatusUpdates();  // Check for status changes to "Ongoing" or "Completed" and insert notifications
+        checkNewUsers();
 
         // Fetch the latest notifications
         const fetchNotifications = async () => {
@@ -292,7 +301,7 @@
                   <tbody>
                     {paginatedNotifications.map((notification, index) => (
                       <tr key={index} className="border-t">
-                        <td className="px-4 py-2">{notification.message}</td>
+                        <td className="px-4 py-2 ">{notification.message}</td>
                         <td className="px-4 py-2">
                           {new Date(notification.timestamp).toLocaleString()}
                         </td>
@@ -302,6 +311,7 @@
                               className="text-blue-700"
                               onClick={async () => {
                                 const requestId = notification.message.match(/Request ID #(\d+)/)?.[1];
+                                const idNumber = notification.message.match(/USER ID #(\d+)/)?.[1];
                                 if (requestId) {
                                   const { data: request } = await supabase
                                     .from("Request")
@@ -314,7 +324,7 @@
                                 }
                               }}
                             >
-                              [View Request]
+                              Click to view
                             </button>
                           )}
                         </td>

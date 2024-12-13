@@ -208,6 +208,11 @@ export default function RequestorNotification() {
         message = `COMPLETED: Your request [Request ID #${request.requestId}] has been completed.`;
       }
 
+       // If extensionDate is updated
+       if (request.extensionDate) {
+        message = `EXTENDED: Your job request is extended. Request ID No. ${request.requestId}`;
+    }
+
       if (message) {
         // Check if the notification already exists for the given message
         const { data: existingNotifications, error: notificationCheckError } = await supabase
