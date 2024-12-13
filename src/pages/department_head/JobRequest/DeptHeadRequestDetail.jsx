@@ -254,7 +254,35 @@ export default function RequestDetailPage() {
                 </button>
               )}
               {/* Remarks Section */}
+
+              {/* Remarks Section */}
               <label
+                htmlFor="remarks"
+                className="block font-semibold mb-2 mt-4"
+              >
+                Remarks:
+              </label>
+              <textarea
+                id="remarks"
+                value={remarks}
+                onChange={(e) => setRemarks(e.target.value)}
+                rows="4"
+                className="w-full border rounded p-2"
+                placeholder="Add your remarks here..."
+              />
+              <button
+                onClick={handleSaveRemarks}
+                className={`mt-4 bg-green-600 text-white px-4 py-2 rounded ${
+                  isSaving
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:bg-green-700"
+                }`}
+                disabled={isSaving} // Disable only when saving
+              >
+                Save Remarks
+              </button>
+
+              {/* <label
                 htmlFor="remarks"
                 className="block font-semibold mb-2 mt-4"
               >
@@ -271,7 +299,6 @@ export default function RequestDetailPage() {
               />
               {status !== "Completed" && (
                 <>
-                  {/* Conditionally Render Save Remarks Button */}
                   {!initialRemarks && (
                     <button
                       onClick={handleSaveRemarks}
@@ -286,7 +313,7 @@ export default function RequestDetailPage() {
                     </button>
                   )}
                 </>
-              )}
+              )} */}
 
               {/* Transfer Request */}
               {status !== "Ongoing" && status !== "Completed" && (

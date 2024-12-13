@@ -12,7 +12,6 @@ const tableHeaders = [
   "Requestor",
   "Job Description",
   "Job Category",
-  "Date Submitted",
   "Location",
   "Priority",
   "Action",
@@ -114,7 +113,6 @@ export default function ContentJobRequest() {
       `${index + 1}. ${fullName || "N/A"}`,
       description || "No description provided",
       jobCategory || "Unknown Category",
-      requestDate ? new Date(requestDate).toLocaleDateString() : "Invalid Date",
       location || "Unknown Location",
       priority ? (
         <span className={getPriorityClass(priority)}>{priority}</span>
