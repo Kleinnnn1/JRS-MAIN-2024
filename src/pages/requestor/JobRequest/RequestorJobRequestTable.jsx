@@ -10,11 +10,12 @@ import { getCurrentUser } from "../../../service/apiAuth";
 
 const tableHeaders = [
   "Request ID",
+  "Description",
   "Job Category",
   "Office",
   "Assigned Staff",
   "Status",
-  "Date Requested",
+  // "Date Requested",
   "Priority",
   "Actions",
 ];
@@ -300,7 +301,7 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       >
         {request.status}
       </span>,
-      formattedDate,
+      //   formattedDate,
       request.priority,
       // <span
       //   className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}

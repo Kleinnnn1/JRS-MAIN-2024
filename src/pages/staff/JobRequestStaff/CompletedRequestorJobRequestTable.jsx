@@ -56,7 +56,7 @@ export default function RequestorJobRequestTable() {
           "requestId, description, jobCategory, image, status, requestDate, priority, idNumber"
         )
         .eq("idNumber", currentUser.idNumber)
-        .neq("status", "Completed") // Add this filter
+        .eq("status", "Completed") // Add this filter
         .order("requestDate", { ascending: true });
 
       if (error) throw error;

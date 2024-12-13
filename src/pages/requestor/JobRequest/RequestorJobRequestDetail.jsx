@@ -29,12 +29,26 @@ export default function JobRequestDetail() {
 
         if (error) throw new Error(error.message);
 
+        // Format the requestDate
+        const formattedDate = new Date(data.requestDate)
+          .toLocaleString("en-US", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+          .replace(",", "");
+
+        // Fetch assignments related to the specific requestId
         const { data: assignments, error: assignmentError } = await supabase
           .from("Department_request_assignment")
-          .select("requestId, staffName, deptId");
+          .select("requestId, staffName, deptId")
+          .eq("requestId", requestId);
 
         if (assignmentError) throw assignmentError;
 
+        // Fetch department details
         const { data: departments, error: departmentError } = await supabase
           .from("Department")
           .select("deptId, deptName");
@@ -48,7 +62,18 @@ export default function JobRequestDetail() {
                 ?.deptName
             : "Unknown Department";
 
-        setJobRequest({ ...data, departmentName });
+        // Extract and log staff names for debugging
+        const staffNames = assignments.map(
+          (assignment) => assignment.staffName
+        );
+        console.log("Matched Staff Names for Request:", staffNames);
+
+        setJobRequest({
+          ...data,
+          requestDate: formattedDate, // Use the formatted date
+          departmentName,
+          staffName: staffNames.join(", "),
+        });
 
         // Fetch tracking information to determine the last status
         const { data: trackingData, error: trackingFetchError } = await supabase

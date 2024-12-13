@@ -30,6 +30,7 @@ import StaffCertificate from "./pages/staff/JobRequestDetailStaff/RequestorCerti
 import StaffRequestorJobRequestDetailPage from "./pages/staff/JobRequestStaff/RequestorJobRequestDetail.jsx";
 import StaffAssignedDetails from "./pages/staff/Task/StaffAssignedDetails.jsx";
 import StaffAssignedCompletedTable from "./pages/staff/Task/StaffAssignedCompletedTable.jsx";
+import StaffCompletedRequestorJobRequestTable from "./pages/staff/JobRequestStaff/CompletedRequestorJobRequestTable.jsx";
 
 // Components for department head
 import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
@@ -296,6 +297,10 @@ export default function App() {
               />
             </Route>
             <Route path="my_request" element={<StaffJobRequest />} />
+            <Route
+              path="my_request/completed"
+              element={<StaffCompletedRequestorJobRequestTable />}
+            />
             <Route
               path="my_request/detail/:requestId"
               element={<StaffRequestorJobRequestDetailPage />}
