@@ -11,13 +11,7 @@ export default function JobRequestDetail() {
   const [trackingData, setTrackingData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const stages = [
-    "Pending",
-    "Ongoing",
-    "In Progress",
-    "Completed",
-    "Satisfaction Survey",
-  ];
+  const stages = ["Pending", "Ongoing", "Completed", "Satisfaction Survey"];
 
   useEffect(() => {
     const fetchJobRequest = async () => {
@@ -35,14 +29,26 @@ export default function JobRequestDetail() {
 
         if (error) throw new Error(error.message);
 
-        // Fetch assignments to get the department names
+        // Format the requestDate
+        const formattedDate = new Date(data.requestDate)
+          .toLocaleString("en-US", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+          .replace(",", "");
+
+        // Fetch assignments related to the specific requestId
         const { data: assignments, error: assignmentError } = await supabase
           .from("Department_request_assignment")
-          .select("staffName, deptId")
+          .select("requestId, staffName, deptId")
           .eq("requestId", requestId);
 
         if (assignmentError) throw assignmentError;
 
+        // Fetch department details
         const { data: departments, error: departmentError } = await supabase
           .from("Department")
           .select("deptId, deptName");
@@ -56,7 +62,18 @@ export default function JobRequestDetail() {
                 ?.deptName
             : "Unknown Department";
 
-        setJobRequest({ ...data, departmentName });
+        // Extract and log staff names for debugging
+        const staffNames = assignments.map(
+          (assignment) => assignment.staffName
+        );
+        console.log("Matched Staff Names for Request:", staffNames);
+
+        setJobRequest({
+          ...data,
+          requestDate: formattedDate, // Use the formatted date
+          departmentName,
+          staffName: staffNames.join(", "),
+        });
 
         // Fetch tracking information to determine the last status
         const { data: trackingData, error: trackingFetchError } = await supabase
@@ -64,7 +81,7 @@ export default function JobRequestDetail() {
           .select("details, timestamp")
           .eq("requestId", requestId)
           .order("timestamp", { ascending: false })
-          .limit(1); // Only fetch the latest tracking entry
+          .limit(1);
 
         if (trackingFetchError) throw new Error(trackingFetchError.message);
 
@@ -75,7 +92,6 @@ export default function JobRequestDetail() {
           trackingData.length > 0 &&
           trackingData[0].details.includes(data.status)
         ) {
-          // If the last status is the same as the current status, skip the insert
           return;
         }
 
@@ -91,7 +107,6 @@ export default function JobRequestDetail() {
           trackingDetails = `Job request is already Completed by ${departmentName}.`;
         }
 
-        // Insert the new tracking entry if there's a status change
         if (trackingDetails) {
           const { error: trackingError } = await supabase
             .from("Tracking")
@@ -131,7 +146,23 @@ export default function JobRequestDetail() {
         </h2>
         <button
           className="bg-gray-700 p-5 text-white py-2 px-4 rounded mt-4"
-          onClick={() => navigate("/staff/my_request")}
+          onClick={() => navigate("/requestor/home")}
+        >
+          Back to Dashboard
+        </button>
+      </div>
+    );
+  }
+
+  if (!jobRequest) {
+    return (
+      <div className="p-6">
+        <h2 className="text-xl font-bold text-red-500">
+          Error: Job request not found
+        </h2>
+        <button
+          className="bg-gray-700 p-5 text-white py-2 px-4 rounded mt-4"
+          onClick={() => navigate("/requestor/home")}
         >
           Back to Dashboard
         </button>
@@ -142,7 +173,7 @@ export default function JobRequestDetail() {
     <div className="p-6">
       <button
         className="bg-gray-700 p-5 text-white py-2 px-4 rounded"
-        onClick={() => navigate("/staff/my_request")}
+        onClick={() => navigate("/requestor/home")}
       >
         Back to Dashboard
       </button>
@@ -216,7 +247,7 @@ export default function JobRequestDetail() {
                 <input
                   type="text"
                   className="mt-1 block w-full border border-gray-300 p-2"
-                  value={jobRequest.departmentNames || "Not Available"}
+                  value={jobRequest.departmentName || "Not Available"}
                   readOnly
                 />
               </div>
@@ -238,7 +269,7 @@ export default function JobRequestDetail() {
                 <textarea
                   className="mt-1 block w-full border border-gray-300 p-2"
                   rows="3"
-                  value={jobRequest.staffNames || "No staff available."}
+                  value={jobRequest.staffName || "No staff available."}
                   readOnly
                 />
               </div>
@@ -251,8 +282,10 @@ export default function JobRequestDetail() {
                   rows="3"
                   value={jobRequest.remarks || "No remarks available."}
                   readOnly
+                  disabled={jobRequest.status === "Completed"}
                 />
               </div>
+
               <div className="md:col-span-2">
                 <label className="block text-xl font-medium text-gray-700">
                   Image
@@ -266,8 +299,28 @@ export default function JobRequestDetail() {
             </div>
           </div>
           <div className="p-4 flex justify-end space-x-4">
-            <button className="bg-blue-500 text-white py-2 px-4 rounded">
-              Update
+            <button
+              onClick={() => navigate("/requestor/english_version")}
+              className={`py-2 px-4 rounded ${
+                jobRequest.status === "Completed"
+                  ? "bg-green-500 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+              disabled={jobRequest.status !== "Completed"}
+            >
+              Client Satisfaction Survey
+            </button>
+
+            <button
+              // onClick={() => navigate("/requestor/english_version")}
+              className={`py-2 px-4 rounded ${
+                jobRequest.status === "Completed"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+              disabled={jobRequest.status !== "Completed"}
+            >
+              View Certificate
             </button>
           </div>
         </div>

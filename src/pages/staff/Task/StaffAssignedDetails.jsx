@@ -233,6 +233,7 @@ export default function RequestDetailPage() {
               rows="4"
               className="w-full p-2 border rounded-lg"
               placeholder="Add your remarks here..."
+              disabled={!!dateCompleted} // Disable if the job is completed
             />
           </div>
 

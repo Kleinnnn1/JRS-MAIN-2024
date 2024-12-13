@@ -14,9 +14,9 @@ const tableHeaders = [
   "Job Category",
   "Office",
   "Assigned Staff",
-  "Image",
+  // "Image",
   "Status",
-  "Date Requested",
+  //  "Date Requested",
   "Priority",
   "Actions",
 ];
@@ -283,14 +283,7 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       request.jobCategory,
       request.departmentNames || "N/A",
       request.staffNames || "N/A",
-      <button
-        onClick={() => openImageModal(request.image)}
-        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md"
-      >
-        View
-      </button>,
       request.status,
-      formattedDate,
       <span
         className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
       >
