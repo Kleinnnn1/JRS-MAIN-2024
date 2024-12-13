@@ -191,6 +191,13 @@ export default function RequestDetailPage() {
           <div>
             <div className="space-y-4 m-4 text-xl">
               <p>
+                <span className="font-semibold">
+                  Request Id:
+                  <br />
+                </span>
+                {requestId || "No requestId provided"}
+              </p>
+              <p>
                 <span className="font-semibold mt-12">
                   Requestor:
                   <br />
