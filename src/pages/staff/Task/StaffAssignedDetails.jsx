@@ -10,16 +10,17 @@ export default function RequestDetailPage() {
 
   const {
     requestId,
-    fullName = "N/A", // Default value if state is undefined
+    fullName = "N/A",
     description = "No description provided",
     location: requestLocation = "Unknown Location",
     priority = "No Priority",
-    image, // Include the image from state
+    image,
     dateStarted: initialStartDate,
     extensionDate: initialExtensionDate,
     expectedDueDate: initialExpectedDueDate,
     remarks: initialRemarks,
-  } = location.state || {}; // Use optional chaining to avoid errors if state is undefined
+    dateCompleted: initialDateCompleted, // Include the initial dateCompleted
+  } = location.state || {};
 
   const [startDate, setStartDate] = useState(
     initialStartDate ? new Date(initialStartDate) : null
@@ -30,7 +31,10 @@ export default function RequestDetailPage() {
   const [expectedDueDate, setExpectedDueDate] = useState(
     initialExpectedDueDate ? new Date(initialExpectedDueDate) : null
   );
-  const [remarks, setRemarks] = useState(initialRemarks || ""); // Initialize remarks
+  const [remarks, setRemarks] = useState(initialRemarks || "");
+  const [dateCompleted, setDateCompleted] = useState(
+    initialDateCompleted ? new Date(initialDateCompleted) : null
+  ); // New state for dateCompleted
   const [error, setError] = useState("");
 
   const handleSetComplete = async () => {
@@ -58,7 +62,7 @@ export default function RequestDetailPage() {
       } else {
         console.log("Request updated successfully:", data);
         alert("Job request updated successfully!");
-        navigate(-1); // Go back after submission
+        navigate(-1);
       }
     } catch (err) {
       console.error("Unexpected error:", err);
@@ -68,10 +72,37 @@ export default function RequestDetailPage() {
 
   const handleJobComplete = async () => {
     try {
+      // Get the current time in Philippine Time (PHT)
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Manila",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false, // Optional: Use 24-hour format
+      });
+      const parts = formatter.formatToParts(now);
+
+      // Convert the formatted parts to a valid date string
+      const formattedDate = `${parts.find((p) => p.type === "year").value}-${
+        parts.find((p) => p.type === "month").value
+      }-${parts.find((p) => p.type === "day").value}T${
+        parts.find((p) => p.type === "hour").value
+      }:${parts.find((p) => p.type === "minute").value}:${
+        parts.find((p) => p.type === "second").value
+      }+08:00`;
+
+      // Save the timestamp as an ISO string for database compatibility
+      const phtTimestamp = new Date(formattedDate).toISOString();
+
       const { data, error } = await supabase
         .from("Request")
         .update({
           status: "Completed",
+          dateCompleted: phtTimestamp,
         })
         .eq("requestId", requestId);
 
@@ -79,9 +110,10 @@ export default function RequestDetailPage() {
         console.error("Error updating job status:", error.message);
         setError("Failed to mark the job as completed.");
       } else {
-        console.log("Job status updated to completed:", data);
+        console.log("Job status updated to completed with timestamp:", data);
         alert("Job marked as completed successfully!");
-        navigate(-1); // Go back after submission
+        setDateCompleted(new Date(phtTimestamp)); // Update state for dateCompleted
+        navigate(-1);
       }
     } catch (err) {
       console.error("Unexpected error:", err);
@@ -175,6 +207,20 @@ export default function RequestDetailPage() {
             />
           </div>
 
+          {/* Display Date Completed */}
+          {dateCompleted && (
+            <div className="mb-4">
+              <strong>Date Completed:</strong>{" "}
+              {dateCompleted.toLocaleString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </div>
+          )}
+
           {/* Remarks */}
           <div className="mt-6">
             <label htmlFor="remarks" className="block font-bold mb-2">
@@ -187,7 +233,6 @@ export default function RequestDetailPage() {
               rows="4"
               className="w-full p-2 border rounded-lg"
               placeholder="Add your remarks here..."
-              disabled={!!initialRemarks} // Disable if there are initial remarks
             />
           </div>
 
@@ -197,18 +242,22 @@ export default function RequestDetailPage() {
           )}
 
           {/* Action Buttons */}
-          <button
-            className="mt-4 text-white bg-green-400 font-bold px-4 py-2 rounded"
-            onClick={handleSetComplete}
-          >
-            Update
-          </button>
-          <button
-            className="ml-4 text-black-500 bg-blue-400 font-bold px-4 py-2 rounded"
-            onClick={handleJobComplete}
-          >
-            Mark Job as Completed
-          </button>
+          {!dateCompleted && (
+            <div>
+              <button
+                className="mt-4 text-white bg-green-400 font-bold px-4 py-2 rounded"
+                onClick={handleSetComplete}
+              >
+                Update
+              </button>
+              <button
+                className="ml-4 text-black-500 bg-blue-400 font-bold px-4 py-2 rounded"
+                onClick={handleJobComplete}
+              >
+                Mark Job as Completed
+              </button>
+            </div>
+          )}
           <button
             className="ml-4 text-blue-500 font-bold underline"
             onClick={() => navigate(-1)}
