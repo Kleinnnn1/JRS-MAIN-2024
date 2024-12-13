@@ -256,8 +256,8 @@ export default function AdminNotification() {
   }
 
   return (
-    <div className="-mb-20 py-2 px-4 bg-white shadow-lg rounded-lg">
-      <div className="my-4 mx-3 py-4 px-6 bg-custom-blue text-white flex justify-between items-center rounded-t-lg">
+    <div className="bg-white border -mx-4 rounded-t-lg shadow-md">
+      <div className="bg-custom-blue rounded-t-lg p-3 text-white font-bold">
         NOTIFICATION
       </div>
       <Table

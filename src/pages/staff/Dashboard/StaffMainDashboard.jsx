@@ -123,6 +123,11 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
       path: "/staff/job_completed",
     },
     { icon: <FaFileAlt />, label: "My Request", path: "/staff/my_request" },
+    {
+      icon: <FaCheckCircle />,
+      label: "My Completed Request",
+      path: "/staff/my_request/completed",
+    },
     { icon: <FaChartPie />, label: "Add Keyword", path: "/staff/add_keyword" },
   ];
 

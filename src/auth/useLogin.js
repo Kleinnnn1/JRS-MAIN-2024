@@ -90,8 +90,18 @@ export function useLogin() {
     },
     onError: (error) => {
       console.log("API call failed");
-      console.error("Error details:", error?.response || error); // Improved error logging
-      toast.error("Provided ID number/email or password are incorrect");
+      console.error("Error details:", error?.response || error);
+
+      // Check for specific error message
+      if (
+        error.message ===
+        "Account verification is pending. Please contact support."
+      ) {
+        toast.error("Account verification is pending. Please contact support.");
+      } else {
+        // Generic error for incorrect credentials
+        toast.error("Provided ID number/email or password are incorrect");
+      }
     },
   });
 
