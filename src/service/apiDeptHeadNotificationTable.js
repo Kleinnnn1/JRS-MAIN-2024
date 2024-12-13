@@ -20,12 +20,18 @@ export async function getDeptHeadNotification() {
         notificationid,
         message,
         timestamp,
-        User(fullName),
-        Request(requestId, description,  location,
-      jobCategory,
-      requestDate,
-      image,
-      priority, remarks, image, idNumber)
+        Request (
+          requestId,
+          description,
+          location,
+          jobCategory,
+          requestDate,
+          priority,
+          remarks,
+          image,
+          idNumber,
+          User (fullName)
+        )
       `)
       .eq("idNumber", currentUser.idNumber);
 
@@ -38,11 +44,12 @@ export async function getDeptHeadNotification() {
       throw new Error("No Notifications found");
     }
 
+    // Format data to include the full name of the requestor and other fields
     const formattedData = data.map((item) => ({
       notificationid: item.notificationid,
       message: item.message || "No message provided",
       timestamp: item.timestamp || "No timestamp available",
-      fullName: item.User?.fullName || "Unknown user",
+      fullName: item.Request?.User?.fullName || "Unknown user", // Fetch the full name of the associated requestor
       requestId: item.Request?.requestId || "Unknown requestId",
       description: item.Request?.description,
       location: item.Request?.location,

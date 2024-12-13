@@ -120,10 +120,18 @@ export default function ContentDashboard() {
         />
       </div>
 
-      <div className="p-6">
-        <AdminNotification />
+     {/* Main Content Section */}
+     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+        {/* Left Side (Notifications) */}
+        <div className="col-span-2 -mt-5">
+          <AdminNotification />
+        </div>
+
+        {/* Right Side (Calendar) */}
+        <div className="lg:col-span-1 -mt-5 rounded-lg">
+          <ReusableCalendar />
+        </div>
       </div>
-  
     </>
   );
 }

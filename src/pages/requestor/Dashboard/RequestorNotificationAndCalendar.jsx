@@ -200,7 +200,7 @@ export default function RequestorNotification() {
 
       // If status is "Ongoing"
       if (request.status === "Ongoing") {
-        message = `Your request [Request ID #${request.requestId}] is now Ongoing.`;
+        message = `ONGOING: Your request [Request ID #${request.requestId}] is now Ongoing.`;
       }
 
       // If status is "Completed"
@@ -266,7 +266,7 @@ export default function RequestorNotification() {
       };
 
       fetchNotifications();  // Refetch notifications every interval
-    }, 5000); // Refresh every 5 seconds
+    }, 1000); // Refresh every 5 seconds
 
     // Cleanup the interval on component unmount
     return () => clearInterval(interval);
