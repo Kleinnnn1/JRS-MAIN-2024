@@ -85,7 +85,7 @@ export default function RequestDetailPage() {
         hour12: false, // Optional: Use 24-hour format
       });
       const parts = formatter.formatToParts(now);
-
+  
       // Convert the formatted parts to a valid date string
       const formattedDate = `${parts.find((p) => p.type === "year").value}-${
         parts.find((p) => p.type === "month").value
@@ -94,10 +94,10 @@ export default function RequestDetailPage() {
       }:${parts.find((p) => p.type === "minute").value}:${
         parts.find((p) => p.type === "second").value
       }+08:00`;
-
+  
       // Save the timestamp as an ISO string for database compatibility
       const phtTimestamp = new Date(formattedDate).toISOString();
-
+  
       const { data, error } = await supabase
         .from("Request")
         .update({
@@ -105,7 +105,7 @@ export default function RequestDetailPage() {
           dateCompleted: phtTimestamp,
         })
         .eq("requestId", requestId);
-
+  
       if (error) {
         console.error("Error updating job status:", error.message);
         setError("Failed to mark the job as completed.");
@@ -113,14 +113,13 @@ export default function RequestDetailPage() {
         console.log("Job status updated to completed with timestamp:", data);
         alert("Job marked as completed successfully!");
         setDateCompleted(new Date(phtTimestamp)); // Update state for dateCompleted
-        navigate(-1);
+        navigate("/staff/job_request_certificate/:requestId"); // Navigate to the desired page
       }
     } catch (err) {
       console.error("Unexpected error:", err);
       setError("An unexpected error occurred. Please try again.");
     }
   };
-
   return (
     <div className="p-6 bg-white shadow-lg rounded-lg m-10 mt-10">
       <h2 className="text-2xl font-bold text-center p-2 rounded bg-yellow-500 mb-6">
