@@ -221,9 +221,11 @@ export default function SysAdminAddNewStaff({ closeModal }) {
         >
           &times;
         </button>
+
         <header className="text-lg font-semibold text-white bg-custom-blue rounded-t p-4 text-center">
           Staff Registration Form
         </header>
+
         <form onSubmit={handleSubmit(onSubmit)}>
           {jobAccounts.map((account) => (
             <div key={account.id}>
@@ -248,6 +250,7 @@ export default function SysAdminAddNewStaff({ closeModal }) {
                     required
                   />
                 </div>
+
                 {/* First Name */}
                 <div>
                   <label className="block text-sm font-medium">
@@ -264,6 +267,7 @@ export default function SysAdminAddNewStaff({ closeModal }) {
                     required
                   />
                 </div>
+
                 {/* Last Name */}
                 <div>
                   <label className="block text-sm font-medium">
@@ -280,11 +284,13 @@ export default function SysAdminAddNewStaff({ closeModal }) {
                     required
                   />
                 </div>
+
                 {/* Email */}
                 <div>
                   <label className="block text-sm font-medium">
                     Email <span className="text-red-500">*</span>
                   </label>
+
                   <input
                     type="email"
                     placeholder="Enter Email"
@@ -296,6 +302,7 @@ export default function SysAdminAddNewStaff({ closeModal }) {
                     required
                   />
                 </div>
+
                 {/* Birth Date */}
                 <div>
                   <label className="block text-sm font-medium">
@@ -311,6 +318,7 @@ export default function SysAdminAddNewStaff({ closeModal }) {
                     required
                   />
                 </div>
+
                 {/* Sex */}
                 <div>
                   <label className="block text-sm font-medium">
@@ -332,6 +340,7 @@ export default function SysAdminAddNewStaff({ closeModal }) {
                     <option value="Other">Other</option>
                   </select>
                 </div>
+
                 {/* Contact Number */}
                 <div>
                   <label className="block text-sm font-medium">
@@ -352,6 +361,7 @@ export default function SysAdminAddNewStaff({ closeModal }) {
                     required
                   />
                 </div>
+
                 {/* Password */}
                 <div>
                   <label className="block text-sm  font-medium">
@@ -412,6 +422,7 @@ export default function SysAdminAddNewStaff({ closeModal }) {
                   </select>
                 </div>
                 <div>
+                  
                   <label className="block text-sm font-medium">
                     Job Category <span className="text-red-500">*</span>
                   </label>
@@ -443,6 +454,7 @@ export default function SysAdminAddNewStaff({ closeModal }) {
               </div>
             </div>
           ))}
+
           <button
             type="submit"
             className="w-full p-2 mt-6 bg-blue-500 text-white rounded hover:bg-blue-600"
