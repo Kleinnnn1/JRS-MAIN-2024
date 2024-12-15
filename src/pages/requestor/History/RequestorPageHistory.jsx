@@ -13,9 +13,9 @@ const tableHeaders = [
   "Job Description",
   "Job Category",
   "Office",
-  "Assigned Staff",
-  "Date Requested",
-  "Priority",
+  // "Assigned Staff",
+  // "Date Requested",
+  // "Priority",
   "Actions",
 ];
 
@@ -281,9 +281,9 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       request.description,
       request.jobCategory,
       request.departmentNames || "N/A",
-      request.staffNames || "N/A",
-      formattedDate,
-      request.priority,
+      //  request.staffNames || "N/A",
+      //    formattedDate,
+      //  request.priority,
       // <span
       //   className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
       // >
