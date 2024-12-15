@@ -25,6 +25,7 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
   ]);
   const [showPassword, setShowPassword] = useState(false);
   const [departments, setDepartments] = useState([]); // Store departments from Supabase
+  const [loading, setLoading] = useState(true);
 
   // Fetch departments from Supabase when the component mounts
   useEffect(() => {
@@ -49,13 +50,13 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
     if (field === "idNumber" || field === "contactNumber") {
       // Ensure idNumber and contactNumber contain only numbers
       const numericValue = value.replace(/\D/g, ""); // Remove non-numeric characters
-      setJobAccounts((prevAccounts) =>
+      setAccounts((prevAccounts) =>
         prevAccounts.map((account) =>
           account.id === id ? { ...account, [field]: numericValue } : account
         )
       );
     } else {
-      setJobAccounts((prevAccounts) =>
+      setAccounts((prevAccounts) =>
         prevAccounts.map((account) =>
           account.id === id ? { ...account, [field]: value } : account
         )
@@ -99,7 +100,7 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
       return;
     }
 
-    const invalidBirthDates = jobAccounts.some(
+    const invalidBirthDates = accounts.some(
       (account) => !validateBirthDate(account.birthDate)
     );
 
@@ -108,7 +109,7 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
       return;
     }
 
-    const invalidContactNumbers = jobAccounts.some(
+    const invalidContactNumbers = accounts.some(
       (account) => !validateContactNumber(account.contactNumber)
     );
 
@@ -117,7 +118,7 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
       return;
     }
 
-    const invalidPasswords = jobAccounts.some(
+    const invalidPasswords = accounts.some(
       (account) => !validatePassword(account.password)
     );
 
@@ -173,106 +174,105 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
           onClick={closeModal}
           className="absolute -top-4 -right-4 bg-yellow-300 text-black text-4xl rounded-full h-10 w-10 flex items-center justify-center border-4 border-yellow-300 hover:bg-gray-100 hover:text-red-600 shadow-lg"
           aria-label="Close Modal"
-      >
-        &times;
-      </button>
+        >
+          &times;
+        </button>
 
-      {/* Modal Header */}
-      <header className="text-lg font-semibold text-white bg-custom-blue rounded-t p-4 text-center">
-        Department Head Registration Form
-      </header>
+        {/* Modal Header */}
+        <header className="text-lg font-semibold text-white bg-custom-blue rounded-t p-4 text-center">
+          Department Head Registration Form
+        </header>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {accounts.map((account) => (
-          <div key={account.id} className="space-y-4">
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
+        {/* Form */}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {accounts.map((account) => (
+            <div key={account.id} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                <div>
                   <label className="block text-sm font-medium">
-                  Employee ID Number <span className="text-red-500">*</span>
+                    Employee ID Number <span className="text-red-500">*</span>
                   </label>
-            <input
-              type="text"
-              placeholder="Enter Employee ID"
-              className="w-full border rounded p-2"
-              value={account.idNumber}
-              onChange={(e) =>
-                handleInputChange(account.id, "idNumber", e.target.value)
-              }
-              required
-            />
-            </div>
+                  <input
+                    type="text"
+                    placeholder="Enter Employee ID"
+                    className="w-full border rounded p-2"
+                    value={account.idNumber}
+                    onChange={(e) =>
+                      handleInputChange(account.id, "idNumber", e.target.value)
+                    }
+                    required
+                  />
+                </div>
 
-            {/* First Name */}
-            <div>
+                {/* First Name */}
+                <div>
                   <label className="block text-sm font-medium">
                     First Name <span className="text-red-500">*</span>
                   </label>
-            <input
-              type="text"
-              placeholder="Enter First Name"
-              className="w-full border rounded p-2"
-              value={account.fName}
-              onChange={(e) =>
-                handleInputChange(account.id, "fName", e.target.value)
-              }
-              required
-            />
-            </div>
+                  <input
+                    type="text"
+                    placeholder="Enter First Name"
+                    className="w-full border rounded p-2"
+                    value={account.fName}
+                    onChange={(e) =>
+                      handleInputChange(account.id, "fName", e.target.value)
+                    }
+                    required
+                  />
+                </div>
 
-            {/* Last Name */}
-            <div>
+                {/* Last Name */}
+                <div>
                   <label className="block text-sm font-medium">
                     Last Name <span className="text-red-500">*</span>
                   </label>
-            <input
-              type="text"
-              placeholder="Enter Last Name"
-              className="w-full border rounded p-2"
-              value={account.lName}
-              onChange={(e) =>
-                handleInputChange(account.id, "lName", e.target.value)
-              }
-              required
-            />
-            </div>
-            
-            {/* Birth Date */}
-            <div>
+                  <input
+                    type="text"
+                    placeholder="Enter Last Name"
+                    className="w-full border rounded p-2"
+                    value={account.lName}
+                    onChange={(e) =>
+                      handleInputChange(account.id, "lName", e.target.value)
+                    }
+                    required
+                  />
+                </div>
+
+                {/* Birth Date */}
+                <div>
                   <label className="block text-sm font-medium">
                     Birth Date <span className="text-red-500">*</span>
                   </label>
-            <input
-              type="date"
-              className="w-full border rounded p-2"
-              value={account.birthDate}
-              onChange={(e) =>
-                handleInputChange(account.id, "birthDate", e.target.value)
-              }
-              required
-            />
-            </div>
-            
-            {/* Email */}
-            <div>
+                  <input
+                    type="date"
+                    className="w-full border rounded p-2"
+                    value={account.birthDate}
+                    onChange={(e) =>
+                      handleInputChange(account.id, "birthDate", e.target.value)
+                    }
+                    required
+                  />
+                </div>
+
+                {/* Email */}
+                <div>
                   <label className="block text-sm font-medium">
                     Email <span className="text-red-500">*</span>
                   </label>
-            <input
-              type="email"
-              placeholder="Enter Email"
-              className="w-full border rounded p-2"
-              value={account.email}
-              onChange={(e) =>
-                handleInputChange(account.id, "email", e.target.value)
-              }
-              required
-            />
-            </div>
+                  <input
+                    type="email"
+                    placeholder="Enter Email"
+                    className="w-full border rounded p-2"
+                    value={account.email}
+                    onChange={(e) =>
+                      handleInputChange(account.id, "email", e.target.value)
+                    }
+                    required
+                  />
+                </div>
 
-            {/* Contact Number */}
-            <div>
+                {/* Contact Number */}
+                <div>
                   <label className="block text-sm font-medium">
                     Contact Number <span className="text-red-500">*</span>
                   </label>
@@ -292,9 +292,8 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
                   />
                 </div>
 
-
-            {/* Password */}
-            <div>
+                {/* Password */}
+                <div>
                   <label className="block text-sm  font-medium">
                     Password <span className="text-red-500">*</span>
                   </label>
@@ -323,42 +322,43 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
                   </div>
                 </div>
 
-            {/* Department Dropdown */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-  {/* Full-width element */}
-  <div className="col-span-2">
-    <label className="block text-sm font-medium">
-      Department <span className="text-red-500">*</span>
-    </label>
-    <select
-      className="w-full border rounded p-2"
-      value={account.deptId} // Now uses deptId
-      onChange={(e) => handleInputChange(account.id, "deptId", e.target.value)
-      } // Update deptId
-      required
-    >
-      <option value="" disabled className="hidden">
-      Select Department
-      </option>
-      {departments.map((dept) => (
-        <option key={dept.deptId} value={dept.deptId}>
-          {dept.deptName} {/* Displays department name */}
-        </option>
-      ))}
-    </select>
-  </div>
-  </div>
-</div>
-</div>
-        ))}
+                {/* Department Dropdown */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Full-width element */}
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium">
+                      Department <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      className="w-full border rounded p-2"
+                      value={account.deptId} // Now uses deptId
+                      onChange={(e) =>
+                        handleInputChange(account.id, "deptId", e.target.value)
+                      } // Update deptId
+                      required
+                    >
+                      <option value="" className="hidden">
+                        Select Department
+                      </option>
+                      {departments.map((dept) => (
+                        <option key={dept.deptId} value={dept.deptId}>
+                          {dept.deptName} {/* Displays department name */}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
 
-        <button
+          <button
             type="submit"
             className="w-full p-2 mt-6 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Submit
           </button>
-          </form>
+        </form>
       </div>
     </div>
   );

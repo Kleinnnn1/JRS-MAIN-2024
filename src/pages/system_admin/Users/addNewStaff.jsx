@@ -241,7 +241,7 @@ export default function SysAdminAddNewStaff({ closeModal }) {
                   </label>
                   <input
                     type="text"
-                    placeholder="Enter Staff ID Number"
+                    placeholder="Enter Staff ID"
                     className="w-full border rounded p-2"
                     value={account.idNumber}
                     onChange={(e) =>
@@ -340,7 +340,7 @@ export default function SysAdminAddNewStaff({ closeModal }) {
                     <option value="Other">Other</option>
                   </select>
                 </div>
-
+                
                 {/* Contact Number */}
                 <div>
                   <label className="block text-sm font-medium">
@@ -361,7 +361,6 @@ export default function SysAdminAddNewStaff({ closeModal }) {
                     required
                   />
                 </div>
-
                 {/* Password */}
                 <div>
                   <label className="block text-sm  font-medium">
@@ -422,7 +421,6 @@ export default function SysAdminAddNewStaff({ closeModal }) {
                   </select>
                 </div>
                 <div>
-                  
                   <label className="block text-sm font-medium">
                     Job Category <span className="text-red-500">*</span>
                   </label>
