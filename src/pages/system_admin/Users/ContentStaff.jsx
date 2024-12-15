@@ -135,7 +135,7 @@ export default function StaffContent() {
   return (
     <div className="p-6 mx-5 mt-10 bg-white rounded-lg shadow-lg">
       {/* Header */}
-      <header className="bg-custom-blue text-white p-4 rounded-lg flex justify-between items-center">
+      <header className="py-4 px-6 bg-custom-blue flex justify-between items-center rounded-t-lg">
         <SearchBar title="Staff" />
         <div className="flex space-x-4">
           <button

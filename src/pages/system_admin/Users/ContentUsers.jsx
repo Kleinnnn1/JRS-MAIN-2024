@@ -312,14 +312,14 @@ export default function UserContent() {
   ];
 
   return (
-    <div className="p-6 mx-5 mt-10 bg-white rounded-lg shadow-lg">
+    <div className="-mb-20 py-2 px-4 bg-white shadow-lg rounded-lg">
       {/* Header */}
-      <header className="bg-custom-blue text-white p-4 rounded-lg flex justify-between items-center">
+      <header className= "py-4 px-6 bg-custom-blue flex justify-between items-center rounded-t-lg">
         <SearchBar title="Requestor" />
         <div className="flex space-x-4">
           <button
             onClick={handleAddRequestor}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md"
           >
             Add New Requestor
           </button>
