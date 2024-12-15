@@ -10,12 +10,12 @@ import { getCurrentUser } from "../../../service/apiAuth";
 
 const tableHeaders = [
   "Request ID",
-  "Job Description",
+  "Description",
   "Job Category",
   "Office",
   "Assigned Staff",
   "Status",
-  "Date Requested",
+  // "Date Requested",
   "Priority",
   "Actions",
 ];
@@ -55,8 +55,8 @@ export default function RequestorJobRequestTable() {
           "requestId, description, jobCategory, image, status, requestDate, priority, idNumber"
         )
         .eq("idNumber", currentUser.idNumber)
-        .neq("status", "Completed")
-        .order("requestDate", { ascending: true });
+        .neq("status", "Completed") // Exclude requests with status = "Completed"
+        .order("requestDate", { ascending: false });
 
       if (error) throw error;
 
@@ -177,9 +177,9 @@ export default function RequestorJobRequestTable() {
       : [[]];
 
   return (
-    <div className="max-w-full -mt-14 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
+    <div className="max-w-full -mt-1 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
-        <SearchBar title="My Requests" />
+        <SearchBar title="Job Requests" />
         <div className="flex space-x-4">
           <button
             onClick={handleMakeRequest}
@@ -253,13 +253,26 @@ export default function RequestorJobRequestTable() {
 }
 
 const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
-  const getPriorityClass = (level) => {
-    switch (level) {
-      case "High":
-        return "bg-red-400";
-      case "Medium":
+  // const getPriorityClass = (level) => {
+  //   switch (level) {
+  //     case "High":
+  //       return "bg-red-400";
+  //     case "Medium":
+  //       return "bg-yellow-300";
+  //     case "Low":
+  //       return "bg-green-300";
+  //     default:
+  //       return "bg-gray-300";
+  //   }
+  // };
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "Pending":
         return "bg-yellow-300";
-      case "Low":
+      case "Ongoing":
+        return "bg-blue-300";
+      case "Completed":
         return "bg-green-300";
       default:
         return "bg-gray-300";
@@ -283,18 +296,23 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       request.jobCategory,
       request.departmentNames || "N/A",
       request.staffNames || "N/A",
-      request.status,
-      formattedDate,
       <span
-        className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
+        className={`px-2 py-1 rounded-md ${getStatusClass(request.status)}`}
       >
-        {request.priority}
+        {request.status}
       </span>,
+      //   formattedDate,
+      request.priority,
+      // <span
+      //   className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
+      // >
+      //   {request.priority}
+      // </span>,
       <span
         onClick={() => handleDetailsClick(request)}
         className="cursor-pointer text-blue-500 hover:text-blue-700"
       >
-        Details
+        View
       </span>,
     ];
   });
