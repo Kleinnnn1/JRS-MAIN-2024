@@ -47,12 +47,13 @@ export default function SPMSContentTable() {
   // Map table headers to database column names
   const fieldMapping = {
     CSSID: "css_id",
-    Date: "Date",
+    Date: "date",
     Name: "name",
     email: "email",
     clientType: "clientType",
     role: "role",
     sex: "sex",
+    date: "date",
     age: "age",
     region: "region",
     campus: "campus",
