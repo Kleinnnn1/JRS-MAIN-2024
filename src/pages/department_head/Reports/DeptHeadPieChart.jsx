@@ -13,29 +13,40 @@ export default function CustomPieChart() {
       try {
         setLoading(true);
 
-        // Get the current user's department ID
+        // Step 1: Get the current user's department ID
         const user = await getCurrentUser();
         if (!user || !user.deptId) throw new Error("Unable to fetch current user's department ID");
 
         const deptId = user.deptId;
 
-        // Query to fetch jobCategory data from Supabase
-        const { data: users, error } = await supabase
-          .from("User")
-          .select("jobCategory")
+        // Step 2: Fetch requests filtered by deptId through the Department_request_assignment table
+        const { data: assignedRequests, error: assignmentError } = await supabase
+          .from("Department_request_assignment")
+          .select("requestId")
           .eq("deptId", deptId);
 
-        if (error) throw error;
+        if (assignmentError) throw assignmentError;
 
-        // Count occurrences of each jobCategory
-        const jobCategoryCounts = users.reduce((acc, user) => {
-          if (user.jobCategory) {
-            acc[user.jobCategory] = (acc[user.jobCategory] || 0) + 1;
+        // Get a list of all request IDs in this department
+        const assignedRequestIds = assignedRequests.map((req) => req.requestId);
+
+        // Step 3: Query the Request table for requests with matching request IDs
+        const { data: requests, error: requestError } = await supabase
+          .from("Request")
+          .select("jobCategory")
+          .in("requestId", assignedRequestIds);
+
+        if (requestError) throw requestError;
+
+        // Step 4: Count occurrences of each jobCategory
+        const jobCategoryCounts = requests.reduce((acc, request) => {
+          if (request.jobCategory) {
+            acc[request.jobCategory] = (acc[request.jobCategory] || 0) + 1;
           }
           return acc;
         }, {});
 
-        // Format data for the PieChart
+        // Step 5: Format data for the PieChart
         const formattedData = Object.entries(jobCategoryCounts).map(([jobCategory, count], index) => ({
           name: jobCategory,
           value: count,
@@ -74,8 +85,8 @@ export default function CustomPieChart() {
   return (
     <div className="flex flex-col items-center p-6 bg-white shadow-md rounded-lg">
       {/* Chart Title */}
-      <h2 className="text-lg font-medium text-gray-800">Job Category</h2>
-      <p className="text-sm text-gray-500">January - June 2024</p>
+      <h2 className="text-lg font-medium text-gray-800">Requests by Job Category</h2>
+      <p className="text-sm text-gray-500">Filtered by Department</p>
 
       {/* Pie Chart */}
       <PieChart width={300} height={300}>
@@ -102,7 +113,7 @@ export default function CustomPieChart() {
           <span className="text-green-500">↗</span>
         </p>
         <p className="text-xs text-gray-500">
-          Showing total number of users per job category for the current department
+          Showing total number of requests per job category for the current department
         </p>
       </div>
     </div>
