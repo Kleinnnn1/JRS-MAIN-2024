@@ -136,6 +136,7 @@ import SysAdminSpmeContent from "./pages/system_admin/Users/ContentSpme";
 
 // Office Head
 import ContentDashboard from "./pages/office_org_head/Dashboard/ContentDashboard.jsx";
+import OfficeHeadCompletedRequestorJobRequestTable from "./pages/office_org_head/JobRequestOfficeHead/OfiiceHeadCompletedRequestorJobRequestTable.jsx";
 
 import SignUpForm from "./auth/SignUpForm.jsx";
 // SPME
@@ -435,6 +436,10 @@ export default function App() {
               <Route path="employee" element={<ViewAddEmployee />} />
             </Route>
             <Route path="my_requests" element={<JobRequestPage />} />
+            <Route
+              path="my_requests/completed"
+              element={<OfficeHeadCompletedRequestorJobRequestTable />}
+            />
             <Route
               path="my_request/detail/:requestId"
               element={<OfficeHeadRequestorJobRequestDetailPage />}
