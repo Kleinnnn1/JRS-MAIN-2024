@@ -178,7 +178,7 @@ export default function JobRequestHistory() {
   return (
     <div className="max-w-full -mt-1 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
-        <SearchBar title="Completed" />
+        <SearchBar title="My Completed Request" />
         <div className="flex space-x-4">
           {/* <button
             onClick={handleMakeRequest}
