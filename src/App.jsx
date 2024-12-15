@@ -327,8 +327,9 @@ export default function App() {
               element={<StaffJobRequestCompleted />}
             />
             <Route
-              path="job_request_certificateStaff"
+              path="job_request_certificateStaff/:requestId"
               element={<StaffCertificate />}
+              // element={<p> lorem </p>}
             />
 
             <Route path="StaffSendCert" element={<StaffPageCertificate />} />

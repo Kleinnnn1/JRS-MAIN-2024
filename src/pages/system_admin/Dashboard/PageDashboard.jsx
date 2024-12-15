@@ -32,7 +32,7 @@ export default function SystemAdDashboard() {
   };
 
   return (
-    <div className="flex h-screen text-gray-800 font-inter">
+    <div className="flex h-screen bg-slate-300 text-gray-800 font-inter">
       {/* Sidebar */}
       <div
         className={`${isSidebarCollapsed ? "w-20" : "w-64"
@@ -115,7 +115,7 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
     { icon: <FaHome />, label: "Home", path: "/system_admin/home" },
     { icon: <FaUsers />, label: "Users", path: "/system_admin/Users" },
     { icon: <FaBuilding />, label: "Department", path: "/system_admin/Departments" },
-    { icon: <FaHistory />, label: "History", path: "/system_admin/History" },
+    // { icon: <FaHistory />, label: "History", path: "/system_admin/History" },
     { icon: <FaFileAlt />, label: "Report", path: "/system_admin/Reports" },
   ];
 

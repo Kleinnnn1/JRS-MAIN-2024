@@ -84,7 +84,7 @@ export default function ContentDashboard() {
           iconColor="text-yellow-400"
           titleColor="text-yellow-500"
           bgColor={statusCardColor}
-          onClick={() => navigate("/requestor/job_ongoing")}
+          onClick={() => navigate("/requestor/job_request")}
         />
         <StatusCard
           title="Completed"

@@ -17,9 +17,9 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
       fName: "",
       lName: "",
       birthDate: "",
-      email: "1@gmail.com",
+      email: "",
       password: "12345678",
-      contactNumber: "1", // Add contactNumber to account state
+      contactNumber: "", // Add contactNumber to account state
       deptId: "", // Renamed to deptId
     },
   ]);
@@ -46,15 +46,40 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
 
   // Update specific input fields based on their id and field name
   const handleInputChange = (id, field, value) => {
-    setAccounts((prevAccounts) =>
-      prevAccounts.map((account) =>
-        account.id === id ? { ...account, [field]: value } : account
-      )
-    );
+    if (field === "idNumber" || field === "contactNumber") {
+      // Ensure idNumber and contactNumber contain only numbers
+      const numericValue = value.replace(/\D/g, ""); // Remove non-numeric characters
+      setJobAccounts((prevAccounts) =>
+        prevAccounts.map((account) =>
+          account.id === id ? { ...account, [field]: numericValue } : account
+        )
+      );
+    } else {
+      setJobAccounts((prevAccounts) =>
+        prevAccounts.map((account) =>
+          account.id === id ? { ...account, [field]: value } : account
+        )
+      );
+    }
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
+  };
+
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[!@#$%^&_*])[A-Za-z\d!@#$%^&_*]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const validateBirthDate = (birthDate) => {
+    const year = parseInt(birthDate.split("-")[0], 10); // Extract the year part
+    return year <= 9999; // Ensure the year does not exceed 4 digits
+  };
+
+  const validateContactNumber = (contactNumber) => {
+    const contactNumberRegex = /^[0-9]{11}$/; // Allows only numeric characters
+    return contactNumberRegex.test(contactNumber);
   };
 
   const onSubmit = () => {
@@ -71,6 +96,35 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
 
     if (hasEmptyFields) {
       toast.error("Please fill out all required fields before submitting.");
+      return;
+    }
+
+    const invalidBirthDates = jobAccounts.some(
+      (account) => !validateBirthDate(account.birthDate)
+    );
+
+    if (invalidBirthDates) {
+      toast.error("Birthdate year must not exceed 4 digits.");
+      return;
+    }
+
+    const invalidContactNumbers = jobAccounts.some(
+      (account) => !validateContactNumber(account.contactNumber)
+    );
+
+    if (invalidContactNumbers) {
+      toast.error("Contact number must have at least 11 digits.");
+      return;
+    }
+
+    const invalidPasswords = jobAccounts.some(
+      (account) => !validatePassword(account.password)
+    );
+
+    if (invalidPasswords) {
+      toast.error(
+        "Password must be at least 8 characters long and include at least one special character."
+      );
       return;
     }
 
@@ -107,18 +161,24 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative">
-      {/* Close Modal Button */}
-      <button
-        className="absolute top-1 right-2 font-bold text-lg text-gray-400 hover:text-red-600"
-        onClick={closeModal}
-        aria-label="Close Modal"
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div
+        className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={closeModal}
+          className="absolute -top-4 -right-4 bg-yellow-300 text-black text-4xl rounded-full h-10 w-10 flex items-center justify-center border-4 border-yellow-300 hover:bg-gray-100 hover:text-red-600 shadow-lg"
+          aria-label="Close Modal"
       >
         &times;
       </button>
 
       {/* Modal Header */}
-      <header className="w-full text-lg p-5 font-semibold bg-custom-blue text-center text-white rounded mb-4 mt-0">
+      <header className="text-lg font-semibold text-white bg-custom-blue rounded-t p-4 text-center">
         Department Head Registration Form
       </header>
 
@@ -126,117 +186,180 @@ export default function SysAdminAddNewAdmin({ closeModal }) {
       <form onSubmit={handleSubmit(onSubmit)}>
         {accounts.map((account) => (
           <div key={account.id} className="space-y-4">
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                  <label className="block text-sm font-medium">
+                  Employee ID Number <span className="text-red-500">*</span>
+                  </label>
             <input
               type="text"
-              placeholder="Employee ID"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+              placeholder="Enter Employee ID"
+              className="w-full border rounded p-2"
               value={account.idNumber}
               onChange={(e) =>
                 handleInputChange(account.id, "idNumber", e.target.value)
               }
               required
             />
+            </div>
+
+            {/* First Name */}
+            <div>
+                  <label className="block text-sm font-medium">
+                    First Name <span className="text-red-500">*</span>
+                  </label>
             <input
               type="text"
-              placeholder="First Name"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+              placeholder="Enter First Name"
+              className="w-full border rounded p-2"
               value={account.fName}
               onChange={(e) =>
                 handleInputChange(account.id, "fName", e.target.value)
               }
               required
             />
+            </div>
+
+            {/* Last Name */}
+            <div>
+                  <label className="block text-sm font-medium">
+                    Last Name <span className="text-red-500">*</span>
+                  </label>
             <input
               type="text"
-              placeholder="Last Name"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+              placeholder="Enter Last Name"
+              className="w-full border rounded p-2"
               value={account.lName}
               onChange={(e) =>
                 handleInputChange(account.id, "lName", e.target.value)
               }
               required
             />
+            </div>
+            
+            {/* Birth Date */}
+            <div>
+                  <label className="block text-sm font-medium">
+                    Birth Date <span className="text-red-500">*</span>
+                  </label>
             <input
               type="date"
-              placeholder="birthDate"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className="w-full border rounded p-2"
               value={account.birthDate}
               onChange={(e) =>
                 handleInputChange(account.id, "birthDate", e.target.value)
               }
               required
             />
+            </div>
+            
+            {/* Email */}
+            <div>
+                  <label className="block text-sm font-medium">
+                    Email <span className="text-red-500">*</span>
+                  </label>
             <input
               type="email"
-              placeholder="Email"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+              placeholder="Enter Email"
+              className="w-full border rounded p-2"
               value={account.email}
               onChange={(e) =>
                 handleInputChange(account.id, "email", e.target.value)
               }
               required
             />
-            <input
-              type="tel"
-              placeholder="Contact Number"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={account.contactNumber}
-              onChange={(e) =>
-                handleInputChange(account.id, "contactNumber", e.target.value)
-              }
-              required
-            />
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-                value={account.password}
-                onChange={(e) =>
-                  handleInputChange(account.id, "password", e.target.value)
-                }
-                required
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-2 text-gray-500"
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
             </div>
 
+            {/* Contact Number */}
+            <div>
+                  <label className="block text-sm font-medium">
+                    Contact Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Contact Number"
+                    className="w-full border rounded p-2"
+                    value={account.contactNumber}
+                    onChange={(e) =>
+                      handleInputChange(
+                        account.id,
+                        "contactNumber",
+                        e.target.value
+                      )
+                    }
+                    required
+                  />
+                </div>
+
+
+            {/* Password */}
+            <div>
+                  <label className="block text-sm  font-medium">
+                    Password <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter Password"
+                      className="w-full border rounded p-2"
+                      value={account.password}
+                      onChange={(e) =>
+                        handleInputChange(
+                          account.id,
+                          "password",
+                          e.target.value
+                        )
+                      }
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-2 text-gray-500"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
+                </div>
+
             {/* Department Dropdown */}
-            <select
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={account.deptId} // Now uses deptId
-              onChange={(e) => {
-                handleInputChange(account.id, "deptId", e.target.value); // Update deptId
-              }}
-              required
-            >
-              <option value="" className="hidden">
-                Select Department
-              </option>
-              {departments.map((dept) => (
-                <option key={dept.deptId} value={dept.deptId}>
-                  {dept.deptName} {/* Displays department name */}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+  {/* Full-width element */}
+  <div className="col-span-2">
+    <label className="block text-sm font-medium">
+      Department <span className="text-red-500">*</span>
+    </label>
+    <select
+      className="w-full border rounded p-2"
+      value={account.deptId} // Now uses deptId
+      onChange={(e) => handleInputChange(account.id, "deptId", e.target.value)
+      } // Update deptId
+      required
+    >
+      <option value="" disabled className="hidden">
+      Select Department
+      </option>
+      {departments.map((dept) => (
+        <option key={dept.deptId} value={dept.deptId}>
+          {dept.deptName} {/* Displays department name */}
+        </option>
+      ))}
+    </select>
+  </div>
+  </div>
+</div>
+</div>
         ))}
 
-        {/* Submit Button Inside Form */}
-        <div className="text-right mt-4">
-          <button
+        <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="w-full p-2 mt-6 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Submit
           </button>
-        </div>
-      </form>
+          </form>
+      </div>
     </div>
   );
 }
