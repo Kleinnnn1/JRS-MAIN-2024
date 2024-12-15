@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import supabase from "../../../service/supabase"; // Ensure this is the correct path
 import ReusableButton from "../../../components/ReusableButton.jsx"; // Import ReusableButton component
 import domToImage from "dom-to-image"; // Import dom-to-image for generating images
+import { useParams } from "react-router-dom";
 
 export default function RequestorCertificate() {
   const certificateRef = useRef();
@@ -9,42 +10,42 @@ export default function RequestorCertificate() {
   const [loading, setLoading] = useState(true); // Loading state to manage loading UI
   const [staffTimestamp, setStaffTimestamp] = useState("");
   const [requestorTimestamp, setRequestorTimestamp] = useState("");
-
+  const { requestId } = useParams();
   // Fetch Job Requests from Supabase
   const fetchJobRequestData = async () => {
     try {
-      // Fetch the job request data
+      // Use the requestId from URL
       const { data: jobRequestData, error: jobRequestError } = await supabase
         .from("Request")
         .select("*")
-        .eq("requestId", requestId);
-
+        .eq("requestId", requestId);  // Use the dynamic requestId
+  
       if (jobRequestError) {
         console.error("Error fetching job request data:", jobRequestError);
         setLoading(false);
         return;
       }
-
+  
       if (jobRequestData.length === 0) {
         console.error("No job request data found");
         setLoading(false);
         return;
       }
-
+  
       const request = jobRequestData[0];
-
+  
       // Fetch the user data based on idNumber in the job request
       const { data: userData, error: userError } = await supabase
         .from("User")
         .select("id, idNumber, fName, lName")
         .eq("idNumber", request.idNumber);
-
+  
       if (userError) {
         console.error("Error fetching user data:", userError);
         setLoading(false);
         return;
       }
-
+  
       // Attach user data to the job request
       const requestWithUser = { ...request, user: userData[0] || {} };
       setJobRequest([requestWithUser]);
