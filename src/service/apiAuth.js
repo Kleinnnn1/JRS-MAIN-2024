@@ -11,6 +11,7 @@ export async function signUp({
   deptId,
   birthDate,
   jobCategory, // Add jobCategory
+  sex,
 }) {
   try {
     console.log("SignUp Data:", {
@@ -24,6 +25,7 @@ export async function signUp({
       deptId,
       birthDate,
       jobCategory, // Include in the log
+      sex,
     });
 
     // Sign up the user with email and password and pass metadata
@@ -40,6 +42,7 @@ export async function signUp({
           deptId,
           birthDate,
           jobCategory, // Include in auth metadata
+          sex,
         },
       },
     });
@@ -63,6 +66,7 @@ export async function signUp({
         birthDate,
         jobCategory, // Include in the User table
         avatar: "",
+        sex,
       },
     ]);
 

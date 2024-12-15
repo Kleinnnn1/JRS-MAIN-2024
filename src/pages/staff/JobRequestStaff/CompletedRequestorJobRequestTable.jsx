@@ -13,11 +13,6 @@ const tableHeaders = [
   "Job Description",
   "Job Category",
   "Office",
-  "Assigned Staff",
-  // "Image",
-  "Status",
-  //  "Date Requested",
-  "Priority",
   "Actions",
 ];
 
@@ -182,12 +177,6 @@ export default function RequestorJobRequestTable() {
       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
         <SearchBar title="Job Requests" />
         <div className="flex space-x-4">
-          <button
-            onClick={handleMakeRequest}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
-          >
-            Make Request
-          </button>
           <ReusableSearchTerm
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -283,13 +272,6 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       request.description,
       request.jobCategory,
       request.departmentNames || "N/A",
-      request.staffNames || "N/A",
-      request.status,
-      <span
-        className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
-      >
-        {request.priority}
-      </span>,
       <span
         onClick={() => handleDetailsClick(request)}
         className="cursor-pointer text-blue-500 hover:text-blue-700"

@@ -13,9 +13,7 @@ const tableHeaders = [
   "Job Description",
   "Job Category",
   "Office",
-  "Assigned Staff",
   "Status",
-  "Date Requested",
   "Priority",
   "Actions",
 ];
@@ -55,6 +53,7 @@ export default function RequestorJobRequestTable() {
           "requestId, description, jobCategory, image, status, requestDate, priority, idNumber"
         )
         .eq("idNumber", currentUser.idNumber)
+        .neq("status", "Completed")
         .order("requestDate", { ascending: true });
 
       if (error) throw error;
@@ -281,9 +280,7 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       request.description,
       request.jobCategory,
       request.departmentNames || "N/A",
-      request.staffNames || "N/A",
       request.status,
-      formattedDate,
       <span
         className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
       >

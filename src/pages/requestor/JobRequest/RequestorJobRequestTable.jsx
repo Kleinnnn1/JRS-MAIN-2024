@@ -13,7 +13,7 @@ const tableHeaders = [
   "Description",
   "Job Category",
   "Office",
-  "Assigned Staff",
+  // "Assigned Staff",
   "Status",
   // "Date Requested",
   "Priority",
@@ -295,7 +295,7 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       request.description,
       request.jobCategory,
       request.departmentNames || "N/A",
-      request.staffNames || "N/A",
+      // request.staffNames || "N/A",
       <span
         className={`px-2 py-1 rounded-md ${getStatusClass(request.status)}`}
       >

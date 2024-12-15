@@ -37,7 +37,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
       } else {
         const mapping = data.reduce((acc, { category, keyword }) => {
           if (!acc[category]) acc[category] = [];
-          acc[category].push(keyword);
+          acc[category].push(keyword.toLowerCase());
           return acc;
         }, {});
         setKeywordMapping(mapping);
@@ -46,6 +46,13 @@ export default function RequestorJobRequestForm({ closeModal }) {
 
     fetchKeywordMappings();
   }, []);
+
+  const getContextRules = (keywordMapping) => {
+    return Object.keys(keywordMapping).reduce((rules, category) => {
+      rules[category] = { nextWords: keywordMapping[category] };
+      return rules;
+    }, {});
+  };
 
   const { mutate } = useMutation({
     mutationFn: insertRequest,
@@ -86,15 +93,37 @@ export default function RequestorJobRequestForm({ closeModal }) {
           let updatedRequest = { ...request, [field]: value };
 
           if (field === "description" && keywordMapping) {
-            const matchedJob = Object.keys(keywordMapping).find((job) =>
-              keywordMapping[job].some((keyword) =>
-                value.toLowerCase().includes(keyword)
-              )
+            const words = value.toLowerCase().split(/\s+/);
+            const categoryScores = {};
+
+            // Iterate through each word in the description
+            words.forEach((word) => {
+              // Check if the word exists in the keyword mapping
+              for (const [category, keywords] of Object.entries(
+                keywordMapping
+              )) {
+                if (keywords.includes(word)) {
+                  // Increment the score for the corresponding category
+                  if (!categoryScores[category]) {
+                    categoryScores[category] = 0;
+                  }
+                  categoryScores[category] += 1;
+                }
+              }
+            });
+
+            // Find the category with the highest score
+            const detectedCategory = Object.keys(categoryScores).reduce(
+              (highest, category) =>
+                categoryScores[category] > (categoryScores[highest] || 0)
+                  ? category
+                  : highest,
+              ""
             );
 
             updatedRequest = {
               ...updatedRequest,
-              category: matchedJob || "", // Set category if matched, else keep empty
+              category: detectedCategory || "", // Assign the most relevant category
             };
           }
 
@@ -145,34 +174,21 @@ export default function RequestorJobRequestForm({ closeModal }) {
             imageFile = publicUrlData?.publicUrl || null;
           }
 
-          // Log to verify the imageFile is processed correctly
-          console.log("Processed Request Data:", {
-            description: request.description,
-            location: request.location,
-            jobCategory: request.category,
-            image: imageFile, // Log the uploaded image URL
-            priority: request.priority,
-          });
-
           return {
             description: request.description,
             location: request.location,
             jobCategory: request.category,
-            image: imageFile, // Use the uploaded image URL
+            image: imageFile,
             priority: request.priority,
           };
         })
       );
-
-      // Log the entire formatted requests array
-      console.log("Final Formatted Requests to Submit:", formattedRequests);
 
       formattedRequests.forEach((formattedData) => {
         mutate(formattedData);
       });
 
       toast.success("Your job request(s) have been submitted successfully.");
-      // navigate("/requestor/job_request_table");
       closeModal();
 
       setJobRequests([
