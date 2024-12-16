@@ -45,8 +45,9 @@ export default function SysAdminAddNewSysAdmin() {
         <p className="text-xl font-bold text-gray-600">New SysAdmin Information</p>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 p-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 p-5 mt-4">
           <div>
+
             <label className="block text-gray-700 font-bold mb-2" htmlFor="SysAdminFirstName">
               First Name
             </label>

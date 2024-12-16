@@ -20,10 +20,11 @@ function SysAdminAddNewSpme({ closeModal }) {
   const [passwordError, setPasswordError] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const navigate = useNavigate();
-  let passwordToggleTimeout;
 
   // Submit Handler
   const onSubmit = (data) => {
+    if (!isPasswordValid) return; // Prevent form submission if password is invalid.
+
     const formData = { ...data, userRole: "requestor" };
     signup(formData, {
       onSettled: () => reset(),
@@ -72,14 +73,7 @@ function SysAdminAddNewSpme({ closeModal }) {
   // Toggle Password Visibility
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
-    if (!showPassword) {
-      passwordToggleTimeout = setTimeout(() => setShowPassword(false), 3000);
-    }
   };
-
-  useEffect(() => {
-    return () => clearTimeout(passwordToggleTimeout); // Cleanup timeout on unmount.
-  }, []);
 
   return (
     <section className="bg-white rounded-lg flex items-center justify-center">
@@ -171,8 +165,10 @@ function SysAdminAddNewSpme({ closeModal }) {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  {...register("password", { required: true })}
-                  onChange={(e) => validatePassword(e.target.value)}
+                  {...register("password", {
+                    required: "Password is required",
+                    validate: validatePassword,
+                  })}
                   className="w-full p-2 border border-gray-300 rounded"
                 />
                 <span
@@ -193,7 +189,7 @@ function SysAdminAddNewSpme({ closeModal }) {
             <button
               type="submit"
               className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-              disabled={!isPasswordValid}
+              disabled={!isPasswordValid} // Disable submit if password is invalid
             >
               Submit
             </button>

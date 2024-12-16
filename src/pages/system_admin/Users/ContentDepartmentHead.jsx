@@ -106,12 +106,12 @@ export default function AdminContent() {
 
   return (
     <div className="p-6 mx-5 mt-10 bg-white rounded-lg shadow-lg">
-      <header className="bg-custom-blue text-white p-4 rounded-lg flex justify-between items-center">
+      <header className= "py-4 px-6 bg-custom-blue flex justify-between items-center rounded-t-lg">
         <SearchBar title="Department Head" />
         <div className="flex space-x-4">
           <button
             onClick={handleAddAdmin}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md"
           >
             Add Department Head
           </button>

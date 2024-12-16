@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import supabase from "../../../service/supabase";
 import ReusablePagination from "../../../components/ReusablePagination";
 import ReusableSearchTerm from "../../../components/ReusableSearchTerm";
 import Table from "../../../components/Table";
-import { saveAs } from "file-saver"; // Install this package: `npm install file-saver`
+import { saveAs } from "file-saver";
 
 const tableHeaders = [
-  "CSSID", 
+  "CSSID",
   "Date",
-  "Name", 
+  "Name",
   "email",
   "clientType",
   "role",
@@ -18,12 +19,12 @@ const tableHeaders = [
   "campus",
   "transactedOffice",
   "serviceAvailed",
-  "ccAwareness",  
+  "ccAwareness",
   "ccVisibility",
   "ccHelp",
   "SQD0",
   "SQD1",
-  "SQD2",  
+  "SQD2",
   "SQD3",
   "SQD4",
   "SQD5",
@@ -35,152 +36,61 @@ const tableHeaders = [
 
 export default function SPMSContentTable() {
   const navigate = useNavigate();
-
-  // Temporary example data
-  const [jobRequests, setJobRequests] = useState([
-    {
-      CSSID: "CSS-001",
-      Date: "2023-01-01",
-      Name: "A",
-      email: "johndoe@example.com",
-      clientType: "Student",
-      role: "User",
-      sex: "Male",
-      age: "25",
-      region: "Region A",
-      campus: "Main",
-      transactedOffice: "Office 1",
-      serviceAvailed: "Counseling",
-      ccAwareness: "Yes",
-      ccVisibility: "High",
-      ccHelp: "Yes",
-      SQD0: "4",
-      SQD1: "5",
-      SQD2: "4",
-      SQD3: "4",
-      SQD4: "5",
-      SQD5: "4",
-      SQD6: "3",
-      SQD7: "5",
-      SQD8: "4",
-      comments: "Good service",
-    },
-    {
-      CSSID: "CSS-001",
-      Date: "2023-01-02",
-      Name: "B",
-      email: "johndoe@example.com",
-      clientType: "Student",
-      role: "User",
-      sex: "Male",
-      age: "25",
-      region: "Region A",
-      campus: "Main",
-      transactedOffice: "Office 1",
-      serviceAvailed: "Counseling",
-      ccAwareness: "Yes",
-      ccVisibility: "High",
-      ccHelp: "Yes",
-      SQD0: "4",
-      SQD1: "5",
-      SQD2: "4",
-      SQD3: "4",
-      SQD4: "5",
-      SQD5: "4",
-      SQD6: "3",
-      SQD7: "5",
-      SQD8: "4",
-      comments: "Good service",
-    },
-    {
-      CSSID: "CSS-001",
-      Date: "2023-12-03",
-      Name: "C",
-      email: "johndoe@example.com",
-      clientType: "Student",
-      role: "User",
-      sex: "Male",
-      age: "25",
-      region: "Region A",
-      campus: "Main",
-      transactedOffice: "Office 1",
-      serviceAvailed: "Counseling",
-      ccAwareness: "Yes",
-      ccVisibility: "High",
-      ccHelp: "Yes",
-      SQD0: "4",
-      SQD1: "5",
-      SQD2: "4",
-      SQD3: "4",
-      SQD4: "5",
-      SQD5: "4",
-      SQD6: "3",
-      SQD7: "5",
-      SQD8: "4",
-      comments: "Good service",
-    },
-    {
-      CSSID: "CSS-001",
-      Date: "2023-12-04",
-      Name: "D",
-      email: "johndoe@example.com",
-      clientType: "Student",
-      role: "User",
-      sex: "Male",
-      age: "25",
-      region: "Region A",
-      campus: "Main",
-      transactedOffice: "Office 1",
-      serviceAvailed: "Counseling",
-      ccAwareness: "Yes",
-      ccVisibility: "High",
-      ccHelp: "Yes",
-      SQD0: "4",
-      SQD1: "5",
-      SQD2: "4",
-      SQD3: "4",
-      SQD4: "5",
-      SQD5: "4",
-      SQD6: "3",
-      SQD7: "5",
-      SQD8: "4",
-      comments: "Good service",
-    },
-    {
-      CSSID: "CSS-001",
-      Date: "2023-12-05",
-      Name: "E",
-      email: "johndoe@example.com",
-      clientType: "Student",
-      role: "User",
-      sex: "Male",
-      age: "25",
-      region: "Region A",
-      campus: "Main",
-      transactedOffice: "Office 1",
-      serviceAvailed: "Counseling",
-      ccAwareness: "Yes",
-      ccVisibility: "High",
-      ccHelp: "Yes",
-      SQD0: "4",
-      SQD1: "5",
-      SQD2: "4",
-      SQD3: "4",
-      SQD4: "5",
-      SQD5: "4",
-      SQD6: "3",
-      SQD7: "5",
-      SQD8: "4",
-      comments: "Good service",
-    },
-    // Add more example entries as needed
-  ]);
-
+  const [jobRequests, setJobRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [startDate, setStartDate] = useState(""); // For date range start
-  const [endDate, setEndDate] = useState(""); // For date range end
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  // Map table headers to database column names
+  const fieldMapping = {
+    CSSID: "css_id",
+    Date: "date",
+    Name: "name",
+    email: "email",
+    clientType: "clientType",
+    role: "role",
+    sex: "sex",
+    date: "date",
+    age: "age",
+    region: "region",
+    campus: "campus",
+    transactedOffice: "transactedOffice",
+    serviceAvailed: "serviceAvailed",
+    ccAwareness: "ccAwareness",
+    ccVisibility: "ccVisibility",
+    ccHelp: "ccHelp",
+    SQD0: "SQD0",
+    SQD1: "SQD1",
+    SQD2: "SQD2",
+    SQD3: "SQD3",
+    SQD4: "SQD4",
+    SQD5: "SQD5",
+    SQD6: "SQD6",
+    SQD7: "SQD7",
+    SQD8: "SQD8",
+    comments: "comments",
+  };
+
+  // Fetch data from Supabase
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("Client_satisfaction_survey")
+        .select("*"); // Ensure all fields are fetched
+      if (error) {
+        console.error("Error fetching data:", error.message);
+      } else {
+        setJobRequests(data);
+      }
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
 
   // Filter by search term and date range
   const filteredRequests = jobRequests.filter((job) => {
@@ -209,9 +119,13 @@ export default function SPMSContentTable() {
   const handleDownload = () => {
     const headers = tableHeaders.join(",");
     const rows = filteredRequests.map((job) =>
-      tableHeaders.map((header) =>
-        header === "Date" ? `"${job[header]}"` : job[header] || ""
-      ).join(",")
+      tableHeaders
+        .map((header) =>
+          header === "Date"
+            ? `"${job[fieldMapping[header]]}"`
+            : job[fieldMapping[header]] || ""
+        )
+        .join(",")
     );
     const csvContent = [headers, ...rows].join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -219,18 +133,15 @@ export default function SPMSContentTable() {
   };
 
   return (
-    
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-md rounded-lg">
-      
       <div className="bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
         <div className="flex text-white items-center space-x-2">
-         
-        <button
-          onClick={handleDownload}
-          className="bg-green-500 text-white p-2 rounded-lg"
-        >
-          Download
-        </button>
+          <button
+            onClick={handleDownload}
+            className="bg-green-500 text-white p-2 rounded-lg"
+          >
+            Download
+          </button>
           <label>
             Start Date:
             <input
@@ -251,20 +162,29 @@ export default function SPMSContentTable() {
           </label>
         </div>
 
-        <ReusableSearchTerm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <ReusableSearchTerm
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+        />
       </div>
 
       {/* Table */}
-      <Table
-        columns={tableHeaders.length}
-        rows={paginatedRequests.length}
-        content={paginatedRequests.map((job, index) =>
-          tableHeaders.map((header) => (
-            <span key={`${header}-${index}`}>{job[header] || "n/a"}</span>
-          ))
-        )}
-        headers={tableHeaders}
-      />
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <Table
+          columns={tableHeaders.length}
+          rows={paginatedRequests.length}
+          content={paginatedRequests.map((job, index) =>
+            tableHeaders.map((header) => (
+              <span key={`${header}-${index}`}>
+                {job[fieldMapping[header]] || "n/a"}
+              </span>
+            ))
+          )}
+          headers={tableHeaders}
+        />
+      )}
 
       {/* Pagination */}
       <ReusablePagination

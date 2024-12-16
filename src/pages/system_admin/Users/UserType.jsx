@@ -113,7 +113,7 @@ export default function UserType() {
                     {/* Button 1: USER / REQUESTOR */}
                     <button
                         onClick={() => navigate("/system_admin/Users/reg_users")}
-                        className='text-center bg-yellow-200 border shadow-md rounded-lg hover:scale-105 hover:shadow-lg hover:bg-custom-hover-color transition-all duration-300 font-bold p-10'
+                        className='text-center bg-white border shadow-md rounded-lg hover:scale-105 hover:shadow-lg hover:bg-custom-hover-color transition-all duration-300 font-bold p-10'
                     >
                         <div className='flex justify-center items-center'>
                             <i className='ri-user-star-line text-4xl mr-3'></i>
@@ -126,7 +126,7 @@ export default function UserType() {
                     {/* Button 2: DEPARTMENT HEAD */}
                     <button
                         onClick={() => navigate("/system_admin/Users/admin")}
-                        className='text-center bg-yellow-200 border shadow-md rounded-lg hover:scale-105 hover:shadow-lg hover:bg-custom-hover-color transition-all duration-300 font-bold p-10'
+                        className='text-center bg-white border shadow-md rounded-lg hover:scale-105 hover:shadow-lg hover:bg-custom-hover-color transition-all duration-300 font-bold p-10'
                     >
                         <div className='flex justify-center items-center'>
                             <i className='ri-user-star-line text-4xl mr-3'></i>
@@ -139,7 +139,7 @@ export default function UserType() {
                     {/* Button 3: DEPARTMENT STAFF */}
                     <button
                         onClick={() => navigate("/system_admin/Users/staff")}
-                        className='text-center bg-yellow-200 border shadow-md rounded-lg hover:scale-105 hover:shadow-lg hover:bg-custom-hover-color transition-all duration-300 font-bold p-10'
+                        className='text-center bg-white border shadow-md rounded-lg hover:scale-105 hover:shadow-lg hover:bg-custom-hover-color transition-all duration-300 font-bold p-10'
                     >
                         <div className='flex justify-center items-center'>
                             <i className='ri-user-star-line text-4xl mr-3'></i>

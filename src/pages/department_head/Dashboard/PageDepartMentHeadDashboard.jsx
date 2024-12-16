@@ -135,7 +135,7 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
     },
     { icon: <FaUsers />, label: "Staff", path: "/department_head/employee" },
     { icon: <FaChartPie />, label: "Report", path: "/department_head/report" },
-    { icon: <FaHistory />, label: "History", path: "/department_head/history" },
+    // { icon: <FaHistory />, label: "History", path: "/department_head/history" },
     {
       icon: <FaAward />,
       label: "Certificate of Job Completion",
@@ -145,6 +145,11 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
       icon: <FaFileAlt />,
       label: "My Request",
       path: "/department_head/my_request",
+    },
+    {
+      icon: <FaCheckCircle />,
+      label: "My Completed Request",
+      path: "/department_head/my_request/completed",
     },
     {
       icon: <FaLightbulb />,

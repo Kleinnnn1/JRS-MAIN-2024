@@ -61,10 +61,8 @@ import ChangePassword from "./pages/department_head/Profile/ChangePassword.jsx";
 import DashboardContent from "./pages/department_head/Dashboard/ContentDashboard.jsx";
 import UserInformation from "./pages/department_head/Profile/UserInformation.jsx";
 import EditFormReferral from "./pages/department_head/Referral/EditFormReferral.jsx";
-import ReportView from "./pages/department_head/SendReport/ReportView.jsx";
-import SendReportForm from "./pages/department_head/SendReport/SendReportForm.jsx";
 import CreateNewUser from "./pages/department_head/CreateNewUserTest/CreateNewUser.jsx";
-import PageReportDepartmentHead from "./pages/department_head/SendReport/PageReport.jsx";
+import PageReportDepartmentHead from "./pages/department_head/Reports/PageReport.jsx";
 import ViewEmployee from "./pages/department_head/Employee/ViewEmployee.jsx";
 import ViewEmployeeApproval from "./pages/department_head/ApproveStaff/ViewEmployee.jsx";
 import JobOngoing from "./pages/department_head/JobRequest/PageJobOngoing.jsx";
@@ -136,6 +134,7 @@ import SysAdminSpmeContent from "./pages/system_admin/Users/ContentSpme";
 
 // Office Head
 import ContentDashboard from "./pages/office_org_head/Dashboard/ContentDashboard.jsx";
+import OfficeHeadCompletedRequestorJobRequestTable from "./pages/office_org_head/JobRequestOfficeHead/OfiiceHeadCompletedRequestorJobRequestTable.jsx";
 
 import SignUpForm from "./auth/SignUpForm.jsx";
 // SPME
@@ -187,6 +186,8 @@ import RequestDetailPage from "./pages/department_head/JobRequest/DeptHeadReques
 import RequestorJobRequestDetailPage from "./pages/requestor/JobRequest/RequestorJobRequestDetail.jsx";
 import OfficeHeadRequestorJobRequestDetailPage from "./pages/office_org_head/JobRequestOfficeHead/RequestorJobRequestDetail.jsx";
 import CompletedRequestDetailPage from "./pages/staff/History/CompletedTaskDetails.jsx";
+import CompletedDeptGHeadRequestorJobRequestTable from "./pages/department_head/JobRequestDeptHead/CompletedRequestorJobRequestTable.jsx";
+import TableReport from "./pages/department_head/Reports/TableReport.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -326,8 +327,9 @@ export default function App() {
               element={<StaffJobRequestCompleted />}
             />
             <Route
-              path="job_request_certificateStaff"
+              path="job_request_certificateStaff/:requestId"
               element={<StaffCertificate />}
+              // element={<p> lorem </p>}
             />
 
             <Route path="StaffSendCert" element={<StaffPageCertificate />} />
@@ -435,6 +437,10 @@ export default function App() {
             </Route>
             <Route path="my_requests" element={<JobRequestPage />} />
             <Route
+              path="my_requests/completed"
+              element={<OfficeHeadCompletedRequestorJobRequestTable />}
+            />
+            <Route
               path="my_request/detail/:requestId"
               element={<OfficeHeadRequestorJobRequestDetailPage />}
             />
@@ -490,10 +496,8 @@ export default function App() {
               <Route path="change_avatar" element={<ChangeAvatar />} />
               <Route path="change_password" element={<ChangePassword />} />
             </Route>
-            <Route path="report" element={<PageReportDepartmentHead />}>
-              <Route path="view" element={<ReportView />} />
-              <Route path="send_report" element={<SendReportForm />} />
-              <Route path="employee" element={<ViewAddEmployee />} />
+            <Route path="report" element={<TableReport />}>
+            
             </Route>
             <Route path="employee" element={<PageEmployee />}>
               <Route path="add" element={<ViewAddEmployee />} />
@@ -536,6 +540,10 @@ export default function App() {
             <Route
               path="my_request"
               element={<RequestorJobRequestDeptHead />}
+            />
+            <Route
+              path="my_request/completed"
+              element={<CompletedDeptGHeadRequestorJobRequestTable />}
             />
             <Route
               path="my_request/detail/:requestId"

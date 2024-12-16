@@ -76,7 +76,9 @@ export default function OfficeHeadDashboard() {
               <p className="text-xs text-gray-300">
                 {userMetadata.deptName || "No department"}
               </p>
-              <p className="text-xs text-gray-300">{userMetadata.role || "No Role"}</p>
+              <p className="text-xs text-gray-300">
+                {userMetadata.role || "No Role"}
+              </p>
             </div>
           )}
         </div>
@@ -107,11 +109,23 @@ export default function OfficeHeadDashboard() {
 const SidebarMenu = ({ isSidebarCollapsed, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/office_head/dashboard" },
-    { icon: <FaUserCircle />, label: "My Profile", path: "/office_head/myprofile" },
     { icon: <FaUsers />, label: "Staff", path: "/office_head/staff" },
     { icon: <FaFileAlt />, label: "Report", path: "/office_head/report" },
-    { icon: <FaClipboardList />, label: "My Request", path: "/office_head/my_requests" },
-    { icon: <FaUserCheck />, label: "Approve Staff", path: "/office_head/approve_staff" },
+    {
+      icon: <FaClipboardList />,
+      label: "My Request",
+      path: "/office_head/my_requests",
+    },
+    {
+      icon: <FaClipboardList />,
+      label: "My Completed Request",
+      path: "/office_head/my_requests/completed",
+    },
+    {
+      icon: <FaUserCheck />,
+      label: "Approve Staff",
+      path: "/office_head/approve_staff",
+    },
   ];
 
   return (
@@ -132,4 +146,3 @@ const SidebarMenu = ({ isSidebarCollapsed, navigate }) => {
     </ul>
   );
 };
-  

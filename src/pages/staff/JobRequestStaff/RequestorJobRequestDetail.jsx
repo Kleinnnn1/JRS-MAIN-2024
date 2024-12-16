@@ -146,7 +146,7 @@ export default function JobRequestDetail() {
         </h2>
         <button
           className="bg-gray-700 p-5 text-white py-2 px-4 rounded mt-4"
-          onClick={() => navigate("/requestor/home")}
+          onClick={() => navigate(-1)}
         >
           Back to Dashboard
         </button>
@@ -162,7 +162,7 @@ export default function JobRequestDetail() {
         </h2>
         <button
           className="bg-gray-700 p-5 text-white py-2 px-4 rounded mt-4"
-          onClick={() => navigate("/requestor/home")}
+          onClick={() => navigate(-1)}
         >
           Back to Dashboard
         </button>
@@ -173,7 +173,7 @@ export default function JobRequestDetail() {
     <div className="p-6">
       <button
         className="bg-gray-700 p-5 text-white py-2 px-4 rounded"
-        onClick={() => navigate("/requestor/home")}
+        onClick={() => navigate(-1)}
       >
         Back to Dashboard
       </button>
@@ -282,10 +282,8 @@ export default function JobRequestDetail() {
                   rows="3"
                   value={jobRequest.remarks || "No remarks available."}
                   readOnly
-                  disabled={jobRequest.status === "Completed"}
                 />
               </div>
-
               <div className="md:col-span-2">
                 <label className="block text-xl font-medium text-gray-700">
                   Image

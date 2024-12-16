@@ -70,56 +70,62 @@ export default function RequestDetailPage() {
     }
   };
 
-  const handleJobComplete = async () => {
-    try {
-      // Get the current time in Philippine Time (PHT)
-      const now = new Date();
-      const formatter = new Intl.DateTimeFormat("en-US", {
-        timeZone: "Asia/Manila",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false, // Optional: Use 24-hour format
-      });
-      const parts = formatter.formatToParts(now);
 
-      // Convert the formatted parts to a valid date string
-      const formattedDate = `${parts.find((p) => p.type === "year").value}-${
-        parts.find((p) => p.type === "month").value
-      }-${parts.find((p) => p.type === "day").value}T${
-        parts.find((p) => p.type === "hour").value
-      }:${parts.find((p) => p.type === "minute").value}:${
-        parts.find((p) => p.type === "second").value
-      }+08:00`;
+const handleJobComplete = async () => {
+  try {
+    // Get the current time in Philippine Time (PHT)
+    const now = new Date();
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Manila",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false, // Optional: Use 24-hour format
+    });
+    const parts = formatter.formatToParts(now);
 
-      // Save the timestamp as an ISO string for database compatibility
-      const phtTimestamp = new Date(formattedDate).toISOString();
+    // Convert the formatted parts to a valid date string
+    const formattedDate = `${parts.find((p) => p.type === "year").value}-${
+      parts.find((p) => p.type === "month").value
+    }-${parts.find((p) => p.type === "day").value}T${
+      parts.find((p) => p.type === "hour").value
+    }:${parts.find((p) => p.type === "minute").value}:${
+      parts.find((p) => p.type === "second").value
+    }+08:00`;
 
-      const { data, error } = await supabase
-        .from("Request")
-        .update({
-          status: "Completed",
-          dateCompleted: phtTimestamp,
-        })
-        .eq("requestId", requestId);
+    // Save the timestamp as an ISO string for database compatibility
+    const phtTimestamp = new Date(formattedDate).toISOString();
 
-      if (error) {
-        console.error("Error updating job status:", error.message);
-        setError("Failed to mark the job as completed.");
-      } else {
-        console.log("Job status updated to completed with timestamp:", data);
-        alert("Job marked as completed successfully!");
-        setDateCompleted(new Date(phtTimestamp)); // Update state for dateCompleted
-        navigate(-1);
-      }
-    } catch (err) {
-      console.error("Unexpected error:", err);
-      setError("An unexpected error occurred. Please try again.");
+    // Update the job status in the database
+    const { data, error } = await supabase
+      .from("Request")
+      .update({
+        status: "Completed",
+        dateCompleted: phtTimestamp,
+      })
+      .eq("requestId", requestId);
+
+    if (error) {
+      console.error("Error updating job status:", error.message);
+      setError("Failed to mark the job as completed.");
+    } else {
+      console.log("Job status updated to completed with timestamp:", data);
+      alert("Job marked as completed successfully!");
+
+      // Update the dateCompleted state for display
+      setDateCompleted(new Date(phtTimestamp)); // Update state for dateCompleted
+
+      // Use navigate to pass requestId and redirect to the RequestorCertificate page
+      navigate(`/staff/job_request_certificateStaff/${requestId}`); // Update to dynamically pass requestId in the URL
     }
-  };
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    setError("An unexpected error occurred. Please try again.");
+  }
+};
 
   return (
     <div className="p-6 bg-white shadow-lg rounded-lg m-10 mt-10">
@@ -253,7 +259,7 @@ export default function RequestDetailPage() {
               </button>
               <button
                 className="ml-4 text-black-500 bg-blue-400 font-bold px-4 py-2 rounded"
-                onClick={handleJobComplete}
+                onClick={() => handleJobComplete(requestId)}
               >
                 Mark Job as Completed
               </button>
