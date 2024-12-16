@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 import ModalForm from "./ModalForm";
 import { useAssignmentStore } from "../../../store/useAssignmentStore";
 import supabase from "../../../service/supabase";
@@ -115,7 +116,7 @@ export default function RequestDetailPage() {
 
   const handleSaveRemarks = async () => {
     if (!remarks.trim()) {
-      alert("Remarks cannot be empty.");
+      toast.error("Remarks cannot be empty.");
       return;
     }
 
@@ -127,12 +128,12 @@ export default function RequestDetailPage() {
         .eq("requestId", requestId);
 
       if (error) {
-        alert("Failed to save remarks. Please try again.");
+        toast.error("Failed to save remarks. Please try again.");
       } else {
-        alert("Remarks saved successfully.");
+        toast.success("Remarks saved successfully.");
       }
     } catch (err) {
-      alert("An unexpected error occurred.");
+      toast.error("An unexpected error occurred.");
     } finally {
       setIsSaving(false);
     }
@@ -140,7 +141,7 @@ export default function RequestDetailPage() {
 
   const handleTransfer = async () => {
     if (!selectedDepartment) {
-      alert("Please select a department.");
+      toast.error("Please select a department.");
       return;
     }
 
@@ -151,13 +152,13 @@ export default function RequestDetailPage() {
         .eq("requestId", requestId);
 
       if (error) {
-        alert("Failed to transfer the request. Please try again.");
+        toast.error("Failed to transfer the request. Please try again.");
       } else {
-        alert("Request successfully transferred.");
+        toast.success("Request successfully transferred.");
         closeModal("isTransferModalOpen");
       }
     } catch (err) {
-      alert("An unexpected error occurred.");
+      toast.error("An unexpected error occurred.");
     }
   };
 
@@ -189,68 +190,86 @@ export default function RequestDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-6 mt-6">
           {/* Left Section */}
           <div>
-            <div className="space-y-4 m-4 text-xl">
-              <p>
-                <span className="font-semibold">
+            <div className="space-y-4 m-4">
+              {/* Request ID  */}
+              <div>
+                <span className="block text-sm text-gray-600 mb-1 font-medium">
                   Request Id:
-                  <br />
                 </span>
-                {requestId || "No requestId provided"}
-              </p>
-              <p>
-                <span className="font-semibold mt-12">
-                  Requestor:
-                  <br />
+                <span className="block text-2xl text-gray-900 font-semibold tracking-wide">
+                  {requestId || "No requestId provided"}
                 </span>
-                {fullName || "N/A"}
-              </p>
-              <p>
-                <span className="font-semibold">
-                  Description:
-                  <br />
-                </span>
-                {description || "No description provided"}
-              </p>
-              <p>
-                <span className="font-semibold">
-                  Job Category:
-                  <br />
-                </span>{" "}
-                {jobCategory || "Unknown Category"}
-              </p>
-              <p>
-                <span className="font-semibold">
-                  Date Submitted:
-                  <br />
-                </span>{" "}
-                {formatDate(requestDate)}
-              </p>
-              <p>
-                <span className="font-semibold">
-                  Location: <br />
-                </span>{" "}
-                {requestLocation || "Unknown Location"}
-              </p>
+              </div>
 
-              <p>
-                <span className="font-semibold mb-10">
+              {/* REQUESTOR */}
+              <div>
+                <span className="block text-sm text-gray-600 mb-1 font-medium">
+                  Requestor:
+                </span>
+                <span className="block text-2xl text-gray-900 font-semibold tracking-wide">
+                  {fullName || "N/A"}
+                </span>
+              </div>
+
+              {/* DESCRIPTION */}
+              <div>
+                <span className="block text-sm text-gray-600 mb-1 font-medium">
+                  Description:
+                </span>
+                <span className="block text-2xl text-gray-800 font-normal leading-relaxed">
+                  {description || "No description provided"}
+                </span>
+              </div>
+
+              {/* JOB CATEGORY */}
+              <div>
+                <span className="block text-sm text-gray-600 mb-1 font-medium">
+                  Job Category:
+                </span>
+                <span className="block text-2xl text-gray-900 font-semibold tracking-wide">
+                  {jobCategory || "Unknown Category"}
+                </span>
+              </div>
+
+              {/* Date Submitted */}
+              <div>
+                <span className="block text-sm text-gray-600 mb-1 font-medium">
+                  Date Submitted:
+                </span>
+                <span className="block text-2xl text-gray-800 font-medium">
+                  {formatDate(requestDate)}
+                </span>
+              </div>
+
+              {/* LOCATION */}
+              <div className="mb-10">
+                <span className="block text-sm text-gray-600 mb-1 font-medium">
+                  Location:
+                </span>
+                <span className="block text-2xl text-gray-900 font-semibold tracking-wide">
+                  {requestLocation || "Unknown Location"}
+                </span>
+              </div>
+
+              {/* PRIORITY */}
+              <div className="mb-10">
+                <span className="block text-sm text-gray-600 mb-1 font-medium">
                   Priority:
-                  <br />
                 </span>
                 <span
-                  className={` px-1 py-1 rounded ${
+                  className={`inline-block px-3 py-1 rounded-full text-xl font-semibold ${
                     PRIORITY_COLORS[priority] || "bg-gray-300 text-black"
                   }`}
                 >
                   {priority || "No Priority"}
                 </span>
-              </p>
+              </div>
             </div>
-            <p>
-              <span className="font-semibold text-xl m-4">Assigned Staff:</span>{" "}
-              {assignedStaffName}
+            <p className="mb-4">
+              <span className="font-semibold  m-4">Assigned Staff:</span> <br />
+              <span className="m-4 text-xl">{assignedStaffName}</span>
             </p>
-            <div className="mt-2 m-4">
+            <div className="-mt-8 m-4">
               {/* Assign Button */}
               {status !== "Ongoing" && status !== "Completed" && (
                 <button
@@ -265,7 +284,7 @@ export default function RequestDetailPage() {
               {/* Remarks Section */}
               <label
                 htmlFor="remarks"
-                className="block font-semibold mb-2 mt-4"
+                className="block font-semibold mb-2 mt-10"
               >
                 Remarks:
               </label>
@@ -277,6 +296,7 @@ export default function RequestDetailPage() {
                 className="w-full border rounded p-2"
                 placeholder="Add your remarks here..."
               />
+<<<<<<< HEAD
               <button
                 onClick={handleSaveRemarks}
                 className={`mt-4 bg-green-600 text-white px-4 py-2 rounded mr-4 ${
@@ -357,13 +377,30 @@ export default function RequestDetailPage() {
 
               {/* Transfer Request */}
               {status !== "Ongoing" && status !== "Completed" && (
+=======
+              <div className="flex gap-4">
+>>>>>>> 3eb6eee29811bd72d343bf618f3b58d74e231716
                 <button
-                  onClick={() => openModal("isTransferModalOpen")}
-                  className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 w-40 mt-4"
+                  onClick={handleSaveRemarks}
+                  className={`mt-4 bg-blue-600 text-white px-4 py-2 rounded ${
+                    isSaving
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-blue-700"
+                  }`}
+                  disabled={isSaving}
                 >
-                  Transfer Request
+                  Save Remarks
                 </button>
-              )}
+
+                {status !== "Ongoing" && status !== "Completed" && (
+                  <button
+                    onClick={() => openModal("isTransferModalOpen")}
+                    className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 w-40 mt-4"
+                  >
+                    Transfer Request
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -375,7 +412,6 @@ export default function RequestDetailPage() {
             {image ? (
               <img
                 src={image}
-                alt="Image"
                 className="rounded-lg border mt-2 cursor-pointer transition-transform duration-200 hover:scale-105"
                 onClick={() => openModal("isImageModalOpen")}
               />

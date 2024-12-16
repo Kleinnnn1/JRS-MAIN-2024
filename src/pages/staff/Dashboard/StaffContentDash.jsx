@@ -5,6 +5,7 @@ import StatusCard from "../../../components/StatusCard";
 import ReusableCalendar from "../../../components/ReusableCalendar";
 import StaffNotification from "./StaffNotificationAndCalendar";
 import supabase from "../../../service/supabase";
+import { getCurrentUser } from "../../../service/apiAuth";
 
 export default function StaffContentDash() {
   const navigate = useNavigate();
@@ -14,20 +15,34 @@ export default function StaffContentDash() {
   const [ongoingCount, setOngoingCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
 
-  // Fetch counts from Supabase
   useEffect(() => {
     const fetchCounts = async () => {
       try {
+        // Get the current user's full name
+        const currentUser = await getCurrentUser();
+        const staffFullName = currentUser?.fullName;
+
+        if (!staffFullName) {
+          console.error("Error: Could not fetch the current user's full name.");
+          return;
+        }
+
         // Fetch Ongoing count
         const { count: ongoing, error: ongoingError } = await supabase
-          .from("Request") // Replace with your table name
-          .select("*", { count: "exact" })
+          .from("Request")
+          .select("*, Department_request_assignment!inner(staffName)", {
+            count: "exact",
+          }) // Inner join on Department_request_assignment
+          .eq("Department_request_assignment.staffName", staffFullName)
           .eq("status", "Ongoing");
 
         // Fetch Completed count
         const { count: completed, error: completedError } = await supabase
-          .from("Request") // Replace with your table name
-          .select("*", { count: "exact" })
+          .from("Request")
+          .select("*, Department_request_assignment!inner(staffName)", {
+            count: "exact",
+          }) // Inner join on Department_request_assignment
+          .eq("Department_request_assignment.staffName", staffFullName)
           .eq("status", "Completed");
 
         // Set state if no errors
@@ -54,14 +69,14 @@ export default function StaffContentDash() {
           count={ongoingCount}
           title="Ongoing"
           bgColor={statusCardColor}
-          onClick={() => navigate("/Staff/StaffImagePage")}
+          onClick={() => navigate("/staff/job_assigned")}
           gridSpan="w-full" // Full width for this card
         />
         <StatusCard
           count={completedCount}
           title="Completed"
           bgColor={statusCardColor}
-          onClick={() => navigate("/Staff/StaffSendCert")}
+          onClick={() => navigate("/staff/job_completed")}
           gridSpan="w-full" // Full width for this card
         />
       </div>

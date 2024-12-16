@@ -109,11 +109,6 @@ export default function OfficeHeadDashboard() {
 const SidebarMenu = ({ isSidebarCollapsed, navigate }) => {
   const menuItems = [
     { icon: <FaHome />, label: "Home", path: "/office_head/dashboard" },
-    {
-      icon: <FaUserCircle />,
-      label: "My Profile",
-      path: "/office_head/myprofile",
-    },
     { icon: <FaUsers />, label: "Staff", path: "/office_head/staff" },
     { icon: <FaFileAlt />, label: "Report", path: "/office_head/report" },
     {

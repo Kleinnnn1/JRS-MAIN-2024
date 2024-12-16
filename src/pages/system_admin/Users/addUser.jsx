@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import supabase from "../../../service/supabase"; // Import your Supabase client
 
-// SysAdminAddNewAdmin Component
+// SysAdminAddNewUser Component
 export default function SysAdminAddNewUser({ closeModal }) {
   const { handleSubmit } = useForm();
   const queryClient = useQueryClient();
@@ -15,14 +15,14 @@ export default function SysAdminAddNewUser({ closeModal }) {
   const [accounts, setAccounts] = useState([
     {
       id: 1,
-      idNumber: "1",
-      fName: "1",
-      lName: "1",
+      idNumber: "",
+      fName: "",
+      lName: "",
       birthDate: "",
-      email: "1@gmail.com",
-      password: "12345678",
-      contactNumber: "1", // Add contactNumber to account state
-      deptId: "", // Renamed to deptId
+      email: "",
+      password: "",
+      contactNumber: "",
+      deptId: "",
     },
   ]);
   const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +34,6 @@ export default function SysAdminAddNewUser({ closeModal }) {
       const { data, error } = await supabase
         .from("Department")
         .select("deptId, deptName");
-
       if (error) {
         toast.error("Failed to load departments.");
         console.error(error);
@@ -42,7 +41,6 @@ export default function SysAdminAddNewUser({ closeModal }) {
         setDepartments(data); // Set departments in state
       }
     };
-
     fetchDepartments();
   }, []); // Run once when the component mounts
 
@@ -59,6 +57,21 @@ export default function SysAdminAddNewUser({ closeModal }) {
     setShowPassword((prevState) => !prevState);
   };
 
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[!@#$%^&_*])[A-Za-z\d!@#$%^&_*]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const validateBirthDate = (birthDate) => {
+    const year = parseInt(birthDate.split("-")[0], 10); // Extract the year part
+    return year <= 9999; // Ensure the year does not exceed 4 digits
+  };
+
+  const validateContactNumber = (contactNumber) => {
+    const contactNumberRegex = /^[0-9]{11}$/; // Allows only numeric characters
+    return contactNumberRegex.test(contactNumber);
+  };
+
   const onSubmit = () => {
     const hasEmptyFields = accounts.some(
       (account) =>
@@ -67,12 +80,41 @@ export default function SysAdminAddNewUser({ closeModal }) {
         !account.lName ||
         !account.birthDate ||
         !account.email ||
-        !account.contactNumber || // Check for contactNumber
+        !account.contactNumber ||
         !account.deptId // Check for deptId
     );
 
     if (hasEmptyFields) {
       toast.error("Please fill out all required fields before submitting.");
+      return;
+    }
+
+    const invalidBirthDates = accounts.some(
+      (account) => !validateBirthDate(account.birthDate)
+    );
+
+    if (invalidBirthDates) {
+      toast.error("Birthdate year must not exceed 4 digits.");
+      return;
+    }
+
+    const invalidContactNumbers = accounts.some(
+      (account) => !validateContactNumber(account.contactNumber)
+    );
+
+    if (invalidContactNumbers) {
+      toast.error("Contact number must have at least 11 digits.");
+      return;
+    }
+
+    const invalidPasswords = accounts.some(
+      (account) => !validatePassword(account.password)
+    );
+
+    if (invalidPasswords) {
+      toast.error(
+        "Password must be at least 8 characters long and include at least one special character."
+      );
       return;
     }
 
@@ -84,9 +126,9 @@ export default function SysAdminAddNewUser({ closeModal }) {
         lName: account.lName,
         birthDate: account.birthDate,
         email: account.email,
-        contactNumber: account.contactNumber, // Add contactNumber to the payload
+        contactNumber: account.contactNumber,
         password: "12345678", // Default password
-        deptId: Number(account.deptId), // Ensure deptId is stored as a number
+        deptId: Number(account.deptId),
         userRole: "requestor", // Set the default userRole
       };
 
@@ -98,308 +140,207 @@ export default function SysAdminAddNewUser({ closeModal }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative">
-      {/* Close Modal Button */}
-      <button
-        className="absolute top-1 right-2 font-bold text-lg text-gray-400 hover:text-red-600"
-        onClick={closeModal}
-        aria-label="Close Modal"
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div
+        className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative"
+        onClick={(e) => e.stopPropagation()}
       >
-        &times;
-      </button>
+        <button
+          onClick={closeModal}
+          className="absolute -top-4 -right-4 bg-yellow-300 text-black text-4xl rounded-full h-10 w-10 flex items-center justify-center border-4 border-yellow-300 hover:bg-gray-100 hover:text-red-600 shadow-lg"
+          aria-label="Close Modal"
+        >
+          &times;
+        </button>
 
-      {/* Modal Header */}
-      <header className="w-full text-lg p-5 font-semibold bg-custom-blue text-center text-white rounded mb-4 mt-0">
-        Requestor Registration Form
-      </header>
+        {/* Modal Header */}
+        <header className="text-lg font-semibold text-white bg-custom-blue rounded-t p-4 text-center">
+          Requestor Registration Form
+        </header>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {accounts.map((account) => (
-          <div key={account.id} className="space-y-4">
-            <input
-              type="text"
-              placeholder="Employee ID"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={account.idNumber}
-              onChange={(e) =>
-                handleInputChange(account.id, "idNumber", e.target.value)
-              }
-              required
-            />
-            <input
-              type="text"
-              placeholder="First Name"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={account.fName}
-              onChange={(e) =>
-                handleInputChange(account.id, "fName", e.target.value)
-              }
-              required
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={account.lName}
-              onChange={(e) =>
-                handleInputChange(account.id, "lName", e.target.value)
-              }
-              required
-            />
-            <input
-              type="date"
-              placeholder="birthDate"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={account.birthDate}
-              onChange={(e) =>
-                handleInputChange(account.id, "birthDate", e.target.value)
-              }
-              required
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={account.email}
-              onChange={(e) =>
-                handleInputChange(account.id, "email", e.target.value)
-              }
-              required
-            />
-            <input
-              type="tel"
-              placeholder="Contact Number"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={account.contactNumber}
-              onChange={(e) =>
-                handleInputChange(account.id, "contactNumber", e.target.value)
-              }
-              required
-            />
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-                value={account.password}
-                onChange={(e) =>
-                  handleInputChange(account.id, "password", e.target.value)
-                }
-                required
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-2 text-gray-500"
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
+        {/* Form */}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {accounts.map((account) => (
+            <div key={account.id} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                <div>
+                  <label className="block text-sm font-medium">
+                    Employee ID Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Employee ID"
+                    className="w-full border rounded p-2"
+                    value={account.idNumber}
+                    onChange={(e) =>
+                      handleInputChange(account.id, "idNumber", e.target.value)
+                    }
+                    required
+                  />
+                </div>
+
+                {/* First Name */}
+                <div>
+                  <label className="block text-sm font-medium">
+                    First Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter First Name"
+                    className="w-full border rounded p-2"
+                    value={account.fName}
+                    onChange={(e) =>
+                      handleInputChange(account.id, "fName", e.target.value)
+                    }
+                    required
+                  />
+                </div>
+
+                {/* Last Name */}
+                <div>
+                  <label className="block text-sm font-medium">
+                    Last Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Last Name"
+                    className="w-full border rounded p-2"
+                    value={account.lName}
+                    onChange={(e) =>
+                      handleInputChange(account.id, "lName", e.target.value)
+                    }
+                    required
+                  />
+                </div>
+
+                {/* Birth Date */}
+                <div>
+                  <label className="block text-sm font-medium">
+                    Birth Date <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    className="w-full border rounded p-2"
+                    value={account.birthDate}
+                    onChange={(e) =>
+                      handleInputChange(account.id, "birthDate", e.target.value)
+                    }
+                    required
+                  />
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-medium">
+                    Email <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="Enter Email"
+                    className="w-full border rounded p-2"
+                    value={account.email}
+                    onChange={(e) =>
+                      handleInputChange(account.id, "email", e.target.value)
+                    }
+                    required
+                  />
+                </div>
+
+                {/* Contact Number */}
+                <div>
+                  <label className="block text-sm font-medium">
+                    Contact Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Contact Number"
+                    className="w-full border rounded p-2"
+                    value={account.contactNumber}
+                    onChange={(e) =>
+                      handleInputChange(
+                        account.id,
+                        "contactNumber",
+                        e.target.value
+                      )
+                    }
+                    required
+                  />
+                </div>
+
+                {/* Password */}
+                <div>
+                  <label className="block text-sm  font-medium">
+                    Password <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter Password"
+                      className="w-full border rounded p-2"
+                      value={account.password}
+                      onChange={(e) =>
+                        handleInputChange(
+                          account.id,
+                          "password",
+                          e.target.value
+                        )
+                      }
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-2 text-gray-500"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Department Dropdown */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium">
+                      Department <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      className="w-full border rounded p-2"
+                      value={account.deptId}
+                      onChange={(e) => {
+                        handleInputChange(account.id, "deptId", e.target.value);
+                      }}
+                      required
+                    >
+                      <option value="" className="hidden">
+                        Select Department
+                      </option>
+                      {departments.map((dept) => (
+                        <option key={dept.deptId} value={dept.deptId}>
+                          {dept.deptName}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
             </div>
+          ))}
 
-            {/* Department Dropdown */}
-            <select
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-              value={account.deptId} // Now uses deptId
-              onChange={(e) => {
-                handleInputChange(account.id, "deptId", e.target.value); // Update deptId
-              }}
-              required
-            >
-              <option value="" className="hidden">
-                Select Department
-              </option>
-              {departments.map((dept) => (
-                <option key={dept.deptId} value={dept.deptId}>
-                  {dept.deptName} {/* Displays department name */}
-                </option>
-              ))}
-            </select>
-          </div>
-        ))}
-
-        {/* Submit Button Inside Form */}
-        <div className="text-right mt-4">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="w-full p-2 mt-6 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Submit
           </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
 
 SysAdminAddNewUser.propTypes = {
-  closeModal: PropTypes.func, // Makes closeModal optional
+  closeModal: PropTypes.func,
 };
-
-// import React, { useState } from "react";
-// import PropTypes from "prop-types";
-// import { useForm } from "react-hook-form";
-// import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import { insertRequest } from "../../../service/apiRequestorRequestTable";
-// import toast from "react-hot-toast";
-// import { FaEye, FaEyeSlash } from "react-icons/fa";
-
-// // SysAdminAddNewStaff Component
-// export default function SysAdminAddNewUser({ closeModal }) {
-//   const {
-//     handleSubmit,
-//     register,
-//     formState: { errors },
-//   } = useForm();
-//   const queryClient = useQueryClient();
-//   const [showPassword, setShowPassword] = useState(false);
-
-//   const { mutate } = useMutation({
-//     mutationFn: insertRequest,
-//     onSuccess: () => {
-//       toast.success("Successfully Registered New User");
-//       queryClient.invalidateQueries({ queryKey: ["requests"] });
-//     },
-//     onError: (err) => toast.error(err.message),
-//   });
-
-//   // Toggle password visibility
-//   const togglePasswordVisibility = () => {
-//     setShowPassword((prevState) => !prevState);
-//   };
-
-//   // Handle form submission
-//   const onSubmit = (data) => {
-//     mutate(data);
-//     toast.success("Successfully Submitted.");
-//     closeModal();
-//   };
-
-//   return (
-//     <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative">
-//       {/* Close Modal Button */}
-//       <button
-//         className="absolute top-1 right-2 font-bold text-lg text-gray-400 hover:text-red-600"
-//         onClick={closeModal}
-//         aria-label="Close Modal"
-//       >
-//         &times;
-//       </button>
-
-//       {/* Modal Header */}
-//       <header className="w-full text-lg p-5 font-semibold bg-custom-blue text-center text-white rounded mb-4 mt-0">
-//         Staff Registration Form
-//       </header>
-
-//       {/* Form */}
-//       <form onSubmit={handleSubmit(onSubmit)}>
-//         <div className="space-y-4">
-//           {/* Employee ID */}
-//           <input
-//             type="text"
-//             placeholder="Employee ID"
-//             className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-//             {...register("employeeId", { required: "Employee ID is required" })}
-//           />
-//           {errors.employeeId && (
-//             <p className="text-red-500 text-sm">{errors.employeeId.message}</p>
-//           )}
-
-//           {/* First Name */}
-//           <input
-//             type="text"
-//             placeholder="First Name"
-//             className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-//             {...register("firstName", { required: "First Name is required" })}
-//           />
-//           {errors.firstName && (
-//             <p className="text-red-500 text-sm">{errors.firstName.message}</p>
-//           )}
-
-//           {/* Last Name */}
-//           <input
-//             type="text"
-//             placeholder="Last Name"
-//             className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-//             {...register("lastName", { required: "Last Name is required" })}
-//           />
-//           {errors.lastName && (
-//             <p className="text-red-500 text-sm">{errors.lastName.message}</p>
-//           )}
-
-//           {/* Birthday */}
-//           <input
-//             type="date"
-//             className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-//             {...register("birthday", { required: "Birthday is required" })}
-//           />
-//           {errors.birthday && (
-//             <p className="text-red-500 text-sm">{errors.birthday.message}</p>
-//           )}
-
-//           {/* Email */}
-//           <input
-//             type="email"
-//             placeholder="Email"
-//             className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-//             {...register("email", {
-//               required: "Email is required",
-//               pattern: {
-//                 value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-//                 message: "Invalid email format",
-//               },
-//             })}
-//           />
-//           {errors.email && (
-//             <p className="text-red-500 text-sm">{errors.email.message}</p>
-//           )}
-
-//           {/* Password */}
-//           <div className="relative">
-//             <input
-//               type={showPassword ? "text" : "password"}
-//               placeholder="Password"
-//               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-//               {...register("password", { required: "Password is required" })}
-//             />
-//             <button
-//               type="button"
-//               className="absolute inset-y-0 right-2 text-gray-500"
-//               onClick={togglePasswordVisibility}
-//             >
-//               {showPassword ? <FaEyeSlash /> : <FaEye />}
-//             </button>
-//           </div>
-//           {errors.password && (
-//             <p className="text-red-500 text-sm">{errors.password.message}</p>
-//           )}
-
-//           {/* Department */}
-//           <input
-//             type="text"
-//             placeholder="Department"
-//             className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
-//             {...register("department", { required: "Department is required" })}
-//           />
-//           {errors.department && (
-//             <p className="text-red-500 text-sm">{errors.department.message}</p>
-//           )}
-//         </div>
-
-//         {/* Submit Button */}
-//         <div className="text-right mt-4">
-//           <button
-//             type="submit"
-//             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-//           >
-//             Submit
-//           </button>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// }
-
-// SysAdminAddNewUser.propTypes = {
-//   closeModal: PropTypes.func.isRequired,
-// };

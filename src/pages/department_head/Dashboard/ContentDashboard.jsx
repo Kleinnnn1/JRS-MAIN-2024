@@ -3,9 +3,15 @@ import { useNavigate } from "react-router-dom";
 import SearchBar from "../../../components/SearchBar";
 import StatusCard from "../../../components/StatusCard";
 import AdminNotification from "./AdminNotificationAndCalendar";
-import { FaClipboard, FaHourglassStart, FaCheckCircle, FaRegHandPointer } from "react-icons/fa";
+import {
+  FaClipboard,
+  FaHourglassStart,
+  FaCheckCircle,
+  FaRegHandPointer,
+} from "react-icons/fa";
 import supabase from "../../../service/supabase"; // Adjust the import path if necessary
 import ReusableCalendar from "../../../components/ReusableCalendar";
+import { getCurrentUser } from "../../../service/apiAuth";
 
 export default function ContentDashboard() {
   const navigate = useNavigate();
@@ -19,29 +25,55 @@ export default function ContentDashboard() {
   useEffect(() => {
     const fetchJobCounts = async () => {
       try {
-        // Fetch counts for each status
+        // Get the current user
+        const currentUser = await getCurrentUser();
+        const { deptId } = currentUser;
+
+        if (!deptId) {
+          console.error("User department ID not found");
+          return;
+        }
+
+        // Fetch counts for each status, filtered by Department_request_assignment.deptId
         const { data: jobRequestData, error: jobRequestError } = await supabase
           .from("Request")
-          .select("*", { count: "exact" })
-          .eq("status", "Pending");
+          .select(`*, Department_request_assignment!inner(deptId)`, {
+            count: "exact",
+          })
+          .eq("status", "Pending")
+          .eq("Department_request_assignment.deptId", deptId);
 
         const { data: ongoingData, error: ongoingError } = await supabase
           .from("Request")
-          .select("*", { count: "exact" })
-          .eq("status", "Ongoing");
+          .select(`*, Department_request_assignment!inner(deptId)`, {
+            count: "exact",
+          })
+          .eq("status", "Ongoing")
+          .eq("Department_request_assignment.deptId", deptId);
 
         const { data: completedData, error: completedError } = await supabase
           .from("Request")
-          .select("*", { count: "exact" })
-          .eq("status", "Completed");
+          .select(`*, Department_request_assignment!inner(deptId)`, {
+            count: "exact",
+          })
+          .eq("status", "Completed")
+          .eq("Department_request_assignment.deptId", deptId);
 
         const { data: referralData, error: referralError } = await supabase
           .from("Request")
-          .select("*", { count: "exact" })
-          .eq("status", "Referral");
+          .select(`*, Department_request_assignment!inner(deptId)`, {
+            count: "exact",
+          })
+          .eq("status", "Referral")
+          .eq("Department_request_assignment.deptId", deptId);
 
         // Handle errors
-        if (jobRequestError || ongoingError || completedError || referralError) {
+        if (
+          jobRequestError ||
+          ongoingError ||
+          completedError ||
+          referralError
+        ) {
           console.error("Error fetching job counts:", {
             jobRequestError,
             ongoingError,
@@ -53,10 +85,10 @@ export default function ContentDashboard() {
 
         // Update state with counts
         setJobCounts({
-          jobRequest: jobRequestData.length,
-          ongoing: ongoingData.length,
-          completed: completedData.length,
-          referral: referralData.length,
+          jobRequest: jobRequestData.length || 0,
+          ongoing: ongoingData.length || 0,
+          completed: completedData.length || 0,
+          referral: referralData.length || 0,
         });
       } catch (error) {
         console.error("Error fetching job counts:", error);
@@ -66,11 +98,11 @@ export default function ContentDashboard() {
     fetchJobCounts();
   }, []);
 
-  const statusCardColor = "bg-blue-50"; // Define a background color for consistency
+  const statusCardColor = "bg-white"; // Define a background color for consistency
 
   return (
     <>
-      <div className="my-4 mx-3 py-4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
+      <div className="my-4 mx-5  py-4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
         <SearchBar title="Dashboard" />
       </div>
 
@@ -120,10 +152,10 @@ export default function ContentDashboard() {
         />
       </div>
 
-     {/* Main Content Section */}
-     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+      {/* Main Content Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
         {/* Left Side (Notifications) */}
-        <div className="col-span-2 -mt-5">
+        <div className="col-span-2  m-5 -mt-5">
           <AdminNotification />
         </div>
 
@@ -135,5 +167,3 @@ export default function ContentDashboard() {
     </>
   );
 }
-
-

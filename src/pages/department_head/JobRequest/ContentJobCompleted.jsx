@@ -174,7 +174,7 @@ export default function JobCompletedContent() {
             description || "N/A",
             jobCategory || "N/A",
             location || "N/A",
-            priority,
+            <span className={getPriorityClass(priority)}>{priority}</span>, // Highlighted Priority
             <button
               className="px-3 py-1 text-sm font-medium text-center rounded-lg bg-blue-600 text-white"
               onClick={() => {
@@ -241,8 +241,8 @@ export default function JobCompletedContent() {
 
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
-      <div className="my-4 mx-3 py-4 px-6 bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
-        <SearchBar title="Ongoing" showInput={true} />
+      <div className=" py-4 px-6 bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
+        <SearchBar title="Completed" showInput={true} />
 
         {/* Search Term Component */}
         <ReusableSearchTerm

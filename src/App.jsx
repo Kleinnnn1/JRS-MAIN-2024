@@ -61,10 +61,8 @@ import ChangePassword from "./pages/department_head/Profile/ChangePassword.jsx";
 import DashboardContent from "./pages/department_head/Dashboard/ContentDashboard.jsx";
 import UserInformation from "./pages/department_head/Profile/UserInformation.jsx";
 import EditFormReferral from "./pages/department_head/Referral/EditFormReferral.jsx";
-import ReportView from "./pages/department_head/SendReport/ReportView.jsx";
-import SendReportForm from "./pages/department_head/SendReport/SendReportForm.jsx";
 import CreateNewUser from "./pages/department_head/CreateNewUserTest/CreateNewUser.jsx";
-import PageReportDepartmentHead from "./pages/department_head/SendReport/PageReport.jsx";
+import PageReportDepartmentHead from "./pages/department_head/Reports/PageReport.jsx";
 import ViewEmployee from "./pages/department_head/Employee/ViewEmployee.jsx";
 import ViewEmployeeApproval from "./pages/department_head/ApproveStaff/ViewEmployee.jsx";
 import JobOngoing from "./pages/department_head/JobRequest/PageJobOngoing.jsx";
@@ -152,6 +150,10 @@ import SpmeJobRequestApproved from "./pages/spme/JobRequestDetailspme/RequestorC
 import SpmeJobRequestCompleted from "./pages/spme/JobRequestDetailspme/RequestorContentJobRequestCompleted.jsx";
 import SpmeCertificate from "./pages/spme/JobRequestDetailspme/RequestorCertificate.jsx";
 import SpmeRequestorJobRequestDetailPage from "./pages/spme/JobRequestspme/RequestorJobRequestDetail.jsx";
+import SpmePageProfile from "./pages/spme/Profile/RequestorpPageProfile.jsx";
+import SpmeRequestorInformation from "./pages/spme/Profile/RequestorUserInformation.jsx";
+import SpmeRequestorChangeAvatar from "./pages/spme/Profile/RequestorChangeAvatar.jsx";
+import SpmeChangePassword from "./pages/spme/Profile/RequestorChangePassword.jsx";
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
@@ -191,6 +193,7 @@ import RequestorJobRequestDetailPage from "./pages/requestor/JobRequest/Requesto
 import OfficeHeadRequestorJobRequestDetailPage from "./pages/office_org_head/JobRequestOfficeHead/RequestorJobRequestDetail.jsx";
 import CompletedRequestDetailPage from "./pages/staff/History/CompletedTaskDetails.jsx";
 import CompletedDeptGHeadRequestorJobRequestTable from "./pages/department_head/JobRequestDeptHead/CompletedRequestorJobRequestTable.jsx";
+import TableReport from "./pages/department_head/Reports/TableReport.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -259,6 +262,19 @@ export default function App() {
               path="job_request_certificateSpme"
               element={<SpmeCertificate />}
             />
+
+            {/* SPME'S PROFILE */}
+            <Route path="spme_profile" element={<SpmePageProfile />}>
+              <Route
+                path="user_account"
+                element={<SpmeRequestorInformation />}
+              />
+              <Route
+                path="change_avatar"
+                element={<SpmeRequestorChangeAvatar />}
+              />
+              <Route path="change_password" element={<SpmeChangePassword />} />
+            </Route>
           </Route>
           {/* ===========================================STAFF==================================================================== */}
           {/* Protected Routes for Staff */}
@@ -499,11 +515,7 @@ export default function App() {
               <Route path="change_avatar" element={<ChangeAvatar />} />
               <Route path="change_password" element={<ChangePassword />} />
             </Route>
-            <Route path="report" element={<PageReportDepartmentHead />}>
-              <Route path="view" element={<ReportView />} />
-              <Route path="send_report" element={<SendReportForm />} />
-              <Route path="employee" element={<ViewAddEmployee />} />
-            </Route>
+            <Route path="report" element={<TableReport />}></Route>
             <Route path="employee" element={<PageEmployee />}>
               <Route path="add" element={<ViewAddEmployee />} />
               <Route path="view/:id" element={<ViewEmployee />} />

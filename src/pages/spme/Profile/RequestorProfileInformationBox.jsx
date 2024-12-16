@@ -1,9 +1,7 @@
 import PropTypes from "prop-types";
 
 export default function RequestorProfileInformationBox({ children }) {
-  return (
-    <div className="relative   h-[60vh] w-[100vh] relative">{children}</div>
-  );
+  return <div className=" h-[60vh] w-[100vh] relative">{children}</div>;
 }
 
 // Define PropTypes for the component

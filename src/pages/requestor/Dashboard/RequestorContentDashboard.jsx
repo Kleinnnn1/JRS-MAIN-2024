@@ -4,14 +4,15 @@ import StatusCard from "../../../components/StatusCard";
 import ReusableNotification from "../../../components/ReusableNotification";
 import ReusableCalendar from "../../../components/ReusableCalendar";
 import SearchBar from "../../../components/SearchBar";
-import { FaHourglassStart, FaClock, FaCheckCircle, FaRegHandPointer } from "react-icons/fa";
-import supabase from "../../../service/supabase"; 
+import supabase from "../../../service/supabase";
 import RequestorNotification from "./RequestorNotificationAndCalendar";
+import { FaHourglassStart, FaClock, FaCheckCircle } from "react-icons/fa";
+import { getCurrentUser } from "../../../service/apiAuth";
 
 export default function ContentDashboard() {
   const navigate = useNavigate();
   const statusCardColor = "bg-white";
-  
+
   const [counts, setCounts] = useState({
     pending: 0,
     ongoing: 0,
@@ -21,31 +22,41 @@ export default function ContentDashboard() {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        // Fetch counts for each status
+        // Get the current user
+        const user = await getCurrentUser();
+        const { idNumber } = user;
+
+        if (!idNumber) {
+          console.error("User ID number not found");
+          return;
+        }
+
+        // Fetch counts for each status and match idNumber
         const { data: pendingData, error: pendingError } = await supabase
           .from("Request")
           .select("*", { count: "exact" })
-          .eq("status", "Pending");
-  
+          .eq("status", "Pending")
+          .eq("idNumber", idNumber);
+
         const { data: ongoingData, error: ongoingError } = await supabase
           .from("Request")
           .select("*", { count: "exact" })
-          .eq("status", "Ongoing");
-  
+          .eq("status", "Ongoing")
+          .eq("idNumber", idNumber);
+
         const { data: completedData, error: completedError } = await supabase
           .from("Request")
           .select("*", { count: "exact" })
-          .eq("status", "Completed");
-  
+          .eq("status", "Completed")
+          .eq("idNumber", idNumber);
 
         // Log errors explicitly if they occur
         if (pendingError) console.error("Pending Error:", pendingError);
         if (ongoingError) console.error("Ongoing Error:", ongoingError);
         if (completedError) console.error("Completed Error:", completedError);
 
-  
         // Check if data is fetched correctly before updating state
-        if (!pendingError && !ongoingError && !completedError ) {
+        if (!pendingError && !ongoingError && !completedError) {
           setCounts({
             pending: pendingData?.length || 0,
             ongoing: ongoingData?.length || 0,
@@ -56,7 +67,7 @@ export default function ContentDashboard() {
         console.error("Unexpected error fetching counts:", error);
       }
     };
-  
+
     fetchCounts();
   }, []);
 
@@ -95,7 +106,6 @@ export default function ContentDashboard() {
           bgColor={statusCardColor}
           onClick={() => navigate("/requestor/request_completed")}
         />
-
       </div>
 
       {/* Main Content Section */}
