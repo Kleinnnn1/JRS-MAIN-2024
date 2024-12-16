@@ -6,7 +6,7 @@ export default function RequestorProfilePage() {
   return (
     <>
       {/* Dashboard Header */}
-      <div className="my-4 mx-3 py-2 px-4 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-md shadow-black/5 rounded-xl">
+      <div className="my-4 mx-3 py-2 px-4 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 s">
         <SearchBar title="Profile" />
       </div>
 

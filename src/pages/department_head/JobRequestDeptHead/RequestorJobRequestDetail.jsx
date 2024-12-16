@@ -184,6 +184,7 @@ export default function JobRequestDetail() {
             <h2 className="text-2xl font-bold text-gray-800 mb-4">
               Job Request Details
             </h2>
+            s
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
               <div>
                 <label className="block text-xl font-medium text-gray-700">

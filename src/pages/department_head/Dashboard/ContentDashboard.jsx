@@ -98,11 +98,11 @@ export default function ContentDashboard() {
     fetchJobCounts();
   }, []);
 
-  const statusCardColor = "bg-blue-50"; // Define a background color for consistency
+  const statusCardColor = "bg-white"; // Define a background color for consistency
 
   return (
     <>
-      <div className="my-4 mx-3 py-4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
+      <div className="my-4 mx-5  py-4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
         <SearchBar title="Dashboard" />
       </div>
 
@@ -155,7 +155,7 @@ export default function ContentDashboard() {
       {/* Main Content Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
         {/* Left Side (Notifications) */}
-        <div className="col-span-2 -mt-5">
+        <div className="col-span-2  m-5 -mt-5">
           <AdminNotification />
         </div>
 

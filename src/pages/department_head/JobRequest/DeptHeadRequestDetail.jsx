@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 import ModalForm from "./ModalForm";
 import { useAssignmentStore } from "../../../store/useAssignmentStore";
 import supabase from "../../../service/supabase";
-import { ZAxis } from "recharts";
 
 const PRIORITY_COLORS = {
   High: "bg-red-500 text-white",
@@ -116,7 +116,7 @@ export default function RequestDetailPage() {
 
   const handleSaveRemarks = async () => {
     if (!remarks.trim()) {
-      alert("Remarks cannot be empty.");
+      toast.error("Remarks cannot be empty.");
       return;
     }
 
@@ -128,12 +128,12 @@ export default function RequestDetailPage() {
         .eq("requestId", requestId);
 
       if (error) {
-        alert("Failed to save remarks. Please try again.");
+        toast.error("Failed to save remarks. Please try again.");
       } else {
-        alert("Remarks saved successfully.");
+        toast.success("Remarks saved successfully.");
       }
     } catch (err) {
-      alert("An unexpected error occurred.");
+      toast.error("An unexpected error occurred.");
     } finally {
       setIsSaving(false);
     }
@@ -141,7 +141,7 @@ export default function RequestDetailPage() {
 
   const handleTransfer = async () => {
     if (!selectedDepartment) {
-      alert("Please select a department.");
+      toast.error("Please select a department.");
       return;
     }
 
@@ -152,13 +152,13 @@ export default function RequestDetailPage() {
         .eq("requestId", requestId);
 
       if (error) {
-        alert("Failed to transfer the request. Please try again.");
+        toast.error("Failed to transfer the request. Please try again.");
       } else {
-        alert("Request successfully transferred.");
+        toast.success("Request successfully transferred.");
         closeModal("isTransferModalOpen");
       }
     } catch (err) {
-      alert("An unexpected error occurred.");
+      toast.error("An unexpected error occurred.");
     }
   };
 
@@ -266,11 +266,10 @@ export default function RequestDetailPage() {
               </div>
             </div>
             <p className="mb-4">
-              <span className="font-semibold text-xl m-4">Assigned Staff:</span>{" "}
-              <br />
-              <span className="m-4">{assignedStaffName}</span>
+              <span className="font-semibold  m-4">Assigned Staff:</span> <br />
+              <span className="m-4 text-xl">{assignedStaffName}</span>
             </p>
-            <div className="mt-2 m-4">
+            <div className="-mt-8 m-4">
               {/* Assign Button */}
               {status !== "Ongoing" && status !== "Completed" && (
                 <button
@@ -285,7 +284,7 @@ export default function RequestDetailPage() {
               {/* Remarks Section */}
               <label
                 htmlFor="remarks"
-                className="block font-semibold mb-2 mt-4"
+                className="block font-semibold mb-2 mt-10"
               >
                 Remarks:
               </label>
@@ -297,60 +296,28 @@ export default function RequestDetailPage() {
                 className="w-full border rounded p-2"
                 placeholder="Add your remarks here..."
               />
-              <button
-                onClick={handleSaveRemarks}
-                className={`mt-4 bg-blue-600 text-white px-4 py-2 rounded ${
-                  isSaving
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-blue-700"
-                }`}
-                disabled={isSaving} // Disable only when saving
-              >
-                Save Remarks
-              </button>
-
-              {/* <label
-                htmlFor="remarks"
-                className="block font-semibold mb-2 mt-4"
-              >
-                Remarks:
-              </label>
-              <textarea
-                id="remarks"
-                value={remarks}
-                onChange={(e) => setRemarks(e.target.value)}
-                rows="4"
-                className="w-full border rounded p-2"
-                placeholder="Add your remarks here..."
-                disabled={!!initialRemarks} // Disable if there's an initial remark
-              />
-              {status !== "Completed" && (
-                <>
-                  {!initialRemarks && (
-                    <button
-                      onClick={handleSaveRemarks}
-                      className={`mt-4 bg-green-600 text-white px-4 py-2 rounded ${
-                        isSaving
-                          ? "opacity-50 cursor-not-allowed"
-                          : "hover:bg-green-700"
-                      }`}
-                      disabled={isSaving} // Disable if saving
-                    >
-                      Save Remarks
-                    </button>
-                  )}
-                </>
-              )} */}
-
-              {/* Transfer Request */}
-              {status !== "Ongoing" && status !== "Completed" && (
+              <div className="flex gap-4">
                 <button
-                  onClick={() => openModal("isTransferModalOpen")}
-                  className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 w-40 mt-4"
+                  onClick={handleSaveRemarks}
+                  className={`mt-4 bg-blue-600 text-white px-4 py-2 rounded ${
+                    isSaving
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-blue-700"
+                  }`}
+                  disabled={isSaving}
                 >
-                  Transfer Request
+                  Save Remarks
                 </button>
-              )}
+
+                {status !== "Ongoing" && status !== "Completed" && (
+                  <button
+                    onClick={() => openModal("isTransferModalOpen")}
+                    className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 w-40 mt-4"
+                  >
+                    Transfer Request
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -362,7 +329,6 @@ export default function RequestDetailPage() {
             {image ? (
               <img
                 src={image}
-               
                 className="rounded-lg border mt-2 cursor-pointer transition-transform duration-200 hover:scale-105"
                 onClick={() => openModal("isImageModalOpen")}
               />

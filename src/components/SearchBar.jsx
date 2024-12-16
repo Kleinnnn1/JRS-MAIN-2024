@@ -16,7 +16,7 @@ const formatDate = () => {
 
 export default function SearchBar({ title, inputProps = {} }) {
   return (
-    <div className="my-2 mx-3 py-2 px-2 bg-custom-blue flex items-center rounded-lg">
+    <div className="my-2 mx-2 py-2 px-2 bg-custom-blue flex items-center rounded-lg">
       <div className="flex flex-col flex-grow">
         <span className="text-white text-2xl font-bold">{title}</span>
         <span className="text-white text-xs mt-1">{formatDate()}</span>
