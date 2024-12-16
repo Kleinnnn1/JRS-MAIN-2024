@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FaBuilding, FaUsers, FaTasks, FaHourglassHalf, FaCheckCircle, FaClipboardList } from "react-icons/fa";
-
+import supabase from "../../../service/supabase";
 
 export default function OverallSummary() {
-  const [data, setData] = useState({
+  const [totalData, setTotalData] = useState({
     departments: 0,
     employees: 0,
     pending: 0,
@@ -21,21 +21,21 @@ export default function OverallSummary() {
         setLoading(true);
 
         // Fetch total number of departments
-        const { data: departmentsData, error: deptError } = await supabase
-          .from("Departments")
+        const { count: departmentCount, error: deptError } = await supabase
+          .from("Department")
           .select("*", { count: "exact" });
 
         if (deptError) throw deptError;
 
         // Fetch total number of users
-        const { data: usersData, error: usersError } = await supabase
+        const { count: userCount, error: userError } = await supabase
           .from("User")
           .select("*", { count: "exact" });
 
-        if (usersError) throw usersError;
+        if (userError) throw userError;
 
         // Fetch total requests with status "Pending"
-        const { data: pendingData, error: pendingError } = await supabase
+        const { count: pendingCount, error: pendingError } = await supabase
           .from("Request")
           .select("*", { count: "exact" })
           .eq("status", "Pending");
@@ -43,7 +43,7 @@ export default function OverallSummary() {
         if (pendingError) throw pendingError;
 
         // Fetch total requests with status "Ongoing"
-        const { data: ongoingData, error: ongoingError } = await supabase
+        const { count: ongoingCount, error: ongoingError } = await supabase
           .from("Request")
           .select("*", { count: "exact" })
           .eq("status", "Ongoing");
@@ -51,7 +51,7 @@ export default function OverallSummary() {
         if (ongoingError) throw ongoingError;
 
         // Fetch total requests with status "Completed"
-        const { data: completedData, error: completedError } = await supabase
+        const { count: completedCount, error: completedError } = await supabase
           .from("Request")
           .select("*", { count: "exact" })
           .eq("status", "Completed");
@@ -59,20 +59,20 @@ export default function OverallSummary() {
         if (completedError) throw completedError;
 
         // Fetch total number of requests
-        const { data: totalRequestsData, error: totalRequestsError } = await supabase
+        const { count: totalRequestCount, error: totalRequestError } = await supabase
           .from("Request")
           .select("*", { count: "exact" });
 
-        if (totalRequestsError) throw totalRequestsError;
+        if (totalRequestError) throw totalRequestError;
 
-        // Update state with fetched data
-        setData({
-          departments: departmentsData.length,
-          employees: usersData.length,
-          pending: pendingData.length,
-          ongoing: ongoingData.length,
-          completed: completedData.length,
-          totalRequests: totalRequestsData.length,
+        // Update the state with fetched data
+        setTotalData({
+          departments: departmentCount || 0,
+          employees: userCount || 0,
+          pending: pendingCount || 0,
+          ongoing: ongoingCount || 0,
+          completed: completedCount || 0,
+          totalRequests: totalRequestCount || 0,
         });
 
         setError(null);
@@ -90,37 +90,37 @@ export default function OverallSummary() {
   const statusCards = [
     {
       title: "Total Departments",
-      count: data.departments,
+      count: totalData.departments,
       icon: <FaBuilding className="text-blue-500 text-3xl" />,
       bgColor: "bg-blue-100",
     },
     {
       title: "Total Users",
-      count: data.employees,
+      count: totalData.employees,
       icon: <FaUsers className="text-green-500 text-3xl" />,
       bgColor: "bg-green-100",
     },
     {
       title: "Pending Requests",
-      count: data.pending,
+      count: totalData.pending,
       icon: <FaHourglassHalf className="text-yellow-500 text-3xl" />,
       bgColor: "bg-yellow-100",
     },
     {
       title: "Ongoing Requests",
-      count: data.ongoing,
+      count: totalData.ongoing,
       icon: <FaTasks className="text-purple-500 text-3xl" />,
       bgColor: "bg-purple-100",
     },
     {
       title: "Completed Requests",
-      count: data.completed,
+      count: totalData.completed,
       icon: <FaCheckCircle className="text-green-700 text-3xl" />,
       bgColor: "bg-green-200",
     },
     {
       title: "Total Requests",
-      count: data.totalRequests,
+      count: totalData.totalRequests,
       icon: <FaClipboardList className="text-indigo-500 text-3xl" />,
       bgColor: "bg-indigo-100",
     },

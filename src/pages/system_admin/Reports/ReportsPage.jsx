@@ -4,8 +4,8 @@ import SearchBar from "../../../components/SearchBar";
 import OverallSummary from "./OverallSummary";
 import DepartmentDetails from "./DepartmentDetails";
 import RequestsByDepartment from "./RequetsByDepartments";
-
 import JobCategory from "./JobCategory";
+import { yellow } from "@mui/material/colors";
 
 Chart.register(...registerables);
 
@@ -62,20 +62,43 @@ const pageStyle = {
 };
 
 export default function PageReportSystemAdmin() {
+  
   return (
-    <div>
-      <SearchBar title="Reports and Analytics" />
-      <div className={pageStyle.container}>
-        <OverallSummary totalData={totalData} pageStyle={pageStyle} />
-       
-        <DepartmentDetails className="grid-cols-2" departmentData={departmentData} pageStyle={pageStyle} />
-        <div className="flex  w-1/2">
-        <RequestsByDepartment departmentChartData={departmentChartData} pageStyle={pageStyle} />
-        <JobCategory/>
-        </div>
-       
-        </div>
-     
+   <div>
+  <SearchBar title="Reports and Analytics" />
+  <div className={pageStyle.container}>
+    {/* Overall Summary */}
+    <OverallSummary totalData={totalData} pageStyle={pageStyle} />
+
+    {/* Department Details */}
+    <DepartmentDetails
+      className="grid-cols-2"
+      departmentData={departmentData}
+      pageStyle={pageStyle}
+    />
+
+    {/* Horizontal Alignment for Requests and Job Categories */}
+    <div className="flex flex-wrap justify-between items-center gap-8 mt-8">
+      {/* Requests By Department */}
+      <div className="flex-1 p-4 bg-white shadow-md rounded-lg">
+        <h2 className="text-xl font-semibold mb-4 text-center">
+          
+        </h2>
+        <RequestsByDepartment
+          departmentChartData={departmentChartData}
+          pageStyle={pageStyle}
+        />
+      </div>
+
+      {/* Job Categories with Most Requests */}
+      <div className="flex-1 p-4 bg-white shadow-md rounded-lg">
+        <h2 className="text-xl font-semibold mt-10 mb-4 text-center">
+          Job Categories with Most Requests
+        </h2>
+        <JobCategory />
+      </div>
     </div>
+  </div>
+</div>
   );
 }
