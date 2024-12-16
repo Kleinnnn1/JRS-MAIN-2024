@@ -50,7 +50,7 @@ export default function SysadminDashboard() {
                 </div>
             </div>
 
-            <div className="flex justify-around bg-white border border-gray-300 rounded ml-9 mt-4 py-4 mr-10">
+            {/* <div className="flex justify-around bg-white border border-gray-300 rounded ml-9 mt-4 py-4 mr-10">
                 <StatusCard 
                     title="Pending Job Requests" 
                     count="532" 
@@ -69,7 +69,7 @@ export default function SysadminDashboard() {
                     statusColor="bg-yellow-500" 
                     statusText="In Progress" 
                 />
-            </div>
+            </div> */}
         </div>
     );
 }

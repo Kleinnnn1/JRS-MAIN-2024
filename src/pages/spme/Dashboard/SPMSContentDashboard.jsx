@@ -79,7 +79,7 @@ export default function CSSContentDashboard() {
         </div>
         {/* NOTIFICATION */}
         {/* <SPMENotification /> */}
-        {/* <PieChart /> */}
+        <PieChart />
       </div>
 
       {/* CSS Responses Heading */}
