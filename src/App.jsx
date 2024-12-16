@@ -77,6 +77,7 @@ import RequestorJobRequestCompletedDeptHead from "./pages/department_head/JobReq
 import RequestorCertificateDeptHead from "./pages/department_head/JobRequestDetailDeptHead/RequestorCertificate.jsx";
 import DeptHeadJobRequestDetails from "./pages/department_head/JobRequestDeptHead/RequestorJobRequestDetail.jsx";
 
+import ViewCertificate from "./pages/department_head/JobRequest/certificate.jsx";
 // Components for requestor
 import PageRequestorDashboard from "./pages/requestor/Dashboard/RequestorPageDashboard.jsx";
 import RequestorContentDashboard from "./pages/requestor/Dashboard/RequestorContentDashboard.jsx";
@@ -96,6 +97,7 @@ import RequestorChangePassword from "./pages/requestor/Profile/RequestorChangePa
 import RequestorJobRequestApproved from "./pages/requestor/JobRequestDetail/RequestorContentJobRequestApproved.jsx";
 import RequestorJobRequestCompleted from "./pages/requestor/JobRequestDetail/RequestorContentJobRequestCompleted.jsx";
 import RequestorCertificate from "./pages/requestor/JobRequestDetail/RequestorCertificate.jsx";
+import CompletedCertificate from "./pages/requestor/JobRequest/certificate.jsx"
 
 // Components for system admin
 import SystemAdDashboard from "./pages/system_admin/Dashboard/PageDashboard.jsx";
@@ -541,7 +543,15 @@ export default function App() {
               <Route path="detail/:requestId" element={<JobRequestDetails />} />
               <Route path="view/:requestId" element={<RequestDetailPage />} />
               <Route path="remarks" element={<ViewJobRequestRemarks />} />
+              {/* <Route
+                  path="view_certificate/:requestId"
+                  element={<ViewCertificate />}
+                />; */}
             </Route>
+            <Route
+              path="view_certificate/:requestId"
+              element={<ViewCertificate />}
+            />
             <Route path="job_ongoing" element={<JobOngoing />}>
               <Route path="view" element={<ViewJobOngoing />} />
             </Route>
@@ -617,8 +627,8 @@ export default function App() {
               element={<RequestorJobRequestCompleted />}
             />
             <Route
-              path="job_request_certificate"
-              element={<RequestorCertificate />}
+              path="certificateCompleted/:requestId"
+              element={<CompletedCertificate />}
             />
             <Route
               path="job_request_form"

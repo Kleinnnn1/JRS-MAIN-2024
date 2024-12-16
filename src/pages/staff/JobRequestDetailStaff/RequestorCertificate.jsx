@@ -68,69 +68,70 @@ export default function RequestorCertificate() {
 
   // Function to generate and upload the JPEG
   const generateCertificate = async () => {
-    const element = certificateRef.current;
-  
-    try {
-      // Set timestamps immediately before generating the certificate
-      const currentTimestamp = new Date().toLocaleString();
-      setStaffTimestamp(currentTimestamp);  // Set the staff timestamp
-      setRequestorTimestamp(currentTimestamp);  // Set the requestor timestamp
-  
-      // Wait for the DOM to render completely
-      await new Promise(resolve => setTimeout(resolve, 1000)); // 1000ms delay to ensure rendering
-  
-      // Ensure the certificate element has a defined height and width
-      element.style.width = 'auto';
-      element.style.height = 'auto';
-      element.style.overflow = 'visible';
-  
-      // Generate a JPEG image from the certificate element
-      const jpegBlob = await domToImage.toBlob(element);
-  
-      // Generate a valid file name
-      const fileName = `certificates/${new Date().toISOString().replace(/[:.]/g, '-')}.jpeg`;
-  
-      // Upload the generated JPEG to Supabase Storage (certificateJpeg bucket)
-      const { data: storageData, error: storageError } = await supabase
-        .storage
-        .from("certificateJpeg")
-        .upload(fileName, jpegBlob, {
-          contentType: "image/jpeg",
-          upsert: true,
-        });
-  
-      if (storageError) {
-        console.error("Error uploading JPEG:", storageError);
-        return;
-      }
-  
-      // Get the public URL of the uploaded JPEG
-      const { data: urlData, error: urlError } = supabase
-        .storage
-        .from("certificateJpeg")
-        .getPublicUrl(storageData?.path || storageData?.Key);
-  
-      if (urlError) {
-        console.error("Error getting URL:", urlError);
-        return;
-      }
-  
-      // Update the completedCertificate column in the Request table with the JPEG URL
-      const { error: updateError } = await supabase
-        .from("Request")
-        .update({ completedCertificate: urlData.publicUrl })
-        .eq("requestId", requestId);
-  
-      if (updateError) {
-        console.error("Error updating certificate URL:", updateError);
-        return;
-      }
-  
-      alert("Certificate generated and uploaded successfully!");
-    } catch (error) {
-      console.error("Error generating certificate:", error);
+  const element = certificateRef.current;
+
+  try {
+    // Set timestamps immediately before generating the certificate
+    const currentTimestamp = new Date().toLocaleString();
+    setStaffTimestamp(currentTimestamp);  // Set the staff timestamp
+    setRequestorTimestamp(currentTimestamp);  // Set the requestor timestamp
+
+    // Wait for the DOM to render completely
+    await new Promise(resolve => setTimeout(resolve, 1000)); // 1000ms delay to ensure rendering
+
+    // Ensure the certificate element has a defined width and height
+    element.style.width = `${element.scrollWidth}px`; // Set width to scrollWidth
+    element.style.height = `${element.scrollHeight}px`; // Set height to scrollHeight
+    element.style.overflow = 'visible';  // Ensure the content isn't clipped
+
+    // Generate a JPEG image from the certificate element
+    const jpegBlob = await domToImage.toBlob(element);
+
+    // Generate a valid file name
+    const fileName = `certificates/${new Date().toISOString().replace(/[:.]/g, '-')}.jpeg`;
+
+    // Upload the generated JPEG to Supabase Storage (certificateJpeg bucket)
+    const { data: storageData, error: storageError } = await supabase
+      .storage
+      .from("certificateJpeg")
+      .upload(fileName, jpegBlob, {
+        contentType: "image/jpeg",
+        upsert: true,
+      });
+
+    if (storageError) {
+      console.error("Error uploading JPEG:", storageError);
+      return;
     }
-  };
+
+    // Get the public URL of the uploaded JPEG
+    const { data: urlData, error: urlError } = supabase
+      .storage
+      .from("certificateJpeg")
+      .getPublicUrl(storageData?.path || storageData?.Key);
+
+    if (urlError) {
+      console.error("Error getting URL:", urlError);
+      return;
+    }
+
+    // Update the completedCertificate column in the Request table with the JPEG URL
+    const { error: updateError } = await supabase
+      .from("Request")
+      .update({ completedCertificate: urlData.publicUrl })
+      .eq("requestId", requestId);
+
+    if (updateError) {
+      console.error("Error updating certificate URL:", updateError);
+      return;
+    }
+
+    alert("Certificate generated and uploaded successfully!");
+  } catch (error) {
+    console.error("Error generating certificate:", error);
+  }
+};
+
 
   if (loading) {
     return <div>Loading...</div>; // Show loading message while fetching data
@@ -222,15 +223,11 @@ export default function RequestorCertificate() {
           <p className="mt-4 text-sm">
             Staff Timestamp: <span className="font-bold">{staffTimestamp}</span>
           </p>
-          <p className="mt-2 text-sm">
-            Requestor Timestamp: <span className="font-bold">{}</span>
-          </p>
-
           {/* Signatories */}
           <div className="flex justify-between mt-12">
             <div className="text-left">
-              <p>Allan T. Rodorocio</p>
-              <p>MEWS - Unit Head</p>
+              <p>_______________</p>
+              <p>Unit Head</p>
             </div>
             <div className="text-left">
               <p>Confirmed:</p>

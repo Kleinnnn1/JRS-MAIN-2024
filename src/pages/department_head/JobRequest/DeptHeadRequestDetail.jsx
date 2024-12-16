@@ -296,7 +296,90 @@ export default function RequestDetailPage() {
                 className="w-full border rounded p-2"
                 placeholder="Add your remarks here..."
               />
+<<<<<<< HEAD
+              <button
+                onClick={handleSaveRemarks}
+                className={`mt-4 bg-green-600 text-white px-4 py-2 rounded mr-4 ${
+                  isSaving
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:bg-green-700"
+                }`}
+                disabled={isSaving} // Disable only when saving
+              >
+                Save Remarks
+              </button>
+                    {/* <button
+                      className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 ml-2"
+                      onClick={() => navigate(`department_head/view_certificate/${requestId}`)} // Replace this with your actual logic
+                    >
+                      View Certificate
+                    </button> */}
+           <button
+            onClick={async () => {
+              try {
+                // Fetch the data for the specific requestId from the "Request" table
+                const { data, error } = await supabase
+                  .from("Request")
+                  .select("completedCertificate")
+                  .eq("requestId", requestId)
+                  .single();
+
+                // Check for errors or if no certificate exists
+                if (error || !data?.completedCertificate) {
+                  alert("No certificate available for this request.");
+                  navigate("/department_head/job_completed"); // Redirect if no certificate
+                  return;
+                }
+
+                // Navigate to the certificate view if it exists
+                navigate(`/department_head/view_certificate/${requestId}`);
+              } catch (err) {
+                console.error("Error verifying certificate:", err);
+                alert("An unexpected error occurred. Please try again.");
+              }
+            }}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded mr-4"
+          >
+            View Certificate
+          </button>
+              {/* <label
+                htmlFor="remarks"
+                className="block font-semibold mb-2 mt-4"
+              >
+                Remarks:
+              </label>
+              <textarea
+                id="remarks"
+                value={remarks}
+                onChange={(e) => setRemarks(e.target.value)}
+                rows="4"
+                className="w-full border rounded p-2"
+                placeholder="Add your remarks here..."
+                disabled={!!initialRemarks} // Disable if there's an initial remark
+              />
+              {status !== "Completed" && (
+                <>
+                  {!initialRemarks && (
+                    <button
+                      onClick={handleSaveRemarks}
+                      className={`mt-4 bg-green-600 text-white px-4 py-2 rounded ${
+                        isSaving
+                          ? "opacity-50 cursor-not-allowed"
+                          : "hover:bg-green-700"
+                      }`}
+                      disabled={isSaving} // Disable if saving
+                    >
+                      Save Remarks
+                    </button>
+                  )}
+                </>
+              )} */}
+
+              {/* Transfer Request */}
+              {status !== "Ongoing" && status !== "Completed" && (
+=======
               <div className="flex gap-4">
+>>>>>>> 3eb6eee29811bd72d343bf618f3b58d74e231716
                 <button
                   onClick={handleSaveRemarks}
                   className={`mt-4 bg-blue-600 text-white px-4 py-2 rounded ${
