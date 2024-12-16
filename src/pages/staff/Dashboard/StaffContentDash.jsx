@@ -5,6 +5,7 @@ import StatusCard from "../../../components/StatusCard";
 import ReusableCalendar from "../../../components/ReusableCalendar";
 import StaffNotification from "./StaffNotificationAndCalendar";
 import supabase from "../../../service/supabase";
+import { getCurrentUser } from "../../../service/apiAuth";
 
 export default function StaffContentDash() {
   const navigate = useNavigate();
@@ -54,14 +55,14 @@ export default function StaffContentDash() {
           count={ongoingCount}
           title="Ongoing"
           bgColor={statusCardColor}
-          onClick={() => navigate("/Staff/StaffImagePage")}
+          onClick={() => navigate("/staff/job_assigned")}
           gridSpan="w-full" // Full width for this card
         />
         <StatusCard
           count={completedCount}
           title="Completed"
           bgColor={statusCardColor}
-          onClick={() => navigate("/Staff/StaffSendCert")}
+          onClick={() => navigate("/staff/job_completed")}
           gridSpan="w-full" // Full width for this card
         />
       </div>

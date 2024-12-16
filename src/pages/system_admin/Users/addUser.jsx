@@ -12,24 +12,28 @@ export default function SysAdminAddNewUser({ closeModal }) {
   const { handleSubmit } = useForm();
   const queryClient = useQueryClient();
   const { signup } = useSignUp(); // Use the signup hook
-  const [accounts, setAccounts] = useState([{
-    id: 1,
-    idNumber: "",
-    fName: "",
-    lName: "",
-    birthDate: "",
-    email: "",
-    password: "",
-    contactNumber: "",
-    deptId: "",
-  }]);
+  const [accounts, setAccounts] = useState([
+    {
+      id: 1,
+      idNumber: "",
+      fName: "",
+      lName: "",
+      birthDate: "",
+      email: "",
+      password: "",
+      contactNumber: "",
+      deptId: "",
+    },
+  ]);
   const [showPassword, setShowPassword] = useState(false);
   const [departments, setDepartments] = useState([]); // Store departments from Supabase
 
   // Fetch departments from Supabase when the component mounts
   useEffect(() => {
     const fetchDepartments = async () => {
-      const { data, error } = await supabase.from("Department").select("deptId, deptName");
+      const { data, error } = await supabase
+        .from("Department")
+        .select("deptId, deptName");
       if (error) {
         toast.error("Failed to load departments.");
         console.error(error);
@@ -338,5 +342,5 @@ export default function SysAdminAddNewUser({ closeModal }) {
 }
 
 SysAdminAddNewUser.propTypes = {
-  closeModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func,
 };

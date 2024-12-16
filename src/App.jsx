@@ -496,9 +496,7 @@ export default function App() {
               <Route path="change_avatar" element={<ChangeAvatar />} />
               <Route path="change_password" element={<ChangePassword />} />
             </Route>
-            <Route path="report" element={<TableReport />}>
-            
-            </Route>
+            <Route path="report" element={<TableReport />}></Route>
             <Route path="employee" element={<PageEmployee />}>
               <Route path="add" element={<ViewAddEmployee />} />
               <Route path="view/:id" element={<ViewEmployee />} />
