@@ -148,6 +148,10 @@ import SpmeJobRequestApproved from "./pages/spme/JobRequestDetailspme/RequestorC
 import SpmeJobRequestCompleted from "./pages/spme/JobRequestDetailspme/RequestorContentJobRequestCompleted.jsx";
 import SpmeCertificate from "./pages/spme/JobRequestDetailspme/RequestorCertificate.jsx";
 import SpmeRequestorJobRequestDetailPage from "./pages/spme/JobRequestspme/RequestorJobRequestDetail.jsx";
+import SpmePageProfile from "./pages/spme/Profile/RequestorpPageProfile.jsx";
+import SpmeRequestorInformation from "./pages/spme/Profile/RequestorUserInformation.jsx";
+import SpmeRequestorChangeAvatar from "./pages/spme/Profile/RequestorChangeAvatar.jsx";
+import SpmeChangePassword from "./pages/spme/Profile/RequestorChangePassword.jsx";
 
 // Importing all the necessary components for the routes
 import LogIn from "./auth/LogIn.jsx";
@@ -256,6 +260,19 @@ export default function App() {
               path="job_request_certificateSpme"
               element={<SpmeCertificate />}
             />
+
+            {/* SPME'S PROFILE */}
+            <Route path="spme_profile" element={<SpmePageProfile />}>
+              <Route
+                path="user_account"
+                element={<SpmeRequestorInformation />}
+              />
+              <Route
+                path="change_avatar"
+                element={<SpmeRequestorChangeAvatar />}
+              />
+              <Route path="change_password" element={<SpmeChangePassword />} />
+            </Route>
           </Route>
           {/* ===========================================STAFF==================================================================== */}
           {/* Protected Routes for Staff */}
@@ -496,9 +513,7 @@ export default function App() {
               <Route path="change_avatar" element={<ChangeAvatar />} />
               <Route path="change_password" element={<ChangePassword />} />
             </Route>
-            <Route path="report" element={<TableReport />}>
-            
-            </Route>
+            <Route path="report" element={<TableReport />}></Route>
             <Route path="employee" element={<PageEmployee />}>
               <Route path="add" element={<ViewAddEmployee />} />
               <Route path="view/:id" element={<ViewEmployee />} />

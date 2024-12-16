@@ -53,7 +53,6 @@ export default function SPMSContentTable() {
     clientType: "clientType",
     role: "role",
     sex: "sex",
-    date: "date",
     age: "age",
     region: "region",
     campus: "campus",
@@ -80,7 +79,7 @@ export default function SPMSContentTable() {
       setLoading(true);
       const { data, error } = await supabase
         .from("Client_satisfaction_survey")
-        .select("*"); // Ensure all fields are fetched
+        .select("*");
       if (error) {
         console.error("Error fetching data:", error.message);
       } else {
@@ -94,7 +93,7 @@ export default function SPMSContentTable() {
 
   // Filter by search term and date range
   const filteredRequests = jobRequests.filter((job) => {
-    const jobDate = new Date(job.Date);
+    const jobDate = new Date(job.date);
     const isWithinDateRange =
       (!startDate || new Date(startDate) <= jobDate) &&
       (!endDate || new Date(endDate) >= jobDate);
@@ -142,22 +141,22 @@ export default function SPMSContentTable() {
           >
             Download
           </button>
-          <label>
-            Start Date:
+          <label className="flex items-center space-x-2">
+            <span>Start Date:</span>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="ml-2 text-black p-1 rounded border"
+              className="text-black p-1 rounded border"
             />
           </label>
-          <label>
-            End Date:
+          <label className="flex items-center space-x-2">
+            <span>End Date:</span>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="ml-2 text-black p-1 rounded border"
+              className="text-black p-1 rounded border"
             />
           </label>
         </div>

@@ -103,7 +103,7 @@ export default function StaffMainDashboard() {
       <div className="flex-1 flex flex-col overflow-auto">
         <ReusableHeader
           username={userMetadata.fName}
-          profileLink="/staff/staff_profile"
+          profileLink="/Staff/Staffprofile"
         />
         <div className="flex-1 p-4">
           <Outlet />
