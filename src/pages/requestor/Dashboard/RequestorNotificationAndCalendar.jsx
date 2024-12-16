@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import supabase from "../../../service/supabase";
 import { useNavigate } from "react-router-dom";
-import 'react-calendar/dist/Calendar.css';
-import ReusablePagination from '../../../components/ReusablePagination'
+import "react-calendar/dist/Calendar.css";
+import ReusablePagination from "../../../components/ReusablePagination";
 
 export default function RequestorNotification() {
   const navigate = useNavigate();
@@ -16,7 +16,10 @@ export default function RequestorNotification() {
   useEffect(() => {
     const fetchUserAndNotifications = async () => {
       // Get session to fetch user ID
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      const {
+        data: { session },
+        error: sessionError,
+      } = await supabase.auth.getSession();
       if (sessionError) {
         console.error("Error fetching session:", sessionError);
         return;
@@ -36,11 +39,12 @@ export default function RequestorNotification() {
           setUserIdNumber(userData.idNumber);
 
           // Fetch notifications for the logged-in user
-          const { data: notificationsData, error: notificationsError } = await supabase
-            .from("Notification")
-            .select("*")
-            .eq("idNumber", userData.idNumber)
-            .order("timestamp", { ascending: false });
+          const { data: notificationsData, error: notificationsError } =
+            await supabase
+              .from("Notification")
+              .select("*")
+              .eq("idNumber", userData.idNumber)
+              .order("timestamp", { ascending: false });
 
           if (notificationsError) {
             console.error("Error fetching notifications:", notificationsError);
@@ -69,25 +73,31 @@ export default function RequestorNotification() {
     }
 
     // Get the existing request IDs to compare with new ones
-    const newRequestIds = requests.map(request => request.requestId);
+    const newRequestIds = requests.map((request) => request.requestId);
 
     // Check if there are any new requests
-    const newRequests = newRequestIds.filter(id => !existingRequestIds.includes(id));
+    const newRequests = newRequestIds.filter(
+      (id) => !existingRequestIds.includes(id)
+    );
 
     if (newRequests.length > 0) {
       for (const requestId of newRequests) {
         const message = `PENDING: Successfully made a new request [Request ID #${requestId}].`;
 
         // Check if a notification with the same message already exists
-        const { data: existingNotifications, error: notificationCheckError } = await supabase
-          .from("Notification")
-          .select("*")
-          .eq("message", message)
-          .eq("idNumber", userIdNumber)
-          .single(); // Use `.single()` to get only one result
+        const { data: existingNotifications, error: notificationCheckError } =
+          await supabase
+            .from("Notification")
+            .select("*")
+            .eq("message", message)
+            .eq("idNumber", userIdNumber)
+            .single(); // Use `.single()` to get only one result
 
         if (notificationCheckError) {
-          console.error("Error checking for duplicate notification:", notificationCheckError);
+          console.error(
+            "Error checking for duplicate notification:",
+            notificationCheckError
+          );
         }
 
         // If no existing notification with the same message, insert new one
@@ -110,71 +120,81 @@ export default function RequestorNotification() {
       }
       for (const requestId of newRequests) {
         const message = `[NEW]: You received a new job request [Request ID #${requestId}].`;
-    
+
         try {
-            // Step 1: Fetch deptId from Department_request_assignment based on requestId
-            const { data: deptAssignment, error: deptError } = await supabase
-                .from("Department_request_assignment")
-                .select("deptId")
-                .eq("requestId", requestId)
-                .single();
-    
-            if (deptError || !deptAssignment) {
-                console.error("Error fetching department assignment:", deptError || "No data found");
-                continue; // Skip this iteration if there's an error
+          // Step 1: Fetch deptId from Department_request_assignment based on requestId
+          const { data: deptAssignment, error: deptError } = await supabase
+            .from("Department_request_assignment")
+            .select("deptId")
+            .eq("requestId", requestId)
+            .single();
+
+          if (deptError || !deptAssignment) {
+            console.error(
+              "Error fetching department assignment:",
+              deptError || "No data found"
+            );
+            continue; // Skip this iteration if there's an error
+          }
+
+          const deptId = deptAssignment.deptId;
+
+          // Step 2: Fetch idNumber of the department head for the retrieved deptId
+          const { data: departmentHead, error: userError } = await supabase
+            .from("User")
+            .select("idNumber")
+            .eq("deptId", deptId)
+            .eq("userRole", "department head")
+            .single();
+
+          if (userError || !departmentHead) {
+            console.error(
+              "Error fetching department head:",
+              userError || "No data found"
+            );
+            continue; // Skip this iteration if there's an error
+          }
+
+          const headIdNumber = departmentHead.idNumber;
+
+          // Step 3: Check if the notification already exists
+          const { data: existingNotifications, error: notificationCheckError } =
+            await supabase
+              .from("Notification")
+              .select("*")
+              .eq("message", message)
+              .eq("idNumber", headIdNumber)
+              .single();
+
+          if (notificationCheckError) {
+            console.error(
+              "Error checking for duplicate notification:",
+              notificationCheckError
+            );
+          }
+
+          // Step 4: If no existing notification with the same message, insert a new one
+          if (!existingNotifications) {
+            const newNotification = {
+              message: message,
+              timestamp: new Date().toISOString(),
+              idNumber: headIdNumber, // Use the department head's idNumber
+              requestId: requestId,
+            };
+
+            const { error: insertError } = await supabase
+              .from("Notification")
+              .insert(newNotification);
+
+            if (insertError) {
+              console.error("Error inserting notification:", insertError);
             }
-    
-            const deptId = deptAssignment.deptId;
-    
-            // Step 2: Fetch idNumber of the department head for the retrieved deptId
-            const { data: departmentHead, error: userError } = await supabase
-                .from("User")
-                .select("idNumber")
-                .eq("deptId", deptId)
-                .eq("userRole", "department head")
-                .single();
-    
-            if (userError || !departmentHead) {
-                console.error("Error fetching department head:", userError || "No data found");
-                continue; // Skip this iteration if there's an error
-            }
-    
-            const headIdNumber = departmentHead.idNumber;
-    
-            // Step 3: Check if the notification already exists
-            const { data: existingNotifications, error: notificationCheckError } = await supabase
-                .from("Notification")
-                .select("*")
-                .eq("message", message)
-                .eq("idNumber", headIdNumber)
-                .single();
-    
-            if (notificationCheckError) {
-                console.error("Error checking for duplicate notification:", notificationCheckError);
-            }
-    
-            // Step 4: If no existing notification with the same message, insert a new one
-            if (!existingNotifications) {
-                const newNotification = {
-                    message: message,
-                    timestamp: new Date().toISOString(),
-                    idNumber: headIdNumber, // Use the department head's idNumber
-                    requestId: requestId,
-                };
-    
-                const { error: insertError } = await supabase
-                    .from("Notification")
-                    .insert(newNotification);
-    
-                if (insertError) {
-                    console.error("Error inserting notification:", insertError);
-                }
-            }
+          }
         } catch (error) {
-            console.error("Unexpected error:", error);
+          console.error("Unexpected error:", error);
         }
-    }
-    
+      }
+
       // Update the list of existing request IDs to prevent duplicate notifications
       setExistingRequestIds(newRequestIds);
     }
@@ -208,22 +228,26 @@ export default function RequestorNotification() {
         message = `COMPLETED: Your request [Request ID #${request.requestId}] has been completed.`;
       }
 
-       // If extensionDate is updated
-       if (request.extensionDate) {
+      // If extensionDate is updated
+      if (request.extensionDate) {
         message = `EXTENDED: Your job request is extended. Request ID No. ${request.requestId}`;
-    }
+      }
 
       if (message) {
         // Check if the notification already exists for the given message
-        const { data: existingNotifications, error: notificationCheckError } = await supabase
-          .from("Notification")
-          .select("*")
-          .eq("message", message)
-          .eq("idNumber", userIdNumber)
-          .single();
+        const { data: existingNotifications, error: notificationCheckError } =
+          await supabase
+            .from("Notification")
+            .select("*")
+            .eq("message", message)
+            .eq("idNumber", userIdNumber)
+            .single();
 
         if (notificationCheckError) {
-          console.error("Error checking for duplicate notification:", notificationCheckError);
+          console.error(
+            "Error checking for duplicate notification:",
+            notificationCheckError
+          );
         }
 
         // If no existing notification with the same message, insert a new one
@@ -250,17 +274,18 @@ export default function RequestorNotification() {
   // Poll every 5 seconds to check for new job requests, update status, and refresh notifications
   useEffect(() => {
     const interval = setInterval(() => {
-      checkNewRequests();  // Check for new requests and insert new notifications
-      checkRequestStatusUpdates();  // Check for status changes to "Ongoing" or "Completed" and insert notifications
+      checkNewRequests(); // Check for new requests and insert new notifications
+      checkRequestStatusUpdates(); // Check for status changes to "Ongoing" or "Completed" and insert notifications
 
       // Fetch the latest notifications
       const fetchNotifications = async () => {
         if (userIdNumber) {
-          const { data: notificationsData, error: notificationsError } = await supabase
-            .from("Notification")
-            .select("*")
-            .eq("idNumber", userIdNumber)
-            .order("timestamp", { ascending: false });
+          const { data: notificationsData, error: notificationsError } =
+            await supabase
+              .from("Notification")
+              .select("*")
+              .eq("idNumber", userIdNumber)
+              .order("timestamp", { ascending: false });
 
           if (notificationsError) {
             console.error("Error fetching notifications:", notificationsError);
@@ -270,7 +295,7 @@ export default function RequestorNotification() {
         }
       };
 
-      fetchNotifications();  // Refetch notifications every interval
+      fetchNotifications(); // Refetch notifications every interval
     }, 1000); // Refresh every 5 seconds
 
     // Cleanup the interval on component unmount
@@ -306,16 +331,22 @@ export default function RequestorNotification() {
                           <button
                             className="text-blue-700"
                             onClick={async () => {
-                              const requestId = notification.message.match(/Request ID #(\d+)/)?.[1];
+                              const requestId =
+                                notification.message.match(
+                                  /Request ID #(\d+)/
+                                )?.[1];
                               if (requestId) {
                                 const { data: request } = await supabase
                                   .from("Request")
                                   .select("*")
                                   .eq("requestId", requestId)
                                   .single();
-                                navigate(`/requestor/job_request_detail/${requestId}`, {
-                                  state: { requestData: request },
-                                });
+                                navigate(
+                                  `/requestor/job_request_detail/${requestId}`,
+                                  {
+                                    state: { requestData: request },
+                                  }
+                                );
                               }
                             }}
                           >

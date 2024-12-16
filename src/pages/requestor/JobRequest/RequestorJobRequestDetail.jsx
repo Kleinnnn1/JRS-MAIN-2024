@@ -80,8 +80,7 @@ export default function JobRequestDetail() {
           .from("Tracking")
           .select("details, timestamp")
           .eq("requestId", requestId)
-          .order("timestamp", { ascending: false })
-          .limit(1);
+          .order("timestamp", { ascending: false });
 
         if (trackingFetchError) throw new Error(trackingFetchError.message);
 
