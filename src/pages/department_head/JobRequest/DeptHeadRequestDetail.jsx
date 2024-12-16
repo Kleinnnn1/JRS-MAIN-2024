@@ -279,7 +279,7 @@ export default function RequestDetailPage() {
               />
               <button
                 onClick={handleSaveRemarks}
-                className={`mt-4 bg-green-600 text-white px-4 py-2 rounded ${
+                className={`mt-4 bg-green-600 text-white px-4 py-2 rounded mr-4 ${
                   isSaving
                     ? "opacity-50 cursor-not-allowed"
                     : "hover:bg-green-700"
@@ -318,7 +318,7 @@ export default function RequestDetailPage() {
                 alert("An unexpected error occurred. Please try again.");
               }
             }}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded mr-4"
           >
             View Certificate
           </button>
