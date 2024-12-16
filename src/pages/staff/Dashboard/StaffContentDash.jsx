@@ -15,20 +15,34 @@ export default function StaffContentDash() {
   const [ongoingCount, setOngoingCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
 
-  // Fetch counts from Supabase
   useEffect(() => {
     const fetchCounts = async () => {
       try {
+        // Get the current user's full name
+        const currentUser = await getCurrentUser();
+        const staffFullName = currentUser?.fullName;
+
+        if (!staffFullName) {
+          console.error("Error: Could not fetch the current user's full name.");
+          return;
+        }
+
         // Fetch Ongoing count
         const { count: ongoing, error: ongoingError } = await supabase
-          .from("Request") // Replace with your table name
-          .select("*", { count: "exact" })
+          .from("Request")
+          .select("*, Department_request_assignment!inner(staffName)", {
+            count: "exact",
+          }) // Inner join on Department_request_assignment
+          .eq("Department_request_assignment.staffName", staffFullName)
           .eq("status", "Ongoing");
 
         // Fetch Completed count
         const { count: completed, error: completedError } = await supabase
-          .from("Request") // Replace with your table name
-          .select("*", { count: "exact" })
+          .from("Request")
+          .select("*, Department_request_assignment!inner(staffName)", {
+            count: "exact",
+          }) // Inner join on Department_request_assignment
+          .eq("Department_request_assignment.staffName", staffFullName)
           .eq("status", "Completed");
 
         // Set state if no errors
