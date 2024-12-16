@@ -288,7 +288,40 @@ export default function RequestDetailPage() {
               >
                 Save Remarks
               </button>
+                    {/* <button
+                      className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 ml-2"
+                      onClick={() => navigate(`department_head/view_certificate/${requestId}`)} // Replace this with your actual logic
+                    >
+                      View Certificate
+                    </button> */}
+           <button
+            onClick={async () => {
+              try {
+                // Fetch the data for the specific requestId from the "Request" table
+                const { data, error } = await supabase
+                  .from("Request")
+                  .select("completedCertificate")
+                  .eq("requestId", requestId)
+                  .single();
 
+                // Check for errors or if no certificate exists
+                if (error || !data?.completedCertificate) {
+                  alert("No certificate available for this request.");
+                  navigate("/department_head/job_completed"); // Redirect if no certificate
+                  return;
+                }
+
+                // Navigate to the certificate view if it exists
+                navigate(`/department_head/view_certificate/${requestId}`);
+              } catch (err) {
+                console.error("Error verifying certificate:", err);
+                alert("An unexpected error occurred. Please try again.");
+              }
+            }}
+            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            View Certificate
+          </button>
               {/* <label
                 htmlFor="remarks"
                 className="block font-semibold mb-2 mt-4"

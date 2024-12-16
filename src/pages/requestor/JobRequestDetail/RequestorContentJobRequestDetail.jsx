@@ -47,7 +47,7 @@ export default function ContentJobRequest() {
         {/* Request Details Card */}
         <div className="bg-white rounded-xl border shadow-lg flex flex-col h-full p-4">
           <div className="flex-grow overflow-y-auto">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Request #ID 123</h2>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">Requsdadasest #ID 123</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-lg font-medium text-gray-700">Date Requested</label>
