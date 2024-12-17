@@ -276,6 +276,19 @@ export default function RequestDetailPage() {
               </button>
             </div>
           )}
+
+          {/* New "View Certificate" Button */}
+          <div>
+            <button
+              className="mt-4 text-white bg-purple-500 font-bold px-4 py-2 rounded"
+              onClick={() =>
+                navigate(`/staff/job_request_certificateStaff/${requestId}`)
+              }
+            >
+              View Certificate
+            </button>
+          </div>
+
           <button
             className="ml-4 text-blue-500 font-bold underline"
             onClick={() => navigate(-1)}
