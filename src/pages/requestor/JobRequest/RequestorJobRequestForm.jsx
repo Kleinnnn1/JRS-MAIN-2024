@@ -23,7 +23,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
     },
   ]);
   const [keywordMapping, setKeywordMapping] = useState({});
-  // const priorityOptions = ["Low", "Medium", "High"];
+  const priorityOptions = ["Low", "Medium", "High"];
 
   // Fetch the keyword mappings from Supabase
   useEffect(() => {
@@ -137,10 +137,10 @@ export default function RequestorJobRequestForm({ closeModal }) {
   const onSubmit = async () => {
     const hasEmptyFields = jobRequests.some(
       (request) =>
-        !request.description ||
-        !request.location ||
-        !request.category ||
-        !request.priority
+        !request.description || !request.location || !request.category,
+      {
+        /*||  !request.priority */
+      }
     );
 
     if (hasEmptyFields) {
@@ -179,7 +179,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
             location: request.location,
             jobCategory: request.category,
             image: imageFile,
-            priority: request.priority,
+            priority: "Low",
           };
         })
       );
