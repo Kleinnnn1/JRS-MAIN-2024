@@ -251,9 +251,9 @@ export default function AdminNotification() {
     return <div className="text-center">Loading...</div>;
   }
 
-  if (error) {
-    return <div className="text-red-500 text-center">Error: {error}</div>;
-  }
+  // if (error) {
+  //   return <div className="text-red-500 text-center">Error: {error}</div>;
+  // }
 
   return (
     <div className="bg-white border -mx-4 rounded-t-lg shadow-md">
