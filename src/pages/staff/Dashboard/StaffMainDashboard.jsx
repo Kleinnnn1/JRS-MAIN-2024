@@ -119,7 +119,7 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
     { icon: <FaTasks />, label: "Assigned Job", path: "/staff/job_assigned" },
     {
       icon: <FaCheckCircle />,
-      label: "Compeleted Job Assigned",
+      label: "Completed Job Assigned",
       path: "/staff/job_completed",
     },
     { icon: <FaFileAlt />, label: "My Request", path: "/staff/my_request" },

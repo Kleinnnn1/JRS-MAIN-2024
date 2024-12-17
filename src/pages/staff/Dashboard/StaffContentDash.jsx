@@ -6,10 +6,11 @@ import ReusableCalendar from "../../../components/ReusableCalendar";
 import StaffNotification from "./StaffNotificationAndCalendar";
 import supabase from "../../../service/supabase";
 import { getCurrentUser } from "../../../service/apiAuth";
+import { FaHourglassStart, FaClock, FaCheckCircle } from "react-icons/fa";
 
 export default function StaffContentDash() {
   const navigate = useNavigate();
-  const statusCardColor = "bg-blue-50"; // Customize color as per your theme
+  const statusCardColor = "bg-white"; // Customize color as per your theme
 
   // State for Ongoing and Completed counts
   const [ongoingCount, setOngoingCount] = useState(0);
@@ -64,19 +65,25 @@ export default function StaffContentDash() {
       </div>
 
       {/* Status Cards - Full Width */}
-      <div className="flex flex-col lg:flex-row w-full p-6 gap-6">
+      <div className="flex flex-col lg:flex-row w-full p-6 gap-6 -mt-2">
         <StatusCard
           count={ongoingCount}
           title="Ongoing"
+          icon={<FaHourglassStart />}
           bgColor={statusCardColor}
-          onClick={() => navigate("/staff/job_assigned")}
+          iconColor="text-yellow-400"
+          titleColor="text-yellow-500"
+          // onClick={() => navigate("/staff/job_assigned")}
           gridSpan="w-full" // Full width for this card
         />
         <StatusCard
           count={completedCount}
           title="Completed"
           bgColor={statusCardColor}
-          onClick={() => navigate("/staff/job_completed")}
+          icon={<FaCheckCircle />}
+              iconColor="text-green-500"
+          titleColor="text-green-500"
+          // onClick={() => navigate("/staff/job_completed")}
           gridSpan="w-full" // Full width for this card
         />
       </div>
@@ -84,12 +91,12 @@ export default function StaffContentDash() {
       {/* Main Content Section (Two Grid Layout) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-2 rounded-lg">
         {/* Left Side (Notifications) */}
-        <div className="col-span-2">
+        <div className="col-span-2 m-4 -mt-1">
           <StaffNotification />
         </div>
 
         {/* Right Side (Calendar) */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 -mt-1">
           <ReusableCalendar />
         </div>
       </div>
