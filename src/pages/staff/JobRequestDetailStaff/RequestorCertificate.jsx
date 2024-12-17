@@ -14,7 +14,6 @@ export default function RequestorCertificate() {
   const [departmentHeadName, setDepartmentHeadName] = useState(""); // State to store department head's name
   const { requestId } = useParams();
 
-  const currentUser = getCurrentUser();
   // Fetch Job Requests from Supabase
   const fetchJobRequestData = async () => {
     try {

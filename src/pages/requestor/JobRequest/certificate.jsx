@@ -1,326 +1,307 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import supabase from "../../../service/supabase"; // Adjust path
+import React, { useRef, useEffect, useState } from "react";
+import supabase from "../../../service/supabase"; // Ensure this is the correct path
+import ReusableButton from "../../../components/ReusableButton.jsx"; // Import ReusableButton component
+import domToImage from "dom-to-image"; // Import dom-to-image for generating images
+import { useParams } from "react-router-dom";
+import { getCurrentUser } from "../../../service/apiAuth.js";
 
 export default function ViewCertificate() {
+  const certificateRef = useRef();
+  const [jobRequest, setJobRequest] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state to manage loading UI
+  const [staffTimestamp, setStaffTimestamp] = useState("");
+  const [requestorTimestamp, setRequestorTimestamp] = useState("");
+  const [departmentHeadName, setDepartmentHeadName] = useState(""); // State to store department head's name
   const { requestId } = useParams();
-  const navigate = useNavigate();
-  const [certificateUrl, setCertificateUrl] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchCertificate();
-  }, [requestId]);
-
-  const fetchCertificate = async () => {
+  // Fetch Job Requests from Supabase
+  const fetchJobRequestData = async () => {
     try {
-      const { data, error } = await supabase
+      // Step 1: Fetch the Job Request Data
+      const { data: jobRequestData, error: jobRequestError } = await supabase
         .from("Request")
-        .select("completedCertificate")
-        .eq("requestId", requestId)
-        .single();
-
-      if (error || !data?.completedCertificate) {
-        alert("Certificate not found.");
-        navigate("/requestor/request_completed");
-        return;
-      }
-
-      setCertificateUrl(data.completedCertificate);
-    } catch (err) {
-      console.error("Error fetching certificate:", err);
-      setError("Failed to load certificate.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadImage = (src) =>
-    new Promise((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = "anonymous"; // Prevent CORS issue
-      img.onload = () => resolve(img);
-      img.onerror = (err) => reject(err);
-      img.src = src;
-    });
-
-  const addRequestorTimestampToImage = (image) => {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    // Set canvas size to match image size
-    canvas.width = image.width;
-    canvas.height = image.height;
-
-    // Draw the original image onto the canvas
-    ctx.drawImage(image, 0, 0);
-
-    // Add "Requestor confirmation" text at the bottom-left corner with smaller text
-    const requestorTimestamp = `Requestor confirmation: ${new Date().toLocaleString()}`;
-    ctx.font = "12px Arial"; // Smaller font size
-    ctx.fillStyle = "red";  // Set text color to red
-    ctx.textAlign = "left";  // Align text to the left
-
-    // Draw the timestamp text near the bottom-left corner
-    ctx.fillText(requestorTimestamp, 10, canvas.height - 10);  // 10 pixels from left and bottom
-
-    return canvas;
-  };
-
-  const handleAddTimestamp = async () => {
-    if (!certificateUrl) return;
-
-    const image = await loadImage(certificateUrl);
-    const canvas = addRequestorTimestampToImage(image);
-
-    // Convert canvas to an image URL
-    const newImageUrl = canvas.toDataURL();
-
-    // Upload the new image to the database
-    try {
-      setLoading(true);
-
-      const { data, error } = await supabase
-        .from("Request")
-        .update({ completedCertificate: newImageUrl }) // Update the image in the database
+        .select("*")
         .eq("requestId", requestId);
 
-      if (error) {
-        console.error("Error updating certificate in DB:", error);
-        setError("Failed to update certificate in database.");
+      if (jobRequestError) {
+        console.error("Error fetching job request data:", jobRequestError);
+        setLoading(false);
         return;
       }
 
-      // Update the local state with the new image URL
-      setCertificateUrl(newImageUrl);
-      alert("Certificate updated successfully with timestamp!");
+      if (jobRequestData.length === 0) {
+        console.error("No job request data found");
+        setLoading(false);
+        return;
+      }
+
+      const request = jobRequestData[0];
+
+      // Step 2: Fetch the User Data based on idNumber
+      const { data: userData, error: userError } = await supabase
+        .from("User")
+        .select("id, idNumber, fName, lName")
+        .eq("idNumber", request.idNumber);
+
+      if (userError) {
+        console.error("Error fetching user data:", userError);
+        setLoading(false);
+        return;
+      }
+
+      // Attach user data to the job request
+      const requestWithUser = { ...request, user: userData[0] || {} };
+
+      // Step 3: Fetch the Department ID from Department_request_assignment
+      const { data: deptAssignmentData, error: deptAssignmentError } =
+        await supabase
+          .from("Department_request_assignment")
+          .select("deptId")
+          .eq("requestId", requestId)
+          .single();
+
+      if (deptAssignmentError) {
+        console.error(
+          "Error fetching department assignment data:",
+          deptAssignmentError
+        );
+        setLoading(false);
+        return;
+      }
+
+      const deptId = deptAssignmentData.deptId; // Get the associated deptId
+
+      // Step 4: Fetch the Department Head's Full Name using deptId
+      const { data: deptHeadData, error: deptHeadError } = await supabase
+        .from("User")
+        .select("fullName")
+        .eq("deptId", deptId) // Match deptId from Department_request_assignment
+        .eq("userRole", "department head") // Filter for department head
+        .single();
+
+      if (deptHeadError) {
+        console.error("Error fetching department head:", deptHeadError);
+      } else {
+        console.log("Department Head Full Name:", deptHeadData.fullName);
+        setDepartmentHeadName(deptHeadData.fullName); // Set the department head's full name
+      }
+
+      setJobRequest([requestWithUser]);
+      setLoading(false);
     } catch (err) {
-      console.error("Error uploading new image:", err);
-      setError("Failed to upload the new image.");
-    } finally {
+      console.error("Error:", err);
       setLoading(false);
     }
   };
 
-  return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-center text-xl font-bold mb-4">View Certificate</h1>
-      {error && <div className="text-red-500 text-center">{error}</div>}
+  useEffect(() => {
+    fetchJobRequestData();
+  }, []);
 
-      {loading ? (
-        <div className="text-center">Loading...</div>
-      ) : (
-        certificateUrl && (
-          <div className="flex flex-col items-center">
-            <img
-              src={certificateUrl}
-              alt="Certificate"
-              className="max-w-full border shadow-lg"
-            />
-            <button
-              onClick={handleAddTimestamp}
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-            >
-              Add Requestor Timestamp
-            </button>
+  // Format Date for Display
+  const formatDate = (date) => {
+    const parsedDate = new Date(date);
+    return isNaN(parsedDate) ? "Invalid Date" : parsedDate.toLocaleString();
+  };
+
+  // Function to generate and upload the JPEG
+  const generateCertificate = async () => {
+    const element = certificateRef.current;
+
+    try {
+      // Set timestamps immediately before generating the certificate
+      const currentTimestamp = new Date().toLocaleString();
+      setStaffTimestamp(currentTimestamp); // Set the staff timestamp
+      setRequestorTimestamp(currentTimestamp); // Set the requestor timestamp
+
+      // Wait for the DOM to render completely
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000ms delay to ensure rendering
+
+      // Ensure the certificate element has a defined width and height
+      element.style.width = `${element.scrollWidth}px`; // Set width to scrollWidth
+      element.style.height = `${element.scrollHeight}px`; // Set height to scrollHeight
+      element.style.overflow = "visible"; // Ensure the content isn't clipped
+
+      // Generate a JPEG image from the certificate element
+      const jpegBlob = await domToImage.toBlob(element);
+
+      // Generate a valid file name
+      const fileName = `certificates/${new Date()
+        .toISOString()
+        .replace(/[:.]/g, "-")}.jpeg`;
+
+      // Upload the generated JPEG to Supabase Storage (certificateJpeg bucket)
+      const { data: storageData, error: storageError } = await supabase.storage
+        .from("certificateJpeg")
+        .upload(fileName, jpegBlob, {
+          contentType: "image/jpeg",
+          upsert: true,
+        });
+
+      if (storageError) {
+        console.error("Error uploading JPEG:", storageError);
+        return;
+      }
+
+      // Get the public URL of the uploaded JPEG
+      const { data: urlData, error: urlError } = supabase.storage
+        .from("certificateJpeg")
+        .getPublicUrl(storageData?.path || storageData?.Key);
+
+      if (urlError) {
+        console.error("Error getting URL:", urlError);
+        return;
+      }
+
+      // Update the completedCertificate column in the Request table with the JPEG URL
+      const { error: updateError } = await supabase
+        .from("Request")
+        .update({ completedCertificate: urlData.publicUrl })
+        .eq("requestId", requestId);
+
+      if (updateError) {
+        console.error("Error updating certificate URL:", updateError);
+        return;
+      }
+
+      alert("Certificate generated and uploaded successfully!");
+    } catch (error) {
+      console.error("Error generating certificate:", error);
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading message while fetching data
+  }
+
+  return (
+    <div className="container mx-auto">
+      <div
+        ref={certificateRef}
+        className="p-10 bg-white max-w-3xl mx-auto border shadow-md mt-6"
+      >
+        {/* Header Section */}
+        <div className="text-center mb-6">
+          <h1 className="text-lg font-bold">
+            UNIVERSITY OF SCIENCE AND TECHNOLOGY
+          </h1>
+          <h1 className="text-lg font-bold">OF SOUTHERN PHILIPPINES</h1>
+          <p className="text-sm">
+            Alubijid | Cagayan De Oro | Claveria | Jasaan | Oroquieta | Panaon
+          </p>
+        </div>
+
+        {/* Job Request Details */}
+        <div className="border-t-2 border-b-2 py-4">
+          <h2 className="text-center text-lg font-bold">JOB REQUEST FORM</h2>
+          <table className="w-full border mt-4 text-left text-sm">
+            <thead>
+              <tr>
+                <th className="border px-2 py-1">ITEM NO.</th>
+                <th className="border px-2 py-1">WORK DESCRIPTION</th>
+                <th className="border px-2 py-1">LOCATION</th>
+                <th className="border px-2 py-1">PRIORITY</th>
+                <th className="border px-2 py-1">REMARKS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {jobRequest.map((request, index) => (
+                <tr key={index}>
+                  <td className="border px-2 py-1">{request.requestId}</td>
+                  <td className="border px-2 py-1">{request.description}</td>
+                  <td className="border px-2 py-1">{request.location}</td>
+                  <td className="border px-2 py-1">{request.priority}</td>
+                  <td className="border px-2 py-1">{request.remarks}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Request Information */}
+          <div className="mt-4 flex justify-between text-sm">
+            <div>
+              <p>Requested by:</p>
+              <p>
+                {" "}
+                {jobRequest[0]?.user?.fName || "Unknown"}{" "}
+                {jobRequest[0]?.user?.lName || "User"}
+              </p>
+            </div>
+            <div>
+              <p>Noted by:</p>
+              <p>{departmentHeadName || "N/A"}</p>
+            </div>
+            <div>
+              <p>Date Requested:</p>
+              <p>{formatDate(jobRequest[0]?.requestDate)}</p>
+            </div>
+            <div>
+              <p>Date Completed:</p>
+              <p>{formatDate(jobRequest[0]?.dateCompleted)}</p>
+            </div>
           </div>
-        )
-      )}
+        </div>
+
+        {/* Certificate Section */}
+        <div className="mt-6 text-center">
+          <h2 className="text-lg font-bold">CERTIFICATE OF JOB COMPLETION</h2>
+          <p className="mt-4 text-sm">
+            THIS TO CERTIFY that the Job Request Form No.{" "}
+            <span className="font-bold">{jobRequest[0]?.requestId}</span>{" "}
+            requested by{" "}
+            <span className="font-bold">
+              {jobRequest[0]?.user?.fName || "Unknown"}{" "}
+              {jobRequest[0]?.user?.lName || "User"}
+            </span>{" "}
+            was duly accomplished as of{" "}
+            <span className="font-bold">
+              {formatDate(jobRequest[0]?.dateCompleted)}
+            </span>
+            .
+          </p>
+
+          {/* Issued Date */}
+          <p className="mt-6 text-sm">
+            Issued this{" "}
+            <span className="font-bold">{new Date().getDate()}</span> day of{" "}
+            <span className="font-bold">
+              {new Date().toLocaleString("default", { month: "long" })}
+            </span>{" "}
+            at USTP, Cagayan De Oro.
+          </p>
+
+          {/* Timestamps */}
+          {/* <p className="mt-4 text-sm">
+            Staff Timestamp: <span className="font-bold">{staffTimestamp}</span>
+          </p> */}
+          {/* Signatories */}
+          <div className="flex justify-between mt-12">
+            <div className="text-left">
+              <p>Unit Head</p>
+              <p className="font-bold">{departmentHeadName || "N/A"}</p>{" "}
+              {/* Display full name */}
+            </div>
+
+            <div className="text-left">
+              <p>Confirmed:</p>
+              <p className="font-bold">
+                {" "}
+                {jobRequest[0]?.user?.fName || "Unknown"}{" "}
+                {jobRequest[0]?.user?.lName || "User"}
+              </p>
+            </div>
+          </div>
+
+          {/* Submit Certificate */}
+          {/* <div className="mt-8 text-center">
+            <ReusableButton
+              text="Mark as Job Completed"
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+              onClick={generateCertificate}
+            />
+          </div> */}
+        </div>
+      </div>
     </div>
   );
 }
-
-
-// import React, { useEffect, useState } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
-// import supabase from "../../../service/supabase"; // Adjust path
-// import Swal from "sweetalert2"; // SweetAlert2 import
-
-// export default function ViewCertificate() {
-//   const { requestId } = useParams();
-//   const navigate = useNavigate();
-//   const [certificateUrl, setCertificateUrl] = useState(null);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     fetchCertificate();
-//   }, [requestId]);
-
-//   const fetchCertificate = async () => {
-//     try {
-//       const { data, error } = await supabase
-//         .from("Request")
-//         .select("completedCertificate")
-//         .eq("requestId", requestId)
-//         .single();
-
-//       if (error || !data?.completedCertificate) {
-//         Swal.fire({
-//           title: "Error!",
-//           text: "Certificate not found.",
-//           icon: "error",
-//           confirmButtonText: "OK",
-//         });
-//         navigate("/requestor/request_completed");
-//         return;
-//       }
-
-//       setCertificateUrl(data.completedCertificate);
-//     } catch (err) {
-//       console.error("Error fetching certificate:", err);
-//       setError("Failed to load certificate.");
-//       Swal.fire({
-//         title: "Error!",
-//         text: "Failed to load certificate.",
-//         icon: "error",
-//         confirmButtonText: "OK",
-//       });
-//     }
-//   };
-
-//   const loadImage = (src) =>
-//     new Promise((resolve, reject) => {
-//       const img = new Image();
-//       img.crossOrigin = "anonymous"; // Prevent CORS issue
-//       img.onload = () => resolve(img);
-//       img.onerror = (err) => reject(err);
-//       img.src = src;
-//     });
-
-//   const addRequestorTimestampToImage = (image) => {
-//     const canvas = document.createElement("canvas");
-//     const ctx = canvas.getContext("2d");
-
-//     // Set canvas size to match image size
-//     canvas.width = image.width;
-//     canvas.height = image.height;
-
-//     // Draw the original image onto the canvas
-//     ctx.drawImage(image, 0, 0);
-
-//     // Add "Requestor confirmation" text at the bottom-left corner with smaller text
-//     const requestorTimestamp = `Requestor confirmation: ${new Date().toLocaleString()}`;
-//     ctx.font = "12px Arial"; // Smaller font size
-//     ctx.fillStyle = "red"; // Set text color to red
-//     ctx.textAlign = "left"; // Align text to the left
-
-//     // Draw the timestamp text near the bottom-left corner
-//     ctx.fillText(requestorTimestamp, 10, canvas.height - 10); // 10 pixels from left and bottom
-
-//     return canvas;
-//   };
-
-//   const handleAddTimestamp = async () => {
-//     if (!certificateUrl) return;
-
-//     // Load the image and add the timestamp
-//     const image = await loadImage(certificateUrl);
-//     const canvas = addRequestorTimestampToImage(image);
-
-//     // Convert canvas to a Blob (image file)
-//     const dataUrl = canvas.toDataURL();
-//     const blob = dataURLtoBlob(dataUrl);
-
-//     // Specify the folder and file name to store inside the "certificate" folder
-//     const fileName = `certificate/certificate_${requestId}.png`;  // Updated path
-
-//     try {
-//       // Upload the image to Supabase Storage (certificateJpeg bucket, inside the "certificate" folder)
-//       const { data, error } = await supabase
-//         .storage
-//         .from("certificateJpeg") // Correct bucket
-//         .upload(fileName, blob, { upsert: true });
-
-//       if (error) {
-//         console.error("Error uploading certificate to storage:", error);
-//         Swal.fire({
-//           title: "Error!",
-//           text: "Failed to upload the certificate.",
-//           icon: "error",
-//           confirmButtonText: "OK",
-//         });
-//         return;
-//       }
-
-//       // Get the public URL of the uploaded image
-//       const { publicURL } = supabase
-//         .storage
-//         .from("certificateJpeg")
-//         .getPublicUrl(fileName);
-
-//       // Update the completedCertificate column in the database
-//       const { error: updateError } = await supabase
-//         .from("Request")
-//         .update({ completedCertificate: publicURL }) // Only update completedCertificate
-//         .eq("requestId", requestId);
-
-//       if (updateError) {
-//         console.error("Error updating certificate URL in DB:", updateError);
-//         Swal.fire({
-//           title: "Error!",
-//           text: "Failed to update the certificate URL.",
-//           icon: "error",
-//           confirmButtonText: "OK",
-//         });
-//         return;
-//       }
-
-//       setCertificateUrl(publicURL); // Update local state with new URL
-
-//       // Show success message
-//       Swal.fire({
-//         title: "Success!",
-//         text: "Certificate updated successfully with timestamp!",
-//         icon: "success",
-//         confirmButtonText: "OK",
-//       }).then(() => navigate(`/requestor/request_completed`)); // Redirect after confirmation
-//     } catch (err) {
-//       console.error("Error uploading new image:", err);
-//       Swal.fire({
-//         title: "Error!",
-//         text: "Failed to upload the new image.",
-//         icon: "error",
-//         confirmButtonText: "OK",
-//       });
-//     }
-//   };
-
-//   const dataURLtoBlob = (dataURL) => {
-//     const [header, base64Data] = dataURL.split(",");
-//     const mime = header.match(/:(.*?);/)[1];
-//     const binary = atob(base64Data);
-//     const len = binary.length;
-//     const buffer = new ArrayBuffer(len);
-//     const view = new Uint8Array(buffer);
-
-//     for (let i = 0; i < len; i++) {
-//       view[i] = binary.charCodeAt(i);
-//     }
-
-//     return new Blob([buffer], { type: mime });
-//   };
-
-//   return (
-//     <div className="container mx-auto p-4">
-//       <h1 className="text-center text-xl font-bold mb-4">View Certificate</h1>
-//       {error && <div className="text-red-500 text-center">{error}</div>}
-
-//       {certificateUrl && (
-//         <div className="flex flex-col items-center">
-//           <img
-//             src={certificateUrl}
-//             alt="Certificate"
-//             className="max-w-full border shadow-lg"
-//           />
-//           <button
-//             onClick={handleAddTimestamp}
-//             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-//           >
-//             Mark as Job Completed
-//           </button>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }

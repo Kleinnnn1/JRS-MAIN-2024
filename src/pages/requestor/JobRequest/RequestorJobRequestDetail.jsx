@@ -309,16 +309,20 @@ export default function JobRequestDetail() {
             </button>
 
             <button
-            onClick={() => navigate(`/requestor/certificateCompleted/${jobRequest.requestId}`)}
-            className={`py-2 px-4 rounded ${
-              jobRequest.status === "Completed"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
-            }`}
-            disabled={jobRequest.status !== "Completed"}
-          >
-            View Certificate
-          </button>
+              onClick={() =>
+                navigate(
+                  `/requestor/certificateCompleted/${jobRequest.requestId}`
+                )
+              }
+              className={`py-2 px-4 rounded ${
+                jobRequest.status === "Completed"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+              disabled={jobRequest.status !== "Completed"}
+            >
+              View Certificate
+            </button>
           </div>
         </div>
 

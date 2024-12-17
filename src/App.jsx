@@ -97,7 +97,7 @@ import RequestorChangePassword from "./pages/requestor/Profile/RequestorChangePa
 import RequestorJobRequestApproved from "./pages/requestor/JobRequestDetail/RequestorContentJobRequestApproved.jsx";
 import RequestorJobRequestCompleted from "./pages/requestor/JobRequestDetail/RequestorContentJobRequestCompleted.jsx";
 import RequestorCertificate from "./pages/requestor/JobRequestDetail/RequestorCertificate.jsx";
-import CompletedCertificate from "./pages/requestor/JobRequest/certificate.jsx"
+import CompletedCertificate from "./pages/requestor/JobRequest/certificate.jsx";
 
 // Components for system admin
 import SystemAdDashboard from "./pages/system_admin/Dashboard/PageDashboard.jsx";
