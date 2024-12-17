@@ -4,6 +4,7 @@ import ReusableButton from "../../../components/ReusableButton.jsx"; // Import R
 import domToImage from "dom-to-image"; // Import dom-to-image for generating images
 import { useParams } from "react-router-dom";
 import { getCurrentUser } from "../../../service/apiAuth.js";
+import toast from "react-hot-toast";
 
 export default function ViewCertificate() {
   const certificateRef = useRef();
@@ -111,18 +112,20 @@ export default function ViewCertificate() {
     try {
       // Set timestamps immediately before generating the certificate
       const currentTimestamp = new Date().toLocaleString();
-      setStaffTimestamp(currentTimestamp); // Set the staff timestamp
-      setRequestorTimestamp(currentTimestamp); // Set the requestor timestamp
+      setStaffTimestamp(currentTimestamp);
+      setRequestorTimestamp(currentTimestamp);
 
       // Wait for the DOM to render completely
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000ms delay to ensure rendering
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Ensure the certificate element has a defined width and height
-      element.style.width = `${element.scrollWidth}px`; // Set width to scrollWidth
-      element.style.height = `${element.scrollHeight}px`; // Set height to scrollHeight
-      element.style.overflow = "visible"; // Ensure the content isn't clipped
+      // Set A4 size dimensions
+      element.style.width = "794px"; // A4 width at 96 DPI
+      element.style.height = "651px"; // A4 height at 96 DPI
+      element.style.margin = "0";
+      element.style.padding = "5";
+      element.style.backgroundColor = "white";
 
-      // Generate a JPEG image from the certificate element
+      // Generate a JPEG image
       const jpegBlob = await domToImage.toBlob(element);
 
       // Generate a valid file name
@@ -130,7 +133,7 @@ export default function ViewCertificate() {
         .toISOString()
         .replace(/[:.]/g, "-")}.jpeg`;
 
-      // Upload the generated JPEG to Supabase Storage (certificateJpeg bucket)
+      // Upload the image to Supabase Storage
       const { data: storageData, error: storageError } = await supabase.storage
         .from("certificateJpeg")
         .upload(fileName, jpegBlob, {
@@ -143,7 +146,7 @@ export default function ViewCertificate() {
         return;
       }
 
-      // Get the public URL of the uploaded JPEG
+      // Get the public URL of the uploaded image
       const { data: urlData, error: urlError } = supabase.storage
         .from("certificateJpeg")
         .getPublicUrl(storageData?.path || storageData?.Key);
@@ -153,7 +156,7 @@ export default function ViewCertificate() {
         return;
       }
 
-      // Update the completedCertificate column in the Request table with the JPEG URL
+      // Update the Request table with the certificate URL
       const { error: updateError } = await supabase
         .from("Request")
         .update({ completedCertificate: urlData.publicUrl })
@@ -164,7 +167,10 @@ export default function ViewCertificate() {
         return;
       }
 
-      alert("Certificate generated and uploaded successfully!");
+      toast.success("Certificate generated and uploaded successfully!");
+
+      // Reload the page after successfully uploading
+      window.location.reload();
     } catch (error) {
       console.error("Error generating certificate:", error);
     }
@@ -283,12 +289,16 @@ export default function ViewCertificate() {
             </div>
 
             <div className="text-left">
-              <p>Confirmed:</p>
+              <p>Requestor Official:</p>
+              {/* Display Timestamp */}
+              {requestorTimestamp && (
+                <p className="mt-2 text-sm font-bold">{requestorTimestamp}</p>
+              )}
               <p className="font-bold">
-                {" "}
                 {jobRequest[0]?.user?.fName || "Unknown"}{" "}
                 {jobRequest[0]?.user?.lName || "User"}
               </p>
+              {/* Button to Add Timestamp */}
             </div>
           </div>
 
@@ -301,6 +311,14 @@ export default function ViewCertificate() {
             />
           </div> */}
         </div>
+      </div>
+      <div className="flex justify-center items-center">
+        <button
+          onClick={generateCertificate}
+          className="mt-2 bg-blue-500 text-white px-4 py-1 rounded"
+        >
+          Sign Certificate
+        </button>
       </div>
     </div>
   );

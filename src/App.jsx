@@ -97,7 +97,7 @@ import RequestorChangePassword from "./pages/requestor/Profile/RequestorChangePa
 import RequestorJobRequestApproved from "./pages/requestor/JobRequestDetail/RequestorContentJobRequestApproved.jsx";
 import RequestorJobRequestCompleted from "./pages/requestor/JobRequestDetail/RequestorContentJobRequestCompleted.jsx";
 import RequestorCertificate from "./pages/requestor/JobRequestDetail/RequestorCertificate.jsx";
-import CompletedCertificate from "./pages/requestor/JobRequest/certificate.jsx"
+import CompletedCertificate from "./pages/requestor/JobRequest/certificate.jsx";
 
 // Components for system admin
 import SystemAdDashboard from "./pages/system_admin/Dashboard/PageDashboard.jsx";
@@ -194,6 +194,7 @@ import OfficeHeadRequestorJobRequestDetailPage from "./pages/office_org_head/Job
 import CompletedRequestDetailPage from "./pages/staff/History/CompletedTaskDetails.jsx";
 import CompletedDeptGHeadRequestorJobRequestTable from "./pages/department_head/JobRequestDeptHead/CompletedRequestorJobRequestTable.jsx";
 import TableReport from "./pages/department_head/Reports/TableReport.jsx";
+import CertificatePage from "./pages/requestor/JobRequest/certifcatePage.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -632,7 +633,7 @@ export default function App() {
             />
             <Route
               path="certificateCompleted/:requestId"
-              element={<CompletedCertificate />}
+              element={<CertificatePage />}
             />
             <Route
               path="job_request_form"
