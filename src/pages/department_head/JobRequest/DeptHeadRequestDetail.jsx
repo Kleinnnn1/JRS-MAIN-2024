@@ -191,7 +191,7 @@ export default function RequestDetailPage() {
           {/* Left Section */}
           <div>
             <div className="space-y-4 m-4">
-              {/* Request ID */}
+              {/* Request ID  */}
               <div>
                 <span className="block text-sm text-gray-600 mb-1 font-medium">
                   Request Id:
@@ -282,7 +282,10 @@ export default function RequestDetailPage() {
               {/* Remarks Section */}
 
               {/* Remarks Section */}
-              <label htmlFor="remarks" className="block font-semibold mb-2 mt-10">
+              <label
+                htmlFor="remarks"
+                className="block font-semibold mb-2 mt-10"
+              >
                 Remarks:
               </label>
               <textarea
@@ -293,46 +296,28 @@ export default function RequestDetailPage() {
                 className="w-full border rounded p-2"
                 placeholder="Add your remarks here..."
               />
-              <button
-                onClick={handleSaveRemarks}
-                className={`mt-4 bg-green-600 text-white px-4 py-2 rounded mr-4 ${
-                  isSaving
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-green-700"
-                }`}
-                disabled={isSaving} // Disable only when saving
-              >
-                Save Remarks
-              </button>
+              <div className="flex gap-4">
+                <button
+                  onClick={handleSaveRemarks}
+                  className={`mt-4 bg-blue-600 text-white px-4 py-2 rounded ${
+                    isSaving
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-blue-700"
+                  }`}
+                  disabled={isSaving}
+                >
+                  Save Remarks
+                </button>
 
-              <button
-                onClick={async () => {
-                  try {
-                    // Fetch the data for the specific requestId from the "Request" table
-                    const { data, error } = await supabase
-                      .from("Request")
-                      .select("completedCertificate")
-                      .eq("requestId", requestId)
-                      .single();
-
-                    // Check for errors or if no certificate exists
-                    if (error || !data?.completedCertificate) {
-                      alert("No certificate available for this request.");
-                      navigate("/department_head/job_completed"); // Redirect if no certificate
-                      return;
-                    }
-
-                    // Navigate to the certificate view if it exists
-                    navigate(`/department_head/view_certificate/${requestId}`);
-                  } catch (err) {
-                    console.error("Error verifying certificate:", err);
-                    alert("An unexpected error occurred. Please try again.");
-                  }
-                }}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded mr-4"
-              >
-                View Certificate
-              </button>
+                {status !== "Ongoing" && status !== "Completed" && (
+                  <button
+                    onClick={() => openModal("isTransferModalOpen")}
+                    className="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 w-40 mt-4"
+                  >
+                    Transfer Request
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -358,48 +343,56 @@ export default function RequestDetailPage() {
         {/* Modals */}
         {modalState.isTransferModalOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center"
-            onClick={() => closeModal("isTransferModalOpen")}
+            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+            role="dialog"
+            aria-modal="true"
           >
-            <div
-              className="bg-white rounded-lg p-8 max-w-lg w-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h3 className="text-xl font-bold mb-4">Transfer Request</h3>
-              <div className="mb-4">
-                <label
-                  htmlFor="department"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Select Department:
-                </label>
-                <select
-                  id="department"
-                  value={selectedDepartment}
-                  onChange={(e) => setSelectedDepartment(e.target.value)}
-                  className="w-full mt-1 border rounded px-3 py-2"
-                >
-                  <option value="">Select Department</option>
-                  <option value="Engineering">Engineering</option>
-                  <option value="HR">HR</option>
-                  <option value="Finance">Finance</option>
-                  <option value="Sales">Sales</option>
-                  <option value="Support">Support</option>
-                </select>
-              </div>
-              <div className="flex justify-end">
+            <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg">
+              <h2 className="text-xl font-bold mb-4">Transfer Request</h2>
+              <p className="text-gray-700 mb-4">
+                Choose a department to transfer:
+              </p>
+              <select
+                value={selectedDepartment}
+                onChange={(e) => setSelectedDepartment(e.target.value)}
+                className="w-full p-2 border rounded"
+              >
+                <option value="" className="hidden">
+                  Select Department
+                </option>
+                <option value="1">BGMS</option>
+                <option value="2">CSWS</option>
+                <option value="3">MEWS</option>
+              </select>
+              <div className="flex justify-end mt-4">
                 <button
                   onClick={handleTransfer}
-                  className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                 >
                   Transfer
+                </button>
+                <button
+                  onClick={() => closeModal("isTransferModalOpen")}
+                  className="ml-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                  Close
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        <ModalForm isOpen={modalState.isAssignModalOpen} closeModal={() => closeModal("isAssignModalOpen")} />
+        {/* Assignment Modal */}
+        <ModalForm
+          isOpen={modalState.isAssignModalOpen}
+          onClose={() => closeModal("isAssignModalOpen")}
+        />
+        <button
+          className="m-4 -mt-16 text-blue-500 font-bold underline"
+          onClick={() => navigate(-1)}
+        >
+          Back
+        </button>
       </div>
     </div>
   );
