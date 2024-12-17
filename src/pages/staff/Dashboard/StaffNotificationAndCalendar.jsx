@@ -234,9 +234,25 @@ export default function StaffNotification() {
                   .select("*")
                   .eq("requestId", requestId)
                   .single();
+    
+                  // Fetch user details using idNumber from the request
+                  const { data: user, error: userError } = await supabase
+                    .from("User")
+                    .select("fullName")
+                    .eq("idNumber", request.idNumber)
+                    .single();
+            
+                  if (userError) {
+                    console.error("Error fetching user:", userError.message);
+                    return;
+                  }
+
                 navigate(`/staff/job_assigned/details/${requestId}`, {
                   state: {
-                    ...notification, // Pass all notification details as state
+
+                    ...request,
+                    fullName: user.fullName
+                    
                   },
                 });
               }
@@ -267,6 +283,7 @@ export default function StaffNotification() {
     </div>
   );
 }
+
 
 
 
