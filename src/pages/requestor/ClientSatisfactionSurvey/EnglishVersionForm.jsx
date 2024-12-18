@@ -159,7 +159,10 @@ const EnglishVersionForm = () => {
         alert("Failed to submit the form. Please try again.");
       } else {
         alert("Form submitted successfully!");
-        navigate("/success"); // Redirect after successful submission
+        navigate(
+          `/requestor/certificateCompleted/${requestData.requestId || ""}`
+        );
+        // Redirect after successful submission
       }
     } catch (error) {
       console.error("Unexpected error:", error);

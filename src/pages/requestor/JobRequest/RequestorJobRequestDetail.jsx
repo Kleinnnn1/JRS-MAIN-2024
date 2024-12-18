@@ -291,13 +291,17 @@ export default function JobRequestDetail() {
           </div>
           <div className="p-4 flex justify-end space-x-4">
             <button
-              onClick={() => navigate("/requestor/english_version")}
+              onClick={() =>
+                navigate("/requestor/english_version", {
+                  state: { requestData: jobRequest },
+                })
+              }
               className={`py-2 px-4 rounded ${
-                jobRequest.status === "Completed"
+                jobRequest?.status === "Completed"
                   ? "bg-green-500 text-white"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
-              disabled={jobRequest.status !== "Completed"}
+              disabled={jobRequest?.status !== "Completed"} // Ensure jobRequest is defined
             >
               Client Satisfaction Survey
             </button>
