@@ -4,8 +4,9 @@ import ReusableButton from "../../../components/ReusableButton.jsx"; // Import R
 import domToImage from "dom-to-image"; // Import dom-to-image for generating images
 import { useParams } from "react-router-dom";
 import { getCurrentUser } from "../../../service/apiAuth.js";
+import toast from "react-hot-toast";
 
-export default function RequestorCertificate() {
+export default function ViewCertificate() {
   const certificateRef = useRef();
   const [jobRequest, setJobRequest] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state to manage loading UI
@@ -17,11 +18,7 @@ export default function RequestorCertificate() {
   // Fetch Job Requests from Supabase
   const fetchJobRequestData = async () => {
     try {
-      // Fetch the current user
-      const user = await getCurrentUser(); // Ensure this function resolves properly
-      console.log("Current User Dept Id:", user.deptId);
-
-      // Fetch Job Request Data
+      // Step 1: Fetch the Job Request Data
       const { data: jobRequestData, error: jobRequestError } = await supabase
         .from("Request")
         .select("*")
@@ -41,10 +38,10 @@ export default function RequestorCertificate() {
 
       const request = jobRequestData[0];
 
-      // Fetch the user data based on idNumber in the job request
+      // Step 2: Fetch the User Data based on idNumber
       const { data: userData, error: userError } = await supabase
         .from("User")
-        .select("id, idNumber, fName, lName, deptId")
+        .select("id, idNumber, fName, lName")
         .eq("idNumber", request.idNumber);
 
       if (userError) {
@@ -55,23 +52,42 @@ export default function RequestorCertificate() {
 
       // Attach user data to the job request
       const requestWithUser = { ...request, user: userData[0] || {} };
-      setJobRequest([requestWithUser]);
 
-      // Fetch the department head's full name
+      // Step 3: Fetch the Department ID from Department_request_assignment
+      const { data: deptAssignmentData, error: deptAssignmentError } =
+        await supabase
+          .from("Department_request_assignment")
+          .select("deptId")
+          .eq("requestId", requestId)
+          .single();
+
+      if (deptAssignmentError) {
+        console.error(
+          "Error fetching department assignment data:",
+          deptAssignmentError
+        );
+        setLoading(false);
+        return;
+      }
+
+      const deptId = deptAssignmentData.deptId; // Get the associated deptId
+
+      // Step 4: Fetch the Department Head's Full Name using deptId
       const { data: deptHeadData, error: deptHeadError } = await supabase
         .from("User")
         .select("fullName")
-        .eq("deptId", user.deptId) // Match the current user's deptId
-        .eq("userRole", "department head") // Filter by userRole
-        .single(); // Get only one result
+        .eq("deptId", deptId) // Match deptId from Department_request_assignment
+        .eq("userRole", "department head") // Filter for department head
+        .single();
 
       if (deptHeadError) {
         console.error("Error fetching department head:", deptHeadError);
       } else {
         console.log("Department Head Full Name:", deptHeadData.fullName);
-        setDepartmentHeadName(deptHeadData.fullName); // Set the full name in state
+        setDepartmentHeadName(deptHeadData.fullName); // Set the department head's full name
       }
 
+      setJobRequest([requestWithUser]);
       setLoading(false);
     } catch (err) {
       console.error("Error:", err);
@@ -96,18 +112,20 @@ export default function RequestorCertificate() {
     try {
       // Set timestamps immediately before generating the certificate
       const currentTimestamp = new Date().toLocaleString();
-      setStaffTimestamp(currentTimestamp); // Set the staff timestamp
-      setRequestorTimestamp(currentTimestamp); // Set the requestor timestamp
+      setStaffTimestamp(currentTimestamp);
+      setRequestorTimestamp(currentTimestamp);
 
       // Wait for the DOM to render completely
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000ms delay to ensure rendering
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Ensure the certificate element has a defined width and height
-      element.style.width = `${element.scrollWidth}px`; // Set width to scrollWidth
-      element.style.height = `${element.scrollHeight}px`; // Set height to scrollHeight
-      element.style.overflow = "visible"; // Ensure the content isn't clipped
+      // Set A4 size dimensions
+      element.style.width = "794px"; // A4 width at 96 DPI
+      element.style.height = "651px"; // A4 height at 96 DPI
+      element.style.margin = "0";
+      element.style.padding = "5";
+      element.style.backgroundColor = "white";
 
-      // Generate a JPEG image from the certificate element
+      // Generate a JPEG image
       const jpegBlob = await domToImage.toBlob(element);
 
       // Generate a valid file name
@@ -115,7 +133,7 @@ export default function RequestorCertificate() {
         .toISOString()
         .replace(/[:.]/g, "-")}.jpeg`;
 
-      // Upload the generated JPEG to Supabase Storage (certificateJpeg bucket)
+      // Upload the image to Supabase Storage
       const { data: storageData, error: storageError } = await supabase.storage
         .from("certificateJpeg")
         .upload(fileName, jpegBlob, {
@@ -128,7 +146,7 @@ export default function RequestorCertificate() {
         return;
       }
 
-      // Get the public URL of the uploaded JPEG
+      // Get the public URL of the uploaded image
       const { data: urlData, error: urlError } = supabase.storage
         .from("certificateJpeg")
         .getPublicUrl(storageData?.path || storageData?.Key);
@@ -138,10 +156,13 @@ export default function RequestorCertificate() {
         return;
       }
 
-      // Update the completedCertificate column in the Request table with the JPEG URL
+      // Update the Request table with the certificate URL
       const { error: updateError } = await supabase
         .from("Request")
-        .update({ completedCertificate: urlData.publicUrl })
+        .update({
+          completedCertificate: urlData.publicUrl,
+          requestorTimestamp: currentTimestamp,
+        })
         .eq("requestId", requestId);
 
       if (updateError) {
@@ -149,7 +170,10 @@ export default function RequestorCertificate() {
         return;
       }
 
-      alert("Certificate generated and uploaded successfully!");
+      toast.success("Certificate generated and uploaded successfully!");
+
+      // Reload the page after successfully uploading
+      window.location.reload();
     } catch (error) {
       console.error("Error generating certificate:", error);
     }
@@ -268,12 +292,16 @@ export default function RequestorCertificate() {
             </div>
 
             <div className="text-left">
-              <p>Confirmed:</p>
+              <p>Requestor Official:</p>
+              {/* Display Timestamp */}
+              {requestorTimestamp && (
+                <p className="mt-2 text-sm font-bold">{requestorTimestamp}</p>
+              )}
               <p className="font-bold">
-                {" "}
                 {jobRequest[0]?.user?.fName || "Unknown"}{" "}
                 {jobRequest[0]?.user?.lName || "User"}
               </p>
+              {/* Button to Add Timestamp */}
             </div>
           </div>
 
@@ -286,6 +314,14 @@ export default function RequestorCertificate() {
             />
           </div> */}
         </div>
+      </div>
+      <div className="flex justify-center items-center">
+        <button
+          onClick={generateCertificate}
+          className="mt-2 bg-blue-500 text-white px-4 py-1 rounded"
+        >
+          Sign Certificate
+        </button>
       </div>
     </div>
   );

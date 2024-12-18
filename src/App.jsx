@@ -31,6 +31,7 @@ import StaffRequestorJobRequestDetailPage from "./pages/staff/JobRequestStaff/Re
 import StaffAssignedDetails from "./pages/staff/Task/StaffAssignedDetails.jsx";
 import StaffAssignedCompletedTable from "./pages/staff/Task/StaffAssignedCompletedTable.jsx";
 import StaffCompletedRequestorJobRequestTable from "./pages/staff/JobRequestStaff/CompletedRequestorJobRequestTable.jsx";
+import StaffCertificatePage from "./pages/staff/JobRequestDetailStaff/CertificatePage.jsx";
 
 // Components for department head
 import PageDepartMentHeadDashboard from "./pages/department_head/Dashboard/PageDepartMentHeadDashboard.jsx";
@@ -353,7 +354,7 @@ export default function App() {
             {/* MEWS */}
             <Route
               path="job_request_certificateStaff/:requestId"
-              element={<StaffCertificate />}
+              element={<StaffCertificatePage />}
               // element={<p> lorem </p>}
             />
 

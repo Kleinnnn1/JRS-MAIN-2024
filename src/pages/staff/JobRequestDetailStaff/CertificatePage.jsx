@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import supabase from "../../../service/supabase"; // Import your Supabase instance
-import ViewCertificate from "../JobRequest/certificate"; // Import ViewCertificate component
+import ViewCertificate from "../JobRequestDetailStaff/RequestorCertificate"; // Import ViewCertificate component
 import { useParams } from "react-router-dom";
 
 export default function CertificatePage() {
