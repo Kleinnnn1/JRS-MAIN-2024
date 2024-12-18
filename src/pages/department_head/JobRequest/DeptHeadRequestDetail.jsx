@@ -393,6 +393,17 @@ export default function RequestDetailPage() {
         >
           Back
         </button>
+
+        {status == "Completed" && (
+          <button
+            className="mt-4 text-white bg-purple-500 font-bold px-4 py-2 rounded"
+            onClick={() =>
+              navigate(`/department_head/certificateCompleted/${requestId}`)
+            }
+          >
+            View Certificate
+          </button>
+        )}
       </div>
     </div>
   );

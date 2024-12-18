@@ -76,6 +76,7 @@ import RequestorJobRequestApprovedDeptHead from "./pages/department_head/JobRequ
 import RequestorJobRequestCompletedDeptHead from "./pages/department_head/JobRequestDetailDeptHead/RequestorContentJobRequestCompleted.jsx";
 import RequestorCertificateDeptHead from "./pages/department_head/JobRequestDetailDeptHead/RequestorCertificate.jsx";
 import DeptHeadJobRequestDetails from "./pages/department_head/JobRequestDeptHead/RequestorJobRequestDetail.jsx";
+import DeptHeadCertificatePage from "./pages/department_head/JobRequest/certificatePage.jsx";
 
 import ViewCertificate from "./pages/department_head/JobRequest/certificate.jsx";
 // Components for requestor
@@ -601,6 +602,11 @@ export default function App() {
             />
 
             <Route path="content" element={<ContentAprrovingCertificate />} />
+
+            <Route
+              path="certificateCompleted/:requestId"
+              element={<DeptHeadCertificatePage />}
+            />
           </Route>
           {/* ===========================================REQUESTOR ==================================================================== */}
           {/* Protected Routes for Requestor */}
