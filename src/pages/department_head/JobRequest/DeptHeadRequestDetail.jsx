@@ -55,6 +55,8 @@ export default function RequestDetailPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [assignedStaffName, setAssignedStaffName] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedPriority, setSelectedPriority] = useState("");
+
 
   const {
     fullName,
@@ -139,6 +141,30 @@ export default function RequestDetailPage() {
     }
   };
 
+  const handlePriority = async () => {
+    if (!selectedPriority) {
+      toast.error("Please select a priority level.");
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("Request")
+        .update({ priority: selectedPriority })
+        .eq("requestId", requestId);
+
+      if (error) {
+        toast.error("Failed to transfer the request. Please try again.");
+      } else {
+        toast.success("Successfully Set Priority Level.");
+        closeModal("isTransferModalOpen");
+      }
+    } catch (err) {
+      toast.error("An unexpected error occurred.");
+    }
+  };
+  
+
   const handleTransfer = async () => {
     if (!selectedDepartment) {
       toast.error("Please select a department.");
@@ -180,6 +206,7 @@ export default function RequestDetailPage() {
     }
   };
 
+  
   return (
     <div className="container mx-auto p-6">
       <div className="bg-white -mt-5 shadow-lg rounded-lg p-4">
@@ -216,7 +243,7 @@ export default function RequestDetailPage() {
                 <span className="block text-sm text-gray-600 mb-1 font-medium">
                   Description:
                 </span>
-                <span className="block text-2xl text-gray-800 font-normal leading-relaxed">
+                <span className="block text-2xl text-gray-800 font-semibold leading-relaxed">
                   {description || "No description provided"}
                 </span>
               </div>
@@ -250,22 +277,43 @@ export default function RequestDetailPage() {
                   {requestLocation || "Unknown Location"}
                 </span>
               </div>
-
-              {/* PRIORITY */}
-              <div className="mb-10">
-                <span className="block text-sm text-gray-600 mb-1 font-medium">
-                  Priority:
-                </span>
-                <span
-                  className={`inline-block px-3 py-1 rounded-full text-xl font-semibold ${
-                    PRIORITY_COLORS[priority] || "bg-gray-300 text-black"
-                  }`}
-                >
-                  {priority || "No Priority"}
-                </span>
-              </div>
             </div>
-            <p className="mb-4">
+          {/* PRIORITY */}
+<div className="priority-section">
+  <p className="mb-2">
+    <span className="font-semibold m-3">Priority Level:</span>
+  </p>
+  <label htmlFor="priority-select" className="sr-only">
+    Select Priority
+  </label>
+  <select
+    id="priority-select"
+    value={selectedPriority} // Fixed state reference
+    onChange={(e) => setSelectedPriority(e.target.value)}
+    className="p-2 border rounded ml-3"
+  >
+    <option value="">Select Priority</option>
+    <option className="bg-green-500 text-white" value="Low">
+      Low
+    </option>
+    <option className="bg-yellow-500 text-white" value="Medium">
+      Medium
+    </option>
+    <option className="bg-red-500 text-white" value="High">
+      High
+    </option>
+  </select>
+  <button
+    onClick={handlePriority}
+    className="bg-blue-600 text-white ml-4 p-1 rounded  w-32"
+  >
+    Set Priority
+  </button>
+</div>
+
+
+              {/* ASSIGN STAFF */}
+            <p className="mb-4 mt-4">
               <span className="font-semibold  m-4">Assigned Staff:</span> <br />
               <span className="m-4 text-xl">{assignedStaffName}</span>
             </p>
@@ -274,7 +322,7 @@ export default function RequestDetailPage() {
               {status !== "Ongoing" && status !== "Completed" && (
                 <button
                   onClick={handleAssign}
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-32"
+                  className="bg-blue-600 mt-5 text-white p-1 rounded hover:bg-blue-700 w-32"
                 >
                   Assign
                 </button>

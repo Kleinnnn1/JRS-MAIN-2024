@@ -9,6 +9,7 @@ import { getDeptHeadJobRequest } from "../../../service/apiDeptHeadRequestTable"
 import { getCurrentUser } from "../../../service/apiAuth";
 
 const tableHeaders = [
+
   "Requestor",
   "Job Description",
   "Job Category",
