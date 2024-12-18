@@ -58,8 +58,7 @@ export default function ViewCertificate() {
         await supabase
           .from("Department_request_assignment")
           .select("deptId")
-          .eq("requestId", requestId)
-          .single();
+          .eq("requestId", requestId);
 
       if (deptAssignmentError) {
         console.error(
@@ -70,21 +69,51 @@ export default function ViewCertificate() {
         return;
       }
 
-      const deptId = deptAssignmentData.deptId; // Get the associated deptId
+      if (!deptAssignmentData || deptAssignmentData.length === 0) {
+        console.error("No department assignment data found.");
+        setLoading(false);
+        return;
+      }
 
-      // Step 4: Fetch the Department Head's Full Name using deptId
+      // Extract unique deptId values
+      const uniqueDeptIds = [
+        ...new Set(deptAssignmentData.map((item) => item.deptId)),
+      ];
+
+      if (uniqueDeptIds.length > 1) {
+        console.error(
+          "Multiple unique deptIds found. Data integrity issue:",
+          uniqueDeptIds
+        );
+        setLoading(false);
+        return;
+      }
+
+      // Use the single unique deptId
+      const deptId = uniqueDeptIds[0];
+
+      if (!deptId) {
+        console.error("No valid department ID found.");
+        setLoading(false);
+        return;
+      }
+
+      console.log("Validated department ID:", deptId);
+
+      // Fetch the Department Head's Full Name
       const { data: deptHeadData, error: deptHeadError } = await supabase
         .from("User")
         .select("fullName")
-        .eq("deptId", deptId) // Match deptId from Department_request_assignment
-        .eq("userRole", "department head") // Filter for department head
-        .single();
+        .eq("deptId", deptId)
+        .eq("userRole", "department head");
 
       if (deptHeadError) {
         console.error("Error fetching department head:", deptHeadError);
+      } else if (deptHeadData.length > 0) {
+        console.log("Department Head Full Name:", deptHeadData[0].fullName); // Use the first match
+        setDepartmentHeadName(deptHeadData[0].fullName);
       } else {
-        console.log("Department Head Full Name:", deptHeadData.fullName);
-        setDepartmentHeadName(deptHeadData.fullName); // Set the department head's full name
+        console.error("No department head found.");
       }
 
       setJobRequest([requestWithUser]);

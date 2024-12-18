@@ -5,9 +5,11 @@ import { useAssignmentStore } from "../store/useAssignmentStore"; // Adjust the 
 export async function insertStaff(assignments) {
   const currentUser = await getCurrentUser();
 
-  if (!currentUser || !currentUser.idNumber) {
-    console.error("No current user or idNumber found.");
-    throw new Error("User not authenticated or idNumber is missing");
+  if (!currentUser || !currentUser.idNumber || !currentUser.deptId) {
+    console.error("No current user, idNumber, or deptId found.");
+    throw new Error(
+      "User not authenticated or required user information is missing"
+    );
   }
 
   const { deptReqAssId, requestId } = useAssignmentStore.getState(); // Retrieve deptReqAssId and requestId from the store
@@ -75,7 +77,7 @@ export async function insertStaff(assignments) {
       return {
         created_at: new Date().toISOString(),
         requestId,
-        deptId: 1,
+        deptId: currentUser.deptId, // Use currentUser.deptId dynamically
         staffName: assignment.staffName,
         deptReqAssId: nextDeptReqAssId + index, // Increment deptReqAssId
       };
