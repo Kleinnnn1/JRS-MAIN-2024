@@ -242,6 +242,7 @@ export default function JobCompletedContent() {
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
       <div className=" py-4 px-6 bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
+        
         <SearchBar title="Completed" showInput={true} />
 
         {/* Search Term Component */}
