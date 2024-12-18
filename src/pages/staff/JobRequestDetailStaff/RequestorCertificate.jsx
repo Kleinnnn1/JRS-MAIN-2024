@@ -315,14 +315,14 @@ export default function ViewCertificate() {
           </div> */}
         </div>
       </div>
-      <div className="flex justify-center items-center">
+      {/* <div className="flex justify-center items-center">
         <button
           onClick={generateCertificate}
           className="mt-2 bg-blue-500 text-white px-4 py-1 rounded"
         >
           Sign Certificate
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

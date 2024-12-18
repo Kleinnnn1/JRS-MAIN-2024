@@ -136,11 +136,11 @@ const SidebarMenu = ({ isSidebarCollapsed, currentPath, navigate }) => {
     { icon: <FaUsers />, label: "Staff", path: "/department_head/employee" },
     { icon: <FaChartPie />, label: "Report", path: "/department_head/report" },
     // { icon: <FaHistory />, label: "History", path: "/department_head/history" },
-    {
-      icon: <FaAward />,
-      label: "Certificate of Job Completion",
-      path: "/department_head/approving_of_job_completion",
-    },
+    // {
+    //   icon: <FaAward />,
+    //   label: "Certificate of Job Completion",
+    //   path: "/department_head/approving_of_job_completion",
+    // },
     {
       icon: <FaFileAlt />,
       label: "My Request",
