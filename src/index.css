@@ -3,22 +3,21 @@
 @tailwind utilities;
 
 @keyframes floatIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px); /* Start slightly below */
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0); /* End at the original position */
-    }
+  from {
+    opacity: 0;
+    transform: translateY(20px); /* Start slightly below */
   }
-  
-  .animate-float {
-    animation: floatIn 0.5s ease-out; /* Duration and easing */
+  to {
+    opacity: 1;
+    transform: translateY(0); /* End at the original position */
   }
-  
+}
 
-  /* Hide the scrollbar */
+.animate-float {
+  animation: floatIn 0.5s ease-out; /* Duration and easing */
+}
+
+/* Hide the scrollbar */
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* For Chrome, Safari, and Edge */
 }
@@ -26,4 +25,24 @@
 .no-scrollbar {
   -ms-overflow-style: none; /* For Internet Explorer and Edge */
   scrollbar-width: none; /* For Firefox */
+}
+
+/* Print-specific styles */
+@media print {
+  body * {
+    visibility: hidden; /* Hide all elements */
+  }
+
+  #certificate,
+  #certificate * {
+    visibility: visible; /* Show only the certificate content */
+  }
+
+  #certificate {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Ensure full page width */
+    margin: 0 auto;
+  }
 }

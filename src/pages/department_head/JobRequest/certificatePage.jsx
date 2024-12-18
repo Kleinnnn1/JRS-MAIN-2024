@@ -1,70 +1,79 @@
 import React, { useEffect, useState } from "react";
-import supabase from "../../../service/supabase"; // Import your Supabase instance
-import ViewCertificate from "../JobRequest/certificate"; // Import ViewCertificate component
+import supabase from "../../../service/supabase";
+import ViewCertificate from "../JobRequest/certificate";
 import { useParams } from "react-router-dom";
 
 export default function CertificatePage() {
-  const { requestId } = useParams(); // Get requestId from URL params
-  const [completedCertificate, setCompletedCertificate] = useState(""); // State for completedCertificate URL
-  const [loading, setLoading] = useState(true); // Loading state
+  const { requestId } = useParams();
+  const [completedCertificate, setCompletedCertificate] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [deptHeadTimestamp, setDeptHeadTimestamp] = useState(null);
+  const [error, setError] = useState(null);
 
-  // Fetch the `completedCertificate` from the Request table
-  const fetchCompletedCertificate = async () => {
+  const fetchRequestData = async () => {
     try {
       const { data, error } = await supabase
         .from("Request")
-        .select("completedCertificate")
+        .select("completedCertificate, deptHeadTimestamp")
         .eq("requestId", requestId)
         .single();
 
       if (error) {
-        console.error("Error fetching certificate status:", error);
-      } else if (data) {
-        setCompletedCertificate(data.completedCertificate); // Set the certificate URL
+        setError(error);
+        console.error("Error fetching request data:", error);
+      } else {
+        setCompletedCertificate(data.completedCertificate);
+        setDeptHeadTimestamp(data.deptHeadTimestamp); // Corrected typo
       }
-      setLoading(false); // Stop loading
     } catch (err) {
+      setError(err);
       console.error("Error:", err);
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchCompletedCertificate(); // Fetch on page load
+    fetchRequestData();
   }, []);
 
-  // Function to handle re-fetching after generating the certificate
   const handleCertificateGenerated = () => {
-    fetchCompletedCertificate(); // Refetch to check for completedCertificate
+    fetchRequestData(); // Refetch data after certificate generation
+  };
+
+  const handlePrint = () => {
+    window.print(); // Print the current page
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading spinner
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading certificate: {error.message}</div>;
   }
 
   return (
     <div className="container mx-auto p-4">
-      {completedCertificate ? (
-        // Display the uploaded certificate
+      {completedCertificate && deptHeadTimestamp ? (
         <>
-          <div className="text-center">
+          <div id="certificate" className="text-center">
             <img
               src={completedCertificate}
               alt="Completed Certificate"
               className="max-w-full mx-auto border shadow-md"
             />
           </div>
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center mt-4">
             <button
-              // onClick={generateCertificate}
-              className="mt-2 bg-blue-500 text-white px-4 py-1 rounded"
+              onClick={handlePrint}
+              className="bg-blue-500 text-white px-4 py-2 rounded"
             >
-              Sign Certificate
+              Print Certificate
             </button>
           </div>
         </>
       ) : (
-        // Render ViewCertificate if no completedCertificate exists
         <ViewCertificate onCertificateGenerated={handleCertificateGenerated} />
       )}
     </div>

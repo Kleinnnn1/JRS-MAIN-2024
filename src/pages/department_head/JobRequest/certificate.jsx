@@ -11,7 +11,8 @@ export default function ViewCertificate() {
   const [jobRequest, setJobRequest] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state to manage loading UI
   const [staffTimestamp, setStaffTimestamp] = useState("");
-  const [requestorTimestamp, setRequestorTimestamp] = useState("");
+  const [deptHeadTimestamp, setDeptHeadTimestamp] = useState("");
+  const [requestorTimestamp, setRequestorTimestamp] = useState(null); // State for requestorTimestamp
   const [departmentHeadName, setDepartmentHeadName] = useState(""); // State to store department head's name
   const { requestId } = useParams();
 
@@ -21,7 +22,7 @@ export default function ViewCertificate() {
       // Step 1: Fetch the Job Request Data
       const { data: jobRequestData, error: jobRequestError } = await supabase
         .from("Request")
-        .select("*")
+        .select("*, requestorTimestamp")
         .eq("requestId", requestId);
 
       if (jobRequestError) {
@@ -37,6 +38,8 @@ export default function ViewCertificate() {
       }
 
       const request = jobRequestData[0];
+
+      setRequestorTimestamp(request.requestorTimestamp); // Set the fetched requestorTimestamp
 
       // Step 2: Fetch the User Data based on idNumber
       const { data: userData, error: userError } = await supabase
@@ -110,30 +113,30 @@ export default function ViewCertificate() {
     const element = certificateRef.current;
 
     try {
-      // Set timestamps immediately before generating the certificate
+      // Set timestamps
       const currentTimestamp = new Date().toLocaleString();
       setStaffTimestamp(currentTimestamp);
-      setRequestorTimestamp(currentTimestamp);
+      setDeptHeadTimestamp(currentTimestamp);
 
-      // Wait for the DOM to render completely
+      // Log the requestorTimestamp
+      console.log("Requestor Timestamp:", currentTimestamp);
+
+      // Wait for DOM rendering
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Set A4 size dimensions
+      // Generate JPEG
       element.style.width = "794px"; // A4 width at 96 DPI
       element.style.height = "651px"; // A4 height at 96 DPI
       element.style.margin = "0";
       element.style.padding = "5";
       element.style.backgroundColor = "white";
 
-      // Generate a JPEG image
       const jpegBlob = await domToImage.toBlob(element);
 
-      // Generate a valid file name
       const fileName = `certificates/${new Date()
         .toISOString()
         .replace(/[:.]/g, "-")}.jpeg`;
 
-      // Upload the image to Supabase Storage
       const { data: storageData, error: storageError } = await supabase.storage
         .from("certificateJpeg")
         .upload(fileName, jpegBlob, {
@@ -146,7 +149,6 @@ export default function ViewCertificate() {
         return;
       }
 
-      // Get the public URL of the uploaded image
       const { data: urlData, error: urlError } = supabase.storage
         .from("certificateJpeg")
         .getPublicUrl(storageData?.path || storageData?.Key);
@@ -156,10 +158,14 @@ export default function ViewCertificate() {
         return;
       }
 
-      // Update the Request table with the certificate URL
+      // Update the database
       const { error: updateError } = await supabase
         .from("Request")
-        .update({ completedCertificate: urlData.publicUrl })
+        .update({
+          completedCertificate: urlData.publicUrl,
+          deptHeadTimestamp: currentTimestamp,
+          requestorTimestamp: requestorTimestamp,
+        })
         .eq("requestId", requestId);
 
       if (updateError) {
@@ -169,7 +175,6 @@ export default function ViewCertificate() {
 
       toast.success("Certificate generated and uploaded successfully!");
 
-      // Reload the page after successfully uploading
       window.location.reload();
     } catch (error) {
       console.error("Error generating certificate:", error);
@@ -284,21 +289,25 @@ export default function ViewCertificate() {
           <div className="flex justify-between mt-12">
             <div className="text-left">
               <p>Unit Head</p>
+              {/* Display Timestamp */}
+              {deptHeadTimestamp && (
+                <p className="mt-2 text-sm font-bold">
+                  {deptHeadTimestamp || "N/A"}
+                </p>
+              )}
               <p className="font-bold">{departmentHeadName || "N/A"}</p>{" "}
               {/* Display full name */}
             </div>
 
             <div className="text-left">
               <p>Requestor Official:</p>
-              {/* Display Timestamp */}
-              {requestorTimestamp && (
-                <p className="mt-2 text-sm font-bold">{requestorTimestamp}</p>
-              )}
+              <p className="mt-2 text-sm font-bold">
+                {requestorTimestamp || "N/A"}
+              </p>
               <p className="font-bold">
                 {jobRequest[0]?.user?.fName || "Unknown"}{" "}
                 {jobRequest[0]?.user?.lName || "User"}
               </p>
-              {/* Button to Add Timestamp */}
             </div>
           </div>
 

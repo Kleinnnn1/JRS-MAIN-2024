@@ -159,7 +159,10 @@ export default function ViewCertificate() {
       // Update the Request table with the certificate URL
       const { error: updateError } = await supabase
         .from("Request")
-        .update({ completedCertificate: urlData.publicUrl })
+        .update({
+          completedCertificate: urlData.publicUrl,
+          requestorTimestamp: currentTimestamp,
+        })
         .eq("requestId", requestId);
 
       if (updateError) {
