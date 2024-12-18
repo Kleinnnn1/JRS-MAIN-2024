@@ -17,7 +17,7 @@ export default function JobRequestDetail() {
     const fetchJobRequest = async () => {
       try {
         setLoading(true);
-  
+
         // Fetch job request details
         const { data, error } = await supabase
           .from("Request")
@@ -26,9 +26,9 @@ export default function JobRequestDetail() {
           )
           .eq("requestId", requestId)
           .single();
-  
+
         if (error) throw new Error(error.message);
-  
+
         // Format the requestDate
         const formattedDate = new Date(data.requestDate)
           .toLocaleString("en-US", {
@@ -39,111 +39,113 @@ export default function JobRequestDetail() {
             minute: "2-digit",
           })
           .replace(",", "");
-  
+
         // Fetch assignments related to the specific requestId
         const { data: assignments, error: assignmentError } = await supabase
           .from("Department_request_assignment")
           .select("requestId, staffName, deptId")
           .eq("requestId", requestId);
-  
+
         if (assignmentError) throw assignmentError;
-  
+
         // Fetch department details
         const { data: departments, error: departmentError } = await supabase
           .from("Department")
           .select("deptId, deptName");
-  
+
         if (departmentError) throw departmentError;
-  
+
         // Find the department name associated with the request
         const departmentName =
           assignments.length > 0
             ? departments.find((dept) => dept.deptId === assignments[0].deptId)
                 ?.deptName
             : "Unknown Department";
-  
+
         // Extract and log staff names for debugging
         const staffNames = assignments.map(
           (assignment) => assignment.staffName
         );
         console.log("Matched Staff Names for Request:", staffNames);
-  
+
         setJobRequest({
           ...data,
           requestDate: formattedDate,
           departmentName,
           staffName: staffNames.join(", "),
         });
-  
+
         // Fetch tracking information to determine the last status
         const { data: trackingData, error: trackingFetchError } = await supabase
           .from("Tracking")
           .select("details, timestamp")
           .eq("requestId", requestId)
           .order("timestamp", { ascending: false });
-  
+
         if (trackingFetchError) throw new Error(trackingFetchError.message);
-  
+
         setTrackingData(trackingData);
-  
-        let trackingDetails = "";
-  
+
+        //   let trackingDetails = "";
+
         // Status tracking logic
-        if (data.status === "Pending") {
-          trackingDetails = `Job request is pending at ${departmentName}.`;
-        } else if (data.status === "Ongoing") {
-          trackingDetails = `Job request is now Ongoing at ${departmentName}.`;
-        } else if (data.status === "In Progress") {
-          trackingDetails = `Job request is now In Progress by ${departmentName}.`;
-        } else if (data.status === "Completed") {
-          trackingDetails = `Job request is already Completed by ${departmentName}. Kindly fill up Client Satisfaction Survey.`;
-        }
-  
-        // Check and add expectedDueDate logic without overwriting existing details
-        if (
-          data.expectedDueDate &&
-          !trackingData.some((entry) =>
-            entry.details.includes("expected to be done")
-          )
-        ) {
-          const formattedDueDate = new Date(data.expectedDueDate).toLocaleString();
-          trackingDetails += trackingDetails
-            ? ` The job request is expected to be done on ${formattedDueDate}.`
-            : `The job request is expected to be done on ${formattedDueDate}.`;
-        }
-  
-        // Insert tracking details if any
-        if (trackingDetails) {
-          const { error: trackingError } = await supabase
-            .from("Tracking")
-            .insert([
-              {
-                requestId: data.requestId,
-                details: trackingDetails,
-                timestamp: new Date().toISOString(),
-              },
-            ]);
-  
-          if (trackingError) throw new Error(trackingError.message);
-        }
+        // if (data.status === "Pending") {
+        //   trackingDetails = `Job request is pending at ${departmentName}.`;
+        // } else if (data.status === "Ongoing") {
+        //   trackingDetails = `Job request is now Ongoing at ${departmentName}.`;
+        // } else if (data.status === "In Progress") {
+        //   trackingDetails = `Job request is now In Progress by ${departmentName}.`;
+        // } else if (data.status === "Completed") {
+        //   trackingDetails = `Job request is already Completed by ${departmentName}. Kindly fill up Client Satisfaction Survey.`;
+        // }
+
+        // // Check and add expectedDueDate logic without overwriting existing details
+        // if (
+        //   data.expectedDueDate &&
+        //   !trackingData.some((entry) =>
+        //     entry.details.includes("expected to be done")
+        //   )
+        // ) {
+        //   const formattedDueDate = new Date(
+        //     data.expectedDueDate
+        //   ).toLocaleString();
+        //   trackingDetails += trackingDetails
+        //     ? ` The job request is expected to be done on ${formattedDueDate}.`
+        //     : `The job request is expected to be done on ${formattedDueDate}.`;
+        // }
+
+        // // Insert tracking details if any
+        // if (trackingDetails) {
+        //   const { error: trackingError } = await supabase
+        //     .from("Tracking")
+        //     .insert([
+        //       {
+        //         requestId: data.requestId,
+        //         details: trackingDetails,
+        //         timestamp: new Date().toISOString(),
+        //       },
+        //     ]);
+
+        //   if (trackingError) throw new Error(trackingError.message);
+        // }
       } catch (err) {
         console.error("Error:", err.message);
       } finally {
         setLoading(false);
       }
     };
-  
+
     if (requestId) {
       fetchJobRequest();
     }
   }, [requestId]);
-  
+
   const currentStage = stages.indexOf(jobRequest?.status || "Requested");
-  
+
   if (loading) {
     return <div className="p-6">Loading...</div>;
   }
-  
+
   if (!jobRequest) {
     return (
       <div className="p-6">
@@ -159,7 +161,7 @@ export default function JobRequestDetail() {
       </div>
     );
   }
-  
+
   return (
     <div className="p-6">
       <button
