@@ -1,45 +1,84 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BarChart from "./CSSBarChart";
+import supabase from "../../../service/supabase"; // Ensure Supabase client is imported
 
 const BarPage = () => {
-  const data = {
-    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  const [chartData, setChartData] = useState({
+    labels: [], // Months
     datasets: [
-      { 
-        label: "Data",
-        data: [10, 20, 200, 300, 500, 400, 100, 200, 500],
-        backgroundColor: "rgba(135, 206, 235, 0.6)", // Sky blue color with transparency
+      {
+        label: "Surveys Count",
+        data: [],
+        backgroundColor: "rgba(135, 206, 235, 0.6)", // Sky blue color
         borderColor: "rgba(135, 206, 235, 1)", // Solid sky blue border
         borderWidth: 1,
       },
     ],
-  };
+  });
+
+  useEffect(() => {
+    const fetchChartData = async () => {
+      try {
+        // Fetch surveys grouped by month from Supabase
+        const { data, error } = await supabase
+          .from("Client_satisfaction_survey")
+          .select("date");
+
+        if (error) {
+          console.error("Error fetching data:", error.message);
+          return;
+        }
+
+        // Process data to count surveys per month
+        const monthCounts = Array(12).fill(0); // Initialize counts for all 12 months
+
+        data.forEach((row) => {
+          const date = new Date(row.date);
+          const month = date.getMonth(); // Get month (0 - 11)
+          monthCounts[month] += 1; // Increment count for the month
+        });
+
+        // Update chart data
+        setChartData({
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+          datasets: [
+            {
+              label: "Surveys Count",
+              data: monthCounts,
+              backgroundColor: "rgba(135, 206, 235, 0.6)",
+              borderColor: "rgba(135, 206, 235, 1)",
+              borderWidth: 1,
+            },
+          ],
+        });
+      } catch (err) {
+        console.error("Error processing chart data:", err.message);
+      }
+    };
+
+    fetchChartData();
+  }, []);
 
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        display: false,
+        display: true,
       },
     },
     scales: {
       y: {
         beginAtZero: true,
+        ticks: { stepSize: 1 }, // Ensure step size is 1 for count-based charts
       },
     },
   };
 
   return (
     <div className="p-4">
-      
-
-      {/* Card Container with White Background and Layered Effect */}
       <div className="bg-white p-6 rounded-lg shadow-lg relative overflow-hidden">
-      <h1 className="text-2xl font-bold mb-4">Overview</h1>
-        {/* Optional Layer or Overlay for a Covered Effect */}
-        <div className="absolute inset-0 bg-opacity-10 z-10"></div>
-
-        <BarChart data={data} options={options} />
+        <h1 className="text-2xl font-bold mb-4">Monthly Overview</h1>
+        <BarChart data={chartData} options={options} />
       </div>
     </div>
   );

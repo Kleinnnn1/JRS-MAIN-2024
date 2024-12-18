@@ -124,6 +124,8 @@ const BarPageStaff = () => {
       y: {
         ticks: {
           autoSkip: false, // Ensure all labels are displayed
+          align: "start", // Align staff names to the left
+          padding: 10, 
         },
         grid: {
           display: true, // Keep horizontal grid lines (y-axis)

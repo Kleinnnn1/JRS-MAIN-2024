@@ -1,33 +1,95 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import StatusCard from "../../../components/StatusCard";
-import Table from "./SPMSContentTable";
-import ReusableCalendar from "../../../components/ReusableCalendar";
 import SearchBar from "../../../components/SearchBar";
 import DonutChart from "../../../components/DonutChart";
 import BarPage from "../Reports/CSSBarPage";
-import { FaClipboardList, FaUsers, FaShoppingCart, FaChartLine } from "react-icons/fa";
 import PieChart from "../Reports/CSSPieChart";
 import SPMETable from "../Dashboard/SPMSContentTable";
-import SPMENotification from "./SPMENotification";
+import supabase from "../../../service/supabase"; // Import Supabase client
+import { FaChartLine } from "react-icons/fa";
 
 export default function CSSContentDashboard() {
   const navigate = useNavigate();
 
-  // Sample logic for the counts (replace with actual data logic)
-  const todayCount = 2; // Example count for today
-  const thisWeekCount = 5; // Example count for this week
-  const thisMonthCount = 10; // Example count for this month
-  const thisYearCount = 20; // Example count for this year
-  const statusCardColor = "bg-white"; // Uniform card color for all status cards
+  // State for counts
+  const [todayCount, setTodayCount] = useState(0);
+  const [thisWeekCount, setThisWeekCount] = useState(0);
+  const [thisMonthCount, setThisMonthCount] = useState(0);
+  const [thisYearCount, setThisYearCount] = useState(0);
 
-  // Icons for consistency
+  const statusCardColor = "bg-white"; // Uniform card color
   const icons = {
     today: <FaChartLine />,
     week: <FaChartLine />,
     month: <FaChartLine />,
-    year: <FaChartLine />, // Using clipboard list for consistency
+    year: <FaChartLine />,
   };
+
+  // Helper function to get formatted date ranges
+  const getDateRanges = () => {
+    const today = new Date();
+    const formatDate = (date) => date.toLocaleDateString("en-US"); // Format as MM/DD/YYYY
+
+    const startOfToday = formatDate(new Date(today.setHours(0, 0, 0, 0))); // Midnight today
+    const startOfWeek = formatDate(new Date(today.setDate(today.getDate() - today.getDay()))); // Start of this week
+    const startOfMonth = formatDate(new Date(today.getFullYear(), today.getMonth(), 1)); // Start of this month
+    const startOfYear = formatDate(new Date(today.getFullYear(), 0, 1)); // Start of this year
+
+    return { startOfToday, startOfWeek, startOfMonth, startOfYear };
+  };
+
+  // Fetch counts from the database
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const { startOfToday, startOfWeek, startOfMonth, startOfYear } = getDateRanges();
+
+        console.log("Date Ranges:", { startOfToday, startOfWeek, startOfMonth, startOfYear });
+
+        // Fetch count for Today
+        const { count: todayCountResult, error: todayError } = await supabase
+          .from("Client_satisfaction_survey")
+          .select("*", { count: "exact" })
+          .ilike("date", `${startOfToday}%`);  // Match date part (MM/DD/YYYY)
+
+        // Fetch count for This Week
+        const { count: weekCountResult, error: weekError } = await supabase
+          .from("Client_satisfaction_survey")
+          .select("*", { count: "exact" })
+          .gte("date", `${startOfWeek}`); // Start of the week, no time comparison
+
+        // Fetch count for This Month
+        const { count: monthCountResult, error: monthError } = await supabase
+          .from("Client_satisfaction_survey")
+          .select("*", { count: "exact" })
+          .gte("date", `${startOfMonth}`); // Start of the month, no time comparison
+
+        // Fetch count for This Year
+        const { count: yearCountResult, error: yearError } = await supabase
+          .from("Client_satisfaction_survey")
+          .select("*", { count: "exact" })
+          .gte("date", `${startOfYear}`); // Start of the year, no time comparison
+
+        // Handle errors
+        if (todayError || weekError || monthError || yearError) {
+          console.error("Error fetching counts:", todayError || weekError || monthError || yearError);
+          return;
+        }
+
+        // Update state with fetched counts
+        setTodayCount(todayCountResult || 0);
+        setThisWeekCount(weekCountResult || 0);
+        setThisMonthCount(monthCountResult || 0);
+        setThisYearCount(yearCountResult || 0);
+
+      } catch (error) {
+        console.error("Error fetching survey counts:", error.message);
+      }
+    };
+
+    fetchCounts();
+  }, []);
 
   return (
     <>
@@ -43,7 +105,7 @@ export default function CSSContentDashboard() {
           bgColor={statusCardColor}
           titleColor="text-grey"
           icon={icons.today}
-          subText="+1 since last hour"
+          subText={`+${todayCount} since last hour`}
         />
         <StatusCard
           title="This Week"
@@ -51,7 +113,7 @@ export default function CSSContentDashboard() {
           bgColor={statusCardColor}
           titleColor="text-grey"
           icon={icons.week}
-          subText="+1 since last week"
+          subText={`+${thisWeekCount} since last week`}
         />
         <StatusCard
           title="This Month"
@@ -59,7 +121,7 @@ export default function CSSContentDashboard() {
           bgColor={statusCardColor}
           titleColor="text-grey"
           icon={icons.month}
-          subText="+1 since last month"
+          subText={`+${thisMonthCount} since last month`}
         />
         <StatusCard
           title="This Year"
@@ -67,7 +129,7 @@ export default function CSSContentDashboard() {
           bgColor={statusCardColor}
           titleColor="text-grey"
           icon={icons.year}
-          subText="+1 since last year"
+          subText={`+${thisYearCount} since last year`}
         />
       </div>
 
@@ -77,8 +139,6 @@ export default function CSSContentDashboard() {
           {/* BAR GRAPH */}
           <BarPage />
         </div>
-        {/* NOTIFICATION */}
-        {/* <SPMENotification /> */}
         <PieChart />
       </div>
 
