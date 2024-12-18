@@ -29,7 +29,6 @@ const getPriorityClass = (level) => {
       return "";
   }
 };
-
 export default function TableAssignedCompleted() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
@@ -46,7 +45,6 @@ export default function TableAssignedCompleted() {
         setLoading(true);
         const currentUser = await getCurrentUser();
 
-        // Fetch only relevant fields from the Request table
         const { data, error } = await supabase
           .from("Request")
           .select(
@@ -73,7 +71,6 @@ export default function TableAssignedCompleted() {
           throw new Error("Data could not be loaded");
         }
 
-        // Filter the data where staffName matches currentUser.fullName
         const filteredData = data.filter((item) => {
           const staffNames = item.Department_request_assignment.map(
             (assign) => assign.staffName
@@ -97,7 +94,6 @@ export default function TableAssignedCompleted() {
     return <div className="text-red-500 font-bold">{error}</div>;
   }
 
-  // Filter and sort job requests
   const filteredRequests = requests
     .filter(
       (req) =>
@@ -113,7 +109,6 @@ export default function TableAssignedCompleted() {
     currentPage * rowsPerPage
   );
 
-  // Format the job assignment data for the table
   const tableContent =
     paginatedRequests.length > 0
       ? paginatedRequests.map(
@@ -133,14 +128,14 @@ export default function TableAssignedCompleted() {
             },
             index
           ) => [
-            `${index + 1}. ${String(User.fullName)}`, // Sequential number + fullName
+            `${index + 1}. ${String(User.fullName)}`,
             description,
             location,
             priority ? (
               <span className={getPriorityClass(priority)}>{priority}</span>
             ) : (
               "N/A"
-            ), // Apply priority class styling
+            ),
             <button
               className="bg-blue-500 text-white px-4 py-1 rounded-md"
               onClick={() => {
@@ -169,15 +164,19 @@ export default function TableAssignedCompleted() {
 
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
-      <div className="bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
-        <SearchBar title="Completed Assigned Job" />
-        <ReusableSearchTerm
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-        />
+      <div className="bg-custom-blue py-2 px-4 flex flex-col md:flex-row justify-between items-start md:items-center rounded-t-lg">
+        <div className="mb-2 md:mb-0">
+          <SearchBar title="Completed Assigned Job" />
+        </div>
+        <div className="w-full md:w-auto">
+          <ReusableSearchTerm
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            className="w-full md:w-auto"
+          />
+        </div>
       </div>
 
-      {/* Table */}
       <Table
         columns={8}
         rows={paginatedRequests.length}
@@ -185,7 +184,6 @@ export default function TableAssignedCompleted() {
         headers={tableHeaders}
       />
 
-      {/* Reusable Pagination Component */}
       <ReusablePagination
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}

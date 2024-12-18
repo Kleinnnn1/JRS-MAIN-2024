@@ -5,6 +5,7 @@ import domToImage from "dom-to-image"; // Import dom-to-image for generating ima
 import { useParams } from "react-router-dom";
 import { getCurrentUser } from "../../../service/apiAuth.js";
 import toast from "react-hot-toast";
+import LogoUSTP from "../../../assets/images/logoUSTP.png";
 
 export default function ViewCertificate() {
   const certificateRef = useRef();
@@ -218,15 +219,150 @@ export default function ViewCertificate() {
         ref={certificateRef}
         className="p-10 bg-white max-w-3xl mx-auto border shadow-md mt-6"
       >
-        {/* Header Section */}
-        <div className="text-center mb-6">
-          <h1 className="text-lg font-bold">
-            UNIVERSITY OF SCIENCE AND TECHNOLOGY
-          </h1>
-          <h1 className="text-lg font-bold">OF SOUTHERN PHILIPPINES</h1>
-          <p className="text-sm">
-            Alubijid | Cagayan De Oro | Claveria | Jasaan | Oroquieta | Panaon
-          </p>
+        {/* Certificate Header */}
+        <div
+          className="header flex justify-between items-center mb-4" // Reduced bottom margin
+          style={{ fontFamily: "Arial, Helvetica, sans-serif" }}
+        >
+          {/* Logo on the Left */}
+          <img
+            src={LogoUSTP}
+            alt="USTP Logo"
+            style={{ width: "80px", height: "80px" }} // Reduced size from 80px to 60px
+          />
+
+          {/* Textual Information Center */}
+          <div className="text-center">
+            <h1 className="font-bold text-sm">
+              UNIVERSITY OF SCIENCE AND TECHNOLOGY
+            </h1>
+            <h1 className="font-bold text-sm">OF SOUTHERN PHILIPPINES</h1>
+            <p className="text-xs">
+              Alubijid | Cagayan De Oro | Claveria | Jasaan | Oroquieta | Panaon
+              | Villanueva
+            </p>
+          </div>
+
+          {/* Document Header on the Right */}
+          <div
+            style={{
+              border: "2px solid #000",
+              width: "220px",
+              fontFamily: "Arial, sans-serif",
+            }}
+          >
+            {/* Document No. */}
+            <div
+              style={{
+                backgroundColor: "#0D0745",
+                color: "#fff",
+                textAlign: "center",
+                fontSize: "11px",
+              }}
+            >
+              Document No.
+            </div>
+            <div
+              style={{
+                color: "#0D0745",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              <input
+                type="text"
+                defaultValue="FM-USTP-BGMS-01"
+                style={{
+                  textAlign: "center",
+                  width: "100%",
+                  border: "border-b",
+                  outline: "none",
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  color: "#0D0745",
+                }}
+              />
+            </div>
+
+            {/* Rev. No., Effective Date, and Page No. */}
+            <div
+              style={{
+                display: "flex",
+                backgroundColor: "#0D0745",
+                color: "#fff",
+                textAlign: "center",
+                justifyContent: "space-between",
+                fontSize: "12px",
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: "#0D0745",
+                  color: "#fff",
+                  textAlign: "center",
+                  fontSize: "10px", // Set font size here
+                  fontWeight: "bold",
+                }}
+              >
+                <span
+                  style={{
+                    flex: 1,
+                    margin: "4px",
+                  }}
+                >
+                  Rev. No.
+                </span>
+                <span
+                  style={{
+                    margin: "15px",
+                  }}
+                >
+                  Effective Date
+                </span>
+                <span
+                  style={{
+                    margin: "10px",
+                  }}
+                >
+                  Page No.
+                </span>
+              </div>
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <input
+                type="text"
+                defaultValue="00"
+                style={{
+                  textAlign: "center",
+                  width: "33%",
+                  borderRight: "1px solid #000", // Border on the right only
+                  fontSize: "10px",
+                }}
+              />
+              <input
+                type="text"
+                defaultValue="10.01.21"
+                style={{
+                  textAlign: "center",
+                  width: "33%",
+                  borderRight: "1px solid #000", // Border on the right only
+
+                  fontSize: "10px",
+                }}
+              />
+              <input
+                type="text"
+                defaultValue="7 of 36"
+                style={{
+                  textAlign: "center",
+                  width: "33%",
+
+                  padding: "2px",
+                  fontSize: "10px",
+                }}
+              />
+            </div>
+          </div>
         </div>
 
         {/* Job Request Details */}

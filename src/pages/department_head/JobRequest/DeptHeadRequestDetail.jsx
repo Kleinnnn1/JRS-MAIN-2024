@@ -57,7 +57,6 @@ export default function RequestDetailPage() {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("");
 
-
   const {
     fullName,
     description,
@@ -163,7 +162,6 @@ export default function RequestDetailPage() {
       toast.error("An unexpected error occurred.");
     }
   };
-  
 
   const handleTransfer = async () => {
     if (!selectedDepartment) {
@@ -206,7 +204,6 @@ export default function RequestDetailPage() {
     }
   };
 
-  
   return (
     <div className="container mx-auto p-6">
       <div className="bg-white -mt-5 shadow-lg rounded-lg p-4">
@@ -278,41 +275,40 @@ export default function RequestDetailPage() {
                 </span>
               </div>
             </div>
-          {/* PRIORITY */}
-<div className="priority-section">
-  <p className="mb-2">
-    <span className="font-semibold m-3">Priority Level:</span>
-  </p>
-  <label htmlFor="priority-select" className="sr-only">
-    Select Priority
-  </label>
-  <select
-    id="priority-select"
-    value={selectedPriority} // Fixed state reference
-    onChange={(e) => setSelectedPriority(e.target.value)}
-    className="p-2 border rounded ml-3"
-  >
-    <option value="">Select Priority</option>
-    <option className="bg-green-500 text-white" value="Low">
-      Low
-    </option>
-    <option className="bg-yellow-500 text-white" value="Medium">
-      Medium
-    </option>
-    <option className="bg-red-500 text-white" value="High">
-      High
-    </option>
-  </select>
-  <button
-    onClick={handlePriority}
-    className="bg-blue-600 text-white ml-4 p-1 rounded  w-32"
-  >
-    Set Priority
-  </button>
-</div>
+            {/* PRIORITY */}
+            <div className="priority-section">
+              <p className="mb-2">
+                <span className="font-semibold m-3">Priority Level:</span>
+              </p>
+              <label htmlFor="priority-select" className="sr-only">
+                Select Priority
+              </label>
+              <select
+                id="priority-select"
+                value={selectedPriority} // Fixed state reference
+                onChange={(e) => setSelectedPriority(e.target.value)}
+                className="p-2 border rounded ml-3"
+              >
+                <option value="">Select Priority</option>
+                <option className="bg-green-500 text-white" value="Low">
+                  Low
+                </option>
+                <option className="bg-yellow-500 text-white" value="Medium">
+                  Medium
+                </option>
+                <option className="bg-red-500 text-white" value="High">
+                  High
+                </option>
+              </select>
+              <button
+                onClick={handlePriority}
+                className="bg-blue-600 text-white ml-4 p-1 rounded  w-32"
+              >
+                Set Priority
+              </button>
+            </div>
 
-
-              {/* ASSIGN STAFF */}
+            {/* ASSIGN STAFF */}
             <p className="mb-4 mt-4">
               <span className="font-semibold  m-4">Assigned Staff:</span> <br />
               <span className="m-4 text-xl">{assignedStaffName}</span>

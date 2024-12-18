@@ -1,202 +1,74 @@
-import { useEffect, useState } from "react";
-import supabase from "../../../service/supabase";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import 'react-calendar/dist/Calendar.css';
-import ReusablePagination from '../../../components/ReusablePagination';
-import { getDeptHeadNotification } from "../../../service/apiDeptHeadNotificationTable";
-import { getCurrentUser } from "../../../service/apiAuth";
+import supabase from "../../../service/supabase";
+import ReusablePagination from "../../../components/ReusablePagination";
 
 export default function StaffNotification() {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [userIdNumber, setUserIdNumber] = useState(null);
-  const [fullName, setFullName] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
+  // Update isMobile state on window resize
   useEffect(() => {
-    async function fetchNotifs() {
-      try {
-        setLoading(true);
-        const data = await getDeptHeadNotification();
-        setNotifs(data);
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching notifications:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const fetchNotifications = useCallback(async () => {
+    if (!userIdNumber) return;
+
+    try {
+      const { data, error } = await supabase
+        .from("Notification")
+        .select("*")
+        .eq("idNumber", userIdNumber)
+        .order("timestamp", { ascending: false });
+
+      if (error) throw error;
+      setNotifications(data);
+    } catch (err) {
+      setError("Failed to fetch notifications");
+      console.error("Error fetching notifications:", err.message);
+    } finally {
+      setLoading(false);
     }
-    fetchNotifs();
-  }, []);
+  }, [userIdNumber]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const currentUser = await getCurrentUser();
-
-        // Fetch only relevant fields from the Request table
-        const { data, error } = await supabase
-          .from("Request")
-          .select(
-            `
-          requestId,
-          User(fullName),
-          description,
-          location,
-          image,
-          dateCompleted,
-          dateStarted,
-          expectedDueDate,
-          extensionDate,
-          priority,
-          remarks,
-          Department_request_assignment (
-            staffName
-          )
-        `
-          )
-
-        if (error) {
-          throw new Error("Data could not be loaded");
-        }
-
-        // Filter the data where staffName matches currentUser.fullName
-        const filteredData = data.filter((item) => {
-          const staffNames = item.Department_request_assignment.map(
-            (assign) => assign.staffName
-          );
-          return staffNames.includes(currentUser.fullName);
-        });
-
-        setRequests(filteredData);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching data: ", err.message);
-        setError("Failed to load job assignments.");
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Fetch the logged-in user's idNumber and fullName when the component mounts
   useEffect(() => {
     const fetchUserData = async () => {
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      if (sessionError) {
-        console.error("Error fetching session:", sessionError);
-        return;
-      }
+      try {
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+        if (sessionError) throw sessionError;
 
-      if (session) {
-        const { data: userData, error: userError } = await supabase
-          .from("User")
-          .select("idNumber, fullName")
-          .eq("id", session.user.id)
-          .single();
-
-        if (userError) {
-          console.error("Error fetching user data:", userError);
-        } else {
-          setUserIdNumber(userData.idNumber);
-          setFullName(userData.fullName);
-
-          // Fetch notifications for the logged-in user
-          const { data: notificationsData, error: notificationsError } = await supabase
-            .from("Notification")
-            .select("*")
-            .eq("idNumber", userData.idNumber)
-            .order("timestamp", { ascending: false });
-
-          if (notificationsError) {
-            console.error("Error fetching notifications:", notificationsError);
-          } else {
-            setNotifications(notificationsData);
-          }
+        if (session) {
+          const { data: user, error: userError } = await supabase
+            .from("User")
+            .select("idNumber")
+            .eq("id", session.user.id)
+            .single();
+          if (userError) throw userError;
+          setUserIdNumber(user.idNumber);
         }
+      } catch (err) {
+        setError("Failed to fetch user data");
+        console.error("Error fetching user data:", err.message);
       }
     };
-
     fetchUserData();
   }, []);
 
-  const checkDepartmentAssignmentUpdates = async () => {
-    if (!fullName) return;
-
-    const { data: assignments, error: assignmentsError } = await supabase
-      .from("Department_request_assignment")
-      .select("requestId, staffName")
-      .eq("staffName", fullName);
-
-    if (assignmentsError) {
-      console.error("Error fetching assignments:", assignmentsError);
-      return;
-    }
-
-    assignments.forEach(async (assignment) => {
-      const message = `ASSIGNED: You have been assigned to a Job Request [Request ID #${assignment.requestId}].`;
-
-      // Check if the notification already exists for the given message
-      const { data: existingNotifications, error: notificationCheckError } = await supabase
-        .from("Notification")
-        .select("*")
-        .eq("message", message)
-        .eq("idNumber", userIdNumber)
-        .single();
-
-      if (notificationCheckError) {
-        console.error("Error checking for duplicate notification:", notificationCheckError);
-      }
-
-      if (!existingNotifications) {
-        const newNotification = {
-          message: message,
-          timestamp: new Date().toISOString(),
-          idNumber: userIdNumber,
-          requestId: assignment.requestId,
-        };
-
-        const { error: insertError } = await supabase
-          .from("Notification")
-          .insert(newNotification);
-
-        if (insertError) {
-          console.error("Error inserting notification:", insertError);
-        }
-      }
-    });
-  };
-
-  // Poll every 5 seconds to check for updates in assignments and refresh notifications
   useEffect(() => {
-    const interval = setInterval(() => {
-      checkDepartmentAssignmentUpdates();
-
-      const fetchNotifications = async () => {
-        if (userIdNumber) {
-          const { data: notificationsData, error: notificationsError } = await supabase
-            .from("Notification")
-            .select("*")
-            .eq("idNumber", userIdNumber)
-            .order("timestamp", { ascending: false });
-
-          if (notificationsError) {
-            console.error("Error fetching notifications:", notificationsError);
-          } else {
-            setNotifications(notificationsData);
-          }
-        }
-      };
-
-      fetchNotifications();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [fullName, userIdNumber]);
+    if (userIdNumber) fetchNotifications();
+  }, [userIdNumber, fetchNotifications]);
 
   const paginatedNotifications = notifications.slice(
     (currentPage - 1) * rowsPerPage,
@@ -204,6 +76,9 @@ export default function StaffNotification() {
   );
 
   const totalPages = Math.ceil(notifications.length / rowsPerPage);
+
+  if (loading) return <div className="text-center">Loading...</div>;
+  if (error) return <div className="text-center text-red-500">{error}</div>;
 
   return (
     <div className="p-2">
@@ -215,57 +90,39 @@ export default function StaffNotification() {
           {notifications.length > 0 ? (
             <>
               <table className="min-w-full table-auto">
-              <tbody>
-  {paginatedNotifications.map((notification, index) => (
-    <tr key={notification.timestamp || notification.id || index} className="border-t">
-      <td className="px-4 py-2">{notification.message}</td>
-      <td className="px-4 py-2">
-        {new Date(notification.timestamp).toLocaleString()}
-      </td>
-      <td className="px-4 py-2">
-        {notification.message.includes("Request ID #") && (
-          <button
-            className="text-blue-700"
-            onClick={async () => {
-              const requestId = notification.message.match(/Request ID #(\d+)/)?.[1];
-              if (requestId) {
-                const { data: request } = await supabase
-                  .from("Request")
-                  .select("*")
-                  .eq("requestId", requestId)
-                  .single();
-    
-                  // Fetch user details using idNumber from the request
-                  const { data: user, error: userError } = await supabase
-                    .from("User")
-                    .select("fullName")
-                    .eq("idNumber", request.idNumber)
-                    .single();
-            
-                  if (userError) {
-                    console.error("Error fetching user:", userError.message);
-                    return;
-                  }
-
-                navigate(`/staff/job_assigned/details/${requestId}`, {
-                  state: {
-
-                    ...request,
-                    fullName: user.fullName
-                    
-                  },
-                });
-              }
-            }}
-          >
-            Click to view
-          </button>
-        )}
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+                <tbody>
+                  {paginatedNotifications.map((notification, index) => (
+                    <tr
+                      key={notification.timestamp || index}
+                      className="border-t"
+                    >
+                      <td className="px-4 py-2">{notification.message}</td>
+                      {!isMobile && (
+                        <td className="px-4 py-2">
+                          {new Date(notification.timestamp).toLocaleString()}
+                        </td>
+                      )}
+                      <td className="px-4 py-2">
+                        <button
+                          className="text-blue-700"
+                          onClick={() => {
+                            const requestId =
+                              notification.message.match(
+                                /Request ID #(\d+)/
+                              )?.[1];
+                            if (requestId) {
+                              navigate(
+                                `/staff/job_assigned/details/${requestId}`
+                              );
+                            }
+                          }}
+                        >
+                          Click to View
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
               <ReusablePagination
                 rowsPerPage={rowsPerPage}
@@ -276,164 +133,10 @@ export default function StaffNotification() {
               />
             </>
           ) : (
-            <p>No new notifications</p>
+            <p>No notifications available.</p>
           )}
         </div>
       </div>
     </div>
   );
 }
-
-
-
-
-// AdminNotification Component
-// // StaffNotification Component
-// import { useState, useEffect, useMemo } from "react";
-// import { useNavigate } from "react-router-dom";
-// import ReusablePagination from "../../../components/ReusablePagination";
-// import Table from "../../../components/Table";
-// import { getDeptHeadNotification } from "../../../service/apiDeptHeadNotificationTable";
-// import supabase from "../../../service/supabase";
-
-// export default function StaffNotification() {
-//   const navigate = useNavigate();
-//   const [notifs, setNotifs] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [rowsPerPage, setRowsPerPage] = useState(10);
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [searchTerm, setSearchTerm] = useState("");
-
-//   // Fetch initial data
-//   useEffect(() => {
-//     async function fetchNotifs() {
-//       try {
-//         setLoading(true);
-//         const data = await getDeptHeadNotification();
-//         setNotifs(data || []); // Ensure fallback to empty array
-//         setError(null);
-//       } catch (err) {
-//         console.error("Error fetching notifications:", err);
-//         setError(err.message);
-//       } finally {
-//         setLoading(false);
-//       }
-//     }
-//     fetchNotifs();
-//   }, []);
-
-//   // Format and sort data
-//   const formattedData = useMemo(() => {
-//     const sortedNotifs = [...notifs].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-//     return sortedNotifs.map((notif) => {
-//       const {
-//         notificationid,
-//         message,
-//         timestamp,
-//         requestId,
-//         fullName,
-//         description,
-//         location,
-//         jobCategory,
-//         requestDate,
-//         image,
-//         priority,
-//         deptReqAssId,
-//         idNumber,
-//         remarks,
-//       } = notif;
-
-//       return [
-//         message || "No description provided",
-//         timestamp
-//           ? new Date(timestamp).toLocaleString("en-US", {
-//               year: "numeric",
-//               month: "long",
-//               day: "numeric",
-//               hour: "2-digit",
-//               minute: "2-digit",
-//               second: "2-digit",
-//               hour12: true,
-//               timeZone: "Asia/Manila",
-//             })
-//           : "No timestamp available",
-//         <button
-//           key={requestId || Math.random()} // Fallback for key
-//           className="text-blue-500"
-//           onClick={() => {
-//             if (!requestId) {
-//               console.error("Invalid requestId for navigation");
-//               return;
-//             }
-//             navigate(`/staff/job_assigned/details/${requestId}`, {
-//               state: {
-//                 fullName,
-//                 description,
-//                 location,
-//                 jobCategory,
-//                 requestDate,
-//                 image,
-//                 priority,
-//                 deptReqAssId,
-//                 requestId,
-//                 idNumber,
-//                 remarks,
-//               },
-//             });
-//           }}
-//         >
-//           Click to View
-//         </button>,
-//       ];
-//     });
-//   }, [notifs, navigate]);
-
-//   // Filtering content
-//   const filteredContent = useMemo(() => {
-//     return formattedData.filter((row) =>
-//       row.some((item) =>
-//         String(item).toLowerCase().includes(searchTerm.toLowerCase())
-//       )
-//     );
-//   }, [formattedData, searchTerm]);
-
-//   // Paginate the filtered content
-//   const paginatedContent = useMemo(() => {
-//     return filteredContent.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
-//   }, [filteredContent, currentPage, rowsPerPage]);
-
-//   const totalPages = Math.ceil(filteredContent.length / rowsPerPage);
-
-//   if (loading) return <div className="text-center">Loading...</div>;
-//   if (error) return <div className="text-center text-red-500">Error: {error}</div>;
-
-//   return (
-//     <div className="bg-white border -mx-4 rounded-t-lg shadow-md">
-//       <div className="bg-custom-blue rounded-t-lg p-3 text-white font-bold">
-//         NOTIFICATION
-//       </div>
-//       {/* Search Input */}
-//       <div className="p-3">
-//         <input
-//           type="text"
-//           placeholder="Search..."
-//           value={searchTerm}
-//           onChange={(e) => setSearchTerm(e.target.value)}
-//           className="border p-2 rounded w-full"
-//         />
-//       </div>
-//       {/* Table Content */}
-//       <Table rows={paginatedContent.length} content={paginatedContent} />
-
-//       {/* Pagination */}
-//       <ReusablePagination
-//         rowsPerPage={rowsPerPage}
-//         setRowsPerPage={setRowsPerPage}
-//         currentPage={currentPage}
-//         setCurrentPage={setCurrentPage}
-//         totalPages={totalPages}
-//       />
-//     </div>
-//   );
-// }

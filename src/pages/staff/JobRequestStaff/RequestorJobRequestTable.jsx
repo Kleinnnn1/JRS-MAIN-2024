@@ -178,13 +178,13 @@ export default function RequestorJobRequestTable() {
       : [[]];
 
   return (
-    <div className="max-w-full -mt-14 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
-      <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
+    <div className="max-w-full -mt-14 mx-auto p-2 m-5 bg-white rounded-lg shadow-lg">
+      <header className="bg-custom-blue text-white p-4 rounded-t-lg flex flex-col md:flex-row md:justify-between items-center space-y-4 md:space-y-0">
         <SearchBar title="Job Requests" />
-        <div className="flex space-x-4">
+        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-2">
           <button
             onClick={handleMakeRequest}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-2 py-2 rounded-md"
           >
             Make Request
           </button>

@@ -6,7 +6,7 @@ import ReusableCalendar from "../../../components/ReusableCalendar";
 import StaffNotification from "./StaffNotificationAndCalendar";
 import supabase from "../../../service/supabase";
 import { getCurrentUser } from "../../../service/apiAuth";
-import { FaHourglassStart, FaClock, FaCheckCircle } from "react-icons/fa";
+import { FaHourglassStart, FaCheckCircle } from "react-icons/fa";
 
 export default function StaffContentDash() {
   const navigate = useNavigate();
@@ -15,6 +15,14 @@ export default function StaffContentDash() {
   // State for Ongoing and Completed counts
   const [ongoingCount, setOngoingCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  // Update `isMobile` state on window resize
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -73,7 +81,6 @@ export default function StaffContentDash() {
           bgColor={statusCardColor}
           iconColor="text-yellow-400"
           titleColor="text-yellow-500"
-          // onClick={() => navigate("/staff/job_assigned")}
           gridSpan="w-full" // Full width for this card
         />
         <StatusCard
@@ -81,9 +88,8 @@ export default function StaffContentDash() {
           title="Completed"
           bgColor={statusCardColor}
           icon={<FaCheckCircle />}
-              iconColor="text-green-500"
+          iconColor="text-green-500"
           titleColor="text-green-500"
-          // onClick={() => navigate("/staff/job_completed")}
           gridSpan="w-full" // Full width for this card
         />
       </div>
@@ -95,10 +101,12 @@ export default function StaffContentDash() {
           <StaffNotification />
         </div>
 
-        {/* Right Side (Calendar) */}
-        <div className="lg:col-span-1 -mt-1">
-          <ReusableCalendar />
-        </div>
+        {/* Right Side (Calendar) - Hidden on Mobile */}
+        {!isMobile && (
+          <div className="lg:col-span-1 -mt-1">
+            <ReusableCalendar />
+          </div>
+        )}
       </div>
     </>
   );

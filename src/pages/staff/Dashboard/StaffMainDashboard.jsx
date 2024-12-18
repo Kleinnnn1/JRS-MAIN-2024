@@ -6,7 +6,6 @@ import {
   FaHome,
   FaTasks,
   FaFileAlt,
-  FaSyncAlt,
   FaCheckCircle,
   FaChartPie,
 } from "react-icons/fa";
@@ -22,6 +21,24 @@ export default function StaffMainDashboard() {
   const { userMetadata } = useUserStore();
   const currentPath = location.pathname;
 
+  // Collapse sidebar on mobile
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setSidebarCollapsed(true);
+      } else {
+        setSidebarCollapsed(false);
+      }
+    };
+
+    handleResize(); // Set initial state based on screen size
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   // Redirect to /staff/home when mounted at /staff
   useEffect(() => {
     if (currentPath === "/staff") {
@@ -30,7 +47,9 @@ export default function StaffMainDashboard() {
   }, [currentPath, navigate]);
 
   const toggleSidebar = () => {
-    setSidebarCollapsed(!isSidebarCollapsed);
+    if (window.innerWidth > 768) {
+      setSidebarCollapsed(!isSidebarCollapsed);
+    }
   };
 
   return (
@@ -49,8 +68,11 @@ export default function StaffMainDashboard() {
         >
           {!isSidebarCollapsed && <Logo />}
           <button
-            className="text-white focus:outline-none"
+            className={`text-white focus:outline-none ${
+              window.innerWidth <= 768 ? "cursor-not-allowed opacity-50" : ""
+            }`}
             onClick={toggleSidebar}
+            disabled={window.innerWidth <= 768}
           >
             {isSidebarCollapsed ? (
               <FaAngleDoubleRight size={24} />

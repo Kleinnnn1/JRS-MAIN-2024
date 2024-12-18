@@ -4,6 +4,7 @@ import logoUSTP from "../../../assets/images/logoUSTP.png";
 import supabase from "../../../service/supabase"; // Import your supabase client
 import useUserStore from "../../../store/useUserStore";
 import { id } from "date-fns/locale";
+import toast from "react-hot-toast";
 
 const EnglishVersionForm = () => {
   const { userMetadata } = useUserStore();
@@ -158,7 +159,7 @@ const EnglishVersionForm = () => {
         console.error("Error submitting form:", error.message);
         alert("Failed to submit the form. Please try again.");
       } else {
-        alert("Form submitted successfully!");
+        toast.success("Form submitted successfully!");
         navigate(
           `/requestor/certificateCompleted/${requestData.requestId || ""}`
         );

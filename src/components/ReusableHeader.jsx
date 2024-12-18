@@ -20,6 +20,7 @@ export default function ReusableHeader({
       <div className="flex items-center">
         <a href="#" className="text-xs text-gray-700 font-medium">
           {/* jrs@ustp.edu.ph +384-3478-984 */}
+          ustpjrs@gmail.com
         </a>
       </div>
 
@@ -34,7 +35,9 @@ export default function ReusableHeader({
           <img
             src={iconDropdown}
             alt="Dropdown Icon"
-            className={`ml-2 h-3 w-3 transform transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}
+            className={`ml-2 h-3 w-3 transform transition-transform duration-200 ${
+              isDropdownOpen ? "rotate-180" : ""
+            }`}
           />
         </button>
 

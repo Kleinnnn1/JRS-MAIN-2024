@@ -173,10 +173,13 @@ export default function RequestorJobRequestTable() {
       : [[]];
 
   return (
-    <div className="max-w-full -mt-14 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
-      <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
-        <SearchBar title="Job Requests" />
-        <div className="flex space-x-4">
+    <div className="max-w-full  mx-auto p-4 m-6 bg-white rounded-lg shadow-lg">
+      <header className="bg-custom-blue text-white p-4 rounded-t-lg flex flex-wrap justify-between items-center">
+        <h1 className="text-lg  mb-2 md:mb-0 w-full md:w-auto text-center md:text-left">
+          <SearchBar title="Completed Job Requests" />
+        </h1>
+
+        <div className="w-full md:w-auto flex justify-center md:justify-end">
           <ReusableSearchTerm
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}

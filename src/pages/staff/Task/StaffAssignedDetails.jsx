@@ -128,7 +128,7 @@ export default function RequestDetailPage() {
 
   return (
     <div className="p-6 bg-white shadow-lg rounded-lg m-10 mt-10">
-      <h2 className="text-2xl font-bold text-center p-2 rounded bg-yellow-500 mb-6">
+      <h2 className="text-2xl font-bold text-center p-2 rounded bg-custom-blue text-white mb-6">
         Job Request Details
       </h2>
       <div className="flex justify-between items-start">

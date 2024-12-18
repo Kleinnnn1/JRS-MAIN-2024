@@ -169,12 +169,18 @@ export default function TableAssigned() {
 
   return (
     <div className="my-4 mx-3 py-2 px-4 bg-white shadow-lg rounded-lg">
-      <div className="bg-custom-blue py-2 px-4 flex justify-between items-center rounded-t-lg">
-        <SearchBar title="Assigned Job" />
-        <ReusableSearchTerm
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-        />
+      {/* Header Section */}
+      <div className="bg-custom-blue py-2 px-4 flex flex-col md:flex-row justify-between items-start md:items-center rounded-t-lg">
+        <div className="mb-2 md:mb-0">
+          <SearchBar title="Assigned Job" />
+        </div>
+        <div className="w-full md:w-auto">
+          <ReusableSearchTerm
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            className="w-full md:w-auto"
+          />
+        </div>
       </div>
 
       {/* Table */}
