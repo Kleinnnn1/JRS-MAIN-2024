@@ -426,9 +426,8 @@ export default function RequestDetailPage() {
                             );
                           } else {
                             toast.success("Job marked as completed!");
-                            // Update local state (if needed)
-                            location.state.status = "Completed";
-                            navigate(0); // Refresh the page to show the updated status
+                            // Navigate to the job completed page
+                            navigate("/department_head/job_completed");
                           }
                         } catch (err) {
                           toast.error("An unexpected error occurred.");

@@ -6,9 +6,11 @@ import SearchBar from "../../../components/SearchBar";
 import { useAssignmentStore } from "../../../store/useAssignmentStore";
 import { insertStaff } from "../../../service/apiAssignStaff";
 import { getCurrentUser } from "../../../service/apiAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function FormAssignStaff({ onClose }) {
   const { handleSubmit, reset } = useForm();
+  const navigate = useNavigate();
 
   // Fetch jobPosition from Zustand store
   const { jobPosition } = useAssignmentStore((state) => ({
@@ -124,6 +126,9 @@ export default function FormAssignStaff({ onClose }) {
       toast.success("Staff assignment(s) successfully submitted.");
       reset();
       onClose();
+
+      // Navigate to the job ongoing page after success
+      navigate("/department_head/job_ongoing");
       setAssignments([
         {
           id: Date.now(),
