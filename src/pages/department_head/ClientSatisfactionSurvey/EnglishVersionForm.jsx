@@ -161,7 +161,7 @@ const EnglishVersionForm = () => {
       } else {
         toast.success("Form submitted successfully!");
         navigate(
-          `/department_head/certificateCompleted/${requestData.requestId || ""}`
+          `/requestor/certificateCompleted/${requestData.requestId || ""}`
         );
         // Redirect after successful submission
       }

@@ -22,7 +22,7 @@ export default function JobRequestDetail() {
         const { data, error } = await supabase
           .from("Request")
           .select(
-            "requestId, requestDate, location, jobCategory, priority, description, image, remarks, status"
+            "requestId, requestDate, location, jobCategory, priority, description, image, remarks, status, expectedDueDate"
           )
           .eq("requestId", requestId)
           .single();
@@ -70,7 +70,7 @@ export default function JobRequestDetail() {
 
         setJobRequest({
           ...data,
-          requestDate: formattedDate, // Use the formatted date
+          requestDate: formattedDate,
           departmentName,
           staffName: staffNames.join(", "),
         });
@@ -80,46 +80,54 @@ export default function JobRequestDetail() {
           .from("Tracking")
           .select("details, timestamp")
           .eq("requestId", requestId)
-          .order("timestamp", { ascending: false })
-          .limit(1);
+          .order("timestamp", { ascending: false });
 
         if (trackingFetchError) throw new Error(trackingFetchError.message);
 
         setTrackingData(trackingData);
 
-        // Insert into Tracking table if status has changed
-        if (
-          trackingData.length > 0 &&
-          trackingData[0].details.includes(data.status)
-        ) {
-          return;
-        }
+        //   let trackingDetails = "";
 
-        let trackingDetails = "";
+        // Status tracking logic
+        // if (data.status === "Pending") {
+        //   trackingDetails = `Job request is pending at ${departmentName}.`;
+        // } else if (data.status === "Ongoing") {
+        //   trackingDetails = `Job request is now Ongoing at ${departmentName}.`;
+        // } else if (data.status === "In Progress") {
+        //   trackingDetails = `Job request is now In Progress by ${departmentName}.`;
+        // } else if (data.status === "Completed") {
+        //   trackingDetails = `Job request is already Completed by ${departmentName}. Kindly fill up Client Satisfaction Survey.`;
+        // }
 
-        if (data.status === "Pending") {
-          trackingDetails = `Job request is pending at ${departmentName}.`;
-        } else if (data.status === "Ongoing") {
-          trackingDetails = `Job request is still Ongoing at ${departmentName}.`;
-        } else if (data.status === "In Progress") {
-          trackingDetails = `Job request is now In Progress by ${departmentName}.`;
-        } else if (data.status === "Completed") {
-          trackingDetails = `Job request is already Completed by ${departmentName}.`;
-        }
+        // // Check and add expectedDueDate logic without overwriting existing details
+        // if (
+        //   data.expectedDueDate &&
+        //   !trackingData.some((entry) =>
+        //     entry.details.includes("expected to be done")
+        //   )
+        // ) {
+        //   const formattedDueDate = new Date(
+        //     data.expectedDueDate
+        //   ).toLocaleString();
+        //   trackingDetails += trackingDetails
+        //     ? ` The job request is expected to be done on ${formattedDueDate}.`
+        //     : `The job request is expected to be done on ${formattedDueDate}.`;
+        // }
 
-        if (trackingDetails) {
-          const { error: trackingError } = await supabase
-            .from("Tracking")
-            .insert([
-              {
-                requestId: data.requestId,
-                details: trackingDetails,
-                timestamp: new Date().toISOString(),
-              },
-            ]);
+        // // Insert tracking details if any
+        // if (trackingDetails) {
+        //   const { error: trackingError } = await supabase
+        //     .from("Tracking")
+        //     .insert([
+        //       {
+        //         requestId: data.requestId,
+        //         details: trackingDetails,
+        //         timestamp: new Date().toISOString(),
+        //       },
+        //     ]);
 
-          if (trackingError) throw new Error(trackingError.message);
-        }
+        //   if (trackingError) throw new Error(trackingError.message);
+        // }
       } catch (err) {
         console.error("Error:", err.message);
       } finally {
@@ -154,21 +162,6 @@ export default function JobRequestDetail() {
     );
   }
 
-  if (!jobRequest) {
-    return (
-      <div className="p-6">
-        <h2 className="text-xl font-bold text-red-500">
-          Error: Job request not found
-        </h2>
-        <button
-          className="bg-gray-700 p-5 text-white py-2 px-4 rounded mt-4"
-          onClick={() => navigate(-1)}
-        >
-          Back to Dashboard
-        </button>
-      </div>
-    );
-  }
   return (
     <div className="p-6">
       <button
@@ -298,19 +291,27 @@ export default function JobRequestDetail() {
           </div>
           <div className="p-4 flex justify-end space-x-4">
             <button
-              onClick={() => navigate("/requestor/english_version")}
+              onClick={() =>
+                navigate("/staff/english_version", {
+                  state: { requestData: jobRequest },
+                })
+              }
               className={`py-2 px-4 rounded ${
-                jobRequest.status === "Completed"
+                jobRequest?.status === "Completed"
                   ? "bg-green-500 text-white"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
-              disabled={jobRequest.status !== "Completed"}
+              disabled={jobRequest?.status !== "Completed"} // Ensure jobRequest is defined
             >
               Client Satisfaction Survey
             </button>
 
             <button
-              // onClick={() => navigate("/requestor/english_version")}
+              onClick={() =>
+                navigate(
+                  `/staff/certificateCompleted/${jobRequest.requestId}`
+                )
+              }
               className={`py-2 px-4 rounded ${
                 jobRequest.status === "Completed"
                   ? "bg-blue-500 text-white"

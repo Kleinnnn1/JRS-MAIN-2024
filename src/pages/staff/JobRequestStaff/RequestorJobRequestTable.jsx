@@ -7,16 +7,16 @@ import SearchBar from "../../../components/SearchBar";
 import RequestorJobRequestForm from "./RequestorJobRequestForm";
 import supabase from "../../../service/supabase";
 import { getCurrentUser } from "../../../service/apiAuth";
+import toast from "react-hot-toast";
 
 const tableHeaders = [
   "Request ID",
-  "Job Description",
+  "Description",
   "Job Category",
   "Office",
   // "Assigned Staff",
-  // "Image",
   "Status",
-  //  "Date Requested",
+  // "Date Requested",
   "Priority",
   "Actions",
 ];
@@ -34,7 +34,40 @@ export default function RequestorJobRequestTable() {
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
 
-  const handleMakeRequest = () => setIsModalOpen(true);
+  const handleMakeRequest = async () => {
+    try {
+      const currentUser = await getCurrentUser();
+      if (!currentUser || !currentUser.idNumber) {
+        throw new Error("Unable to fetch current user information.");
+      }
+
+      // Fetch the user's requests to check for `completedCertificate`
+      const { data: requests, error } = await supabase
+        .from("Request")
+        .select("requestId, completedCertificate")
+        .eq("idNumber", currentUser.idNumber);
+
+      if (error) throw error;
+
+      // Check if any request lacks a `completedCertificate`
+      const hasIncompleteCertificate = requests.some(
+        (request) => !request.completedCertificate
+      );
+
+      if (hasIncompleteCertificate) {
+        toast.error(
+          "Please answer the client satisfaction form and timestamp the job completed form first before creating another request."
+        );
+        return;
+      }
+
+      // Allow the user to make a new request
+      setIsModalOpen(true);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const closeModal = () => setIsModalOpen(false);
 
   const handleClickOutsideModal = (e) => {
@@ -56,8 +89,8 @@ export default function RequestorJobRequestTable() {
           "requestId, description, jobCategory, image, status, requestDate, priority, idNumber"
         )
         .eq("idNumber", currentUser.idNumber)
-        .neq("status", "Completed") // Add this filter
-        .order("requestDate", { ascending: true });
+        .neq("status", "Completed") // Exclude requests with status = "Completed"
+        .order("requestDate", { ascending: false });
 
       if (error) throw error;
 
@@ -167,7 +200,7 @@ export default function RequestorJobRequestTable() {
   );
 
   const handleDetailsClick = (request) => {
-    navigate(`/staff/my_request/detail/${request.requestId}`, {
+    navigate(`/staff/job_request_detail/${request.requestId}`, {
       state: { requestData: request },
     });
   };
@@ -178,16 +211,17 @@ export default function RequestorJobRequestTable() {
       : [[]];
 
   return (
-    <div className="max-w-full -mt-14 mx-auto p-2 m-5 bg-white rounded-lg shadow-lg">
-      <header className="bg-custom-blue text-white p-4 rounded-t-lg flex flex-col md:flex-row md:justify-between items-center space-y-4 md:space-y-0">
+    <div className="max-w-full -mt-1 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
+      <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
         <SearchBar title="Job Requests" />
-        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-2">
+        <div className="flex space-x-4">
           <button
             onClick={handleMakeRequest}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-2 py-2 rounded-md"
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
           >
             Make Request
           </button>
+
           <ReusableSearchTerm
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -254,13 +288,26 @@ export default function RequestorJobRequestTable() {
 }
 
 const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
-  const getPriorityClass = (level) => {
-    switch (level) {
-      case "High":
-        return "bg-red-400";
-      case "Medium":
+  // const getPriorityClass = (level) => {
+  //   switch (level) {
+  //     case "High":
+  //       return "bg-red-400";
+  //     case "Medium":
+  //       return "bg-yellow-300";
+  //     case "Low":
+  //       return "bg-green-300";
+  //     default:
+  //       return "bg-gray-300";
+  //   }
+  // };
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "Pending":
         return "bg-yellow-300";
-      case "Low":
+      case "Ongoing":
+        return "bg-blue-300";
+      case "Completed":
         return "bg-green-300";
       default:
         return "bg-gray-300";
@@ -284,17 +331,23 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       request.jobCategory,
       request.departmentNames || "N/A",
       // request.staffNames || "N/A",
-      request.status,
       <span
-        className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
+        className={`px-2 py-1 rounded-md ${getStatusClass(request.status)}`}
       >
-        {request.priority}
+        {request.status}
       </span>,
+      //   formattedDate,
+      request.priority,
+      // <span
+      //   className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
+      // >
+      //   {request.priority}
+      // </span>,
       <span
         onClick={() => handleDetailsClick(request)}
         className="cursor-pointer text-blue-500 hover:text-blue-700"
       >
-        Details
+        View
       </span>,
     ];
   });

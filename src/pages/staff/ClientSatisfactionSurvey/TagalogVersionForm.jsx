@@ -126,7 +126,7 @@ const TagalogVersionForm = () => {
                     comments: "",
                 });
                 setCurrentSection(1);
-                navigate("/department_head/home"); // Navigate after successful submission
+                navigate("/staff/home"); // Navigate after successful submission
             }
         } catch (error) {
             console.error("Error submitting form: ", error);
