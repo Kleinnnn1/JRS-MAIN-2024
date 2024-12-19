@@ -137,10 +137,10 @@ export default function RequestorJobRequestForm({ closeModal }) {
   const onSubmit = async () => {
     const hasEmptyFields = jobRequests.some(
       (request) =>
-        !request.description ||
-        !request.location ||
-        !request.category ||
-        !request.priority
+        !request.description || !request.location || !request.category,
+      {
+        /*||  !request.priority */
+      }
     );
 
     if (hasEmptyFields) {
@@ -179,7 +179,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
             location: request.location,
             jobCategory: request.category,
             image: imageFile,
-            priority: request.priority,
+            priority: "Low",
           };
         })
       );
@@ -225,7 +225,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
                 <th className="px-4 py-2 border">Location (Bldg/Office)</th>
                 <th className="px-4 py-2 border">Job Category</th>
                 <th className="px-4 py-2 border">Photo (OPTIONAL)</th>
-                <th className="px-4 py-2 border">Priority</th>
+                {/* <th className="px-4 py-2 border">Priority</th> */}
                 <th className="px-4 py-2 border text-center">Actions</th>
               </tr>
             </thead>
@@ -300,7 +300,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
                       }
                     />
                   </td>
-                  <td className="px-4 py-2 border">
+                  {/* <td className="px-4 py-2 border">
                     <select
                       id={`priority-${request.id}`}
                       className="w-full px-2 py-1 border rounded focus:outline-none focus:ring focus:border-blue-300"
@@ -323,7 +323,7 @@ export default function RequestorJobRequestForm({ closeModal }) {
                         </option>
                       ))}
                     </select>
-                  </td>
+                  </td> */}
                   <td className="px-4 py-2 border text-center">
                     <div className="flex justify-center space-x-2">
                       <button

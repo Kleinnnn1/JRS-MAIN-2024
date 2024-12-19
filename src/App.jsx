@@ -349,6 +349,21 @@ export default function App() {
               element={<StaffJobRequestCompleted />}
             />
 
+            <Route
+              path="job_request_detail/:requestId"
+              element={<RequestorJobRequestDetailPage />}
+            />
+            <Route
+              path="view_certificate/:requestId"
+              element={<ViewCertificate />}
+            />
+
+
+            <Route path="select" element={<SelectSurveyForm />} />
+            <Route path="english_version" element={<EnglishVersionForm />} />
+            <Route path="tagalog_version" element={<TagalogVersionForm />} />
+
+
             {/* BGMS CERT */}
             {/* CSWS */}
             {/* MEWS */}
