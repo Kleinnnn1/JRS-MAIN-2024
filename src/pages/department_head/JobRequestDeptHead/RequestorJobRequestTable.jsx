@@ -7,6 +7,7 @@ import SearchBar from "../../../components/SearchBar";
 import RequestorJobRequestForm from "./RequestorJobRequestForm";
 import supabase from "../../../service/supabase";
 import { getCurrentUser } from "../../../service/apiAuth";
+import toast from "react-hot-toast";
 
 const tableHeaders = [
   "Request ID",
@@ -33,7 +34,40 @@ export default function RequestorJobRequestTable() {
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
 
-  const handleMakeRequest = () => setIsModalOpen(true);
+  const handleMakeRequest = async () => {
+    try {
+      const currentUser = await getCurrentUser();
+      if (!currentUser || !currentUser.idNumber) {
+        throw new Error("Unable to fetch current user information.");
+      }
+
+      // Fetch the user's requests to check for `completedCertificate`
+      const { data: requests, error } = await supabase
+        .from("Request")
+        .select("requestId, completedCertificate")
+        .eq("idNumber", currentUser.idNumber);
+
+      if (error) throw error;
+
+      // Check if any request lacks a `completedCertificate`
+      const hasIncompleteCertificate = requests.some(
+        (request) => !request.completedCertificate
+      );
+
+      if (hasIncompleteCertificate) {
+        toast.error(
+          "Please answer the client satisfaction form and timestamp the job completed form first before creating another request."
+        );
+        return;
+      }
+
+      // Allow the user to make a new request
+      setIsModalOpen(true);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const closeModal = () => setIsModalOpen(false);
 
   const handleClickOutsideModal = (e) => {
@@ -166,7 +200,7 @@ export default function RequestorJobRequestTable() {
   );
 
   const handleDetailsClick = (request) => {
-    navigate(`/department_head/my_request/detail/${request.requestId}`, {
+    navigate(`/department_head/job_request_detail/${request.requestId}`, {
       state: { requestData: request },
     });
   };
@@ -187,6 +221,7 @@ export default function RequestorJobRequestTable() {
           >
             Make Request
           </button>
+
           <ReusableSearchTerm
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -295,7 +330,7 @@ const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
       request.description,
       request.jobCategory,
       request.departmentNames || "N/A",
-      //   request.staffNames || "N/A",
+      // request.staffNames || "N/A",
       <span
         className={`px-2 py-1 rounded-md ${getStatusClass(request.status)}`}
       >
