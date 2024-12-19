@@ -212,24 +212,21 @@ export default function RequestorJobRequestTable() {
 
   return (
     <div className="max-w-full -mt-1 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
-      <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
-        <SearchBar title="Job Requests" />
-        <div className="flex space-x-4">
-          <button
-            onClick={handleMakeRequest}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
-          >
-            Make Request
-          </button>
-
-          <ReusableSearchTerm
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-          />
-        </div>
-      </header>
-
-      {error && <p className="text-red-600">{error}</p>}
+    <header className="bg-custom-blue text-white p-4 rounded-t-lg flex flex-wrap justify-between items-center space-y-2 sm:space-y-0">
+ <div className="flex flex-wrap w-full sm:w-auto items-center justify-between">
+   <SearchBar title="Job Requests" />
+   <button
+     onClick={handleMakeRequest}
+     className="bg-green-600 hover:bg-green-700 w-50 text-white font-semibold px-6 py-2 rounded-md mt-2 sm:mt-0 sm:-mr-[170%]"
+   >
+     Make Request
+   </button>
+ </div>
+ <div className="sm:w-auto">
+   <ReusableSearchTerm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+ </div>
+</header>
+     {error && <p className="text-red-600">{error}</p>}
 
       <Table
         columns={10}
@@ -286,6 +283,7 @@ export default function RequestorJobRequestTable() {
     </div>
   );
 }
+
 
 const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
   // const getPriorityClass = (level) => {
