@@ -15,9 +15,10 @@ const EnglishVersionForm = () => {
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
 
   const { requestData = {} } = location.state || {};
+  const requestId = requestData.requestId;
 
   const [jobRequest, setJobRequest] = useState(null);
-  const [requestId, setRequestId] = useState(location.state?.requestId || null);
+  // const [requestId, setRequestId] = useState(location.state?.requestId || null);
 
   const [formData, setFormData] = useState({
     name: `${userMetadata.fName || ""} ${userMetadata.lName || ""}`,
@@ -45,6 +46,7 @@ const EnglishVersionForm = () => {
     SQD8: "",
     comments: "",
     idNumber: userMetadata.idNumber, // Directly assign requestId value here
+    requestId: requestId,
   });
 
   console.log(
@@ -161,9 +163,8 @@ const EnglishVersionForm = () => {
       } else {
         toast.success("Form submitted successfully!");
         navigate(
-          `/department_head/certificateCompleted/${requestData.requestId || ""}`
+          `/requestor/certificateCompleted/${requestData.requestId || ""}`
         );
-        // Redirect after successful submission
       }
     } catch (error) {
       console.error("Unexpected error:", error);

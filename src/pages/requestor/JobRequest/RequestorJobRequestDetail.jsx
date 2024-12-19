@@ -10,6 +10,7 @@ export default function JobRequestDetail() {
   const [jobRequest, setJobRequest] = useState(null);
   const [trackingData, setTrackingData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [surveyExists, setSurveyExists] = useState(false); // Add this line
 
   const stages = ["Pending", "Ongoing", "Completed", "Satisfaction Survey"];
 
@@ -29,7 +30,6 @@ export default function JobRequestDetail() {
 
         if (error) throw new Error(error.message);
 
-        // Format the requestDate
         const formattedDate = new Date(data.requestDate)
           .toLocaleString("en-US", {
             year: "numeric",
@@ -40,7 +40,6 @@ export default function JobRequestDetail() {
           })
           .replace(",", "");
 
-        // Fetch assignments related to the specific requestId
         const { data: assignments, error: assignmentError } = await supabase
           .from("Department_request_assignment")
           .select("requestId, staffName, deptId")
@@ -48,25 +47,21 @@ export default function JobRequestDetail() {
 
         if (assignmentError) throw assignmentError;
 
-        // Fetch department details
         const { data: departments, error: departmentError } = await supabase
           .from("Department")
           .select("deptId, deptName");
 
         if (departmentError) throw departmentError;
 
-        // Find the department name associated with the request
         const departmentName =
           assignments.length > 0
             ? departments.find((dept) => dept.deptId === assignments[0].deptId)
                 ?.deptName
             : "Unknown Department";
 
-        // Extract and log staff names for debugging
         const staffNames = assignments.map(
           (assignment) => assignment.staffName
         );
-        console.log("Matched Staff Names for Request:", staffNames);
 
         setJobRequest({
           ...data,
@@ -75,59 +70,16 @@ export default function JobRequestDetail() {
           staffName: staffNames.join(", "),
         });
 
-        // Fetch tracking information to determine the last status
-        const { data: trackingData, error: trackingFetchError } = await supabase
-          .from("Tracking")
-          .select("details, timestamp")
+        // Check if a Client Satisfaction Survey exists for this requestId
+        const { data: surveyData, error: surveyError } = await supabase
+          .from("Client_satisfaction_survey")
+          .select("css_id")
           .eq("requestId", requestId)
-          .order("timestamp", { ascending: false });
+          .single();
 
-        if (trackingFetchError) throw new Error(trackingFetchError.message);
+        if (surveyError && surveyError.code !== "PGRST116") throw surveyError;
 
-        setTrackingData(trackingData);
-
-        //   let trackingDetails = "";
-
-        // Status tracking logic
-        // if (data.status === "Pending") {
-        //   trackingDetails = `Job request is pending at ${departmentName}.`;
-        // } else if (data.status === "Ongoing") {
-        //   trackingDetails = `Job request is now Ongoing at ${departmentName}.`;
-        // } else if (data.status === "In Progress") {
-        //   trackingDetails = `Job request is now In Progress by ${departmentName}.`;
-        // } else if (data.status === "Completed") {
-        //   trackingDetails = `Job request is already Completed by ${departmentName}. Kindly fill up Client Satisfaction Survey.`;
-        // }
-
-        // // Check and add expectedDueDate logic without overwriting existing details
-        // if (
-        //   data.expectedDueDate &&
-        //   !trackingData.some((entry) =>
-        //     entry.details.includes("expected to be done")
-        //   )
-        // ) {
-        //   const formattedDueDate = new Date(
-        //     data.expectedDueDate
-        //   ).toLocaleString();
-        //   trackingDetails += trackingDetails
-        //     ? ` The job request is expected to be done on ${formattedDueDate}.`
-        //     : `The job request is expected to be done on ${formattedDueDate}.`;
-        // }
-
-        // // Insert tracking details if any
-        // if (trackingDetails) {
-        //   const { error: trackingError } = await supabase
-        //     .from("Tracking")
-        //     .insert([
-        //       {
-        //         requestId: data.requestId,
-        //         details: trackingDetails,
-        //         timestamp: new Date().toISOString(),
-        //       },
-        //     ]);
-
-        //   if (trackingError) throw new Error(trackingError.message);
-        // }
+        setSurveyExists(Boolean(surveyData));
       } catch (err) {
         console.error("Error:", err.message);
       } finally {
@@ -297,11 +249,11 @@ export default function JobRequestDetail() {
                 })
               }
               className={`py-2 px-4 rounded ${
-                jobRequest?.status === "Completed"
+                jobRequest.status === "Completed" && !surveyExists
                   ? "bg-green-500 text-white"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
-              disabled={jobRequest?.status !== "Completed"} // Ensure jobRequest is defined
+              disabled={jobRequest.status !== "Completed" || surveyExists}
             >
               Client Satisfaction Survey
             </button>
