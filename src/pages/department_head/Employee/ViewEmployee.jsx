@@ -1,42 +1,3 @@
-// import ReusableBackButton from "../../../components/ReusableBackButton";
-// import ReusableContent from "../../../components/ReusableContent";
-// import ReusableUpdateButton from "../../../components/ReusableUpdateButton";
-// import SearchBar from "../../../components/SearchBar";
-
-// export default function ViewEmployee() {
-//   return (
-//     <>
-//       <SearchBar title="Employee Information" />
-//       <ReusableContent>
-//         <p>
-//           <b>Full Name: </b>
-//           Juan Dela Cruz
-//         </p>
-//         <p>
-//           <b>Job: </b>
-//           Carpenter
-//         </p>
-//         <p>
-//           <b>Age: </b>
-//           30
-//         </p>
-//         <p>
-//           <b>Phone Number: </b>
-//           1234567890
-//         </p>
-//         <p>
-//           <b>Email: </b>
-//           cardo@gmail.com
-//         </p>
-//         <div className="absolute bottom-4 right-4 flex">
-//           <ReusableBackButton marginRight="mr-4" />
-//           <ReusableUpdateButton />
-//         </div>
-//       </ReusableContent>
-//     </>
-//   );
-// }
-//SysAdminViewemployee
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import supabase from "../../../service/supabase";
@@ -49,11 +10,12 @@ function ViewEmployee() {
     lName: "",
     idNumber: "",
     deptName: "",
-    userRole: "",
+    jobCategory: "",
     contactNumber: "",
     email: "",
     birthDate: "",
     dateCreated: "",
+    userRole: "",
   });
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false); // Flag to track if in editing mode
@@ -69,18 +31,21 @@ function ViewEmployee() {
       try {
         const { data, error } = await supabase
           .from("User")
-          .select(`
+          .select(
+            `
             id,
             fName,
             lName,
             idNumber,
             userRole,
+            jobCategory,
             contactNumber,
             email,
             birthDate,
             created_at,
             Department (deptName)
-          `)
+          `
+          )
           .eq("id", id)
           .single();
 
@@ -92,7 +57,7 @@ function ViewEmployee() {
           lName: data.lName || "N/A",
           idNumber: data.idNumber || "N/A",
           deptName: data.Department?.deptName || "N/A",
-          userRole: data.userRole || "N/A",
+          userRole: data.userRole || "staff", // Default to 'staff' if null
           contactNumber: data.contactNumber || "N/A",
           email: data.email || "N/A",
           birthDate: data.birthDate || "N/A",
@@ -137,6 +102,7 @@ function ViewEmployee() {
           contactNumber: employee.contactNumber,
           email: employee.email,
           birthDate: employee.birthDate,
+          userRole: employee.userRole, // This is where the new value for userRole (Account Status) is sent
         })
         .eq("id", id); // Update only the record with the matching ID
 
@@ -147,7 +113,6 @@ function ViewEmployee() {
 
       // Redirect back to the table after successful update
       navigate("/department_head/employee"); // Replace "/department_head/employee" with your actual route
-
     } catch (err) {
       console.error("Error updating employee data:", err);
       alert("Failed to update employee details.");
@@ -225,7 +190,9 @@ function ViewEmployee() {
 
         {/* Contact Number */}
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Contact Number</label>
+          <label className="block text-sm font-medium mb-2">
+            Contact Number
+          </label>
           <input
             type="text"
             name="contactNumber"
@@ -274,6 +241,23 @@ function ViewEmployee() {
           />
         </div>
 
+        {/* Account Status */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2">
+            Account Status
+          </label>
+          <select
+            name="userRole"
+            value={employee.userRole}
+            onChange={handleInputChange}
+            disabled={!editing} // Enable editing only if in editing mode
+            className="w-full px-3 py-2 border rounded-md"
+          >
+            <option value="staff">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+
         {/* Buttons */}
         <div className="flex justify-end space-x-4">
           {editing ? (
@@ -309,4 +293,3 @@ function ViewEmployee() {
 }
 
 export default ViewEmployee;
-

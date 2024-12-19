@@ -31,21 +31,23 @@ export default function TableEmployee() {
       // Get the current user's deptId
       const currentUser = await getCurrentUser();
       setUserDeptId(currentUser?.deptId); // Set the user's deptId
-  
+
       // If the current user has a deptId, fetch employees matching that deptId
       if (currentUser?.deptId) {
         const { data, error } = await supabase
           .from("User")
-          .select(`
+          .select(
+            `
             deptId,
             id,
             fullName,
             jobCategory,
             Department (deptName)
-          `)
-          .eq("userRole", "staff")
+          `
+          )
+          .in("userRole", ["staff", "Inactive"])
           .eq("deptId", currentUser.deptId); // Filter by deptId
-  
+
         if (error) throw error;
 
         // Log the data for debugging purposes
@@ -57,14 +59,16 @@ export default function TableEmployee() {
             id: user.id,
             deptName: user.Department?.deptName || "N/A", // Handle missing deptName
             fullName: user.fullName,
-            birthDate: user.created_at ? new Date(user.created_at).toLocaleDateString() : "No Date Available", // Use created_at for birthdate if birthDate is missing
+            birthDate: user.created_at
+              ? new Date(user.created_at).toLocaleDateString()
+              : "No Date Available", // Use created_at for birthdate if birthDate is missing
             jobCategory: user.jobCategory || "N/A", // Ensure jobCategory field exists
           }));
-          
+
           setEmployees(formattedData); // Set the employees data
         }
       }
-  
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -126,12 +130,14 @@ export default function TableEmployee() {
           employee.jobCategory,
           <div key={index} className="flex space-x-2">
             <button
-      key={employee.id}
-              onClick={() => navigate(`/department_head/employee/view/${employee.id}`)}
+              key={employee.id}
+              onClick={() =>
+                navigate(`/department_head/employee/view/${employee.id}`)
+              }
               className="text-white hover:text-blue-500 bg-blue-500 p-1 font-semibold rounded"
-              >
-                View
-              </button>
+            >
+              View
+            </button>
           </div>,
         ])
       : [[]];

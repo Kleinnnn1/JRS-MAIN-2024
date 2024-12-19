@@ -334,6 +334,11 @@ export async function login({ idNumber, email, password }) {
     throw new Error("Account verification is pending. Please contact support.");
   }
 
+  // If userRole is 'unverified', fail the login attempt
+  if (userData.userRole === "Inactive") {
+    throw new Error("Provided ID number or password are incorrect");
+  }
+
   // Proceed with authentication if userRole is valid
   const { data: authData, error: authError } =
     await supabase.auth.signInWithPassword({

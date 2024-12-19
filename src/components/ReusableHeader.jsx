@@ -1,31 +1,39 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import iconDropdown from "../assets/images/iconDropdown.png";
+import { useLogout } from "../auth/useLogout";
 
-export default function ReusableHeader({
-  profilePicture,
-  username,
-  profileLink,
-}) {
+export default function ReusableHeader({ username, profileLink }) {
   const navigate = useNavigate();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { logout } = useLogout(); // Initialize useLogout
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Track dropdown open/close
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    setIsDropdownOpen((prevState) => !prevState); // Toggle dropdown state
+  };
+
+  const handleOptionClick = (option) => {
+    if (option === "Logout") {
+      logout(); // Call logout function
+      navigate("/login"); // Redirect to login
+    } else if (option === "Profile") {
+      navigate(profileLink); // Navigate to profile page
+    }
+    setIsDropdownOpen(false); // Close dropdown after an action
   };
 
   return (
     <div className="py-4 px-6 bg-yellow-100 flex items-center justify-between shadow-md shadow-black/5 sticky top-0 left-0 z-50">
       {/* Left Section */}
       <div className="flex items-center">
-        <a href="#" className="text-xs text-gray-700 font-medium">
-          {/* jrs@ustp.edu.ph +384-3478-984 */}
+        <span className="text-xs text-gray-700 font-medium">
           ustpjrs@gmail.com
-        </a>
+        </span>
       </div>
 
       {/* Profile Dropdown */}
       <div className="relative ml-auto">
+        {/* Dropdown Button */}
         <button
           type="button"
           onClick={toggleDropdown}
@@ -44,18 +52,18 @@ export default function ReusableHeader({
         {/* Dropdown Menu */}
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 w-32 bg-yellow-200 rounded-md shadow-lg py-2 z-50">
-            <Link
-              to={profileLink}
-              className="block px-4 py-2 text-sm text-gray-900 hover:bg-yellow-600 hover:text-white"
+            <button
+              onClick={() => handleOptionClick("Profile")}
+              className="block w-full text-left px-4 py-2 text-sm text-gray-900 hover:bg-yellow-600 hover:text-white"
             >
               Profile
-            </Link>
-            <Link
-              to="/login"
-              className="block px-4 py-2 text-sm text-gray-900 hover:bg-yellow-600 hover:text-white"
+            </button>
+            <button
+              onClick={() => handleOptionClick("Logout")}
+              className="block w-full text-left px-4 py-2 text-sm text-gray-900 hover:bg-yellow-600 hover:text-white"
             >
               Logout
-            </Link>
+            </button>
           </div>
         )}
       </div>
