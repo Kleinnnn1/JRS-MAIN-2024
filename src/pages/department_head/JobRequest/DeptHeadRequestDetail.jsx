@@ -190,18 +190,46 @@ export default function RequestDetailPage() {
       return;
     }
 
+    // Determine the new jobCategory based on the selectedDepartment
+    let newJobCategory;
+    if (selectedDepartment === "1") {
+      newJobCategory = "Housekeeper";
+    } else if (selectedDepartment === "2") {
+      newJobCategory = "Laborer";
+    } else if (selectedDepartment === "3") {
+      newJobCategory = "Aircon Technician";
+    } else {
+      toast.error("Invalid department selected.");
+      return;
+    }
+
     try {
-      const { error } = await supabase
+      // Update Department_request_assignment
+      const { error: assignmentError } = await supabase
         .from("Department_request_assignment")
         .update({ deptId: selectedDepartment })
         .eq("requestId", requestId);
 
-      if (error) {
+      if (assignmentError) {
         toast.error("Failed to transfer the request. Please try again.");
-      } else {
-        toast.success("Request successfully transferred.");
-        closeModal("isTransferModalOpen");
+        return;
       }
+
+      // Update Request with the new jobCategory
+      const { error: requestError } = await supabase
+        .from("Request")
+        .update({ jobCategory: newJobCategory })
+        .eq("requestId", requestId);
+
+      if (requestError) {
+        toast.error("Failed to update job category. Please try again.");
+        return;
+      }
+
+      toast.success(
+        "Request successfully transferred and job category updated."
+      );
+      closeModal("isTransferModalOpen");
     } catch (err) {
       toast.error("An unexpected error occurred.");
     }
