@@ -70,6 +70,17 @@ export default function JobRequestDetail() {
           staffName: staffNames.join(", "),
         });
 
+        // Fetch tracking information to determine the last status
+        const { data: trackingData, error: trackingFetchError } = await supabase
+          .from("Tracking")
+          .select("details, timestamp")
+          .eq("requestId", requestId)
+          .order("timestamp", { ascending: false });
+
+        if (trackingFetchError) throw new Error(trackingFetchError.message);
+
+        setTrackingData(trackingData);
+
         // Check if a Client Satisfaction Survey exists for this requestId
         const { data: surveyData, error: surveyError } = await supabase
           .from("Client_satisfaction_survey")
