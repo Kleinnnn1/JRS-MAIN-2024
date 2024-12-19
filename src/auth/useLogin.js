@@ -97,7 +97,9 @@ export function useLogin() {
         error.message ===
         "Account verification is pending. Please contact support."
       ) {
-        toast.error("Account verification is pending. Please contact support.");
+        toast.error(
+          "Account verification is pending. Please contact your office head."
+        );
       } else {
         // Generic error for incorrect credentials
         toast.error("Provided ID number/email or password are incorrect");

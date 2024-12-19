@@ -102,11 +102,14 @@ export default function ContentDashboard() {
 
   return (
     <>
-      <div className="my-4 mx-5  py-4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
+      <div
+        className="my-4 mx-5  py-
+      4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl"
+      >
         <SearchBar title="Dashboard" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         {/* Job Request Card */}
         <StatusCard
           title="Job Request"
@@ -141,7 +144,7 @@ export default function ContentDashboard() {
         />
 
         {/* Referral Card */}
-        <StatusCard
+        {/* <StatusCard
           title="Referral"
           count={jobCounts.referral}
           icon={<FaRegHandPointer className="text-md" />} // Icon for Referral Jobs
@@ -149,7 +152,7 @@ export default function ContentDashboard() {
           titleColor="text-purple-500"
           iconColor="text-purple-500"
           onClick={() => navigate("/department_head/referral")}
-        />
+        /> */}
       </div>
 
       {/* Main Content Section */}

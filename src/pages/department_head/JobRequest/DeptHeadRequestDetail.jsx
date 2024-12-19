@@ -57,6 +57,7 @@ export default function RequestDetailPage() {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("");
 
+  const [priorityValue, setPriorityValue] = useState(""); // State for fetched priority
 
   const {
     fullName,
@@ -77,6 +78,7 @@ export default function RequestDetailPage() {
 
   useEffect(() => {
     fetchAssignedStaff();
+    fetchPriority(); // Fetch priority on mount
 
     const channel = supabase
       .channel(`request-${requestId}`)
@@ -96,6 +98,25 @@ export default function RequestDetailPage() {
       supabase.removeChannel(channel);
     };
   }, [requestId]);
+
+  const fetchPriority = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("Request")
+        .select("priority")
+        .eq("requestId", requestId)
+        .single();
+
+      if (error || !data) {
+        setPriorityValue(""); // No priority found
+      } else {
+        setPriorityValue(data.priority || "");
+        setSelectedPriority(data.priority || ""); // Update the dropdown's state
+      }
+    } catch {
+      setPriorityValue(""); // Fallback in case of an error
+    }
+  };
 
   const openModal = (key) =>
     setModalState((prev) => ({ ...prev, [key]: true }));
@@ -137,7 +158,7 @@ export default function RequestDetailPage() {
     } catch (err) {
       toast.error("An unexpected error occurred.");
     } finally {
-      setIsSaving(false);  v
+      setIsSaving(false);
     }
   };
 
@@ -156,14 +177,12 @@ export default function RequestDetailPage() {
       if (error) {
         toast.error("Failed to transfer the request. Please try again.");
       } else {
-        toast.success("Successfully Set Priority Level.");
         closeModal("isTransferModalOpen");
       }
     } catch (err) {
       toast.error("An unexpected error occurred.");
     }
   };
-  
 
   const handleTransfer = async () => {
     if (!selectedDepartment) {
@@ -206,8 +225,8 @@ export default function RequestDetailPage() {
     }
   };
 
-   // Load the stored value on component mount
-   useEffect(() => {
+  // Load the stored value on component mount
+  useEffect(() => {
     const savedPriority = localStorage.getItem("selectedPriority");
     if (savedPriority) {
       setSelectedPriority(savedPriority);
@@ -221,7 +240,6 @@ export default function RequestDetailPage() {
     localStorage.setItem("selectedPriority", newValue); // Save to localStorage
   };
 
-  
   return (
     <div className="container mx-auto p-6">
       <div className="bg-white -mt-5 shadow-lg rounded-lg p-4">
@@ -293,56 +311,49 @@ export default function RequestDetailPage() {
                 </span>
               </div>
             </div>
-          {/* PRIORITY */}
-          <div>
-      {/* Location Display */}
-      <div className="mb-10">
-        <span className="block text-sm text-gray-600 mb-1 font-medium">
-          Priority Level:
-        </span>
-        <span className="block text-2xl text-gray-900 font-semibold tracking-wide">
-          {requestLocation || "Unknown Location"}
-        </span>
-      </div>
+            {/* PRIORITY */}
+            <div>
+              {/* Location Display */}
+              <div className="mb-5">
+                <span className="block text-sm text-gray-600 mb-1 font-medium">
+                  Priority Level:
+                </span>
+              </div>
 
-      {/* Priority Dropdown */}
-      <select
-        id="priority-select"
-        value={selectedPriority} // Ensure the dropdown reflects the stored value
-        onChange={handlePriorityChange}
-        className="p-2 border rounded ml-3"
-      >
-        <option value="">Select Priority</option>
-        <option className="text-green-500" value="Low">
-          Low
-        </option>
-        <option className="text-yellow-500" value="Medium">
-          Medium
-        </option>
-        <option className="text-red-500" value="High">
-          High
-        </option>
-      </select>
-    </div>
+              {/* Priority Dropdown */}
+              <select
+                id="priority-select"
+                value={selectedPriority} // Ensure the dropdown reflects the stored value
+                onChange={handlePriorityChange}
+                className="p-2 border rounded ml-3"
+              >
+                <option value="" className="hidden">
+                  Select Priority
+                </option>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+              </select>
+            </div>
 
-              {/* ASSIGN STAFF */}
+            {/* ASSIGN STAFF */}
             <p className="mb-4 mt-4">
               <span className="font-semibold  m-4">Assigned Staff:</span> <br />
               <span className="m-4 text-xl">{assignedStaffName}</span>
             </p>
             <div className="-mt-8 m-4">
-                        {/* Assign Button */}
-            {status !== "Ongoing" && status !== "Completed" && (
-              <button
-                onClick={() => {
-                  handleAssign();
-                  handlePriority();
-                }}
-                className="bg-blue-600 mt-5 text-white p-1 rounded hover:bg-blue-700 w-32"
-              >
-                Assign
-              </button>
-            )}
+              {/* Assign Button */}
+              {status !== "Ongoing" && status !== "Completed" && (
+                <button
+                  onClick={() => {
+                    handleAssign();
+                    handlePriority();
+                  }}
+                  className="bg-blue-600 mt-5 text-white p-1 rounded hover:bg-blue-700 w-32"
+                >
+                  Assign
+                </button>
+              )}
               {/* Remarks Section */}
 
               {/* Remarks Section */}
@@ -380,6 +391,54 @@ export default function RequestDetailPage() {
                   >
                     Transfer Request
                   </button>
+                )}
+
+                {/* "Mark Job as Completed" Button */}
+                {status == "Ongoing" && status !== "Completed" && (
+                  <div className="text-center mt-6">
+                    <button
+                      onClick={async () => {
+                        try {
+                          // Generate a formatted timestamp for the completion date
+                          const now = new Date();
+                          const timestamp = now.toLocaleString("en-US", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                            hour12: true,
+                          });
+
+                          // Update the status and dateCompleted in the database
+                          const { error } = await supabase
+                            .from("Request")
+                            .update({
+                              status: "Completed",
+                              dateCompleted: timestamp,
+                            })
+                            .eq("requestId", requestId);
+
+                          if (error) {
+                            toast.error(
+                              "Failed to mark job as completed. Please try again."
+                            );
+                          } else {
+                            toast.success("Job marked as completed!");
+                            // Update local state (if needed)
+                            location.state.status = "Completed";
+                            navigate(0); // Refresh the page to show the updated status
+                          }
+                        } catch (err) {
+                          toast.error("An unexpected error occurred.");
+                        }
+                      }}
+                      className="bg-green-600 text-white font-bold px-4 py-2 rounded hover:bg-green-700"
+                    >
+                      Mark Job as Completed
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
