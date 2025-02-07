@@ -27,7 +27,7 @@ export default function ReusableHeader({ username, profileLink }) {
       {/* Left Section */}
       <div className="flex items-center">
         <span className="text-xs text-gray-700 font-medium">
-          ustpjrs@gmail.com
+          ustpjobrequestsystem@gmail.com
         </span>
       </div>
 
