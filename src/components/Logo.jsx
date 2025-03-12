@@ -16,7 +16,6 @@ export default function Logo() {
         transition: { duration: 0.3, ease: "easeInOut" },
       }}
     />
-
   );
 }
 

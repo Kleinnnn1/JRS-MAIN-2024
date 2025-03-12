@@ -7,22 +7,21 @@ import SearchBar from "../../../components/SearchBar";
 import RequestorJobRequestForm from "../JobRequest/RequestorJobRequestForm";
 import supabase from "../../../service/supabase";
 import { getCurrentUser } from "../../../service/apiAuth";
+import Logo from "../../../assets/images/logo.png"; // Logo for initial loading
 
 const tableHeaders = [
   "Request ID",
   "Job Description",
   "Job Category",
   "Office",
-  // "Assigned Staff",
-  // "Date Requested",
-  // "Priority",
   "Actions",
 ];
 
 export default function JobRequestHistory() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [showLogo, setShowLogo] = useState(true);
   const [error, setError] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,17 +31,17 @@ export default function JobRequestHistory() {
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
 
-  const handleMakeRequest = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  useEffect(() => {
+    const logoTimer = setTimeout(() => {
+      setShowLogo(false);
+      fetchRequests();
+    }, 3000);
 
-  const handleClickOutsideModal = (e) => {
-    if (e.target.id === "modalBackdrop") closeModal();
-  };
+    return () => clearTimeout(logoTimer);
+  }, []);
 
   const fetchRequests = async () => {
     try {
-      setLoading(true);
-
       const currentUser = await getCurrentUser();
       if (!currentUser || !currentUser.idNumber) {
         throw new Error("Unable to fetch current user information.");
@@ -50,106 +49,19 @@ export default function JobRequestHistory() {
 
       const { data: requests, error } = await supabase
         .from("Request")
-        .select(
-          "requestId, description, jobCategory, image, status, requestDate, priority, idNumber"
-        )
+        .select("requestId, description, jobCategory, status, requestDate, priority, idNumber")
         .eq("idNumber", currentUser.idNumber)
-        .eq("status", "Completed") // Filter requests by status = "Completed"
+        .eq("status", "Completed")
         .order("requestDate", { ascending: true });
 
       if (error) throw error;
 
-      const { data: assignments, error: assignmentError } = await supabase
-        .from("Department_request_assignment")
-        .select("requestId, staffName, deptId");
-
-      if (assignmentError) throw assignmentError;
-
-      const { data: departments, error: departmentError } = await supabase
-        .from("Department")
-        .select("deptId, deptName");
-
-      if (departmentError) throw departmentError;
-
-      const requestsWithDepartments = requests.map((request) => {
-        const assignmentsForRequest = assignments.filter(
-          (assignment) => assignment.requestId === request.requestId
-        );
-
-        const departmentNames = [
-          ...new Set(
-            assignmentsForRequest.map((assignment) => {
-              const department = departments.find(
-                (dept) => dept.deptId === assignment.deptId
-              );
-              return department ? department.deptName : "Unknown Department";
-            })
-          ),
-        ].join(", ");
-
-        return {
-          ...request,
-          departmentNames,
-          staffNames: assignmentsForRequest
-            .map((assignment) => assignment.staffName)
-            .join(", "),
-        };
-      });
-
-      setRequests(requestsWithDepartments);
+      setRequests(requests);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  };
-
-  const fetchAndSetRequests = async () => {
-    try {
-      setLoading(true);
-      await fetchRequests(); // Re-fetch all data
-    } catch (err) {
-      console.error("Error fetching updated requests:", err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const channel = supabase
-      .channel("public:Request")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "Request" },
-        async (payload) => {
-          const { eventType } = payload;
-
-          if (
-            eventType === "INSERT" ||
-            eventType === "UPDATE" ||
-            eventType === "DELETE"
-          ) {
-            await fetchAndSetRequests(); // Re-fetch all data on changes
-          }
-        }
-      )
-      .subscribe();
-
-    fetchRequests(); // Initial fetch
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  const openImageModal = (src) => {
-    setImageSrc(src);
-    setImageModalOpen(true);
-  };
-
-  const closeImageModal = () => {
-    setImageModalOpen(false);
-    setImageSrc("");
   };
 
   const filteredRequests = requests.filter(
@@ -172,129 +84,56 @@ export default function JobRequestHistory() {
 
   const tableContent =
     paginatedRequests.length > 0
-      ? mapRequestData(paginatedRequests, openImageModal, handleDetailsClick)
+      ? paginatedRequests.map((request) => [
+          request.requestId,
+          request.description,
+          request.jobCategory,
+          request.departmentNames || "N/A",
+          <span
+            onClick={() => handleDetailsClick(request)}
+            className="cursor-pointer text-blue-500 hover:text-blue-700"
+          >
+            Details
+          </span>,
+        ])
       : [[]];
 
   return (
-    <div className="max-w-full -mt-1 mx-auto p-6 m-5 bg-white rounded-lg shadow-lg">
-      <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
-        <SearchBar title="My Completed Request" />
-        <div className="flex space-x-4">
-          {/* <button
-            onClick={handleMakeRequest}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
-          >
-            Make Request
-          </button> */}
-          <ReusableSearchTerm
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
+    <div className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
+      {showLogo ? (
+        // **Show Logo for 3 seconds before fetching data**
+        <div className="flex flex-col items-center justify-center min-h-screen">
+          <img src={Logo} alt="Loading..." className="w-32 h-32 animate-pulse" />
+          <p className="mt-4 text-gray-500">Loading, please wait...</p>
+        </div>
+      ) : loading ? (
+        // **Show loading animation while fetching data**
+        <div className="flex justify-center items-center min-h-screen">
+          <svg className="animate-spin h-12 w-12 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+          </svg>
+        </div>
+      ) : (
+        <>
+          <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
+            <SearchBar title="My Completed Request" />
+            <ReusableSearchTerm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          </header>
+
+          {error && <p className="text-red-600">{error}</p>}
+
+          <Table columns={5} rows={paginatedRequests.length} content={tableContent} headers={tableHeaders} />
+
+          <ReusablePagination
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPages={totalPages}
           />
-        </div>
-      </header>
-
-      {error && <p className="text-red-600">{error}</p>}
-
-      <Table
-        columns={10}
-        rows={paginatedRequests.length}
-        content={tableContent}
-        headers={tableHeaders}
-      />
-
-      <ReusablePagination
-        rowsPerPage={rowsPerPage}
-        setRowsPerPage={setRowsPerPage}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPages={totalPages}
-      />
-
-      {isModalOpen && (
-        <div
-          id="modalBackdrop"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-          onClick={handleClickOutsideModal}
-        >
-          <div className="bg-white p-10 rounded-lg shadow-lg max-w-7xl w-full relative">
-            <button
-              onClick={closeModal}
-              className="absolute -top-4 -right-4 bg-yellow-300 text-black text-4xl rounded-full h-10 w-10 flex items-center justify-center border-4 border-yellow-300 hover:bg-gray-100 hover:text-red-600 shadow-lg"
-              aria-label="Close Modal"
-            >
-              &times;
-            </button>
-            <RequestorJobRequestForm closeModal={closeModal} />
-          </div>
-        </div>
-      )}
-
-      {imageModalOpen && (
-        <div
-          id="imageModalBackdrop"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
-          onClick={closeImageModal}
-        >
-          <div className="bg-white p-5 rounded-lg shadow-lg max-w-3xl w-full relative">
-            <button
-              onClick={closeImageModal}
-              className="absolute -top-4 -right-4 bg-yellow-300 text-black text-4xl rounded-full h-10 w-10 flex items-center justify-center border-4 border-yellow-300 hover:bg-gray-100 hover:text-red-600 shadow-lg"
-              aria-label="Close Image Modal"
-            >
-              &times;
-            </button>
-            <img src={imageSrc} alt="Full view" className="w-full h-auto" />
-          </div>
-        </div>
+        </>
       )}
     </div>
   );
 }
-
-const mapRequestData = (requests, openImageModal, handleDetailsClick) => {
-  const getStatusClass = (status) => {
-    switch (status) {
-      case "Pending":
-        return "bg-yellow-300";
-      case "Ongoing":
-        return "bg-blue-300";
-      case "Completed":
-        return "bg-green-300";
-      default:
-        return "bg-gray-300";
-    }
-  };
-
-  return requests.map((request) => {
-    const formattedDate = new Date(request.requestDate)
-      .toLocaleString("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-      })
-      .replace(",", "");
-
-    return [
-      request.requestId,
-      request.description,
-      request.jobCategory,
-      request.departmentNames || "N/A",
-      //  request.staffNames || "N/A",
-      //    formattedDate,
-      //  request.priority,
-      // <span
-      //   className={`px-2 py-1 rounded-md ${getPriorityClass(request.priority)}`}
-      // >
-      //   {request.priority}
-      // </span>,
-      <span
-        onClick={() => handleDetailsClick(request)}
-        className="cursor-pointer text-blue-500 hover:text-blue-700"
-      >
-        Details
-      </span>,
-    ];
-  });
-};
