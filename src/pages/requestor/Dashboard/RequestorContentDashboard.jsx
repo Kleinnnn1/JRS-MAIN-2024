@@ -8,7 +8,7 @@ import supabase from "../../../service/supabase";
 import RequestorNotification from "./RequestorNotificationAndCalendar";
 import { FaHourglassStart, FaClock, FaCheckCircle } from "react-icons/fa";
 import { getCurrentUser } from "../../../service/apiAuth";
-import Logo from "../../../assets/images/logo.png"; // Use logo for loading
+import Logo from "../../../assets/images/Loading_2.gif"; // Use logo for loading
 
 export default function ContentDashboard() {
   const navigate = useNavigate();

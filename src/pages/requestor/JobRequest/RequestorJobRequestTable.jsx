@@ -8,7 +8,7 @@ import RequestorJobRequestForm from "./RequestorJobRequestForm";
 import supabase from "../../../service/supabase";
 import { getCurrentUser } from "../../../service/apiAuth";
 import toast from "react-hot-toast";
-import Logo from "../../../assets/images/logo.png"; // Use Logo for loading
+import Logo from "../../../assets/images/Loading_2.gif"; // Use logo for loading
 
 const tableHeaders = [
   "Request ID",
@@ -104,30 +104,6 @@ export default function RequestorJobRequestTable() {
         <div className="flex flex-col items-center justify-center min-h-screen">
           <img src={Logo} alt="Loading..." className="w-32 h-32 animate-pulse" />
           <p className="mt-4 text-gray-500">Loading, please wait...</p>
-        </div>
-      ) : loading ? (
-        // **Show loading animation while fetching data**
-        <div className="flex justify-center items-center min-h-screen">
-          <svg
-            className="animate-spin h-12 w-12 text-blue-500"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v8H4z"
-            ></path>
-          </svg>
         </div>
       ) : (
         <>
