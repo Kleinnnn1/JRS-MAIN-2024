@@ -27,7 +27,7 @@ export default function ContentDashboard() {
     const logoTimer = setTimeout(() => {
       setShowLogo(false);
       fetchCounts();
-    }, 3000);
+    }, 1000);
 
     return () => clearTimeout(logoTimer);
   }, []);

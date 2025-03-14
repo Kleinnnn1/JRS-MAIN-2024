@@ -37,7 +37,7 @@ export default function RequestorJobRequestTable() {
     const logoTimer = setTimeout(() => {
       setShowLogo(false);
       fetchRequests();
-    }, 3000);
+    }, 1000);
 
     return () => clearTimeout(logoTimer);
   }, []);
