@@ -71,14 +71,12 @@ export default function ContentDashboard() {
   return (
     <div className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-lg">
       {showLogo ? (
-        // **Show Logo for 3 seconds before fetching data**
         <div className="flex flex-col items-center justify-center min-h-screen">
           <img src={Logo} alt="Loading..." className="w-32 h-32 animate-pulse" />
           <p className="mt-4 text-gray-500">Loading, please wait...</p>
         </div>
       ) : (
         <>
-          {/* Search Bar */}
           <div className="my-4 mx-3 py-4 px-6 bg-custom-blue flex flex-col lg:flex-row lg:justify-between items-center min-h-20 shadow-lg shadow-black/5 rounded-xl">
             <SearchBar title="Dashboard" />
           </div>
