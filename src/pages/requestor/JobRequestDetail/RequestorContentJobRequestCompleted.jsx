@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { confirmationAlert, successAlert } from '../../../components/ReusableSweetAlert'; // Import ReusableSweetAlert
+import Logo from "../../../assets/images/Loading_2.gif";
 
 export default function RequestorContentJobRequestCompleted() {
   const navigate = useNavigate();
@@ -16,6 +17,14 @@ export default function RequestorContentJobRequestCompleted() {
     );
   };
 
+  useEffect(() => {
+    const logoTimer = setTimeout(() => {
+      setShowLogo(false);
+      fetchRequests();
+    }, 1000);
+    return () => clearTimeout(logoTimer);
+  }, []);
+  
   const handleUpdateJobRequest = () => {
     confirmationAlert(
       'Are you sure you want to update this job request?',
