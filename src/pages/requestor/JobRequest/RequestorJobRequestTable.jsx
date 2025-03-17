@@ -215,18 +215,19 @@ export default function RequestorJobRequestTable() {
       <header className="bg-custom-blue text-white p-4 rounded-t-lg flex justify-between items-center">
         <SearchBar title="Job Requests" />
         <div className="flex space-x-4">
-          <button
-            onClick={handleMakeRequest}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
-          >
-            Make Request
-          </button>
+  <button
+    onClick={handleMakeRequest}
+    className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md"
+  >
+    Make Request
+  </button>
 
-          <ReusableSearchTerm
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-          />
-        </div>
+  {/* Hide on mobile, show on md and above */}
+  <div className="hidden md:block">
+    <ReusableSearchTerm searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+  </div>
+</div>
+
       </header>
 
       {error && <p className="text-red-600">{error}</p>}
