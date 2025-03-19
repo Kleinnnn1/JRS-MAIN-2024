@@ -1,43 +1,33 @@
-JOB REQUEST SYSTEM WEB APP GUIDE TO RUN THE APP
-1. open main source project folder and open it in visual studio
-2. npm install - to install the depencies in the web app
-3. npm run dev - to run the app
+*Job Request System Web App - Setup and User Guide*
 
-**Credentials**
+**System Requirements**
+Before proceeding, ensure that you have the following installed on your system:
 
-**Requestor**
-Email: requestor@gmail.com
-Password: 12345678
+Visual Studio Code: https://code.visualstudio.com/Download
+Node.js: https://nodejs.org/en/download
 
-**BGMS Head**
-Email: bgmshead@gmail.com
-Password: 12345678
+**Setup Instructions**
+Follow these steps to install and run the Job Request System Web App:
 
-**BGMS Staff**
-Email: navarrogerry@gmail.com
-Password: 12345678
+1. Download and Install Visual Studio Code
+Visit Visual Studio Code Download Page and install it.
+Once installed, open Visual Studio Code.
+2. Open the Project
+Locate the main source project folder on your computer.
+Open the folder in Visual Studio Code.
+3. Install Dependencies
+- Open the terminal in Visual Studio Code
+- Run the command below to install all necessary dependencies:
+**npm install**
+4. Run the Application
+Start the development server by running:
+**npm run dev**
 
-**CSWS Head**
-Email: cswshead@gmail.com
-Password: 12345678
+Once the server is running, open your browser and access the web app.
 
-**CSWS Staff**
-Email: kimyana@gmail.com
-Password: 12345678
+**User Login Credentials**
+Below are the credentials for different roles in the system:
 
-**MEWS Head**
-Email: mewshead@gmail.com
-Password: 12345678
+![image](https://github.com/user-attachments/assets/66e68bf9-c8c5-4534-a399-96e9367c4214)
 
-**MEWS Staff**
-Email: edmanmarcduterte@gmail.com
-Password: 12345678
-
-**System Admin**
-Email: systemadmin@gmail.com
-Password: 12345678
-
-**SPME**
-Email: spme@gmail.com
-Password: 12345678
 
