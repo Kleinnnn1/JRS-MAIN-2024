@@ -8,14 +8,15 @@ Visual Studio Code: https://code.visualstudio.com/Download
 
 Node.js: https://nodejs.org/en/download
 
+
 **Setup Instructions**
 Follow these steps to install and run the Job Request System Web App:
 
 1. Download and Install Visual Studio Code
    
-Visit Visual Studio Code Download Page and install it.
+- Visit Visual Studio Code Download Page and install it.
 
-Once installed, open Visual Studio Code.
+- Once installed, open Visual Studio Code.
 
 2. Open the Project
 - Locate the main source project folder on your computer.
@@ -31,6 +32,7 @@ Once installed, open Visual Studio Code.
 **npm run dev**
 
 Once the server is running, open your browser and access the web app.
+
 
 **User Login Credentials**
 
