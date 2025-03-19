@@ -10,6 +10,7 @@ Node.js: https://nodejs.org/en/download
 
 
 **Setup Instructions**
+
 Follow these steps to install and run the Job Request System Web App:
 
 1. Download and Install Visual Studio Code
