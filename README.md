@@ -25,12 +25,10 @@ Follow these steps to install and run the Job Request System Web App:
 
 3. Install Dependencies
 - Open the terminal in Visual Studio Code
-- Run the command below to install all necessary dependencies:
-**npm install**
+- Run the command **npm install** to install all necessary dependencies
   
 4. Run the Application
-- Start the development server by running:
-**npm run dev**
+- Start the development server by running: **npm run dev**
 
 Once the server is running, open your browser and access the web app.
 
