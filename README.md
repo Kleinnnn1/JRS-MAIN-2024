@@ -17,11 +17,11 @@ Visit Visual Studio Code Download Page and install it.
 
 Once installed, open Visual Studio Code.
 
-3. Open the Project
+2. Open the Project
 - Locate the main source project folder on your computer.
 - Open the folder in Visual Studio Code.
 
-5. Install Dependencies
+3. Install Dependencies
 - Open the terminal in Visual Studio Code
 - Run the command below to install all necessary dependencies:
 **npm install**
